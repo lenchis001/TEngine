@@ -2,9 +2,9 @@
 
 namespace TEngine::Components::Graphics::Services::MeshLoading
 {
-    std::future<MeshLoadingDataActionResult> MeshLoadingService::loadMesh(const std::wstring& path)
+    std::future<DataActionResult<MeshLoadingErrorCodes, IMeshRenderableObject>> MeshLoadingService::loadMesh(const std::wstring& path)
     {
-        return std::async(std::launch::async, [path]() -> MeshLoadingDataActionResult
+        return std::async(std::launch::async, [path]() -> DataActionResult<MeshLoadingErrorCodes, IMeshRenderableObject>
         {
                 throw "";
         });

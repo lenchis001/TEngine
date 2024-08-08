@@ -1,23 +1,23 @@
 #ifndef TENGINE_ENGINEPARAMETERS_H
 #define TENGINE_ENGINEPARAMETERS_H
 
-#include "Components/Graphics/Models/GraphicsParameters.h"
+#include "IEngineParameters.h"
 
-using GraphicsParameters = TEngine::Components::Graphics::Models::GraphicsParameters;
+using namespace TEngine::Components::Graphics::Models;
 
 namespace TEngine::Models
 {
-    class EngineParameters
+    class EngineParameters : public IEngineParameters
     {
     public:
         EngineParameters();
 
-        GraphicsParameters &getGraphicsParameters();
+        std::shared_ptr<IGraphicsParameters> getGraphicsParameters();
 
-        void setGraphicsParameters(const GraphicsParameters &graphicsParameters);
+        void setGraphicsParameters(std::shared_ptr<IGraphicsParameters> graphicsParameters);
 
     private:
-        GraphicsParameters _graphicsParameters;
+        std::shared_ptr<IGraphicsParameters> _graphicsParameters;
     };
 }
 

@@ -1,11 +1,11 @@
 #ifndef TENGINE_RENDERINGPARAMETERS_H
 #define TENGINE_RENDERINGPARAMETERS_H
 
-#include "string"
+#include "IRenderingParameters.h"
 
 namespace TEngine::Components::Graphics::Models::Rendering
 {
-    class RenderingParameters
+    class RenderingParameters : public IRenderingParameters
     {
     public:
         RenderingParameters();

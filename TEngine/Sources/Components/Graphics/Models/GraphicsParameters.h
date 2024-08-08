@@ -1,23 +1,23 @@
 #ifndef TENGINE_GRAPHICSPARAMETERS_H
 #define TENGINE_GRAPHICSPARAMETERS_H
 
-#include "Rendering/RenderingParameters.h"
+#include "IGraphicsParameters.h"
 
-using RenderingParameters = TEngine::Components::Graphics::Models::Rendering::RenderingParameters;
+using namespace TEngine::Components::Graphics::Models::Rendering;
 
 namespace TEngine::Components::Graphics::Models
 {
-    class GraphicsParameters
+    class GraphicsParameters : public IGraphicsParameters
     {
     public:
         GraphicsParameters();
 
-        RenderingParameters &getRenderingParameters();
+        std::shared_ptr<IRenderingParameters> getRenderingParameters();
 
-        void setRenderingParameters(const RenderingParameters &renderingParameters);
+        void setRenderingParameters(const std::shared_ptr<IRenderingParameters> renderingParameters);
 
     private:
-        RenderingParameters _renderingParameters;
+        std::shared_ptr<IRenderingParameters> _renderingParameters;
     };
 }
 

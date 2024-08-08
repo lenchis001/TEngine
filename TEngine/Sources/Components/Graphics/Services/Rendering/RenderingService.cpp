@@ -9,39 +9,34 @@ RenderingService::RenderingService()
 {
 }
 
-void RenderingService::initialize(RenderingParameters& parameters)
+void RenderingService::initialize(std::shared_ptr<IRenderingParameters> parameters)
 {
 	// Initialize GLFW
 	if (!glfwInit())
 	{
-		return;
+		throw std::exception("Failed to initialize GLFW");
 	}
 
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, parameters.getOpenGlMajorVersion());
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, parameters.getOpenGlMinorVersion());
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, parameters->getOpenGlMajorVersion());
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, parameters->getOpenGlMinorVersion());
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make macOS happy; should not be needed
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	// Open a window and create its OpenGL context
-	_window = glfwCreateWindow(parameters.getWidth(), parameters.getHeight(), parameters.getTitle().c_str(), NULL, NULL);
+	_window = glfwCreateWindow(parameters->getWidth(), parameters->getHeight(), parameters->getTitle().c_str(), NULL, NULL);
 	if (_window == NULL)
 	{
 		glfwTerminate();
-		return;
+		throw std::exception("Failed to open GLFW window");
 	}
+
 	glfwMakeContextCurrent(_window);
 
-	// // Initialize GLEW
-	// if (glewInit() != GLEW_OK) {
-	// 	fprintf(stderr, "Failed to initialize GLEW\n");
-	// 	getchar();
-	// 	glfwTerminate();
-	// 	return;
-	// }
+	 if (glewInit() != GLEW_OK) {
+		 throw std::exception("Failed to initialize GLEW");
+	 }
 
-	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(_window, GLFW_STICKY_KEYS, GL_TRUE);
 
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);

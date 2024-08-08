@@ -5,6 +5,9 @@
 
 #include "GLFW/glfw3.h"
 
+using namespace TEngine::Models;
+using namespace TEngine::Components::Graphics::Services;
+
 namespace TEngine
 {
     class Engine : public IEngine
@@ -13,7 +16,7 @@ namespace TEngine
         Engine(std::shared_ptr<IGraphicsService> graphicsService);
         ~Engine();
 
-        void initialize(EngineParameters& parameters) override;
+        void initialize(std::shared_ptr<IEngineParameters> parameters) override;
 
         std::shared_ptr<IGraphicsService> getGraphicsService() override;
 

@@ -1,14 +1,12 @@
-set(TEngine_COMPILE_DEFINITIONS 
-    CACHE INTERNAL "${PROJECT_NAME}: Definitions" FORCE)
-add_compile_definitions(${TEngine_COMPILE_DEFINITIONS})
-include_directories("Sources")
-
 file(GLOB_RECURSE tengine_sources_files
     "Sources/*.cpp"
     "Sources/*.c"
 )
 
 add_library(TEngine SHARED ${tengine_sources_files})
+
+target_compile_definitions(TEngine PRIVATE TENGINE_EXPORTS)
+target_include_directories(TEngine PUBLIC "Sources")
 
 # --------------------- Dependencies ---------------------
 
@@ -44,7 +42,26 @@ target_link_libraries(TEngine PRIVATE OpenGL::GL)
 # --------------------- Add GLEW library ---------------------
 
 # Download and configure GLEW
-find_package(GLEW REQUIRED)
+include(FetchContent)
 
-include_directories(${GLEW_INCLUDE_DIRS})
-link_libraries(${GLEW_LIBRARIES})
+FetchContent_Declare(
+    glew
+    GIT_REPOSITORY https://github.com/Perlmint/glew-cmake.git
+    GIT_TAG        master
+    SOURCE_DIR     ${CMAKE_CURRENT_BINARY_DIR}/glew
+)
+
+FetchContent_GetProperties(glew)
+if(NOT glew_POPULATED)
+    FetchContent_Populate(glew)
+    add_subdirectory(${glew_SOURCE_DIR}/build/cmake ${glew_BINARY_DIR})
+endif()
+
+# Set GLEW as an external project
+set_target_properties(glew PROPERTIES FOLDER external)
+
+# Add GLEW includes
+target_include_directories(TEngine PRIVATE ${glew_SOURCE_DIR}/include)
+
+# Add GLEW library
+target_link_libraries(TEngine PRIVATE glew)

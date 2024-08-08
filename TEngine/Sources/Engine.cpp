@@ -11,9 +11,9 @@ Engine::~Engine()
 {
 }
 
-void Engine::initialize(EngineParameters& parameters)
+void Engine::initialize(std::shared_ptr<IEngineParameters> parameters)
 {
-	_graphicsService->initialize(parameters.getGraphicsParameters());
+	_graphicsService->initialize(parameters->getGraphicsParameters());
 }
 
 std::shared_ptr<IGraphicsService> Engine::getGraphicsService()

@@ -5,6 +5,8 @@
 
 #include "GLFW/glfw3.h"
 
+using namespace TEngine::Components::Graphics::Models::Rendering;
+
 namespace TEngine::Components::Graphics::Services::Rendering
 {
     class RenderingService : public IRenderingService
@@ -12,7 +14,7 @@ namespace TEngine::Components::Graphics::Services::Rendering
     public:
         RenderingService();
 
-        void initialize(RenderingParameters& parameters) override;
+        void initialize(std::shared_ptr<IRenderingParameters> parameters) override;
 
         void render() override;
     private:

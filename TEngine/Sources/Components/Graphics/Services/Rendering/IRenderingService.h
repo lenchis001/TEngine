@@ -1,9 +1,9 @@
 #ifndef TENGINE_IRENDERINGSERVICE_H
 #define TENGINE_IRENDERINGSERVICE_H
 
-#include "Components/Graphics/Models/Rendering/RenderingParameters.h"
+#include "memory"
 
-using RenderingParameters = TEngine::Components::Graphics::Models::Rendering::RenderingParameters;
+#include "Components/Graphics/Models/Rendering/IRenderingParameters.h"
 
 namespace TEngine::Components::Graphics::Services::Rendering
 {
@@ -12,7 +12,7 @@ namespace TEngine::Components::Graphics::Services::Rendering
     public:
         virtual void render() = 0;
 
-        virtual void initialize(RenderingParameters& parameters) = 0;
+        virtual void initialize(std::shared_ptr<TEngine::Components::Graphics::Models::Rendering::IRenderingParameters> parameters) = 0;
 
         virtual ~IRenderingService() = default;
     };

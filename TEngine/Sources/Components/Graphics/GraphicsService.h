@@ -8,8 +8,12 @@
 #include "Services/Rendering/IRenderingService.h"
 #include "Services/MeshLoading/IMeshLoadingService.h"
 
+using namespace TEngine::Models;
 using namespace TEngine::Components::Graphics::Services::Rendering;
 using namespace TEngine::Components::Graphics::Services::MeshLoading;
+using namespace TEngine::Components::Graphics::Models;
+using namespace TEngine::Components::Graphics::Models::Rendering::RenderableObjects;
+using namespace TEngine::Components::Graphics::Models::MeshLoading;
 
 namespace TEngine::Components::Graphics::Services
 {
@@ -18,11 +22,11 @@ namespace TEngine::Components::Graphics::Services
     public:
         GraphicsService(std::shared_ptr<IRenderingService> renderingService, std::shared_ptr<IMeshLoadingService> meshLoadingService);
 
-        void initialize(GraphicsParameters& parameters) override;
+        void initialize(std::shared_ptr<IGraphicsParameters> parameters) override;
 
         void render() override;
 
-        std::future<MeshLoadingDataActionResult> loadMesh(const std::wstring &path) override;
+        std::future<DataActionResult<MeshLoadingErrorCodes, IMeshRenderableObject>> loadMesh(const std::wstring &path) override;
 
     private:
         std::shared_ptr<IRenderingService> _renderingService;

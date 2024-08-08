@@ -3,26 +3,25 @@
 
 #include "memory"
 
+#include "Configs/TEngineExport.h"
+
 #include "Components/Graphics/IGraphicsService.h"
 
-#include "Models/EngineParameters.h"
-
-using IGraphicsService = TEngine::Components::Graphics::Services::IGraphicsService;
-using EngineParameters = TEngine::Models::EngineParameters;
+#include "Models/IEngineParameters.h"
 
 namespace TEngine
 {
     class IEngine
     {
     public:
-        virtual std::shared_ptr<IGraphicsService> getGraphicsService() = 0;
+        virtual std::shared_ptr<TEngine::Components::Graphics::Services::IGraphicsService> getGraphicsService() = 0;
 
-        virtual void initialize(EngineParameters& parameters) = 0;
+        virtual void initialize(std::shared_ptr<TEngine::Models::IEngineParameters> parameters) = 0;
 
         virtual ~IEngine() = default;
     };
 
-    std::shared_ptr<IEngine> createEngine();
+    TENGINE_API std::shared_ptr<IEngine> createEngine();
 }
 
 #endif // IENGINE_H

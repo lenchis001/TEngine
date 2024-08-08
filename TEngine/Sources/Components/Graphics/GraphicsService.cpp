@@ -8,9 +8,9 @@ GraphicsService::GraphicsService(std::shared_ptr<IRenderingService> renderingSer
 {
 }
 
-void GraphicsService::initialize(GraphicsParameters& parameters)
+void GraphicsService::initialize(std::shared_ptr<IGraphicsParameters> parameters)
 {
-	_renderingService->initialize(parameters.getRenderingParameters());
+	_renderingService->initialize(parameters->getRenderingParameters());
 }
 
 void GraphicsService::render()
@@ -18,8 +18,8 @@ void GraphicsService::render()
 	_renderingService->render();
 }
 
-std::future<MeshLoadingDataActionResult> GraphicsService::loadMesh(const std::wstring &path)
+std::future<DataActionResult<MeshLoadingErrorCodes, IMeshRenderableObject>> GraphicsService::loadMesh(const std::wstring &path)
 {
-	return std::async(std::launch::async, [path]() -> MeshLoadingDataActionResult
+	return std::async(std::launch::async, [path]() -> DataActionResult<MeshLoadingErrorCodes, IMeshRenderableObject>
 					  { throw ""; });
 }
