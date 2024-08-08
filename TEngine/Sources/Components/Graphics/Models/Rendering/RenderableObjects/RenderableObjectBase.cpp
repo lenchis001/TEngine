@@ -3,7 +3,7 @@
 #include "algorithm"
 
 using namespace TEngine::Components::Graphics::Models;
-using namespace TEngine::Components::Graphics::Models::RenderableObjects;
+using namespace TEngine::Components::Graphics::Models::Rendering::RenderableObjects;
 
 RenderableObjectBase::RenderableObjectBase() :
 	_position(Vector3df(0.0f, 0.0f, 0.0f)),

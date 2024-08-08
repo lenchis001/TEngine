@@ -18,6 +18,8 @@ namespace TEngine::Components::Graphics::Services
     public:
         GraphicsService(std::shared_ptr<IRenderingService> renderingService, std::shared_ptr<IMeshLoadingService> meshLoadingService);
 
+        void initialize(GraphicsParameters& parameters) override;
+
         void render() override;
 
         std::future<MeshLoadingDataActionResult> loadMesh(const std::wstring &path) override;

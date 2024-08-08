@@ -6,7 +6,7 @@
 
 #include "Components/Graphics/Models/Vector3d.h"
 
-namespace TEngine::Components::Graphics::Models::RenderableObjects
+namespace TEngine::Components::Graphics::Models::Rendering::RenderableObjects
 {
     class IRenderableObject
     {

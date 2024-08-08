@@ -31,3 +31,4 @@ set(IS_DEBUG_BUILD CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 # Include sub-projects.
 add_subdirectory("TEngine")
+add_subdirectory("examples/Demo")

@@ -6,10 +6,10 @@
 #include "Models/DataActionResult.h"
 
 #include "Components/Graphics/Models/MeshLoading/ErrorCodes.h"
-#include "Components/Graphics/Models/RenderableObjects/IMeshRenderableObject.h"
+#include "Components/Graphics/Models/Rendering/RenderableObjects/IMeshRenderableObject.h"
 
 using MeshLoadingErrorCodes = TEngine::Components::Graphics::Models::MeshLoading::MeshLoadingErrorCodes;
-using IMeshRenderableObject = TEngine::Components::Graphics::Models::RenderableObjects::IMeshRenderableObject;
+using IMeshRenderableObject = TEngine::Components::Graphics::Models::Rendering::RenderableObjects::IMeshRenderableObject;
 
 using MeshLoadingDataActionResult = TEngine::Models::DataActionResult<MeshLoadingErrorCodes, IMeshRenderableObject>;
 

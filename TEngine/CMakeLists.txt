@@ -40,3 +40,11 @@ target_link_libraries(TEngine PRIVATE glfw)
 
 find_package(OpenGL REQUIRED)
 target_link_libraries(TEngine PRIVATE OpenGL::GL)
+
+# --------------------- Add GLEW library ---------------------
+
+# Download and configure GLEW
+find_package(GLEW REQUIRED)
+
+include_directories(${GLEW_INCLUDE_DIRS})
+link_libraries(${GLEW_LIBRARIES})

@@ -3,7 +3,7 @@
 
 #include "IRenderableObject.h"
 
-namespace TEngine::Components::Graphics::Models::RenderableObjects
+namespace TEngine::Components::Graphics::Models::Rendering::RenderableObjects
 {
     class IMeshRenderableObject : IRenderableObject
     {
