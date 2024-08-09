@@ -3,7 +3,7 @@
 
 #include "IGraphicsParameters.h"
 
-using namespace TEngine::Components::Graphics::Models::Rendering;
+using namespace TEngine::Components::Graphics::Rendering::Models;
 
 namespace TEngine::Components::Graphics::Models
 {

@@ -3,7 +3,7 @@
 
 #include "IRenderingParameters.h"
 
-namespace TEngine::Components::Graphics::Models::Rendering
+namespace TEngine::Components::Graphics::Rendering::Models
 {
     class RenderingParameters : public IRenderingParameters
     {

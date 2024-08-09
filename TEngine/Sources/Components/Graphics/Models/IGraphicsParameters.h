@@ -5,7 +5,7 @@
 
 #include "Configs/TEngineExport.h"
 
-#include "Components/Graphics/Models/Rendering/IRenderingParameters.h"
+#include "Components/Graphics/Rendering/Models/IRenderingParameters.h"
 
 namespace TEngine::Components::Graphics::Models
 {
@@ -14,9 +14,9 @@ namespace TEngine::Components::Graphics::Models
 	public:
 		virtual ~IGraphicsParameters() = default;
 
-		virtual std::shared_ptr<TEngine::Components::Graphics::Models::Rendering::IRenderingParameters> getRenderingParameters() = 0;
+		virtual std::shared_ptr<TEngine::Components::Graphics::Rendering::Models::IRenderingParameters> getRenderingParameters() = 0;
 
-		virtual void setRenderingParameters(std::shared_ptr<TEngine::Components::Graphics::Models::Rendering::IRenderingParameters> renderingParameters) = 0;
+		virtual void setRenderingParameters(std::shared_ptr<TEngine::Components::Graphics::Rendering::Models::IRenderingParameters> renderingParameters) = 0;
 	};
 }
 

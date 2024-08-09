@@ -3,7 +3,7 @@
 #include "algorithm"
 
 using namespace TEngine::Components::Graphics::Models;
-using namespace TEngine::Components::Graphics::Models::Rendering::RenderableObjects;
+using namespace TEngine::Components::Graphics::Rendering::Models::RenderableObjects;
 
 RenderableObjectBase::RenderableObjectBase() :
 	_position(Vector3df(0.0f, 0.0f, 0.0f)),
@@ -67,4 +67,12 @@ Vector3df RenderableObjectBase::getRotation() const
 Vector3df RenderableObjectBase::getScale() const
 {
 	return _scale;
+}
+
+const Matrix4x4f& RenderableObjectBase::getTransformationMatrix() const
+{
+	Matrix4x4f transformationMatrix;
+
+
+	return transformationMatrix;
 }

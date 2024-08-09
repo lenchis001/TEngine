@@ -5,7 +5,7 @@
 
 #include "Configs/TEngineExport.h"
 
-namespace TEngine::Components::Graphics::Models::Rendering
+namespace TEngine::Components::Graphics::Rendering::Models
 {
 	class TENGINE_API IRenderingParameters
 	{

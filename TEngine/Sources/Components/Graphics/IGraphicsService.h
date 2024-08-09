@@ -2,12 +2,14 @@
 #define TENGINE_IGRAPHICSSERVICE_H
 
 #include "future"
+#include "memory"
 
 #include "Models/DataActionResult.h"
 
 #include "Models/IGraphicsParameters.h"
-#include "Models/MeshLoading/ErrorCodes.h"
-#include "Models/Rendering/RenderableObjects/IMeshRenderableObject.h"
+#include "MeshLoading/Models/ErrorCodes.h"
+#include "Rendering/Models/RenderableObjects/IMeshRenderableObject.h"
+#include "Models/PrimitiveTypes.h"
 
 namespace TEngine::Components::Graphics::Services
 {
@@ -20,10 +22,14 @@ namespace TEngine::Components::Graphics::Services
 
         virtual std::future<
             TEngine::Models::DataActionResult<
-                TEngine::Components::Graphics::Models::MeshLoading::MeshLoadingErrorCodes,
-                TEngine::Components::Graphics::Models::Rendering::RenderableObjects::IMeshRenderableObject
+                TEngine::Components::Graphics::MeshLoading::Models::ErrorCodes,
+                TEngine::Components::Graphics::Rendering::Models::RenderableObjects::IMeshRenderableObject
             >
         > loadMesh(const std::wstring &path) = 0;
+
+        virtual std::shared_ptr<
+            TEngine::Components::Graphics::Rendering::Models::RenderableObjects::IRenderableObject> addPrimitive(
+            TEngine::Components::Graphics::MeshLoading::Models::PrimitiveTypes type) = 0;
 
         virtual ~IGraphicsService() = default;
     };

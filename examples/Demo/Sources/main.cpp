@@ -1,5 +1,9 @@
 #include "IEngine.h"
 
+#include "Components/Graphics/Models/PrimitiveTypes.h"
+
+using namespace TEngine::Components::Graphics::MeshLoading::Models;
+
 int main() {
     auto engine = TEngine::createEngine();
 
@@ -8,6 +12,10 @@ int main() {
     creationParameters->getGraphicsParameters()->getRenderingParameters()->setTitle("Demo");
 
     engine->initialize(creationParameters);
+
+    auto graphicsService = engine->getGraphicsService();
+
+    auto cube = graphicsService->addPrimitive(PrimitiveTypes::Cube);
 
     while (true)
     {

@@ -1,3 +1,6 @@
+#ifndef TENGINE_VECTOR3D_H
+#define TENGINE_VECTOR3D_H
+
 namespace TEngine::Components::Graphics::Models
 {
     template <class T>
@@ -40,3 +43,5 @@ namespace TEngine::Components::Graphics::Models
     typedef Vector3d<double> Vector3dd;
     typedef Vector3d<int> Vector3di;
 }
+
+#endif // TENGINE_VECTOR3D_H

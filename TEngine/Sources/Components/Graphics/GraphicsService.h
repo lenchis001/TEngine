@@ -3,17 +3,15 @@
 
 #include "IGraphicsService.h"
 
-#include "memory"
-
-#include "Services/Rendering/IRenderingService.h"
-#include "Services/MeshLoading/IMeshLoadingService.h"
+#include "Rendering/Services/IRenderingService.h"
+#include "MeshLoading/Services/IMeshLoadingService.h"
 
 using namespace TEngine::Models;
-using namespace TEngine::Components::Graphics::Services::Rendering;
-using namespace TEngine::Components::Graphics::Services::MeshLoading;
+using namespace TEngine::Components::Graphics::Rendering::Services;
+using namespace TEngine::Components::Graphics::MeshLoading::Services;
 using namespace TEngine::Components::Graphics::Models;
-using namespace TEngine::Components::Graphics::Models::Rendering::RenderableObjects;
-using namespace TEngine::Components::Graphics::Models::MeshLoading;
+using namespace TEngine::Components::Graphics::Rendering::Models::RenderableObjects;
+using namespace TEngine::Components::Graphics::MeshLoading::Models;
 
 namespace TEngine::Components::Graphics::Services
 {
@@ -26,7 +24,9 @@ namespace TEngine::Components::Graphics::Services
 
         void render() override;
 
-        std::future<DataActionResult<MeshLoadingErrorCodes, IMeshRenderableObject>> loadMesh(const std::wstring &path) override;
+        std::future<DataActionResult<ErrorCodes, IMeshRenderableObject>> loadMesh(const std::wstring &path) override;
+
+        std::shared_ptr<IRenderableObject> addPrimitive(PrimitiveTypes type) override;
 
     private:
         std::shared_ptr<IRenderingService> _renderingService;

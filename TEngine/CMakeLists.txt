@@ -6,6 +6,9 @@ file(GLOB_RECURSE tengine_sources_files
 add_library(TEngine SHARED ${tengine_sources_files})
 
 target_compile_definitions(TEngine PRIVATE TENGINE_EXPORTS)
+if(APPLE)
+target_compile_definitions(TEngine PRIVATE GL_SILENCE_DEPRECATION)
+endif()
 target_include_directories(TEngine PUBLIC "Sources")
 
 # --------------------- Dependencies ---------------------

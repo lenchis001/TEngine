@@ -5,17 +5,21 @@
 #include "Engine.h"
 
 #include "Components/Graphics/GraphicsService.h"
-#include "Components/Graphics/Services/Rendering/RenderingService.h"
-#include "Components/Graphics/Services/MeshLoading/MeshLoadingService.h"
+#include "Components/Graphics/Rendering/Services/RenderingService.h"
+#include "Components/Graphics/MeshLoading/Services/MeshLoadingService.h"
+#include "Components/Graphics/Rendering/Services/Shaders/ShadersService.h"
 
 using namespace TEngine;
 using namespace TEngine::Components::Graphics::Services;
-using namespace TEngine::Components::Graphics::Services::Rendering;
-using namespace TEngine::Components::Graphics::Services::MeshLoading;
+using namespace TEngine::Components::Graphics::Rendering::Services;
+using namespace TEngine::Components::Graphics::MeshLoading::Services;
+using namespace TEngine::Components::Graphics::Rendering::Services::Shaders;
 
 std::shared_ptr<IEngine> TEngine::createEngine()
 {
-    auto renderingService = std::make_shared<RenderingService>();
+    auto shadersService = std::make_shared<ShadersService>();
+
+    auto renderingService = std::make_shared<RenderingService>(shadersService);
     auto meshLoadingService = std::make_shared<MeshLoadingService>();
 
     auto graphicsService = std::make_shared<GraphicsService>(renderingService, meshLoadingService);

@@ -3,7 +3,9 @@
 
 #include "IRenderableObject.h"
 
-namespace TEngine::Components::Graphics::Models::Rendering::RenderableObjects
+using namespace TEngine::Components::Graphics::Models;
+
+namespace TEngine::Components::Graphics::Rendering::Models::RenderableObjects
 {
     class RenderableObjectBase : public IRenderableObject
     {
@@ -23,6 +25,8 @@ namespace TEngine::Components::Graphics::Models::Rendering::RenderableObjects
         Vector3df getPosition() const override;
         Vector3df getRotation() const override;
         Vector3df getScale() const override;
+
+        const Matrix4x4f& getTransformationMatrix() const override;
     private:
         Vector3df _position;
         Vector3df _rotation;

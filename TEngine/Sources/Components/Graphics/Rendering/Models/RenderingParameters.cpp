@@ -1,6 +1,6 @@
 #include "RenderingParameters.h"
 
-using namespace TEngine::Components::Graphics::Models::Rendering;
+using namespace TEngine::Components::Graphics::Rendering::Models;
 
 RenderingParameters::RenderingParameters()
 {

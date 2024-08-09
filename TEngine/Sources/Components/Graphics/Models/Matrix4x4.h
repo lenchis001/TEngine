@@ -46,6 +46,8 @@ namespace TEngine::Components::Graphics::Models
         T m43;
         T m44;
     };
+
+    typedef Matrix4x4<float> Matrix4x4f;
 }
 
 #endif // TENGINE_MATRIX4X4_H

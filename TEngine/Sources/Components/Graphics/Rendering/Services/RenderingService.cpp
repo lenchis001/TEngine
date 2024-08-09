@@ -2,10 +2,13 @@
 
 #include "RenderingService.h"
 
-using namespace TEngine::Components::Graphics::Services::Rendering;
+#include "Strategies/Primitives/CubeRenderingStrategy.h"
 
-RenderingService::RenderingService()
-	: _window(nullptr)
+using namespace TEngine::Components::Graphics::Rendering::Services;
+using namespace TEngine::Components::Graphics::Rendering::Services::Strategies::Primitives;
+
+RenderingService::RenderingService(std::shared_ptr<IShadersService> shadersService)
+	: _window(nullptr), _shadersService(shadersService)
 {
 }
 
@@ -14,7 +17,7 @@ void RenderingService::initialize(std::shared_ptr<IRenderingParameters> paramete
 	// Initialize GLFW
 	if (!glfwInit())
 	{
-		throw std::exception("Failed to initialize GLFW");
+		throw std::runtime_error("Failed to initialize GLFW");
 	}
 
 	glfwWindowHint(GLFW_SAMPLES, 4);
@@ -28,13 +31,13 @@ void RenderingService::initialize(std::shared_ptr<IRenderingParameters> paramete
 	if (_window == NULL)
 	{
 		glfwTerminate();
-		throw std::exception("Failed to open GLFW window");
+		throw std::runtime_error("Failed to open GLFW window");
 	}
 
 	glfwMakeContextCurrent(_window);
 
 	 if (glewInit() != GLEW_OK) {
-		 throw std::exception("Failed to initialize GLEW");
+		 throw std::runtime_error("Failed to initialize GLEW");
 	 }
 
 	glfwSetInputMode(_window, GLFW_STICKY_KEYS, GL_TRUE);
@@ -46,6 +49,16 @@ void RenderingService::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
+	for (auto strategy : _strategies)
+	{
+		strategy->render();
+	}
+
 	glfwSwapBuffers(_window);
 	glfwPollEvents();
+}
+
+void RenderingService::addToRendering(std::shared_ptr<IRenderableObject> object, PrimitiveTypes type)
+{
+	_strategies.push_back(std::make_shared<CubeRenderingStrategy>(object, _shadersService));
 }
