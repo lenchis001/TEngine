@@ -11,6 +11,13 @@ target_compile_definitions(TEngine PRIVATE GL_SILENCE_DEPRECATION)
 endif()
 target_include_directories(TEngine PUBLIC "Sources")
 
+# Copy Resources directory to the output directory
+add_custom_command(TARGET TEngine POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_SOURCE_DIR}/TEngine/BuildinResources"
+    "$<TARGET_FILE_DIR:TEngine>/BuildinResources"
+)
+
 # --------------------- Dependencies ---------------------
 
 # Download and configure GLFW

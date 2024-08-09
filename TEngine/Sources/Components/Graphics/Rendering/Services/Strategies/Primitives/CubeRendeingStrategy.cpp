@@ -4,6 +4,9 @@
 
 using namespace TEngine::Components::Graphics::Rendering::Services::Strategies::Primitives;
 
+#define VERTEX_SHADER_SOURCE "BuildinResources/Shaders/SimpleVertexShader.glsl"
+#define FRAGMENT_SHADER_SOURCE "BuildinResources/Shaders/SimpleFragmentShader.glsl"
+
 CubeRenderingStrategy::CubeRenderingStrategy(std::shared_ptr<IRenderableObject> cube, std::shared_ptr<IShadersService> shadersService)
     : _cube(cube), _shadersService(shadersService)
 {
@@ -67,9 +70,5 @@ void CubeRenderingStrategy::_prepareVao()
 
 void CubeRenderingStrategy::_prepareShader()
 {
-    std::string vertexShaderSource = "/Users/leon/Projects/TEngine/TEngine/Shaders/SimpleVertexShader.glsl";
-
-    std::string fragmentShaderSource = "/Users/leon/Projects/TEngine/TEngine/Shaders/SimpleFragmentShader.glsl";
-
-    _shaderProgram = _shadersService->loadShader(vertexShaderSource, fragmentShaderSource);
+    _shaderProgram = _shadersService->loadShader(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
 }

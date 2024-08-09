@@ -333,3 +333,6 @@ build/*
 
 # CMake
 out/**
+
+# macOS
+.DS_Store

@@ -15,3 +15,10 @@ target_include_directories(Demo PRIVATE "../../TEngine/Sources")
 
 # Link the TEngine library to the executable
 target_link_libraries(Demo PRIVATE TEngine)
+
+# Copy Resources directory to the output directory
+add_custom_command(TARGET Demo POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_SOURCE_DIR}/TEngine/BuildinResources"
+    "$<TARGET_FILE_DIR:Demo>/BuildinResources"
+)
