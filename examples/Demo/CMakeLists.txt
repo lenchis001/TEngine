@@ -22,3 +22,10 @@ add_custom_command(TARGET Demo POST_BUILD
     "${CMAKE_SOURCE_DIR}/TEngine/BuildinResources"
     "$<TARGET_FILE_DIR:Demo>/BuildinResources"
 )
+
+# Copy TEngine library
+add_custom_command(TARGET Demo POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+    "$<TARGET_FILE_DIR:TEngine>/libTEngine.dll"
+    "$<TARGET_FILE_DIR:Demo>/libTEngine.dll"
+)

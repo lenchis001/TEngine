@@ -1,11 +1,16 @@
 #include "GL/glew.h"
 
+#include "stdexcept"
+
 #include "RenderingService.h"
 
-#include "Strategies/Primitives/CubeRenderingStrategy.h"
+#include "Components/Graphics/Rendering/Models/RenderableObjects/RenderableObjectBase.h"
+#include "RenderingStrategies/Primitives/CubeRenderingStrategy.h"
+#include "CameraStrategies/CameraStrategyBase.h"
 
+using namespace TEngine::Components::Graphics::Rendering::Models::RenderableObjects;
 using namespace TEngine::Components::Graphics::Rendering::Services;
-using namespace TEngine::Components::Graphics::Rendering::Services::Strategies::Primitives;
+using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::Primitives;
 
 RenderingService::RenderingService(std::shared_ptr<IShadersService> shadersService)
 	: _window(nullptr), _shadersService(shadersService)
@@ -58,7 +63,12 @@ void RenderingService::render()
 	glfwPollEvents();
 }
 
-void RenderingService::addToRendering(std::shared_ptr<IRenderableObject> object, PrimitiveTypes type)
+std::shared_ptr<IRenderableObject> RenderingService::addToRendering(PrimitiveTypes type)
 {
-	_strategies.push_back(std::make_shared<CubeRenderingStrategy>(object, _shadersService));
+	TEngine::Components::Graphics::Rendering::Services::CameraStrategies::CameraStrategyBase(45.0f, 4.f/3.f, 0.1f, 100.f, Vector3df(4,3,3), Vector3df(0,0,0));
+	auto primitive = std::make_shared<RenderableObjectBase>();
+
+	_strategies.push_back(std::make_shared<CubeRenderingStrategy>(primitive, _shadersService));
+
+	return primitive;
 }

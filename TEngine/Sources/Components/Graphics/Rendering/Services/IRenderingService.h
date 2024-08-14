@@ -16,8 +16,7 @@ namespace TEngine::Components::Graphics::Rendering::Services
 
         virtual void initialize(std::shared_ptr<TEngine::Components::Graphics::Rendering::Models::IRenderingParameters> parameters) = 0;
 
-        virtual void addToRendering(std::shared_ptr<
-            Components::Graphics::Rendering::Models::RenderableObjects::IRenderableObject> object,
+        virtual std::shared_ptr<Components::Graphics::Rendering::Models::RenderableObjects::IRenderableObject> addToRendering(
             Components::Graphics::MeshLoading::Models::PrimitiveTypes type
             ) = 0;
 

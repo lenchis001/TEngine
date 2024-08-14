@@ -7,7 +7,7 @@
 
 #include "GLFW/glfw3.h"
 
-#include "Strategies/IRenderingStrategy.h"
+#include "RenderingStrategies/IRenderingStrategy.h"
 #include "Components/Graphics/Rendering/Services/Shaders/IShadersService.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Models;
@@ -15,7 +15,7 @@ using namespace TEngine::Components::Graphics::Rendering::Models::RenderableObje
 using namespace TEngine::Components::Graphics::MeshLoading::Models;
 using namespace TEngine::Components::Graphics::Rendering::Services::Shaders;
 
-using namespace TEngine::Components::Graphics::Rendering::Services::Strategies;
+using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies;
 
 namespace TEngine::Components::Graphics::Rendering::Services
 {
@@ -26,7 +26,7 @@ namespace TEngine::Components::Graphics::Rendering::Services
 
         void initialize(std::shared_ptr<IRenderingParameters> parameters) override;
 
-        void addToRendering(std::shared_ptr<IRenderableObject> object, PrimitiveTypes type) override;
+        std::shared_ptr<IRenderableObject> addToRendering(PrimitiveTypes type) override;
 
         void render() override;
     private:

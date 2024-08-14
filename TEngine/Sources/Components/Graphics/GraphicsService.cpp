@@ -1,7 +1,5 @@
 #include "GraphicsService.h"
 
-#include "Components/Graphics/Rendering/Models/RenderableObjects/RenderableObjectBase.h"
-
 using namespace TEngine::Components::Graphics::Services;
 
 GraphicsService::GraphicsService(std::shared_ptr<IRenderingService> renderingService, std::shared_ptr<IMeshLoadingService> meshLoadingService)
@@ -28,9 +26,7 @@ std::future<DataActionResult<ErrorCodes, IMeshRenderableObject>> GraphicsService
 
 std::shared_ptr<IRenderableObject> GraphicsService::addPrimitive(PrimitiveTypes type)
 {
-	auto primitive = std::make_shared<RenderableObjectBase>();
-
-	_renderingService->addToRendering(primitive, type);
+	auto primitive = _renderingService->addToRendering(type);
 
 	return primitive;
 }

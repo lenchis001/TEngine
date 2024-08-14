@@ -1,3 +1,5 @@
+#include "GL/glew.h"
+
 #include "ShadersService.h"
 
 #include "fstream"
