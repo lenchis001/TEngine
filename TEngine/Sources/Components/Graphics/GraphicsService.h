@@ -12,6 +12,8 @@ using namespace TEngine::Components::Graphics::MeshLoading::Services;
 using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Graphics::Rendering::Models::RenderableObjects;
 using namespace TEngine::Components::Graphics::MeshLoading::Models;
+using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
+using namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies;
 
 namespace TEngine::Components::Graphics::Services
 {
@@ -27,6 +29,10 @@ namespace TEngine::Components::Graphics::Services
         std::future<DataActionResult<ErrorCodes, IMeshRenderableObject>> loadMesh(const std::wstring &path) override;
 
         std::shared_ptr<IRenderableObject> addPrimitive(PrimitiveTypes type) override;
+
+        std::shared_ptr<ICameraStrategy> setActiveCamera(BuildinCameraTypes cameraType) override;
+
+        void setActiveCamera(std::shared_ptr<ICameraStrategy> camera) override;
 
     private:
         std::shared_ptr<IRenderingService> _renderingService;

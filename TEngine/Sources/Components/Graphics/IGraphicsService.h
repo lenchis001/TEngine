@@ -10,6 +10,8 @@
 #include "MeshLoading/Models/ErrorCodes.h"
 #include "Rendering/Models/RenderableObjects/IMeshRenderableObject.h"
 #include "Models/PrimitiveTypes.h"
+#include "Rendering/Models/Cameras/BuildinCameraTypes.h"
+#include "Rendering/Services/CameraStrategies/ICameraStrategy.h"
 
 namespace TEngine::Components::Graphics::Services
 {
@@ -23,13 +25,18 @@ namespace TEngine::Components::Graphics::Services
         virtual std::future<
             TEngine::Models::DataActionResult<
                 TEngine::Components::Graphics::MeshLoading::Models::ErrorCodes,
-                TEngine::Components::Graphics::Rendering::Models::RenderableObjects::IMeshRenderableObject
-            >
-        > loadMesh(const std::wstring &path) = 0;
+                TEngine::Components::Graphics::Rendering::Models::RenderableObjects::IMeshRenderableObject>>
+        loadMesh(const std::wstring &path) = 0;
 
         virtual std::shared_ptr<
-            TEngine::Components::Graphics::Rendering::Models::RenderableObjects::IRenderableObject> addPrimitive(
+            TEngine::Components::Graphics::Rendering::Models::RenderableObjects::IRenderableObject>
+        addPrimitive(
             TEngine::Components::Graphics::MeshLoading::Models::PrimitiveTypes type) = 0;
+
+        virtual std::shared_ptr<Components::Graphics::Rendering::Services::CameraStrategies::ICameraStrategy>
+            setActiveCamera(Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes cameraType) = 0;
+
+        virtual void setActiveCamera(std::shared_ptr<Components::Graphics::Rendering::Services::CameraStrategies::ICameraStrategy> camera) = 0;
 
         virtual ~IGraphicsService() = default;
     };

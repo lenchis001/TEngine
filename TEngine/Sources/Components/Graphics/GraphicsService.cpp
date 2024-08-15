@@ -30,3 +30,13 @@ std::shared_ptr<IRenderableObject> GraphicsService::addPrimitive(PrimitiveTypes 
 
 	return primitive;
 }
+
+std::shared_ptr<ICameraStrategy> GraphicsService::setActiveCamera(BuildinCameraTypes cameraType)
+{
+	return _renderingService->setActiveCamera(cameraType);
+}
+
+void GraphicsService::setActiveCamera(std::shared_ptr<ICameraStrategy> camera)
+{
+	_renderingService->setActiveCamera(camera);
+}

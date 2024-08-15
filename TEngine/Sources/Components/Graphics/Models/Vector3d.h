@@ -43,9 +43,14 @@ namespace TEngine::Components::Graphics::Models
                 getX() * otherVector.getY() - getY() * otherVector.getX());
         }
 
+        T dot(const Vector3d<T> &other) const
+        {
+            return getX() * other.getX() + getY() * other.getY() + getZ() * other.getZ();
+        }
+
         Vector3d<T> getNormalized() const
         {
-            T length = std::sqrt(getX() * getX() + getY() * getY() + getZ() * getZ());
+            T length = sqrt(getX() * getX() + getY() * getY() + getZ() * getZ());
 
             return Vector3d<T>(
                 getX() / length,

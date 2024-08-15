@@ -32,6 +32,8 @@ const std::vector<std::shared_ptr<IRenderableObject>>& RenderableObjectBase::get
 void RenderableObjectBase::addChild(std::shared_ptr<IRenderableObject> child)
 {
 	_children.push_back(child);
+
+	child->_updateTransformationMatrix(_transformationMatrix);
 }
 
 void RenderableObjectBase::removeChild(std::shared_ptr<IRenderableObject> child)
@@ -71,8 +73,15 @@ Vector3df RenderableObjectBase::getScale() const
 
 const Matrix4x4f& RenderableObjectBase::getTransformationMatrix() const
 {
-	Matrix4x4f transformationMatrix;
+	return _transformationMatrix;
+}
 
+void RenderableObjectBase::_updateTransformationMatrix(const Matrix4x4f& parentMatrix)
+{
+	// Implementation goes here
 
-	return transformationMatrix;
+	for(const auto child : _children)
+	{
+		child->_updateTransformationMatrix(_transformationMatrix);
+	}
 }

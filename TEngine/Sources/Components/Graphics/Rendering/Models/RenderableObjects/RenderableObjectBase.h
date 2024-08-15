@@ -28,9 +28,13 @@ namespace TEngine::Components::Graphics::Rendering::Models::RenderableObjects
 
         const Matrix4x4f& getTransformationMatrix() const override;
     private:
+        void _updateTransformationMatrix(const Matrix4x4f& parentMatrix) override;
+
         Vector3df _position;
         Vector3df _rotation;
         Vector3df _scale;
+
+        Matrix4x4f _transformationMatrix;
 
         std::vector<std::shared_ptr<IRenderableObject>> _children;
     };

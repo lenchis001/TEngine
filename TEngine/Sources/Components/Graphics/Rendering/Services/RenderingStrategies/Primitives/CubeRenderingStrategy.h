@@ -11,6 +11,7 @@
 
 #include "BufferCacheAware.h"
 
+using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Graphics::Rendering::Services::Shaders;
 using namespace TEngine::Components::Graphics::Rendering::Models::RenderableObjects;
 
@@ -21,7 +22,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
     public:
         CubeRenderingStrategy(std::shared_ptr<IRenderableObject> cube, std::shared_ptr<IShadersService> shadersService);
 
-        void render() override;
+        void render(const Matrix4x4f& vpMatrix) override;
 
     private:
         void _prepareVbo();

@@ -15,7 +15,7 @@ CubeRenderingStrategy::CubeRenderingStrategy(std::shared_ptr<IRenderableObject> 
     _prepareShader();
 }
 
-void CubeRenderingStrategy::render()
+void CubeRenderingStrategy::render(const Matrix4x4f& vpMatrix)
 {
     glBindVertexArray(getCachedVao());
 

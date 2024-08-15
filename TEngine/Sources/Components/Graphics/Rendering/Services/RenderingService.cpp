@@ -13,7 +13,10 @@ using namespace TEngine::Components::Graphics::Rendering::Services;
 using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::Primitives;
 
 RenderingService::RenderingService(std::shared_ptr<IShadersService> shadersService)
-	: _window(nullptr), _shadersService(shadersService)
+	: _window(nullptr),
+	  _shadersService(shadersService),
+	  _activeCamera(nullptr),
+	  _root(std::make_shared<RenderableObjectBase>())
 {
 }
 
@@ -41,9 +44,10 @@ void RenderingService::initialize(std::shared_ptr<IRenderingParameters> paramete
 
 	glfwMakeContextCurrent(_window);
 
-	 if (glewInit() != GLEW_OK) {
-		 throw std::runtime_error("Failed to initialize GLEW");
-	 }
+	if (glewInit() != GLEW_OK)
+	{
+		throw std::runtime_error("Failed to initialize GLEW");
+	}
 
 	glfwSetInputMode(_window, GLFW_STICKY_KEYS, GL_TRUE);
 
@@ -54,21 +58,48 @@ void RenderingService::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	for (auto strategy : _strategies)
+	if (_activeCamera)
 	{
-		strategy->render();
+		_activeCamera->render();
+		const auto& vpMatrix = _activeCamera->getVpMatrix();
+
+		for (const auto& strategy : _strategies)
+		{
+			strategy->render(vpMatrix);
+		}
 	}
 
 	glfwSwapBuffers(_window);
 	glfwPollEvents();
 }
 
-std::shared_ptr<IRenderableObject> RenderingService::addToRendering(PrimitiveTypes type)
+std::shared_ptr<IRenderableObject> RenderingService::addToRendering(PrimitiveTypes type, std::shared_ptr<IRenderableObject> parent)
 {
-	TEngine::Components::Graphics::Rendering::Services::CameraStrategies::CameraStrategyBase(45.0f, 4.f/3.f, 0.1f, 100.f, Vector3df(4,3,3), Vector3df(0,0,0));
+	TEngine::Components::Graphics::Rendering::Services::CameraStrategies::CameraStrategyBase(45.0f, 4.f / 3.f, 0.1f, 100.f, Vector3df(4, 3, 3), Vector3df(0, 0, 0));
 	auto primitive = std::make_shared<RenderableObjectBase>();
+	(parent ? parent : _root)->addChild(primitive);
 
 	_strategies.push_back(std::make_shared<CubeRenderingStrategy>(primitive, _shadersService));
 
 	return primitive;
+}
+
+std::shared_ptr<ICameraStrategy> RenderingService::setActiveCamera(BuildinCameraTypes cameraType)
+{
+	switch (cameraType)
+	{
+	case BuildinCameraTypes::BASE:
+		_activeCamera = std::make_shared<CameraStrategyBase>(45.0f, 4.f / 3.f, 0.1f, 100.f, Vector3df(4, 3, 3), Vector3df(0, 0, 0));
+		break;
+	default:
+		_activeCamera = nullptr;
+		break;
+	}
+
+	return _activeCamera;
+}
+
+void RenderingService::setActiveCamera(std::shared_ptr<ICameraStrategy> camera)
+{
+	_activeCamera = camera;
 }

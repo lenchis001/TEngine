@@ -15,6 +15,8 @@ int main() {
 
     auto graphicsService = engine->getGraphicsService();
 
+
+    graphicsService->setActiveCamera(TEngine::Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes::BASE);
     auto cube = graphicsService->addPrimitive(PrimitiveTypes::Cube);
 
     while (true)
