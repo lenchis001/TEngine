@@ -3,6 +3,8 @@
 
 #include "Vector3d.h"
 
+#include "string"
+#include "iostream"
 #include "cstring"
 #include "algorithm"
 
@@ -147,7 +149,35 @@ namespace TEngine::Components::Graphics::Models
 
         bool operator==(const Matrix4x4 &other) const
         {
+            if (_data == other._data)
+            {
+                return true;
+            }
+
             return std::equal(_data, _data + 16, other._data);
+        }
+
+        bool operator!=(const Matrix4x4 &other) const
+        {
+            return !(*this == other);
+        }
+
+        const T* getInternalData() const
+        {
+            return _data;
+        }
+
+        void print() const
+        {
+            // save to string
+            std::string str;
+
+            str += std::to_string(_m11) + " " + std::to_string(_m12) + " " + std::to_string(_m13) + " " + std::to_string(_m14) + "\n";
+            str += std::to_string(_m21) + " " + std::to_string(_m22) + " " + std::to_string(_m23) + " " + std::to_string(_m24) + "\n";
+            str += std::to_string(_m31) + " " + std::to_string(_m32) + " " + std::to_string(_m33) + " " + std::to_string(_m34) + "\n";
+            str += std::to_string(_m41) + " " + std::to_string(_m42) + " " + std::to_string(_m43) + " " + std::to_string(_m44) + "\n";
+
+            std::cout << str;
         }
 
     private:

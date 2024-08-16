@@ -33,7 +33,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
 
         std::shared_ptr<IRenderableObject> _cube;
 
-        GLuint _shaderProgram;
+        GLuint _shaderProgram, _matrixId;
     };
 }
 

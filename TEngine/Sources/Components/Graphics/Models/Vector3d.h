@@ -12,8 +12,11 @@ namespace TEngine::Components::Graphics::Models
         Vector3d(T x, T y, T z) : _x(x), _y(y), _z(z) {}
 
         inline T getX() const { return _x; }
+        inline void setX(T value) { _x = value; }
         inline T getY() const { return _y; }
+        inline void setY(T value) { _y = value; }
         inline T getZ() const { return _z; }
+        inline void setZ(T value) { _z = value; }
 
         Vector3d<T> operator+(const Vector3d<T> &other) const
         {

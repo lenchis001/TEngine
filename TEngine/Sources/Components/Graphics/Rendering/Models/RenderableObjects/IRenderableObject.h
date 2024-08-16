@@ -27,14 +27,14 @@ namespace TEngine::Components::Graphics::Rendering::Models::RenderableObjects
         virtual void addChild(std::shared_ptr<IRenderableObject> child) = 0;
         virtual void removeChild(std::shared_ptr<IRenderableObject> child) = 0;
 
-        virtual const Graphics::Models::Matrix4x4f &getTransformationMatrix() const = 0;
+        virtual const Graphics::Models::Matrix4x4f &getModelMatrix() const = 0;
 
         virtual ~IRenderableObject() = default;
 
         friend class RenderableObjectBase;
 
     protected:
-        virtual void _updateTransformationMatrix(const Graphics::Models::Matrix4x4f &parentMatrix) = 0;
+        virtual void _updateModelMatrix(const Graphics::Models::Matrix4x4f &parentMatrix, bool force = false) = 0;
     };
 }
 

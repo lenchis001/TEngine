@@ -21,7 +21,16 @@ void CubeRenderingStrategy::render(const Matrix4x4f& vpMatrix)
 
     glUseProgram(_shaderProgram);
 
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 14);
+    vpMatrix.print();
+
+    const auto& modelMatrix = _cube->getModelMatrix();
+    modelMatrix.print();
+
+    auto mvp = vpMatrix * modelMatrix;
+
+    glUniformMatrix4fv(_matrixId, 1, GL_FALSE, mvp.getInternalData());
+
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 3);
 
     glUseProgram(0);
 
@@ -37,20 +46,9 @@ void CubeRenderingStrategy::_prepareVbo()
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
     GLfloat vertices[] = {
-        -1.f, 1.f, 1.f,   // Front-top-left
-        1.f, 1.f, 1.f,    // Front-top-right
-        -1.f, -1.f, 1.f,  // Front-bottom-left
-        1.f, -1.f, 1.f,   // Front-bottom-right
-        1.f, -1.f, -1.f,  // Back-bottom-right
-        1.f, 1.f, 1.f,    // Front-top-right
-        1.f, 1.f, -1.f,   // Back-top-right
-        -1.f, 1.f, 1.f,   // Front-top-left
-        -1.f, 1.f, -1.f,  // Back-top-left
-        -1.f, -1.f, 1.f,  // Front-bottom-left
-        -1.f, -1.f, -1.f, // Back-bottom-left
-        1.f, -1.f, -1.f,  // Back-bottom-right
-        -1.f, 1.f, -1.f,  // Back-top-left
-        1.f, 1.f, -1.f    // Back-top-right
+       		-1.0f, -1.0f, 0.0f,
+		 1.0f, -1.0f, 0.0f,
+		 0.0f,  1.0f, 0.0f,
     };
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
@@ -84,4 +82,6 @@ void CubeRenderingStrategy::_prepareVao()
 void CubeRenderingStrategy::_prepareShader()
 {
     _shaderProgram = _shadersService->loadShader(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
+
+    _matrixId = glGetUniformLocation(_shaderProgram, "MVP");
 }
