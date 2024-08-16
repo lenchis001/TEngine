@@ -10,7 +10,7 @@
 
 namespace TEngine::Components::Graphics::Models
 {
-#define _m(l, c) _data[(l - 1) * 4 + c - 1]
+#define _m(l, c) _data[(c - 1) * 4 + l - 1]
 
 #define _m11 _m(1, 1)
 #define _m21 _m(2, 1)

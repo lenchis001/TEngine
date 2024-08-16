@@ -13,6 +13,8 @@ int main()
     auto creationParameters = TEngine::Models::createEngineParameters();
 
     creationParameters->getGraphicsParameters()->getRenderingParameters()->setTitle("Demo");
+    creationParameters->getGraphicsParameters()->getRenderingParameters()->setWidth(1024);
+    creationParameters->getGraphicsParameters()->getRenderingParameters()->setHeight(768);
 
     engine->initialize(creationParameters);
 
@@ -30,7 +32,7 @@ int main()
         yRotation += .01f;
         rotation.setY(yRotation);
 
-        //cube->setRotation(rotation);
+        cube->setRotation(rotation);
 
         engine->getGraphicsService()->render();
     }

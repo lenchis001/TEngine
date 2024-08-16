@@ -75,7 +75,6 @@ void RenderingService::render()
 
 std::shared_ptr<IRenderableObject> RenderingService::addToRendering(PrimitiveTypes type, std::shared_ptr<IRenderableObject> parent)
 {
-	TEngine::Components::Graphics::Rendering::Services::CameraStrategies::CameraStrategyBase(45.0f, 4.f / 3.f, 0.1f, 100.f, Vector3df(4, 3, 3), Vector3df(0, 0, 0));
 	auto primitive = std::make_shared<RenderableObjectBase>();
 	(parent ? parent : _root)->addChild(primitive);
 

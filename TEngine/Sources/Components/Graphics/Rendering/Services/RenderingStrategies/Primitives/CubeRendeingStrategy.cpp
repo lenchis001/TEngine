@@ -21,11 +21,7 @@ void CubeRenderingStrategy::render(const Matrix4x4f& vpMatrix)
 
     glUseProgram(_shaderProgram);
 
-    vpMatrix.print();
-
     const auto& modelMatrix = _cube->getModelMatrix();
-    modelMatrix.print();
-
     auto mvp = vpMatrix * modelMatrix;
 
     glUniformMatrix4fv(_matrixId, 1, GL_FALSE, mvp.getInternalData());
