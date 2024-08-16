@@ -31,7 +31,8 @@ namespace TEngine::Components::Graphics::Services
         virtual std::shared_ptr<
             TEngine::Components::Graphics::Rendering::Models::RenderableObjects::IRenderableObject>
         addPrimitive(
-            TEngine::Components::Graphics::MeshLoading::Models::PrimitiveTypes type) = 0;
+            TEngine::Components::Graphics::MeshLoading::Models::PrimitiveTypes type,
+            std::shared_ptr<TEngine::Components::Graphics::Rendering::Models::RenderableObjects::IRenderableObject> parent = nullptr) = 0;
 
         virtual std::shared_ptr<Components::Graphics::Rendering::Services::CameraStrategies::ICameraStrategy>
             setActiveCamera(Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes cameraType) = 0;

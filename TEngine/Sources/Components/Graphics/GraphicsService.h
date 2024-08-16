@@ -28,7 +28,7 @@ namespace TEngine::Components::Graphics::Services
 
         std::future<DataActionResult<ErrorCodes, IMeshRenderableObject>> loadMesh(const std::wstring &path) override;
 
-        std::shared_ptr<IRenderableObject> addPrimitive(PrimitiveTypes type) override;
+        std::shared_ptr<IRenderableObject> addPrimitive(PrimitiveTypes type, std::shared_ptr<IRenderableObject> parent = nullptr) override;
 
         std::shared_ptr<ICameraStrategy> setActiveCamera(BuildinCameraTypes cameraType) override;
 

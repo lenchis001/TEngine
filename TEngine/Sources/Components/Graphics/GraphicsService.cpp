@@ -24,9 +24,9 @@ std::future<DataActionResult<ErrorCodes, IMeshRenderableObject>> GraphicsService
 					  { throw ""; });
 }
 
-std::shared_ptr<IRenderableObject> GraphicsService::addPrimitive(PrimitiveTypes type)
+std::shared_ptr<IRenderableObject> GraphicsService::addPrimitive(PrimitiveTypes type, std::shared_ptr<IRenderableObject> parent)
 {
-	auto primitive = _renderingService->addToRendering(type);
+	auto primitive = _renderingService->addToRendering(type, parent);
 
 	return primitive;
 }

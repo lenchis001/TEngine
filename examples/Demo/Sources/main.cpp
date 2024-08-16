@@ -24,8 +24,12 @@ int main()
 
     auto cube = graphicsService->addPrimitive(PrimitiveTypes::Cube);
 
+    auto cube2 = graphicsService->addPrimitive(PrimitiveTypes::Cube, cube);
+    cube2->setPosition(Vector3df(2.0f, 0.0f, 0.0f));
+    cube2->setRotation(Vector3df(0.0f, 3.14f/2.f, 0.0f));
+
     auto yRotation = .0f;
-    auto rotation = Vector3df(1.0f, 0.0f, 1.0f);
+    auto rotation = Vector3df(0.0f, 0.0f, 0.0f);
 
     while (true)
     {

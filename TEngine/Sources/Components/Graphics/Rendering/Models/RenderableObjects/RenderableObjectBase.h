@@ -29,7 +29,7 @@ namespace TEngine::Components::Graphics::Rendering::Models::RenderableObjects
         const Matrix4x4f &getModelMatrix() const override;
 
     protected:
-        void _updateModelMatrix(const Matrix4x4f &parentMatrix, bool force = false);
+        void _updateModelMatrix(const Matrix4x4f &parentMatrix, bool force = false) override;
 
     private:
         void _updateTranslationMatrix();

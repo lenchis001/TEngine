@@ -152,7 +152,8 @@ void RenderableObjectBase::_updateModelMatrix(const Matrix4x4f &parentMatrix, bo
 {
 	if (force || _parentMatrix != parentMatrix)
 	{
-		_modelMatrix = _translationMatrix * _rotationMatrix * _scaleMatrix * parentMatrix;
+		_parentMatrix = parentMatrix;
+		_modelMatrix = _parentMatrix * _translationMatrix * _rotationMatrix * _scaleMatrix;
 	}
 
 	for (const auto child : _children)
