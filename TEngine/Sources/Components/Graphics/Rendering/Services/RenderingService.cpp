@@ -52,18 +52,38 @@ void RenderingService::initialize(std::shared_ptr<IRenderingParameters> paramete
 	glfwSetInputMode(_window, GLFW_STICKY_KEYS, GL_TRUE);
 
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+
+	glfwSwapInterval(1);
+
+	_lastTime = glfwGetTime();
+	_nbFrames = 0;
 }
 
 void RenderingService::render()
 {
+	// Measure speed
+	double currentTime = glfwGetTime();
+	_nbFrames++;
+	if (currentTime - _lastTime >= 1.0)
+	{ // If last update was more than 1 sec ago
+		double fps = double(_nbFrames) / (currentTime - _lastTime);
+
+		// Update window title
+		std::string newTitle = "FPS: " + std::to_string(fps);
+		glfwSetWindowTitle(_window, newTitle.c_str());
+
+		_nbFrames = 0;
+		_lastTime += 1.0;
+	}
+
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	if (_activeCamera)
 	{
 		_activeCamera->render();
-		const auto& vpMatrix = _activeCamera->getVpMatrix();
+		const auto &vpMatrix = _activeCamera->getVpMatrix();
 
-		for (const auto& strategy : _strategies)
+		for (const auto &strategy : _strategies)
 		{
 			strategy->render(vpMatrix);
 		}

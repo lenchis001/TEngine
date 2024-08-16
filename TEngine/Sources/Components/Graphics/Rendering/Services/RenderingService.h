@@ -43,6 +43,9 @@ namespace TEngine::Components::Graphics::Rendering::Services
         std::shared_ptr<ICameraStrategy> _activeCamera;
         std::vector<std::shared_ptr<IRenderingStrategy>> _strategies;
         std::shared_ptr<IShadersService> _shadersService;
+
+        double _lastTime;
+        int _nbFrames;
     };
 }
 
