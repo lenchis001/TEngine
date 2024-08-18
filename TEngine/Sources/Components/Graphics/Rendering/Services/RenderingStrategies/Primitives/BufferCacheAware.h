@@ -3,7 +3,7 @@
 
 #include "GLFW/glfw3.h"
 
-#include "typeinfo.h"
+#include "typeinfo"
 
 namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::Primitives
 {
