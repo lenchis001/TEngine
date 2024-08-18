@@ -50,11 +50,10 @@ void RenderingService::initialize(std::shared_ptr<IRenderingParameters> paramete
 	}
 
 	glfwSetInputMode(_window, GLFW_STICKY_KEYS, GL_TRUE);
-	glfwSwapInterval(1);
+	glfwSwapInterval(parameters->getIsVerticalSyncEnabled());
 
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
 }
 
 double RenderingService::getTime() const
