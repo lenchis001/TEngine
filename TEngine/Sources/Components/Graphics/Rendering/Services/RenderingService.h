@@ -28,6 +28,8 @@ namespace TEngine::Components::Graphics::Rendering::Services
 
         void initialize(std::shared_ptr<IRenderingParameters> parameters) override;
 
+        double getTime() const override;
+
         std::shared_ptr<IRenderableObject> addToRendering(PrimitiveTypes type, std::shared_ptr<IRenderableObject> parent = nullptr) override;
 
         void render() override;

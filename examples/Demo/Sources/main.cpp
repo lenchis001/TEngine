@@ -28,13 +28,11 @@ int main()
     cube2->setPosition(Vector3df(3.0f, 0.0f, 0.0f));
     cube2->setRotation(Vector3df(0.0f, 3.14f/2.f, 0.0f));
 
-    auto yRotation = .0f;
     auto rotation = Vector3df(0.0f, 0.0f, 0.0f);
 
     while (true)
     {
-        yRotation += .01f;
-        rotation.setY(yRotation);
+        rotation.setY(graphicsService->getTime());
 
         cube->setRotation(rotation);
         cube2->setRotation(rotation);

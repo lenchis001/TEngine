@@ -14,22 +14,23 @@ namespace TEngine::Components::Graphics::Rendering::Services
     class IRenderingService
     {
     public:
-        virtual void render() = 0;
+        virtual ~IRenderingService() = default;
 
         virtual void initialize(std::shared_ptr<TEngine::Components::Graphics::Rendering::Models::IRenderingParameters> parameters) = 0;
 
+        virtual double getTime() const = 0;
+
+        virtual void render() = 0;
+
         virtual std::shared_ptr<Components::Graphics::Rendering::Models::RenderableObjects::IRenderableObject> addToRendering(
             Components::Graphics::MeshLoading::Models::PrimitiveTypes type,
-            std::shared_ptr<Components::Graphics::Rendering::Models::RenderableObjects::IRenderableObject> parent = nullptr
-            ) = 0;
-
-        virtual ~IRenderingService() = default;
+            std::shared_ptr<Components::Graphics::Rendering::Models::RenderableObjects::IRenderableObject> parent = nullptr) = 0;
 
         virtual std::shared_ptr<Components::Graphics::Rendering::Services::CameraStrategies::ICameraStrategy>
-            setActiveCamera(Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes cameraType) = 0;
+        setActiveCamera(Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes cameraType) = 0;
 
         virtual void setActiveCamera(std::shared_ptr<Components::Graphics::Rendering::Services::CameraStrategies::ICameraStrategy> camera) = 0;
     };
 }
 
-#endif //TENGINE_IRENDERINGSERVICE_H
+#endif // TENGINE_IRENDERINGSERVICE_H

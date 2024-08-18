@@ -24,6 +24,8 @@ namespace TEngine::Components::Graphics::Services
 
         void initialize(std::shared_ptr<IGraphicsParameters> parameters) override;
 
+        double getTime() const override;
+
         void render() override;
 
         std::future<DataActionResult<ErrorCodes, IMeshRenderableObject>> loadMesh(const std::wstring &path) override;

@@ -13,6 +13,11 @@ void GraphicsService::initialize(std::shared_ptr<IGraphicsParameters> parameters
 	_renderingService->initialize(parameters->getRenderingParameters());
 }
 
+double GraphicsService::getTime() const
+{
+	return _renderingService->getTime();
+}
+
 void GraphicsService::render()
 {
 	_renderingService->render();

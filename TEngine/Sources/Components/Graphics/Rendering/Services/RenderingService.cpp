@@ -57,6 +57,11 @@ void RenderingService::initialize(std::shared_ptr<IRenderingParameters> paramete
 	glDepthFunc(GL_LESS);
 }
 
+double RenderingService::getTime() const
+{
+	return glfwGetTime();
+}
+
 void RenderingService::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -64,9 +69,9 @@ void RenderingService::render()
 	if (_activeCamera)
 	{
 		_activeCamera->render();
-		const auto& vpMatrix = _activeCamera->getVpMatrix();
+		const auto &vpMatrix = _activeCamera->getVpMatrix();
 
-		for (const auto& strategy : _strategies)
+		for (const auto &strategy : _strategies)
 		{
 			strategy->render(vpMatrix);
 		}
