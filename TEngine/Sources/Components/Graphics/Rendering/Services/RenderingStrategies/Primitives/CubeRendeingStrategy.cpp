@@ -13,9 +13,17 @@ using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStr
 CubeRenderingStrategy::CubeRenderingStrategy(std::shared_ptr<IRenderableObject> cube, std::shared_ptr<IShadersService> shadersService)
     : BufferCacheAware(typeid(CubeRenderingStrategy)), _cube(cube), _shadersService(shadersService)
 {
-    _prepareVertexVbo();
-    _prepareColorVbo();
-    _prepareVao();
+    _vpMatrix = Matrix4x4f(1.f);
+    _modelMatrix = Matrix4x4f(1.f);
+    _mvpMatrix = Matrix4x4f(1.f);
+
+    if (!isCachedFilled())
+    {
+        _prepareVertexVbo();
+        _prepareColorVbo();
+        _prepareVao();
+    }
+
     _prepareShader();
 }
 
@@ -26,9 +34,15 @@ void CubeRenderingStrategy::render(const Matrix4x4f &vpMatrix)
     glUseProgram(_shaderProgram);
 
     const auto &modelMatrix = _cube->getModelMatrix();
-    auto mvp = vpMatrix * modelMatrix;
+    if (_vpMatrix != vpMatrix || _modelMatrix != modelMatrix)
+    {
+        _vpMatrix = vpMatrix;
+        _modelMatrix = modelMatrix;
 
-    glUniformMatrix4fv(_matrixId, 1, GL_FALSE, mvp.getInternalData());
+        _mvpMatrix = vpMatrix * modelMatrix;
+    }
+
+    glUniformMatrix4fv(_matrixId, 1, GL_FALSE, _mvpMatrix.getInternalData());
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 6 /*sides*/ * 2 /*triangles in every one*/ * 3 /*verteces in every one*/);
 

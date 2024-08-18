@@ -93,3 +93,10 @@ void CameraStrategyBase::_recalculateVp()
 {
     _vpMatrix = _projectionMatrix * _viewMatrix;
 }
+
+void CameraStrategyBase::setAspectRatio(float value)
+{
+    _aspectRatio = value;
+    _recalculateProjection();
+    _recalculateVp();
+}

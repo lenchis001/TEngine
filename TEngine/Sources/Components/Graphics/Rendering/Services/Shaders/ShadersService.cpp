@@ -8,8 +8,21 @@
 
 using namespace TEngine::Components::Graphics::Rendering::Services::Shaders;
 
+ShadersService::~ShadersService()
+{
+    for(auto& shaderProgram : _shaderPrograms)
+    {
+        glDeleteProgram(shaderProgram.second);
+    }
+}
+
 GLuint ShadersService::loadShader(const std::string &vertexShaderFile, const std::string& fragmentShaderFile)
 {
+        if(_shaderPrograms.find(vertexShaderFile + fragmentShaderFile) != _shaderPrograms.end())
+        {
+            return _shaderPrograms[vertexShaderFile + fragmentShaderFile];
+        }
+
         std::string vertex = readShader(vertexShaderFile);
         if(vertex.empty())
         {
@@ -74,6 +87,8 @@ GLuint ShadersService::loadShader(const std::string &vertexShaderFile, const std
         
         glDeleteShader(vertexShaderId);
         glDeleteShader(fragmentShaderId);
+
+        _shaderPrograms[vertexShaderFile + fragmentShaderFile] = shaderProgramId;
         
         return shaderProgramId;
 }
@@ -88,6 +103,8 @@ std::string ShadersService::readShader(const std::string& shaderFile)
 
     // Read the entire file into a string
     std::string shader((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
+
+    file.close();
 
     return shader;
 }

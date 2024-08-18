@@ -25,6 +25,7 @@ namespace TEngine::Components::Graphics::Rendering::Services
     {
     public:
         RenderingService(std::shared_ptr<IShadersService> shadersService);
+        ~RenderingService();
 
         void initialize(std::shared_ptr<IRenderingParameters> parameters) override;
 
@@ -39,6 +40,8 @@ namespace TEngine::Components::Graphics::Rendering::Services
         void setActiveCamera(std::shared_ptr<ICameraStrategy> camera) override;
 
     private:
+        void _onWindowResized(int width, int height);
+
         GLFWwindow *_window;
 
         std::shared_ptr<IRenderableObject> _root;
