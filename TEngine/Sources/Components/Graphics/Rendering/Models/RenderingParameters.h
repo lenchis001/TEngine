@@ -10,32 +10,38 @@ namespace TEngine::Components::Graphics::Rendering::Models
     public:
         RenderingParameters();
 
-        int getWidth() const;
+        int getWidth() const override;
 
-        void setWidth(int width);
+        void setWidth(int width) override;
 
-        int getHeight() const;
+        int getHeight() const override;
 
-        void setHeight(int height);
+        void setHeight(int height) override;
 
-        int getOpenGlMajorVersion() const;
+        int getOpenGlMajorVersion() const override;
 
-        void setOpenGlMinorVersion(int openGlMinorVersion);
+        void setOpenGlMinorVersion(int openGlMinorVersion) override;
 
-        int getOpenGlMinorVersion() const;
+        int getOpenGlMinorVersion() const override;
 
-        void setOpenGlMajorVersion(int openGlMajorVersion);
+        void setOpenGlMajorVersion(int openGlMajorVersion) override;
 
-        const std::string &getTitle() const;
+        const std::string &getTitle() const override;
 
-        void setTitle(const std::string &title);
+        void setTitle(const std::string &title) override;
+
+        bool getIsVerticalSyncEnabled() const override;
+
+        void setIsVerticalSyncEnabled(bool value) override;
+
     private:
         int _width;
         int _height;
         int _openGlMajorVersion;
         int _openGlMinorVersion;
         std::string _title;
+        bool _isVerticalSyncEnabled;
     };
 }
 
-#endif //TENGINE_RENDERINGPARAMETERS_H
+#endif // TENGINE_RENDERINGPARAMETERS_H

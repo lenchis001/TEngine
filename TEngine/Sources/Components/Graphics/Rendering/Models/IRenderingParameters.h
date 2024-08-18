@@ -30,6 +30,10 @@ namespace TEngine::Components::Graphics::Rendering::Models
 
 		virtual void setTitle(const std::string& title) = 0;
 
+		virtual bool getIsVerticalSyncEnabled() const = 0;
+
+		virtual void setIsVerticalSyncEnabled(bool value) = 0;
+
 		virtual ~IRenderingParameters() = default;
 	};
 }

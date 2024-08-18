@@ -25,7 +25,7 @@ int main()
     auto cube = graphicsService->addPrimitive(PrimitiveTypes::Cube);
 
     auto cube2 = graphicsService->addPrimitive(PrimitiveTypes::Cube, cube);
-    cube2->setPosition(Vector3df(2.0f, 0.0f, 0.0f));
+    cube2->setPosition(Vector3df(3.0f, 0.0f, 0.0f));
     cube2->setRotation(Vector3df(0.0f, 3.14f/2.f, 0.0f));
 
     auto yRotation = .0f;
@@ -37,6 +37,7 @@ int main()
         rotation.setY(yRotation);
 
         cube->setRotation(rotation);
+        cube2->setRotation(rotation);
 
         engine->getGraphicsService()->render();
     }

@@ -50,13 +50,16 @@ void RenderingService::initialize(std::shared_ptr<IRenderingParameters> paramete
 	}
 
 	glfwSetInputMode(_window, GLFW_STICKY_KEYS, GL_TRUE);
+	glfwSwapInterval(1);
 
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
 }
 
 void RenderingService::render()
 {
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if (_activeCamera)
 	{

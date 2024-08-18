@@ -3,24 +3,31 @@
 
 #include "GLFW/glfw3.h"
 
+#include "typeinfo.h"
+
 namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::Primitives
 {
     class BufferCacheAware
     {
     protected:
-        static bool isCachedFilled();
+        BufferCacheAware(const std::type_info &userType);
+        ~BufferCacheAware();
 
-        static GLuint getCachedVbo();
+        bool isCachedFilled();
 
-        static void setCachedVbo(GLuint vbo);
+        GLuint getCachedVbo(std::size_t index = 0);
 
-        static GLuint getCachedVao();
+        void setCachedVbo(GLuint vbo, std::size_t index = 0);
 
-        static void setCachedVao(GLuint vao);
+        GLuint getCachedVao();
+
+        void setCachedVao(GLuint vao);
 
     private:
-        static GLuint _cachedVbo;
-        static GLuint _cachedVao;
+        bool _existsInVAOs() const;
+        bool _existsInVBOs() const;
+
+        std::size_t _typeHash;
     };
 }
 

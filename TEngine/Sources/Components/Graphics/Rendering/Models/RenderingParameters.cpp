@@ -9,6 +9,7 @@ RenderingParameters::RenderingParameters()
     setOpenGlMajorVersion(3);
     setOpenGlMinorVersion(3);
     setTitle("TEngine");
+    _isVerticalSyncEnabled = true;
 }
 
 int RenderingParameters::getWidth() const
@@ -59,4 +60,14 @@ const std::string &RenderingParameters::getTitle() const
 void RenderingParameters::setTitle(const std::string &title)
 {
     _title = title;
+}
+
+bool RenderingParameters::getIsVerticalSyncEnabled() const
+{
+    return _isVerticalSyncEnabled;
+}
+
+void RenderingParameters::setIsVerticalSyncEnabled(bool value)
+{
+    _isVerticalSyncEnabled = value;
 }

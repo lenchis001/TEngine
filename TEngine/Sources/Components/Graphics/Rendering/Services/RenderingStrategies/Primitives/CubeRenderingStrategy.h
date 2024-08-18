@@ -25,7 +25,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
         void render(const Matrix4x4f& vpMatrix) override;
 
     private:
-        void _prepareVbo();
+        void _prepareVertexVbo();
+        void _prepareColorVbo();
         void _prepareVao();
         void _prepareShader();
 
