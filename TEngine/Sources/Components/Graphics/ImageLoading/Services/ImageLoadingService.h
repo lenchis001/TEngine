@@ -1,18 +1,37 @@
 #ifndef IMAGELOADINGSERVICE_H
 #define IMAGELOADINGSERVICE_H
 
+#include "string"
+#include "vector"
+#include "map"
+
+#include "Components/Graphics/ImageLoading/Plugin/IImageLoadingPlugin.h"
+
+
 #include "IImageLoadingService.h"
+#include "PluginsLoadingAware.hpp"
 
 using namespace TEngine::Components::Graphics::ImageLoading::Models;
+using namespace TEngine::Components::Graphics::ImageLoading::Plugin;
 
-namespace TEngine::Components::Graphics::ImageLoading::Services {
-    class ImageLoadingService : public IImageLoadingService
+namespace TEngine::Components::Graphics::ImageLoading::Services
+{
+    class ImageLoadingService : public PluginsLoadingAware, public IImageLoadingService
     {
     public:
         ImageLoadingService() = default;
         ~ImageLoadingService() override;
 
-        std::shared_ptr<Texture> load(const std::string &path) override;
+        void initialize() override;
+
+        std::shared_ptr<Image> load(const std::string &path) override;
+
+    private:
+        std::vector<std::string> _findPlugins() const;
+        std::shared_ptr<IImageLoadingPlugin> _loadPlugin(const std::string &path);
+
+        std::map<std::string, std::shared_ptr<IImageLoadingPlugin>> _plugins;
+        std::vector<DYNAMIC_LIB_HANDLE> _loadedLibraries;
     };
 }
 

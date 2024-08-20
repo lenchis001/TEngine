@@ -1,12 +1,12 @@
-#ifndef TENGINE_TEXTURE_H
-#define TENGINE_TEXTURE_H
+#ifndef TENGINE_IMAGE_H
+#define TENGINE_IMAGE_H
 
 namespace TEngine::Components::Graphics::ImageLoading::Models
 {
-    class Texture
+    class Image
     {
     public:
-        Texture(void *data, int width, int height);
+        Image(void *data, int width, int height);
 
         void *getData() const;
 
@@ -20,4 +20,4 @@ namespace TEngine::Components::Graphics::ImageLoading::Models
     };
 };
 
-#endif // TENGINE_TEXTURE_H
+#endif // TENGINE_IMAGE_H

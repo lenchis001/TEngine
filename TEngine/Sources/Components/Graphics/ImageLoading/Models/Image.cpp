@@ -1,25 +1,25 @@
-#include "Texture.h"
+#include "Image.h"
 
 using namespace TEngine::Components::Graphics::ImageLoading::Models;
 
-Texture::Texture(void *data, int width, int height)
+Image::Image(void *data, int width, int height)
     : _data(data),
       _width(width),
       _height(height)
 {
 }
 
-void *Texture::getData() const
+void *Image::getData() const
 {
     return _data;
 }
 
-int Texture::getWidth() const
+int Image::getWidth() const
 {
     return _width;
 }
 
-int Texture::getHeight() const
+int Image::getHeight() const
 {
     return _height;
 }

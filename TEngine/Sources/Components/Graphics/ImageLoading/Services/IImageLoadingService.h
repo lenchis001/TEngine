@@ -4,14 +4,16 @@
 #include "string"
 #include "memory"
 
-#include "Components/Graphics/ImageLoading/Models/Texture.h"
+#include "Components/Graphics/ImageLoading/Models/Image.h"
 
 namespace TEngine::Components::Graphics::ImageLoading::Services
 {
     class IImageLoadingService
     {
     public:
-        virtual std::shared_ptr<TEngine::Components::Graphics::ImageLoading::Models::Texture> load(const std::string &path) = 0;
+        virtual void initialize() = 0;
+
+        virtual std::shared_ptr<TEngine::Components::Graphics::ImageLoading::Models::Image> load(const std::string &path) = 0;
 
         virtual ~IImageLoadingService() = default;
     };
