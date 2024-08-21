@@ -6,12 +6,12 @@ namespace TEngine::Components::Graphics::ImageLoading::Plugin
     class IPluginImage
     {
     public:
-        ~IPluginImage() = default;
+        virtual ~IPluginImage() = default;
 
-        virtual void *getData() const;
+        virtual void *getData() const = 0;
 
-        virtual int getWidth() const;
-        virtual int getHeight() const;
+        virtual int getWidth() const = 0;
+        virtual int getHeight() const = 0;
     };
 }
 

@@ -32,6 +32,8 @@ add_custom_command(TARGET Demo POST_BUILD
 
 # Copy plugin libraries directory
 add_custom_command(TARGET Demo POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E remove_directory
+    "$<TARGET_FILE_DIR:Demo>/Plugins"
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     "$<TARGET_FILE_DIR:TEngine>/Plugins"
     "$<TARGET_FILE_DIR:Demo>/Plugins"

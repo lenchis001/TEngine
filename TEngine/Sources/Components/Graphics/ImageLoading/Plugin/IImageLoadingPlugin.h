@@ -11,7 +11,6 @@ namespace TEngine::Components::Graphics::ImageLoading::Plugin {
     class IImageLoadingPlugin
     {
     public:
-        IImageLoadingPlugin() = default;
         virtual ~IImageLoadingPlugin() = default;
 
         virtual std::vector<std::string> getSupportedExtensions() const = 0;

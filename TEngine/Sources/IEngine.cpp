@@ -25,7 +25,7 @@ std::shared_ptr<IEngine> TEngine::createEngine()
 
     auto imageLoadingService = std::make_shared<ImageLoadingService>();
     imageLoadingService->initialize();
-    imageLoadingService->load("D:/480-360-sample.bmp");
+    auto result = imageLoadingService->load("D:/480-360-sample.bmp");
 
     auto meshLoadingService = std::make_shared<MeshLoadingService>();
 
