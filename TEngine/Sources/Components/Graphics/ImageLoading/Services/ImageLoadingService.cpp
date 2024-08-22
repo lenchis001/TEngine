@@ -44,7 +44,7 @@ std::shared_ptr<Image> ImageLoadingService::load(const std::string &path)
 
     auto result = pluginIterator->second->load(path);
 
-    return nullptr;
+    return std::make_shared<Image>(result->getData(), result->getDataSize(), result->getWidth(), result->getHeight());
 }
 
 std::vector<std::string> ImageLoadingService::_findPlugins() const

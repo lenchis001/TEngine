@@ -8,6 +8,7 @@
 #include "Components/Graphics/Rendering/Models/RenderableObjects/IRenderableObject.h"
 #include "Components/Graphics/Rendering/Services/CameraStrategies/ICameraStrategy.h"
 #include "Components/Graphics/Models/PrimitiveTypes.h"
+#include "Components/Graphics/ImageLoading/Models/Image.h"
 
 namespace TEngine::Components::Graphics::Rendering::Services
 {
@@ -24,6 +25,7 @@ namespace TEngine::Components::Graphics::Rendering::Services
 
         virtual std::shared_ptr<Components::Graphics::Rendering::Models::RenderableObjects::IRenderableObject> addToRendering(
             Components::Graphics::MeshLoading::Models::PrimitiveTypes type,
+            std::shared_ptr<Components::Graphics::ImageLoading::Models::Image> image,
             std::shared_ptr<Components::Graphics::Rendering::Models::RenderableObjects::IRenderableObject> parent = nullptr) = 0;
 
         virtual std::shared_ptr<Components::Graphics::Rendering::Services::CameraStrategies::ICameraStrategy>

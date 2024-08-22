@@ -10,8 +10,10 @@ namespace BmpImageLoadingPlugin::Models
     class BmpPluginImage : public IPluginImage
     {
     public:
-        BmpPluginImage(int width, int height, void *data);
+        BmpPluginImage(int width, int height, void *data, unsigned int dataSize);
         ~BmpPluginImage() override;
+
+        virtual unsigned int getDataSize() const override;
 
         virtual void *getData() const override;
 
@@ -22,6 +24,7 @@ namespace BmpImageLoadingPlugin::Models
         int _width;
         int _height;
         void *_data;
+        unsigned int _dataSize;
     };
 }
 

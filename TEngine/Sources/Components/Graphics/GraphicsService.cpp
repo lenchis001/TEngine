@@ -2,14 +2,19 @@
 
 using namespace TEngine::Components::Graphics::Services;
 
-GraphicsService::GraphicsService(std::shared_ptr<IRenderingService> renderingService, std::shared_ptr<IMeshLoadingService> meshLoadingService)
+GraphicsService::GraphicsService(
+	std::shared_ptr<IRenderingService> renderingService,
+	std::shared_ptr<IMeshLoadingService> meshLoadingService,
+	std::shared_ptr<IImageLoadingService> imageLoadingService)
 	: _renderingService(renderingService),
-	  _meshLoadingService(meshLoadingService)
+	  _meshLoadingService(meshLoadingService),
+	  _imageLoadingService(imageLoadingService)
 {
 }
 
 void GraphicsService::initialize(std::shared_ptr<IGraphicsParameters> parameters)
 {
+	_imageLoadingService->initialize();
 	_renderingService->initialize(parameters->getRenderingParameters());
 }
 
@@ -29,9 +34,14 @@ std::future<DataActionResult<ErrorCodes, IMeshRenderableObject>> GraphicsService
 					  { throw ""; });
 }
 
-std::shared_ptr<IRenderableObject> GraphicsService::addPrimitive(PrimitiveTypes type, std::shared_ptr<IRenderableObject> parent)
+std::shared_ptr<IRenderableObject> GraphicsService::addPrimitive(
+	PrimitiveTypes type, 
+	std::string texturePath,
+	std::shared_ptr<IRenderableObject> parent)
 {
-	auto primitive = _renderingService->addToRendering(type, parent);
+	auto image = _imageLoadingService->load(texturePath);
+
+	auto primitive = _renderingService->addToRendering(type, image, parent);
 
 	return primitive;
 }

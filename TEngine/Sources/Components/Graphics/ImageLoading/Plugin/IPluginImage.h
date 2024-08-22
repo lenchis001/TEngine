@@ -8,6 +8,8 @@ namespace TEngine::Components::Graphics::ImageLoading::Plugin
     public:
         virtual ~IPluginImage() = default;
 
+        virtual unsigned int getDataSize() const = 0;
+
         virtual void *getData() const = 0;
 
         virtual int getWidth() const = 0;

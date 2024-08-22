@@ -57,10 +57,10 @@ void RenderingService::initialize(std::shared_ptr<IRenderingParameters> paramete
 	}
 
 	glfwSetWindowUserPointer(_window, this);
-	glfwSetWindowSizeCallback(_window, [](GLFWwindow *window, int width, int height) {
+	glfwSetWindowSizeCallback(_window, [](GLFWwindow *window, int width, int height)
+							  {
 		auto service = static_cast<RenderingService *>(glfwGetWindowUserPointer(window));
-		service->_onWindowResized(width, height);
-	});
+		service->_onWindowResized(width, height); });
 	glfwSwapInterval(parameters->getIsVerticalSyncEnabled());
 
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
@@ -91,12 +91,15 @@ void RenderingService::render()
 	glfwPollEvents();
 }
 
-std::shared_ptr<IRenderableObject> RenderingService::addToRendering(PrimitiveTypes type, std::shared_ptr<IRenderableObject> parent)
+std::shared_ptr<IRenderableObject> RenderingService::addToRendering(
+	PrimitiveTypes type,
+	std::shared_ptr<Image> image,
+	std::shared_ptr<IRenderableObject> parent)
 {
 	auto primitive = std::make_shared<RenderableObjectBase>();
 	(parent ? parent : _root)->addChild(primitive);
 
-	_strategies.push_back(std::make_shared<CubeRenderingStrategy>(primitive, _shadersService));
+	_strategies.push_back(std::make_shared<CubeRenderingStrategy>(primitive, _shadersService, image));
 
 	return primitive;
 }

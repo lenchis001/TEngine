@@ -25,10 +25,12 @@ std::shared_ptr<IPluginImage> BmpImageLoadingPluginImplementation::load(const st
     BmpInfo info = {0};
     BmpGetInfo(&info, path.c_str());
 
-    unsigned char *pBmpData = new unsigned char[info.height * info.stride];
+    auto dataSize = info.height * info.stride;
+
+    unsigned char *pBmpData = new unsigned char[dataSize];
     BmpLoadImage(pBmpData, &info, path.c_str());
 
-    return std::make_shared<BmpPluginImage>(info.width, info.height, pBmpData);
+    return std::make_shared<BmpPluginImage>(info.width, info.height, pBmpData, dataSize);
 }
 
 std::shared_ptr<IImageLoadingPlugin> load() {

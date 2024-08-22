@@ -6,7 +6,10 @@ namespace TEngine::Components::Graphics::ImageLoading::Models
     class Image
     {
     public:
-        Image(void *data, int width, int height);
+        Image(void *data, unsigned int dataSize, int width, int height);
+        ~Image();
+
+        unsigned int getDataSize() const;
 
         void *getData() const;
 
@@ -17,6 +20,7 @@ namespace TEngine::Components::Graphics::ImageLoading::Models
         void *_data;
         int _width;
         int _height;
+        unsigned int _dataSize;
     };
 };
 

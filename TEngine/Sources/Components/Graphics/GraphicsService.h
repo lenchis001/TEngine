@@ -5,6 +5,7 @@
 
 #include "Rendering/Services/IRenderingService.h"
 #include "MeshLoading/Services/IMeshLoadingService.h"
+#include "ImageLoading/Services/IImageLoadingService.h"
 
 using namespace TEngine::Models;
 using namespace TEngine::Components::Graphics::Rendering::Services;
@@ -14,13 +15,17 @@ using namespace TEngine::Components::Graphics::Rendering::Models::RenderableObje
 using namespace TEngine::Components::Graphics::MeshLoading::Models;
 using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
 using namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies;
+using namespace TEngine::Components::Graphics::ImageLoading::Services;
 
 namespace TEngine::Components::Graphics::Services
 {
     class GraphicsService : public IGraphicsService
     {
     public:
-        GraphicsService(std::shared_ptr<IRenderingService> renderingService, std::shared_ptr<IMeshLoadingService> meshLoadingService);
+        GraphicsService(
+            std::shared_ptr<IRenderingService> renderingService,
+            std::shared_ptr<IMeshLoadingService> meshLoadingService,
+            std::shared_ptr<IImageLoadingService> imageLoadingService);
 
         void initialize(std::shared_ptr<IGraphicsParameters> parameters) override;
 
@@ -30,7 +35,10 @@ namespace TEngine::Components::Graphics::Services
 
         std::future<DataActionResult<ErrorCodes, IMeshRenderableObject>> loadMesh(const std::wstring &path) override;
 
-        std::shared_ptr<IRenderableObject> addPrimitive(PrimitiveTypes type, std::shared_ptr<IRenderableObject> parent = nullptr) override;
+        std::shared_ptr<IRenderableObject> addPrimitive(
+            PrimitiveTypes type,
+            std::string texturePath,
+            std::shared_ptr<IRenderableObject> parent = nullptr) override;
 
         std::shared_ptr<ICameraStrategy> setActiveCamera(BuildinCameraTypes cameraType) override;
 
@@ -39,6 +47,7 @@ namespace TEngine::Components::Graphics::Services
     private:
         std::shared_ptr<IRenderingService> _renderingService;
         std::shared_ptr<IMeshLoadingService> _meshLoadingService;
+        std::shared_ptr<IImageLoadingService> _imageLoadingService;
     };
 }
 

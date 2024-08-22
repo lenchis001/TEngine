@@ -3,6 +3,7 @@
 
 #include "future"
 #include "memory"
+#include "string"
 
 #include "Models/DataActionResult.h"
 
@@ -34,6 +35,7 @@ namespace TEngine::Components::Graphics::Services
             TEngine::Components::Graphics::Rendering::Models::RenderableObjects::IRenderableObject>
         addPrimitive(
             TEngine::Components::Graphics::MeshLoading::Models::PrimitiveTypes type,
+            std::string texturePath,
             std::shared_ptr<TEngine::Components::Graphics::Rendering::Models::RenderableObjects::IRenderableObject> parent = nullptr) = 0;
 
         virtual std::shared_ptr<Components::Graphics::Rendering::Services::CameraStrategies::ICameraStrategy>

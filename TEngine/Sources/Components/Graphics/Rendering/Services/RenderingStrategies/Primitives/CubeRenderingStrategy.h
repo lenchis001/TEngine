@@ -8,25 +8,31 @@
 #include "Components/Graphics/Rendering/Services/RenderingStrategies/IRenderingStrategy.h"
 #include "Components/Graphics/Rendering/Models/RenderableObjects/IRenderableObject.h"
 #include "Components/Graphics/Rendering/Services/Shaders/IShadersService.h"
+#include "Components/Graphics/ImageLoading/Models/Image.h"
 
 #include "BufferCacheAware.h"
 
 using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Graphics::Rendering::Services::Shaders;
 using namespace TEngine::Components::Graphics::Rendering::Models::RenderableObjects;
+using namespace TEngine::Components::Graphics::ImageLoading::Models;
 
 namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::Primitives
 {
     class CubeRenderingStrategy : public BufferCacheAware, public IRenderingStrategy
     {
     public:
-        CubeRenderingStrategy(std::shared_ptr<IRenderableObject> cube, std::shared_ptr<IShadersService> shadersService);
+        CubeRenderingStrategy(
+            std::shared_ptr<IRenderableObject> cube,
+            std::shared_ptr<IShadersService> shadersService,
+            std::shared_ptr<Image> image);
 
-        void render(const Matrix4x4f& vpMatrix) override;
+        void render(const Matrix4x4f &vpMatrix) override;
 
     private:
         void _prepareVertexVbo();
-        void _prepareColorVbo();
+        void _prepareTexture(std::shared_ptr<Image> image);
+        void _prepareUvVbo();
         void _prepareVao();
         void _prepareShader();
 
@@ -34,7 +40,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
 
         std::shared_ptr<IRenderableObject> _cube;
 
-        GLuint _shaderProgram, _matrixId;
+        GLuint _shaderProgram, _matrixShaderId, _textureId, _textureSamplerShaderId;
 
         Matrix4x4f _vpMatrix, _modelMatrix, _mvpMatrix;
     };

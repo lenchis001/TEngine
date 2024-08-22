@@ -16,6 +16,7 @@ using namespace TEngine::Components::Graphics::MeshLoading::Models;
 using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
 using namespace TEngine::Components::Graphics::Rendering::Services::Shaders;
 using namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies;
+using namespace TEngine::Components::Graphics::ImageLoading::Models;
 
 using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies;
 
@@ -31,7 +32,10 @@ namespace TEngine::Components::Graphics::Rendering::Services
 
         double getTime() const override;
 
-        std::shared_ptr<IRenderableObject> addToRendering(PrimitiveTypes type, std::shared_ptr<IRenderableObject> parent = nullptr) override;
+        std::shared_ptr<IRenderableObject> addToRendering(
+            PrimitiveTypes type,
+            std::shared_ptr<Image> image,
+            std::shared_ptr<IRenderableObject> parent = nullptr) override;
 
         void render() override;
 

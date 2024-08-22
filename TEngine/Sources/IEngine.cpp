@@ -22,14 +22,12 @@ std::shared_ptr<IEngine> TEngine::createEngine()
     auto shadersService = std::make_shared<ShadersService>();
 
     auto renderingService = std::make_shared<RenderingService>(shadersService);
-
-    auto imageLoadingService = std::make_shared<ImageLoadingService>();
-    imageLoadingService->initialize();
-    auto result = imageLoadingService->load("D:/480-360-sample.bmp");
-
+    
     auto meshLoadingService = std::make_shared<MeshLoadingService>();
 
-    auto graphicsService = std::make_shared<GraphicsService>(renderingService, meshLoadingService);
+    auto imageLoadingService = std::make_shared<ImageLoadingService>();
+
+    auto graphicsService = std::make_shared<GraphicsService>(renderingService, meshLoadingService, imageLoadingService);
 
     return std::make_shared<Engine>(graphicsService);
 }
