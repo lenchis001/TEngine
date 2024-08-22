@@ -2,7 +2,7 @@
 
 using namespace BmpImageLoadingPlugin::Models;
 
-BmpPluginImage::BmpPluginImage(int width, int height, void *data, unsigned int dataSize)
+BmpPluginImage::BmpPluginImage(int width, int height, char *data, unsigned int dataSize)
     : _width(width), _height(height), _data(data), _dataSize(dataSize)
 {
 }
@@ -17,7 +17,7 @@ unsigned int BmpPluginImage::getDataSize() const
     return _dataSize;
 }
 
-void *BmpPluginImage::getData() const
+char *BmpPluginImage::getData() const
 {
     return _data;
 }

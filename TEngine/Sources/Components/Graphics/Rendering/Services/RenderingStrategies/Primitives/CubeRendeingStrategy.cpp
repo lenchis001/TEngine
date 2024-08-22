@@ -23,10 +23,10 @@ CubeRenderingStrategy::CubeRenderingStrategy(
     if (!isCachedFilled())
     {
         _prepareVertexVbo();
-        _prepareTexture(image);
         _prepareUvVbo();
         _prepareVao();
     }
+    _prepareTexture(image);
 
     _prepareShader();
 }

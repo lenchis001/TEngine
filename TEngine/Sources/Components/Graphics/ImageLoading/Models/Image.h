@@ -6,18 +6,18 @@ namespace TEngine::Components::Graphics::ImageLoading::Models
     class Image
     {
     public:
-        Image(void *data, unsigned int dataSize, int width, int height);
+        Image(char *data, unsigned int dataSize, int width, int height);
         ~Image();
 
         unsigned int getDataSize() const;
 
-        void *getData() const;
+        char *getData() const;
 
         int getWidth() const;
         int getHeight() const;
 
     private:
-        void *_data;
+        char *_data;
         int _width;
         int _height;
         unsigned int _dataSize;

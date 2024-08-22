@@ -4,7 +4,7 @@
 
 using namespace TEngine::Components::Graphics::ImageLoading::Models;
 
-Image::Image(void *data, unsigned int dataSize, int width, int height)
+Image::Image(char *data, unsigned int dataSize, int width, int height)
     : _dataSize(dataSize),
       _width(width),
       _height(height)
@@ -18,7 +18,7 @@ Image::~Image()
     delete[] _data;
 }
 
-void *Image::getData() const
+char *Image::getData() const
 {
     return _data;
 }

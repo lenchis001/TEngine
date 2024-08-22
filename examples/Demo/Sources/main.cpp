@@ -27,9 +27,9 @@ int main()
 
         graphicsService->setActiveCamera(TEngine::Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes::BASE);
 
-        auto cube = graphicsService->addPrimitive(PrimitiveTypes::Cube, "./uvtemplate.bmp");
+        auto cube = graphicsService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp");
 
-        auto cube2 = graphicsService->addPrimitive(PrimitiveTypes::Cube, "./uvtemplate.bmp", cube);
+        auto cube2 = graphicsService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture1.bmp", cube);
         cube2->setPosition(Vector3df(3.0f, 0.0f, 0.0f));
         cube2->setRotation(Vector3df(0.0f, 3.14f / 2.f, 0.0f));
 

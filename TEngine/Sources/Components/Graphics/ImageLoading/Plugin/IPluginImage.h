@@ -10,7 +10,7 @@ namespace TEngine::Components::Graphics::ImageLoading::Plugin
 
         virtual unsigned int getDataSize() const = 0;
 
-        virtual void *getData() const = 0;
+        virtual char *getData() const = 0;
 
         virtual int getWidth() const = 0;
         virtual int getHeight() const = 0;
