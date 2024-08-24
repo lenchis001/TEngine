@@ -9,23 +9,25 @@
 #include "Components/Graphics/Rendering/Models/RenderableObjects/IRenderableObject.h"
 #include "Components/Graphics/Rendering/Services/Shaders/IShadersService.h"
 #include "Components/Graphics/ImageLoading/Models/Image.h"
-
-#include "BufferCacheAware.h"
+#include "Components/Graphics/Rendering/Services/Cache/IBufferCacheService.h"
 
 using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Graphics::Rendering::Services::Shaders;
 using namespace TEngine::Components::Graphics::Rendering::Models::RenderableObjects;
 using namespace TEngine::Components::Graphics::ImageLoading::Models;
+using namespace TEngine::Components::Graphics::Rendering::Services::Cache;
 
 namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::Primitives
 {
-    class CubeRenderingStrategy : public BufferCacheAware, public IRenderingStrategy
+    class CubeRenderingStrategy : public IRenderingStrategy
     {
     public:
         CubeRenderingStrategy(
-            std::shared_ptr<IRenderableObject> cube,
             std::shared_ptr<IShadersService> shadersService,
+            std::shared_ptr<IBufferCacheService> bufferCacheService,
+            std::shared_ptr<IRenderableObject> cube,
             std::shared_ptr<Image> image);
+        ~CubeRenderingStrategy() override;
 
         void render(const Matrix4x4f &vpMatrix) override;
 
@@ -37,10 +39,11 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
         void _prepareShader();
 
         std::shared_ptr<IShadersService> _shadersService;
+        std::shared_ptr<IBufferCacheService> _bufferCacheService;
 
         std::shared_ptr<IRenderableObject> _cube;
 
-        GLuint _shaderProgram, _matrixShaderId, _textureId, _textureSamplerShaderId;
+        GLuint _shaderProgram, _matrixShaderId, _textureId, _textureSamplerShaderId, _vao;
 
         Matrix4x4f _vpMatrix, _modelMatrix, _mvpMatrix;
     };

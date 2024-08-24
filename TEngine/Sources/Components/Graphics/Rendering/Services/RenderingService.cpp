@@ -12,9 +12,12 @@ using namespace TEngine::Components::Graphics::Rendering::Models::RenderableObje
 using namespace TEngine::Components::Graphics::Rendering::Services;
 using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::Primitives;
 
-RenderingService::RenderingService(std::shared_ptr<IShadersService> shadersService)
+RenderingService::RenderingService(
+	std::shared_ptr<IShadersService> shadersService,
+	std::shared_ptr<IBufferCacheService> bufferCacheService)
 	: _window(nullptr),
 	  _shadersService(shadersService),
+	  _bufferCacheService(bufferCacheService),
 	  _activeCamera(nullptr),
 	  _root(std::make_shared<RenderableObjectBase>())
 {
@@ -99,7 +102,7 @@ std::shared_ptr<IRenderableObject> RenderingService::addToRendering(
 	auto primitive = std::make_shared<RenderableObjectBase>();
 	(parent ? parent : _root)->addChild(primitive);
 
-	_strategies.push_back(std::make_shared<CubeRenderingStrategy>(primitive, _shadersService, image));
+	_strategies.push_back(std::make_shared<CubeRenderingStrategy>(_shadersService, _bufferCacheService, primitive, image));
 
 	return primitive;
 }
