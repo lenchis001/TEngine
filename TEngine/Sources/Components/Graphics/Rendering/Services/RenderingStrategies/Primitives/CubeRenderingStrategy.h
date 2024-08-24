@@ -9,13 +9,13 @@
 #include "Components/Graphics/Rendering/Models/RenderableObjects/IRenderableObject.h"
 #include "Components/Graphics/Rendering/Services/Shaders/IShadersService.h"
 #include "Components/Graphics/ImageLoading/Models/Image.h"
-#include "Components/Graphics/Rendering/Services/Cache/IBufferCacheService.h"
+#include "Components/Graphics/Rendering/Services/Buffers/IBuffersService.h"
 
 using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Graphics::Rendering::Services::Shaders;
 using namespace TEngine::Components::Graphics::Rendering::Models::RenderableObjects;
 using namespace TEngine::Components::Graphics::ImageLoading::Models;
-using namespace TEngine::Components::Graphics::Rendering::Services::Cache;
+using namespace TEngine::Components::Graphics::Rendering::Services::Buffers;
 
 namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::Primitives
 {
@@ -24,7 +24,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
     public:
         CubeRenderingStrategy(
             std::shared_ptr<IShadersService> shadersService,
-            std::shared_ptr<IBufferCacheService> bufferCacheService,
+            std::shared_ptr<IBuffersService> bufferCacheService,
             std::shared_ptr<IRenderableObject> cube,
             std::shared_ptr<Image> image);
         ~CubeRenderingStrategy() override;
@@ -39,7 +39,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
         void _prepareShader();
 
         std::shared_ptr<IShadersService> _shadersService;
-        std::shared_ptr<IBufferCacheService> _bufferCacheService;
+        std::shared_ptr<IBuffersService> _bufferCacheService;
 
         std::shared_ptr<IRenderableObject> _cube;
 

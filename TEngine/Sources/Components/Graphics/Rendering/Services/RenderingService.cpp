@@ -14,7 +14,7 @@ using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStr
 
 RenderingService::RenderingService(
 	std::shared_ptr<IShadersService> shadersService,
-	std::shared_ptr<IBufferCacheService> bufferCacheService)
+	std::shared_ptr<IBuffersService> bufferCacheService)
 	: _window(nullptr),
 	  _shadersService(shadersService),
 	  _bufferCacheService(bufferCacheService),
@@ -134,6 +134,10 @@ void RenderingService::setActiveCamera(std::shared_ptr<ICameraStrategy> camera)
 
 void RenderingService::_onWindowResized(int width, int height)
 {
+#if (defined(_WIN32) || defined(_WIN64))
+	glViewport(0, 0, width, height);
+#endif
+
 	if (_activeCamera)
 	{
 		_activeCamera->setAspectRatio(static_cast<float>(width) / static_cast<float>(height));

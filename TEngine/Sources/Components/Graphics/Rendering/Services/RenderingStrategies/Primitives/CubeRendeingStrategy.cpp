@@ -13,7 +13,7 @@ using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStr
 
 CubeRenderingStrategy::CubeRenderingStrategy(
     std::shared_ptr<IShadersService> shadersService,
-    std::shared_ptr<IBufferCacheService> bufferCacheService,
+    std::shared_ptr<IBuffersService> bufferCacheService,
     std::shared_ptr<IRenderableObject> cube,
     std::shared_ptr<Image> image)
     : _shadersService(shadersService),

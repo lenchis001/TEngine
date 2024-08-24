@@ -14,12 +14,12 @@
 #define RELEASE_VAO(name) _bufferCacheService->releaseVao(name)
 #define RETURN_IF_VAO_EXISTS(name, vao) if(_bufferCacheService->existsVao(name)) { vao = TAKE_VAO(name); return; }
 
-namespace TEngine::Components::Graphics::Rendering::Services::Cache
+namespace TEngine::Components::Graphics::Rendering::Services::Buffers
 {
-    class IBufferCacheService
+    class IBuffersService
     {
     public:
-        virtual ~IBufferCacheService() = default;
+        virtual ~IBuffersService() = default;
 
         virtual bool existsVbo(const std::string &name) const = 0;
         virtual GLuint getVbo(const std::string &name) = 0;

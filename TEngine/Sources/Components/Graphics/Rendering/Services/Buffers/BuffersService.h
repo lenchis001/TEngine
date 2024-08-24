@@ -1,17 +1,17 @@
 #ifndef TENGINE_BUFFER_CACHE_SERVICE_H
 #define TENGINE_BUFFER_CACHE_SERVICE_H
 
-#include "IBufferCacheService.h"
+#include "IBuffersService.h"
 
 #include "map"
 #include "string"
 
-namespace TEngine::Components::Graphics::Rendering::Services::Cache
+namespace TEngine::Components::Graphics::Rendering::Services::Buffers
 {
-    class BufferCacheService : public IBufferCacheService
+    class BuffersService : public IBuffersService
     {
     public:
-        ~BufferCacheService() override;
+        ~BuffersService() override;
 
         bool existsVbo(const std::string &name) const override;
         GLuint getVbo(const std::string &name) override;

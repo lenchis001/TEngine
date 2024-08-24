@@ -9,7 +9,7 @@
 
 #include "RenderingStrategies/IRenderingStrategy.h"
 #include "Components/Graphics/Rendering/Services/Shaders/IShadersService.h"
-#include "Components/Graphics/Rendering/Services/Cache/IBufferCacheService.h"
+#include "Components/Graphics/Rendering/Services/Buffers/IBuffersService.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Models;
 using namespace TEngine::Components::Graphics::Rendering::Models::RenderableObjects;
@@ -18,7 +18,7 @@ using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
 using namespace TEngine::Components::Graphics::Rendering::Services::Shaders;
 using namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies;
 using namespace TEngine::Components::Graphics::ImageLoading::Models;
-using namespace TEngine::Components::Graphics::Rendering::Services::Cache;
+using namespace TEngine::Components::Graphics::Rendering::Services::Buffers;
 
 using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies;
 
@@ -29,7 +29,7 @@ namespace TEngine::Components::Graphics::Rendering::Services
     public:
         RenderingService(
             std::shared_ptr<IShadersService> shadersService,
-            std::shared_ptr<IBufferCacheService> bufferCacheService);
+            std::shared_ptr<IBuffersService> bufferCacheService);
         ~RenderingService();
 
         void initialize(std::shared_ptr<IRenderingParameters> parameters) override;
@@ -58,7 +58,7 @@ namespace TEngine::Components::Graphics::Rendering::Services
         std::shared_ptr<ICameraStrategy> _activeCamera;
         std::vector<std::shared_ptr<IRenderingStrategy>> _strategies;
         std::shared_ptr<IShadersService> _shadersService;
-        std::shared_ptr<IBufferCacheService> _bufferCacheService;
+        std::shared_ptr<IBuffersService> _bufferCacheService;
     };
 }
 

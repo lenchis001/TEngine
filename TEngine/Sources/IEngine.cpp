@@ -9,7 +9,7 @@
 #include "Components/Graphics/MeshLoading/Services/MeshLoadingService.h"
 #include "Components/Graphics/Rendering/Services/Shaders/ShadersService.h"
 #include "Components/Graphics/ImageLoading/Services/ImageLoadingService.h"
-#include "Components/Graphics/Rendering/Services/Cache/BufferCacheService.h"
+#include "Components/Graphics/Rendering/Services/Buffers/BuffersService.h"
 
 using namespace TEngine;
 using namespace TEngine::Components::Graphics::Services;
@@ -21,7 +21,7 @@ using namespace TEngine::Components::Graphics::ImageLoading::Services;
 std::shared_ptr<IEngine> TEngine::createEngine()
 {
     auto shadersService = std::make_shared<ShadersService>();
-    auto bufferCacheService = std::make_shared<BufferCacheService>();
+    auto bufferCacheService = std::make_shared<BuffersService>();
 
     auto renderingService = std::make_shared<RenderingService>(shadersService, bufferCacheService);
     

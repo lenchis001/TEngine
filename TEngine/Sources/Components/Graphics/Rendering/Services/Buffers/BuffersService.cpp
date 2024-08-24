@@ -1,25 +1,25 @@
 #include "GL/glew.h"
 
-#include "BufferCacheService.h"
+#include "BuffersService.h"
 
 #include "cassert"
 
-using namespace TEngine::Components::Graphics::Rendering::Services::Cache;
+using namespace TEngine::Components::Graphics::Rendering::Services::Buffers;
 
-BufferCacheService::~BufferCacheService()
+BuffersService::~BuffersService()
 {
     assert(_vboCache.empty() && "Cache is not empty!");
     assert(_vaoCache.empty() && "Cache is not empty!");
 }
 
-bool BufferCacheService::existsVbo(const std::string &name) const
+bool BuffersService::existsVbo(const std::string &name) const
 {
     auto hash = _hashGenerator(name);
 
     return _vboCache.find(hash) != _vboCache.end();
 }
 
-GLuint BufferCacheService::getVbo(const std::string &name)
+GLuint BuffersService::getVbo(const std::string &name)
 {
     assert(existsVbo(name) && "VBO does not exist!");
 
@@ -28,7 +28,7 @@ GLuint BufferCacheService::getVbo(const std::string &name)
     return _vboCache[hash];
 }
 
-GLuint BufferCacheService::takeVbo(const std::string &name)
+GLuint BuffersService::takeVbo(const std::string &name)
 {
     auto hash = _hashGenerator(name);
 
@@ -49,7 +49,7 @@ GLuint BufferCacheService::takeVbo(const std::string &name)
     return vbo;
 }
 
-void BufferCacheService::releaseVbo(const std::string &name)
+void BuffersService::releaseVbo(const std::string &name)
 {
     assert(existsVbo(name) && "VBO does not exist!");
 
@@ -68,14 +68,14 @@ void BufferCacheService::releaseVbo(const std::string &name)
     }
 }
 
-bool BufferCacheService::existsVao(const std::string &name) const
+bool BuffersService::existsVao(const std::string &name) const
 {
     auto hash = _hashGenerator(name);
 
     return _vaoCache.find(hash) != _vaoCache.end();
 }
 
-GLuint BufferCacheService::getVao(const std::string &name)
+GLuint BuffersService::getVao(const std::string &name)
 {
     assert(existsVao(name) && "VAO does not exist!");
 
@@ -84,7 +84,7 @@ GLuint BufferCacheService::getVao(const std::string &name)
     return _vaoCache[hash];
 }
 
-GLuint BufferCacheService::takeVao(const std::string &name)
+GLuint BuffersService::takeVao(const std::string &name)
 {
     auto hash = _hashGenerator(name);
 
@@ -105,7 +105,7 @@ GLuint BufferCacheService::takeVao(const std::string &name)
     return vao;
 }
 
-void BufferCacheService::releaseVao(const std::string &name)
+void BuffersService::releaseVao(const std::string &name)
 {
     assert(existsVao(name) && "VAO does not exist!");
 
