@@ -14,10 +14,12 @@ using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStr
 
 RenderingService::RenderingService(
 	std::shared_ptr<IShadersService> shadersService,
-	std::shared_ptr<IBuffersService> bufferCacheService)
+	std::shared_ptr<IBuffersService> bufferCacheService,
+	std::shared_ptr<ITexturesService> textureService)
 	: _window(nullptr),
 	  _shadersService(shadersService),
 	  _bufferCacheService(bufferCacheService),
+	  _textureService(textureService),
 	  _activeCamera(nullptr),
 	  _root(std::make_shared<RenderableObjectBase>())
 {
@@ -38,7 +40,6 @@ void RenderingService::initialize(std::shared_ptr<IRenderingParameters> paramete
 		throw std::runtime_error("Failed to initialize GLFW");
 	}
 
-	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, parameters->getOpenGlMajorVersion());
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, parameters->getOpenGlMinorVersion());
@@ -101,13 +102,18 @@ void RenderingService::render()
 
 std::shared_ptr<IRenderableObject> RenderingService::addToRendering(
 	PrimitiveTypes type,
-	std::shared_ptr<Image> image,
+	std::string texturePath,
 	std::shared_ptr<IRenderableObject> parent)
 {
 	auto primitive = std::make_shared<RenderableObjectBase>();
 	(parent ? parent : _root)->addChild(primitive);
 
-	_strategies.push_back(std::make_shared<CubeRenderingStrategy>(_shadersService, _bufferCacheService, primitive, image));
+	_strategies.push_back(std::make_shared<CubeRenderingStrategy>(
+		_shadersService,
+		_bufferCacheService,
+		_textureService,
+		primitive,
+		texturePath));
 
 	return primitive;
 }

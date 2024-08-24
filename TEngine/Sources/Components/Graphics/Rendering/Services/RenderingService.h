@@ -10,6 +10,7 @@
 #include "RenderingStrategies/IRenderingStrategy.h"
 #include "Components/Graphics/Rendering/Services/Shaders/IShadersService.h"
 #include "Components/Graphics/Rendering/Services/Buffers/IBuffersService.h"
+#include "Components/Graphics/Rendering/Services/Textures/ITexturesService.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Models;
 using namespace TEngine::Components::Graphics::Rendering::Models::RenderableObjects;
@@ -17,8 +18,8 @@ using namespace TEngine::Components::Graphics::MeshLoading::Models;
 using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
 using namespace TEngine::Components::Graphics::Rendering::Services::Shaders;
 using namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies;
-using namespace TEngine::Components::Graphics::ImageLoading::Models;
 using namespace TEngine::Components::Graphics::Rendering::Services::Buffers;
+using namespace TEngine::Components::Graphics::Rendering::Services::Textures;
 
 using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies;
 
@@ -29,18 +30,19 @@ namespace TEngine::Components::Graphics::Rendering::Services
     public:
         RenderingService(
             std::shared_ptr<IShadersService> shadersService,
-            std::shared_ptr<IBuffersService> bufferCacheService);
+            std::shared_ptr<IBuffersService> bufferCacheService,
+            std::shared_ptr<ITexturesService> texturesService);
         ~RenderingService();
 
         void initialize(std::shared_ptr<IRenderingParameters> parameters) override;
-        
+
         bool isShutdownRequested() const override;
 
         double getTime() const override;
 
         std::shared_ptr<IRenderableObject> addToRendering(
             PrimitiveTypes type,
-            std::shared_ptr<Image> image,
+            std::string texturePath,
             std::shared_ptr<IRenderableObject> parent = nullptr) override;
 
         void render() override;
@@ -59,6 +61,7 @@ namespace TEngine::Components::Graphics::Rendering::Services
         std::vector<std::shared_ptr<IRenderingStrategy>> _strategies;
         std::shared_ptr<IShadersService> _shadersService;
         std::shared_ptr<IBuffersService> _bufferCacheService;
+        std::shared_ptr<ITexturesService> _textureService;
     };
 }
 

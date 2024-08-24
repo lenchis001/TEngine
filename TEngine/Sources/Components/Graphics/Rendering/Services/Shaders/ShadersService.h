@@ -18,7 +18,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::Shaders
 
         void release(GLuint programId) override;
     private:
-        std::string readShader(const std::string& shaderFile);
+        std::string _readShader(const std::string& shaderFile);
 
         std::map<std::string, std::size_t> _usagesCounter;
         std::map<std::string, GLuint> _shaderPrograms;

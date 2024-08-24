@@ -10,12 +10,14 @@
 #include "Components/Graphics/Rendering/Services/Shaders/IShadersService.h"
 #include "Components/Graphics/ImageLoading/Models/Image.h"
 #include "Components/Graphics/Rendering/Services/Buffers/IBuffersService.h"
+#include "Components/Graphics/Rendering/Services/Textures/ITexturesService.h"
 
 using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Graphics::Rendering::Services::Shaders;
 using namespace TEngine::Components::Graphics::Rendering::Models::RenderableObjects;
 using namespace TEngine::Components::Graphics::ImageLoading::Models;
 using namespace TEngine::Components::Graphics::Rendering::Services::Buffers;
+using namespace TEngine::Components::Graphics::Rendering::Services::Textures;
 
 namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::Primitives
 {
@@ -25,21 +27,23 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
         CubeRenderingStrategy(
             std::shared_ptr<IShadersService> shadersService,
             std::shared_ptr<IBuffersService> bufferCacheService,
+            std::shared_ptr<ITexturesService> texturesService,
             std::shared_ptr<IRenderableObject> cube,
-            std::shared_ptr<Image> image);
+            std::string texturePath);
         ~CubeRenderingStrategy() override;
 
         void render(const Matrix4x4f &vpMatrix) override;
 
     private:
         void _prepareVertexVbo();
-        void _prepareTexture(std::shared_ptr<Image> image);
+        void _prepareTexture(std::string texturePath);
         void _prepareUvVbo();
         void _prepareVao();
         void _prepareShader();
 
         std::shared_ptr<IShadersService> _shadersService;
         std::shared_ptr<IBuffersService> _bufferCacheService;
+        std::shared_ptr<ITexturesService> _texturesService;
 
         std::shared_ptr<IRenderableObject> _cube;
 

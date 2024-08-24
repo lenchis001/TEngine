@@ -20,12 +20,12 @@ GLuint ShadersService::take(const std::string &vertexShaderFile, const std::stri
 
     if (_shaderPrograms.find(shaderKey) == _shaderPrograms.end())
     {
-        std::string vertex = readShader(vertexShaderFile);
+        std::string vertex = _readShader(vertexShaderFile);
         if (vertex.empty())
         {
             return 0;
         }
-        std::string fragment = readShader(fragmentShaderFile);
+        std::string fragment = _readShader(fragmentShaderFile);
         if (fragment.empty())
         {
             return 0;
@@ -115,7 +115,7 @@ void ShadersService::release(GLuint programId)
     assert(false && "Shader program not found!");
 }
 
-std::string ShadersService::readShader(const std::string &shaderFile)
+std::string ShadersService::_readShader(const std::string &shaderFile)
 {
     std::ifstream file(shaderFile);
     if (!file.is_open())

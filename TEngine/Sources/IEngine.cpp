@@ -10,6 +10,7 @@
 #include "Components/Graphics/Rendering/Services/Shaders/ShadersService.h"
 #include "Components/Graphics/ImageLoading/Services/ImageLoadingService.h"
 #include "Components/Graphics/Rendering/Services/Buffers/BuffersService.h"
+#include "Components/Graphics/Rendering/Services/Textures/TexturesService.h"
 
 using namespace TEngine;
 using namespace TEngine::Components::Graphics::Services;
@@ -17,19 +18,21 @@ using namespace TEngine::Components::Graphics::Rendering::Services;
 using namespace TEngine::Components::Graphics::MeshLoading::Services;
 using namespace TEngine::Components::Graphics::Rendering::Services::Shaders;
 using namespace TEngine::Components::Graphics::ImageLoading::Services;
+using namespace TEngine::Components::Graphics::Rendering::Services::Textures;
 
 std::shared_ptr<IEngine> TEngine::createEngine()
 {
+    auto imageLoadingService = std::make_shared<ImageLoadingService>();
+
     auto shadersService = std::make_shared<ShadersService>();
     auto bufferCacheService = std::make_shared<BuffersService>();
+    auto texturesService = std::make_shared<TexturesService>(imageLoadingService);
 
-    auto renderingService = std::make_shared<RenderingService>(shadersService, bufferCacheService);
+    auto renderingService = std::make_shared<RenderingService>(shadersService, bufferCacheService, texturesService);
     
     auto meshLoadingService = std::make_shared<MeshLoadingService>();
 
-    auto imageLoadingService = std::make_shared<ImageLoadingService>();
-
-    auto graphicsService = std::make_shared<GraphicsService>(renderingService, meshLoadingService, imageLoadingService);
+    auto graphicsService = std::make_shared<GraphicsService>(renderingService, meshLoadingService, texturesService);
 
     return std::make_shared<Engine>(graphicsService);
 }

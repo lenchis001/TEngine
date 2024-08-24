@@ -5,7 +5,7 @@
 
 #include "Rendering/Services/IRenderingService.h"
 #include "MeshLoading/Services/IMeshLoadingService.h"
-#include "ImageLoading/Services/IImageLoadingService.h"
+#include "Rendering/Services/Textures/ITexturesService.h"
 
 using namespace TEngine::Models;
 using namespace TEngine::Components::Graphics::Rendering::Services;
@@ -15,7 +15,7 @@ using namespace TEngine::Components::Graphics::Rendering::Models::RenderableObje
 using namespace TEngine::Components::Graphics::MeshLoading::Models;
 using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
 using namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies;
-using namespace TEngine::Components::Graphics::ImageLoading::Services;
+using namespace TEngine::Components::Graphics::Rendering::Services::Textures;
 
 namespace TEngine::Components::Graphics::Services
 {
@@ -25,7 +25,7 @@ namespace TEngine::Components::Graphics::Services
         GraphicsService(
             std::shared_ptr<IRenderingService> renderingService,
             std::shared_ptr<IMeshLoadingService> meshLoadingService,
-            std::shared_ptr<IImageLoadingService> imageLoadingService);
+            std::shared_ptr<ITexturesService> texturesService);
 
         void initialize(std::shared_ptr<IGraphicsParameters> parameters) override;
 
@@ -49,7 +49,7 @@ namespace TEngine::Components::Graphics::Services
     private:
         std::shared_ptr<IRenderingService> _renderingService;
         std::shared_ptr<IMeshLoadingService> _meshLoadingService;
-        std::shared_ptr<IImageLoadingService> _imageLoadingService;
+        std::shared_ptr<ITexturesService> _texturesService;
     };
 }
 

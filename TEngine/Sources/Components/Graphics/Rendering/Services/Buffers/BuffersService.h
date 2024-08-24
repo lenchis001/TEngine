@@ -1,5 +1,5 @@
-#ifndef TENGINE_BUFFER_CACHE_SERVICE_H
-#define TENGINE_BUFFER_CACHE_SERVICE_H
+#ifndef TENGINE_BUFFERS_SERVICE_H
+#define TENGINE_BUFFERS_SERVICE_H
 
 #include "IBuffersService.h"
 
@@ -34,4 +34,4 @@ namespace TEngine::Components::Graphics::Rendering::Services::Buffers
     };
 }
 
-#endif // TENGINE_BUFFER_CACHE_SERVICE_H
+#endif // TENGINE_BUFFERS_SERVICE_H

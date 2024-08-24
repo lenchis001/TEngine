@@ -14,10 +14,12 @@ using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStr
 CubeRenderingStrategy::CubeRenderingStrategy(
     std::shared_ptr<IShadersService> shadersService,
     std::shared_ptr<IBuffersService> bufferCacheService,
+    std::shared_ptr<ITexturesService> texturesService,
     std::shared_ptr<IRenderableObject> cube,
-    std::shared_ptr<Image> image)
+    std::string texturePath)
     : _shadersService(shadersService),
       _bufferCacheService(bufferCacheService),
+      _texturesService(texturesService),
       _cube(cube)
 {
     _vpMatrix = Matrix4x4f(1.f);
@@ -27,15 +29,15 @@ CubeRenderingStrategy::CubeRenderingStrategy(
     _prepareVertexVbo();
     _prepareUvVbo();
     _prepareVao();
-    _prepareTexture(image);
+    _prepareTexture(texturePath);
 
     _prepareShader();
 }
 
 CubeRenderingStrategy::~CubeRenderingStrategy()
 {
-    glDeleteTextures(1, &_textureId);
-    
+    _texturesService->release(_textureId);
+
     _shadersService->release(_shaderProgram);
 
     RELEASE_VAO(VAO_NAME);
@@ -123,17 +125,9 @@ void CubeRenderingStrategy::_prepareVertexVbo()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void CubeRenderingStrategy::_prepareTexture(std::shared_ptr<Image> image)
+void CubeRenderingStrategy::_prepareTexture(std::string texturePath)
 {
-    glGenTextures(1, &_textureId);
-    glBindTexture(GL_TEXTURE_2D, _textureId);
-
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->getWidth(), image->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, image->getData());
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-    glBindTexture(GL_TEXTURE_2D, 0);
+    _textureId = _texturesService->take(texturePath);
 }
 
 void CubeRenderingStrategy::_prepareUvVbo()

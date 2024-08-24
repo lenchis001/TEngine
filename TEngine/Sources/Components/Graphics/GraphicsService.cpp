@@ -5,16 +5,16 @@ using namespace TEngine::Components::Graphics::Services;
 GraphicsService::GraphicsService(
 	std::shared_ptr<IRenderingService> renderingService,
 	std::shared_ptr<IMeshLoadingService> meshLoadingService,
-	std::shared_ptr<IImageLoadingService> imageLoadingService)
+	std::shared_ptr<ITexturesService> texturesService)
 	: _renderingService(renderingService),
 	  _meshLoadingService(meshLoadingService),
-	  _imageLoadingService(imageLoadingService)
+	  _texturesService(texturesService)
 {
 }
 
 void GraphicsService::initialize(std::shared_ptr<IGraphicsParameters> parameters)
 {
-	_imageLoadingService->initialize();
+	_texturesService->initialize();
 	_renderingService->initialize(parameters->getRenderingParameters());
 }
 
@@ -44,9 +44,7 @@ std::shared_ptr<IRenderableObject> GraphicsService::addPrimitive(
 	std::string texturePath,
 	std::shared_ptr<IRenderableObject> parent)
 {
-	auto image = _imageLoadingService->load(texturePath);
-
-	auto primitive = _renderingService->addToRendering(type, image, parent);
+	auto primitive = _renderingService->addToRendering(type, texturePath, parent);
 
 	return primitive;
 }
