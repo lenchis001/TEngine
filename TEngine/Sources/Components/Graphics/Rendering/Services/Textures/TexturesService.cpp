@@ -58,6 +58,8 @@ void TexturesService::release(GLuint textureId)
             return;
         }
     }
+
+    assert(false && "Texture not found!");
 }
 
 GLuint TexturesService::_readTexture(const std::string& textureFile)
