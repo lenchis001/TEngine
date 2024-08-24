@@ -35,12 +35,13 @@ CubeRenderingStrategy::CubeRenderingStrategy(
 CubeRenderingStrategy::~CubeRenderingStrategy()
 {
     glDeleteTextures(1, &_textureId);
-    glDeleteProgram(_shaderProgram);
+    
+    _shadersService->release(_shaderProgram);
 
-    REMOVE_VAO(VAO_NAME);
+    RELEASE_VAO(VAO_NAME);
 
-    REMOVE_VBO(VERTEX_VBO_NAME);
-    REMOVE_VBO(UV_VBO_NAME);
+    RELEASE_VBO(VERTEX_VBO_NAME);
+    RELEASE_VBO(UV_VBO_NAME);
 }
 
 void CubeRenderingStrategy::render(const Matrix4x4f &vpMatrix)
@@ -75,7 +76,7 @@ void CubeRenderingStrategy::_prepareVertexVbo()
 {
     RETURN_IF_VBO_EXISTS(VERTEX_VBO_NAME);
 
-    GLuint vbo = CREATE_VBO(VERTEX_VBO_NAME);
+    GLuint vbo = TAKE_VBO(VERTEX_VBO_NAME);
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
@@ -139,7 +140,7 @@ void CubeRenderingStrategy::_prepareUvVbo()
 {
     RETURN_IF_VBO_EXISTS(UV_VBO_NAME);
 
-    GLuint vbo = CREATE_VBO(UV_VBO_NAME);
+    GLuint vbo = TAKE_VBO(UV_VBO_NAME);
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
@@ -190,7 +191,7 @@ void CubeRenderingStrategy::_prepareVao()
 {
     RETURN_IF_VAO_EXISTS(VAO_NAME, _vao);
 
-    _vao = CREATE_VAO(VAO_NAME);
+    _vao = TAKE_VAO(VAO_NAME);
 
     glBindVertexArray(_vao);
 
@@ -212,7 +213,7 @@ void CubeRenderingStrategy::_prepareVao()
 
 void CubeRenderingStrategy::_prepareShader()
 {
-    _shaderProgram = _shadersService->loadShader(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
+    _shaderProgram = _shadersService->take(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
 
     _matrixShaderId = glGetUniformLocation(_shaderProgram, "MVP");
     _textureSamplerShaderId = glGetUniformLocation(_shaderProgram, "textureSampler");

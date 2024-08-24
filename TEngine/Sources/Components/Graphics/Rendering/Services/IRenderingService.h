@@ -19,6 +19,8 @@ namespace TEngine::Components::Graphics::Rendering::Services
 
         virtual void initialize(std::shared_ptr<TEngine::Components::Graphics::Rendering::Models::IRenderingParameters> parameters) = 0;
 
+        virtual bool isShutdownRequested() const = 0;
+
         virtual double getTime() const = 0;
 
         virtual void render() = 0;

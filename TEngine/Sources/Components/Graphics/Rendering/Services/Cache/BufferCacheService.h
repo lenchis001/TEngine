@@ -15,13 +15,13 @@ namespace TEngine::Components::Graphics::Rendering::Services::Cache
 
         bool existsVbo(const std::string &name) const override;
         GLuint getVbo(const std::string &name) override;
-        GLuint createVbo(const std::string &name) override;
-        void removeVbo(const std::string &name) override;
+        GLuint takeVbo(const std::string &name) override;
+        void releaseVbo(const std::string &name) override;
 
         bool existsVao(const std::string &name) const override;
         GLuint getVao(const std::string &name) override;
-        GLuint createVao(const std::string &name) override;
-        void removeVao(const std::string &name) override;
+        GLuint takeVao(const std::string &name) override;
+        void releaseVao(const std::string &name) override;
 
     private:
         std::hash<std::string> _hashGenerator;

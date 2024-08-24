@@ -33,6 +33,8 @@ namespace TEngine::Components::Graphics::Rendering::Services
         ~RenderingService();
 
         void initialize(std::shared_ptr<IRenderingParameters> parameters) override;
+        
+        bool isShutdownRequested() const override;
 
         double getTime() const override;
 

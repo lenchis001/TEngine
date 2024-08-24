@@ -22,8 +22,6 @@ namespace TEngine
 
     private:
         std::shared_ptr<IGraphicsService> _graphicsService;
-
-        GLFWwindow* _window;
     };
 }
 

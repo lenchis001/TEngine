@@ -1,5 +1,7 @@
 #include "Engine.h"
 
+#include "GLFW/glfw3.h"
+
 using namespace TEngine;
 
 Engine::Engine(std::shared_ptr<IGraphicsService> graphicsService)

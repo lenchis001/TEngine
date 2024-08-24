@@ -47,6 +47,11 @@ int main()
 
                 framesCounter = 0;
                 previousCheckTime = time;
+
+                if (graphicsService->isShutdownRequested())
+                {
+                    break;
+                }
             }
 
             rotation.setY(time);

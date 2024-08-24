@@ -70,6 +70,11 @@ void RenderingService::initialize(std::shared_ptr<IRenderingParameters> paramete
 	glEnable(GL_DEPTH_TEST);
 }
 
+bool RenderingService::isShutdownRequested() const
+{
+	return glfwWindowShouldClose(_window) != 0;
+}
+
 double RenderingService::getTime() const
 {
 	return glfwGetTime();

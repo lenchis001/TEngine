@@ -9,6 +9,7 @@ using namespace TEngine::Components::Graphics::Rendering::Services::Cache;
 BufferCacheService::~BufferCacheService()
 {
     assert(_vboCache.empty() && "Cache is not empty!");
+    assert(_vaoCache.empty() && "Cache is not empty!");
 }
 
 bool BufferCacheService::existsVbo(const std::string &name) const
@@ -20,31 +21,37 @@ bool BufferCacheService::existsVbo(const std::string &name) const
 
 GLuint BufferCacheService::getVbo(const std::string &name)
 {
-    assert(existsVbo(name) && "Value does not exist!");
+    assert(existsVbo(name) && "VBO does not exist!");
 
     auto hash = _hashGenerator(name);
 
     return _vboCache[hash];
 }
 
-GLuint BufferCacheService::createVbo(const std::string &name)
+GLuint BufferCacheService::takeVbo(const std::string &name)
 {
-    assert(!existsVbo(name) && "Value does not exist!");
-
     auto hash = _hashGenerator(name);
+
+    if (existsVbo(name))
+    {
+        _vboUsagesCounter[hash]++;
+
+        return _vboCache[hash];
+    }
 
     GLuint vbo;
 
     glGenBuffers(1, &vbo);
 
     _vboCache[hash] = vbo;
+    _vboUsagesCounter[hash] = 1;
 
     return vbo;
 }
 
-void BufferCacheService::removeVbo(const std::string &name)
+void BufferCacheService::releaseVbo(const std::string &name)
 {
-    assert(existsVbo(name) && "Value does not exist!");
+    assert(existsVbo(name) && "VBO does not exist!");
 
     auto hash = _hashGenerator(name);
 
@@ -70,31 +77,37 @@ bool BufferCacheService::existsVao(const std::string &name) const
 
 GLuint BufferCacheService::getVao(const std::string &name)
 {
-    assert(existsVao(name) && "Value does not exist!");
+    assert(existsVao(name) && "VAO does not exist!");
 
     auto hash = _hashGenerator(name);
 
     return _vaoCache[hash];
 }
 
-GLuint BufferCacheService::createVao(const std::string &name)
+GLuint BufferCacheService::takeVao(const std::string &name)
 {
-    assert(!existsVao(name) && "Value does not exist!");
-
     auto hash = _hashGenerator(name);
+
+    if (existsVao(name))
+    {
+        _vaoUsagesCounter[hash]++;
+
+        return _vaoCache[hash];
+    }
 
     GLuint vao;
 
     glGenVertexArrays(1, &vao);
 
     _vaoCache[hash] = vao;
+    _vaoUsagesCounter[hash] = 1;
 
     return vao;
 }
 
-void BufferCacheService::removeVao(const std::string &name)
+void BufferCacheService::releaseVao(const std::string &name)
 {
-    assert(existsVao(name) && "Value does not exist!");
+    assert(existsVao(name) && "VAO does not exist!");
 
     auto hash = _hashGenerator(name);
 

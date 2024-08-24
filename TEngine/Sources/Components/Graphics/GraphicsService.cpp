@@ -18,6 +18,11 @@ void GraphicsService::initialize(std::shared_ptr<IGraphicsParameters> parameters
 	_renderingService->initialize(parameters->getRenderingParameters());
 }
 
+bool GraphicsService::isShutdownRequested() const
+{
+	return _renderingService->isShutdownRequested();
+}
+
 double GraphicsService::getTime() const
 {
 	return _renderingService->getTime();

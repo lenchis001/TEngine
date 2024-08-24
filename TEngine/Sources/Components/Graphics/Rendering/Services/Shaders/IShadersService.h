@@ -12,7 +12,9 @@ namespace TEngine::Components::Graphics::Rendering::Services::Shaders
     public:
         virtual ~IShadersService() = default;
 
-        virtual GLuint loadShader(const std::string &vertexShaderFile, const std::string& fragmentShaderFile) = 0;
+        virtual GLuint take(const std::string &vertexShaderFile, const std::string& fragmentShaderFile) = 0;
+
+        virtual void release(GLuint programId) = 0;
     };
 }
 

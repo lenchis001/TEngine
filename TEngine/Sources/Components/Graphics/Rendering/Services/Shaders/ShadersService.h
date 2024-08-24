@@ -14,10 +14,13 @@ namespace TEngine::Components::Graphics::Rendering::Services::Shaders
         ShadersService() = default;
         ~ShadersService() override;
 
-        GLuint loadShader(const std::string &vertexShaderFile, const std::string& fragmentShaderFile) override;
+        GLuint take(const std::string &vertexShaderFile, const std::string& fragmentShaderFile) override;
+
+        void release(GLuint programId) override;
     private:
         std::string readShader(const std::string& shaderFile);
 
+        std::map<std::string, std::size_t> _usagesCounter;
         std::map<std::string, GLuint> _shaderPrograms;
     };
 }
