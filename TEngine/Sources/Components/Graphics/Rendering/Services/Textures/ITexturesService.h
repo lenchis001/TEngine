@@ -3,7 +3,7 @@
 
 #include "string"
 
-#include "GL/gl.h"
+#include "GLFW/glfw3.h"
 
 namespace TEngine::Components::Graphics::Rendering::Services::Textures
 {
