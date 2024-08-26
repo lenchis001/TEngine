@@ -1,5 +1,7 @@
 #include "GL/glew.h"
 
+#include "algorithm"
+
 #include "CubeRenderingStrategy.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::Primitives;

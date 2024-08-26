@@ -2,8 +2,11 @@
 #define TENGINE_IRENDERINGPARAMETERS_H
 
 #include "string"
+#include "memory"
 
 #include "Configs/TEngineExport.h"
+
+#include "Optimization/IBigWorldParameters.h"
 
 namespace TEngine::Components::Graphics::Rendering::Models
 {
@@ -33,6 +36,10 @@ namespace TEngine::Components::Graphics::Rendering::Models
 		virtual bool getIsVerticalSyncEnabled() const = 0;
 
 		virtual void setIsVerticalSyncEnabled(bool value) = 0;
+
+		virtual std::shared_ptr<Optimization::IBigWorldParameters> getBigWorldParameters() const = 0;
+
+		virtual void setBigWorldParameters(std::shared_ptr<Optimization::IBigWorldParameters> bigWorldParameters) = 0;
 
 		virtual ~IRenderingParameters() = default;
 	};

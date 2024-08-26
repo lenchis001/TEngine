@@ -15,13 +15,16 @@ using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStr
 RenderingService::RenderingService(
 	std::shared_ptr<IShadersService> shadersService,
 	std::shared_ptr<IBuffersService> bufferCacheService,
-	std::shared_ptr<ITexturesService> textureService)
+	std::shared_ptr<ITexturesService> textureService,
+	std::shared_ptr<IBigWorldService> bigWorldService)
 	: _window(nullptr),
 	  _shadersService(shadersService),
 	  _bufferCacheService(bufferCacheService),
 	  _textureService(textureService),
+	  _bigWorldService(bigWorldService),
 	  _activeCamera(nullptr),
-	  _root(std::make_shared<RenderableObjectBase>())
+	  _root(std::make_shared<RenderableObjectBase>()),
+	  _isBigWorldOptimizationEnabled(false)
 {
 }
 
@@ -69,6 +72,11 @@ void RenderingService::initialize(std::shared_ptr<IRenderingParameters> paramete
 
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 	glEnable(GL_DEPTH_TEST);
+
+	auto bigWorldParameters = parameters->getBigWorldParameters();
+
+	_isBigWorldOptimizationEnabled = bigWorldParameters->isEnabled();
+	_bigWorldService->initialize(bigWorldParameters);
 }
 
 bool RenderingService::isShutdownRequested() const
@@ -90,9 +98,16 @@ void RenderingService::render()
 		_activeCamera->render();
 		const auto &vpMatrix = _activeCamera->getVpMatrix();
 
-		for (const auto &strategy : _strategies)
+		if (_isBigWorldOptimizationEnabled)
 		{
-			strategy->render(vpMatrix);
+			_bigWorldService->render(_strategies, vpMatrix);
+		}
+		else
+		{
+			for (const auto &strategy : _strategies)
+			{
+				strategy->render(vpMatrix);
+			}
 		}
 	}
 
