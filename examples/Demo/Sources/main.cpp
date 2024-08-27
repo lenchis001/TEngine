@@ -20,6 +20,10 @@ int main()
         renderingParameters->setWidth(1024);
         renderingParameters->setHeight(768);
         renderingParameters->setIsVerticalSyncEnabled(false);
+        renderingParameters->getBigWorldParameters()->setEnabled(true);
+        renderingParameters->getBigWorldParameters()->setQueriesAmount(2);
+        renderingParameters->getBigWorldParameters()->setTrakingFrequency(60);
+        renderingParameters->getBigWorldParameters()->setVisibilityTreshold(256000);
 
         engine->initialize(creationParameters);
 

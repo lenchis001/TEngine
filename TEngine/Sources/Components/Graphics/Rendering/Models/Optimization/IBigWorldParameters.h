@@ -14,7 +14,7 @@ namespace TEngine::Components::Graphics::Rendering::Models::Optimization
 
         virtual unsigned int getTrakingFrequency() const = 0;
 
-        virtual unsigned setQueriesAmount(unsigned int value) = 0;
+        virtual void setQueriesAmount(unsigned int value) = 0;
 
         virtual unsigned getQueriesAmount() const = 0;
 

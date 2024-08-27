@@ -9,7 +9,6 @@ using namespace TEngine::Components::Graphics::Rendering::Services::Optimization
 #define HIGH_PRIORITY 0
 #define MEDIUM_PRIORITY 1
 #define LOW_PRIORITY 2
-#define VERY_LOW_PRIORITY 3
 
 #define IS_PRIORITY_HIGHER_THAN(priority, minimalPriority) priority < minimalPriority
 
@@ -34,28 +33,18 @@ void BigWorldService::initialize(std::shared_ptr<IBigWorldParameters> parameters
 
     _queriesAmount = parameters->getQueriesAmount();
 
-    glGenQueriesARB(1, &_occlusionQueryId);
+    glGenQueries(1, &_occlusionQueryId);
 }
-
-int frameCounter = 0;
-int itemsRendered = 0;
 
 void BigWorldService::render(
     const std::vector<std::shared_ptr<Components::Graphics::Rendering::Services::RenderingStrategies::IRenderingStrategy>> strategies,
     const Components::Graphics::Models::Matrix4x4f &vpMatrix)
 {
     auto isOcclusionTestRequiredForFrame = !(_frameNumber % _framesToSkip);
-    if (isOcclusionTestRequiredForFrame)
-    {
-        _targetIndex--;
-
-        if (_targetIndex < 0 || _targetIndex >= strategies.size())
-        {
-            _targetIndex = strategies.size() - 1;
-        }
-    }
 
     std::size_t index = 0;
+    auto strategiesSize = strategies.size();
+    auto queriesLeft = _queriesAmount;
 
     for (const auto &strategy : strategies)
     {
@@ -65,30 +54,36 @@ void BigWorldService::render(
 
         if (isOcclusionTestRequired)
         {
-            glBeginQueryARB(GL_SAMPLES_PASSED, _occlusionQueryId);
+            if (_targetIndex >= strategiesSize)
+            {
+                _targetIndex = 0;
+            }
+        }
+
+        if (isOcclusionTestRequired)
+        {
+            glBeginQuery(GL_SAMPLES_PASSED, _occlusionQueryId);
         }
 
         if (isOcclusionTestRequired || IS_PRIORITY_HIGHER_THAN(currentPriority, MEDIUM_PRIORITY))
         {
             strategy->render(vpMatrix);
-            itemsRendered++;
         }
 
         if (isOcclusionTestRequired)
         {
-            glEndQueryARB(GL_SAMPLES_PASSED_ARB);
-            glGetQueryObjectuivARB(_occlusionQueryId, GL_QUERY_RESULT_ARB, &_occlusionQueryResult);
+            glEndQuery(GL_SAMPLES_PASSED_ARB);
+            glGetQueryObjectuiv(_occlusionQueryId, GL_QUERY_RESULT_ARB, &_occlusionQueryResult);
 
-            currentPriority = std::clamp(currentPriority + (_occlusionQueryResult > _visibilityTreshold ? -1 : 1), HIGH_PRIORITY, VERY_LOW_PRIORITY);
+            currentPriority = std::clamp(currentPriority + (_occlusionQueryResult > _visibilityTreshold ? -1 : 1), HIGH_PRIORITY, LOW_PRIORITY);
         }
-    }
 
-    frameCounter++;
-    if (frameCounter == 200)
-    {
-        std::cout << "Items rendered: " << itemsRendered / frameCounter << std::endl;
+        if (queriesLeft)
+        {
+            queriesLeft--;
+            _targetIndex++;
+        }
 
-        frameCounter = 0;
-        itemsRendered = 0;
+        index++;
     }
 }
