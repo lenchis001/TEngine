@@ -3,6 +3,8 @@
 
 #include "ICameraStrategy.h"
 
+using namespace TEngine::Components::Graphics::Models;
+
 namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies
 {
 
@@ -14,18 +16,20 @@ namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies
             float aspectRatio,
             float zNear,
             float zFar,
-            const TEngine::Components::Graphics::Models::Vector3df &position,
-            const TEngine::Components::Graphics::Models::Vector3df &target);
+            const Vector3df &position,
+            const Vector3df &target);
 
-        const TEngine::Components::Graphics::Models::Vector3df &getPosition() const override;
-        void setPosition(const TEngine::Components::Graphics::Models::Vector3df &value) override;
+        const Vector3df &getPosition() const override;
+        void setPosition(const Vector3df &value) override;
 
-        const TEngine::Components::Graphics::Models::Vector3df &getTarget() const override;
-        void setTarget(const TEngine::Components::Graphics::Models::Vector3df &value) override;
+        const Vector3df &getTarget() const override;
+        void setTarget(const Vector3df &value) override;
 
         void render() override;
 
-        const TEngine::Components::Graphics::Models::Matrix4x4f &getVpMatrix() const override;
+        const Matrix4x4f &getVpMatrix() const override;
+
+        const Parallelepipedf &getViewArea() const override;
 
         ~CameraStrategyBase() override = default;
 
@@ -35,11 +39,13 @@ namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies
         void _recalculateProjection();
         void _recalculateView();
         void _recalculateVp();
+        void _recalculateViewArea();
 
         float _fov, _aspectRatio, _zNear, _zFar;
 
-        TEngine::Components::Graphics::Models::Vector3df _position, _target;
-        TEngine::Components::Graphics::Models::Matrix4x4f _projectionMatrix, _viewMatrix, _vpMatrix;
+        Vector3df _position, _target;
+        Matrix4x4f _projectionMatrix, _viewMatrix, _vpMatrix;
+        Parallelepipedf _viewArea;
     };
 
 }

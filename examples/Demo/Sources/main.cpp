@@ -1,6 +1,8 @@
 #include "IEngine.h"
 
 #include "iostream"
+#include "memory"
+#include "vector"
 
 #include "Components/Graphics/Models/PrimitiveTypes.h"
 #include "Components/Graphics/Models/Vector3d.h"
@@ -33,13 +35,10 @@ int main()
 
         auto cube = graphicsService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp");
 
-        std::vector<std::shared_ptr<TEngine::Components::Graphics::Rendering::Models::RenderableObjects::IRenderableObject>> cubes;
-
-        for (int i = 0; i < 8192; i++)
+        for (int i = 0; i < 1024; i++)
         {
             auto cube2 = graphicsService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture1.bmp", cube);
             cube2->setPosition(Vector3df(0.0f, 0.0f, i * 4.0f + 4.0f));
-            cubes.push_back(cube2);
         }
 
         auto rotation = Vector3df(0.0f, 0.0f, 0.0f);
@@ -65,10 +64,6 @@ int main()
 
             rotation.setY(time);
             cube->setRotation(rotation);
-            for (auto &cube : cubes)
-            {
-                cube->setRotation(rotation);
-            }
 
             engine->getGraphicsService()->render();
 

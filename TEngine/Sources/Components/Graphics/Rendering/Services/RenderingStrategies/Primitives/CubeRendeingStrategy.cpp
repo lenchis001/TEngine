@@ -17,17 +17,12 @@ CubeRenderingStrategy::CubeRenderingStrategy(
     std::shared_ptr<IShadersService> shadersService,
     std::shared_ptr<IBuffersService> bufferCacheService,
     std::shared_ptr<ITexturesService> texturesService,
-    std::shared_ptr<IRenderableObject> cube,
     std::string texturePath)
-    : _shadersService(shadersService),
+    : RenderingStrategyBase(),
+      _shadersService(shadersService),
       _bufferCacheService(bufferCacheService),
-      _texturesService(texturesService),
-      _cube(cube)
+      _texturesService(texturesService)
 {
-    _vpMatrix = Matrix4x4f(1.f);
-    _modelMatrix = Matrix4x4f(1.f);
-    _mvpMatrix = Matrix4x4f(1.f);
-
     _prepareVertexVbo();
     _prepareUvVbo();
     _prepareVao();
@@ -48,22 +43,17 @@ CubeRenderingStrategy::~CubeRenderingStrategy()
     RELEASE_VBO(UV_VBO_NAME);
 }
 
-void CubeRenderingStrategy::render(const Matrix4x4f &vpMatrix)
+void CubeRenderingStrategy::render(
+    const Matrix4x4f &vpMatrix,
+    const Components::Graphics::Models::Parallelepipedf& viewArea)
 {
+    RenderingStrategyBase::render(vpMatrix, viewArea);
+
     glBindVertexArray(_vao);
 
     glUseProgram(_shaderProgram);
 
-    const auto &modelMatrix = _cube->getModelMatrix();
-    if (_vpMatrix != vpMatrix || _modelMatrix != modelMatrix)
-    {
-        _vpMatrix = vpMatrix;
-        _modelMatrix = modelMatrix;
-
-        _mvpMatrix = vpMatrix * modelMatrix;
-    }
-
-    glUniformMatrix4fv(_matrixShaderId, 1, GL_FALSE, _mvpMatrix.getInternalData());
+    glUniformMatrix4fv(_matrixShaderId, 1, GL_FALSE, getMvpMatrix().getInternalData());
     glUniform1i(_textureSamplerShaderId, 0);
 
     glActiveTexture(GL_TEXTURE0);

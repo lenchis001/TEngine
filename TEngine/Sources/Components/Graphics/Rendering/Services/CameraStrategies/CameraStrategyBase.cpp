@@ -3,7 +3,6 @@
 #define _USE_MATH_DEFINES
 #include "math.h"
 
-using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies;
 
 CameraStrategyBase::CameraStrategyBase(
@@ -18,11 +17,13 @@ CameraStrategyBase::CameraStrategyBase(
       _zNear(zNear),
       _zFar(zFar),
       _position(position),
-      _target(target)
+      _target(target),
+      _viewArea(position, target)
 {
     _recalculateProjection();
     _recalculateView();
     _recalculateVp();
+    _recalculateViewArea();
 }
 
 const Vector3df &CameraStrategyBase::getPosition() const
@@ -33,6 +34,10 @@ const Vector3df &CameraStrategyBase::getPosition() const
 void CameraStrategyBase::setPosition(const Vector3df &value)
 {
     _position = value;
+
+    _recalculateView();
+    _recalculateVp();
+    _recalculateViewArea();
 }
 
 const Vector3df &CameraStrategyBase::getTarget() const
@@ -43,6 +48,10 @@ const Vector3df &CameraStrategyBase::getTarget() const
 void CameraStrategyBase::setTarget(const Vector3df &value)
 {
     _target = value;
+
+    _recalculateView();
+    _recalculateVp();
+    _recalculateViewArea();
 }
 
 void CameraStrategyBase::render()
@@ -53,6 +62,11 @@ void CameraStrategyBase::render()
 const Matrix4x4f &CameraStrategyBase::getVpMatrix() const
 {
     return _vpMatrix;
+}
+
+const Parallelepipedf &CameraStrategyBase::getViewArea() const
+{
+    return _viewArea;
 }
 
 void CameraStrategyBase::_recalculateProjection()
@@ -92,6 +106,16 @@ void CameraStrategyBase::_recalculateView()
 void CameraStrategyBase::_recalculateVp()
 {
     _vpMatrix = _projectionMatrix * _viewMatrix;
+}
+
+void CameraStrategyBase::_recalculateViewArea()
+{
+    auto size = _zFar - _zNear;
+
+    auto topCorner = _position + Vector3df(size, size, size);
+    auto bottomCorner = _position + Vector3df(-size, -size, -size);
+
+    _viewArea = Parallelepipedf(bottomCorner, topCorner);
 }
 
 void CameraStrategyBase::setAspectRatio(float value)

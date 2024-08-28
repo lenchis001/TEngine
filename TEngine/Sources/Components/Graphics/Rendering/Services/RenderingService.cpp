@@ -4,27 +4,24 @@
 
 #include "RenderingService.h"
 
-#include "Components/Graphics/Rendering/Models/RenderableObjects/RenderableObjectBase.h"
 #include "RenderingStrategies/Primitives/CubeRenderingStrategy.h"
 #include "CameraStrategies/CameraStrategyBase.h"
+#include "Components/Graphics/Rendering/Services/RenderingStrategies/RenderingStrategyBase.h"
 
-using namespace TEngine::Components::Graphics::Rendering::Models::RenderableObjects;
+using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies;
 using namespace TEngine::Components::Graphics::Rendering::Services;
 using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::Primitives;
 
 RenderingService::RenderingService(
 	std::shared_ptr<IShadersService> shadersService,
 	std::shared_ptr<IBuffersService> bufferCacheService,
-	std::shared_ptr<ITexturesService> textureService,
-	std::shared_ptr<IBigWorldService> bigWorldService)
+	std::shared_ptr<ITexturesService> textureService)
 	: _window(nullptr),
 	  _shadersService(shadersService),
 	  _bufferCacheService(bufferCacheService),
 	  _textureService(textureService),
-	  _bigWorldService(bigWorldService),
 	  _activeCamera(nullptr),
-	  _root(std::make_shared<RenderableObjectBase>()),
-	  _isBigWorldOptimizationEnabled(false)
+	  _root(std::make_shared<RenderingStrategyBase>())
 {
 }
 
@@ -74,9 +71,6 @@ void RenderingService::initialize(std::shared_ptr<IRenderingParameters> paramete
 	glEnable(GL_DEPTH_TEST);
 
 	auto bigWorldParameters = parameters->getBigWorldParameters();
-
-	_isBigWorldOptimizationEnabled = bigWorldParameters->isEnabled();
-	_bigWorldService->initialize(bigWorldParameters);
 }
 
 bool RenderingService::isShutdownRequested() const
@@ -97,40 +91,29 @@ void RenderingService::render()
 	{
 		_activeCamera->render();
 		const auto &vpMatrix = _activeCamera->getVpMatrix();
+		const auto &viewArea = _activeCamera->getViewArea();
 
-		if (_isBigWorldOptimizationEnabled)
-		{
-			_bigWorldService->render(_strategies, vpMatrix);
-		}
-		else
-		{
-			for (const auto &strategy : _strategies)
-			{
-				strategy->render(vpMatrix);
-			}
-		}
+		_root->render(vpMatrix, viewArea);
 	}
 
 	glfwSwapBuffers(_window);
 	glfwPollEvents();
 }
 
-std::shared_ptr<IRenderableObject> RenderingService::addToRendering(
+std::shared_ptr<IRenderingStrategy> RenderingService::addToRendering(
 	PrimitiveTypes type,
 	std::string texturePath,
-	std::shared_ptr<IRenderableObject> parent)
+	std::shared_ptr<IRenderingStrategy> parent)
 {
-	auto primitive = std::make_shared<RenderableObjectBase>();
-	(parent ? parent : _root)->addChild(primitive);
-
-	_strategies.push_back(std::make_shared<CubeRenderingStrategy>(
+	auto cubeRenderingStrategy = std::make_shared<CubeRenderingStrategy>(
 		_shadersService,
 		_bufferCacheService,
 		_textureService,
-		primitive,
-		texturePath));
+		texturePath);
 
-	return primitive;
+	(parent ? parent : _root)->addChild(cubeRenderingStrategy);
+
+	return cubeRenderingStrategy;
 }
 
 std::shared_ptr<ICameraStrategy> RenderingService::setActiveCamera(BuildinCameraTypes cameraType)

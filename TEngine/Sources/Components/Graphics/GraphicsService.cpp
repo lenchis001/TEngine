@@ -33,16 +33,16 @@ void GraphicsService::render()
 	_renderingService->render();
 }
 
-std::future<DataActionResult<ErrorCodes, IMeshRenderableObject>> GraphicsService::loadMesh(const std::wstring &path)
+std::future<DataActionResult<ErrorCodes, IRenderingStrategy>> GraphicsService::loadMesh(const std::wstring &path)
 {
-	return std::async(std::launch::async, [path]() -> DataActionResult<ErrorCodes, IMeshRenderableObject>
+	return std::async(std::launch::async, [path]() -> DataActionResult<ErrorCodes, IRenderingStrategy>
 					  { throw ""; });
 }
 
-std::shared_ptr<IRenderableObject> GraphicsService::addPrimitive(
+std::shared_ptr<IRenderingStrategy> GraphicsService::addPrimitive(
 	PrimitiveTypes type, 
 	std::string texturePath,
-	std::shared_ptr<IRenderableObject> parent)
+	std::shared_ptr<IRenderingStrategy> parent)
 {
 	auto primitive = _renderingService->addToRendering(type, texturePath, parent);
 

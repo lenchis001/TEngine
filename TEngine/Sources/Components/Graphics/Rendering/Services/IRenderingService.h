@@ -5,8 +5,8 @@
 
 #include "Components/Graphics/Rendering/Models/IRenderingParameters.h"
 #include "Components/Graphics/Rendering/Models/Cameras/BuildinCameraTypes.h"
-#include "Components/Graphics/Rendering/Models/RenderableObjects/IRenderableObject.h"
 #include "Components/Graphics/Rendering/Services/CameraStrategies/ICameraStrategy.h"
+#include "Components/Graphics/Rendering/Services/RenderingStrategies/IRenderingStrategy.h"
 #include "Components/Graphics/Models/PrimitiveTypes.h"
 
 namespace TEngine::Components::Graphics::Rendering::Services
@@ -24,10 +24,10 @@ namespace TEngine::Components::Graphics::Rendering::Services
 
         virtual void render() = 0;
 
-        virtual std::shared_ptr<Components::Graphics::Rendering::Models::RenderableObjects::IRenderableObject> addToRendering(
+        virtual std::shared_ptr<Components::Graphics::Rendering::Services::RenderingStrategies::IRenderingStrategy> addToRendering(
             Components::Graphics::MeshLoading::Models::PrimitiveTypes type,
             std::string texturePath,
-            std::shared_ptr<Components::Graphics::Rendering::Models::RenderableObjects::IRenderableObject> parent = nullptr) = 0;
+            std::shared_ptr<Components::Graphics::Rendering::Services::RenderingStrategies::IRenderingStrategy> parent = nullptr) = 0;
 
         virtual std::shared_ptr<Components::Graphics::Rendering::Services::CameraStrategies::ICameraStrategy>
         setActiveCamera(Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes cameraType) = 0;

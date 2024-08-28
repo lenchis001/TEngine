@@ -1,16 +1,42 @@
 #ifndef TENGINE_IRENDERINGSTRATEGY_H
 #define TENGINE_IRENDERINGSTRATEGY_H
 
+#include "memory"
+
+#include "Components/Graphics/Models/Vector3d.h"
 #include "Components/Graphics/Models/Matrix4x4.h"
+#include "Components/Graphics/Models/Parallelepiped.h"
 
 namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies
 {
+    class RenderingStrategyBase;
+
     class IRenderingStrategy
     {
     public:
-        virtual void render(const Components::Graphics::Models::Matrix4x4f& vpMatrix) = 0;
+        virtual void render(
+            const Components::Graphics::Models::Matrix4x4f &vpMatrix,
+            const Components::Graphics::Models::Parallelepipedf &viewArea) = 0;
+
+        virtual void setPosition(const Graphics::Models::Vector3df &position) = 0;
+        virtual void setRotation(const Graphics::Models::Vector3df &rotation) = 0;
+        virtual void setScale(const Graphics::Models::Vector3df &scale) = 0;
+
+        virtual Graphics::Models::Vector3df getPosition() const = 0;
+        virtual Graphics::Models::Vector3df getRotation() const = 0;
+        virtual Graphics::Models::Vector3df getScale() const = 0;
+
+        virtual const Graphics::Models::Parallelepipedf &getVerticesCude() const = 0;
+
+        virtual const std::vector<std::shared_ptr<IRenderingStrategy>> &getChildren() const = 0;
+        virtual void addChild(std::shared_ptr<IRenderingStrategy> child) = 0;
+        virtual void removeChild(std::shared_ptr<IRenderingStrategy> child) = 0;
 
         virtual ~IRenderingStrategy() = default;
+
+        friend RenderingStrategyBase;
+    protected:
+        virtual void _updateModelMatrix(const Components::Graphics::Models::Matrix4x4f &parentMatrix, bool isPrsUpdated = false) = 0;
     };
 }
 

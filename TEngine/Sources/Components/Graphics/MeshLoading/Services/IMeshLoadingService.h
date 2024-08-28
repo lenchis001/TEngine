@@ -6,8 +6,8 @@
 #include "Models/DataActionResult.h"
 
 #include "Components/Graphics/MeshLoading/Models/ErrorCodes.h"
-#include "Components/Graphics/Rendering/Models/RenderableObjects/IMeshRenderableObject.h"
 #include "Components/Graphics/Models/PrimitiveTypes.h"
+#include "Components/Graphics/Rendering/Services/RenderingStrategies/IRenderingStrategy.h"
 
 namespace TEngine::Components::Graphics::MeshLoading::Services
 {
@@ -17,7 +17,7 @@ namespace TEngine::Components::Graphics::MeshLoading::Services
         virtual std::future<
             TEngine::Models::DataActionResult<
             TEngine::Components::Graphics::MeshLoading::Models::ErrorCodes,
-            TEngine::Components::Graphics::Rendering::Models::RenderableObjects::IMeshRenderableObject
+            TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::IRenderingStrategy
             >
         > loadMesh(const std::wstring& path) = 0;
 

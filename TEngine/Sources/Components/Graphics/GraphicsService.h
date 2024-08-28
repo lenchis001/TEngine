@@ -11,10 +11,10 @@ using namespace TEngine::Models;
 using namespace TEngine::Components::Graphics::Rendering::Services;
 using namespace TEngine::Components::Graphics::MeshLoading::Services;
 using namespace TEngine::Components::Graphics::Models;
-using namespace TEngine::Components::Graphics::Rendering::Models::RenderableObjects;
 using namespace TEngine::Components::Graphics::MeshLoading::Models;
 using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
 using namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies;
+using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies;
 using namespace TEngine::Components::Graphics::Rendering::Services::Textures;
 
 namespace TEngine::Components::Graphics::Services
@@ -35,12 +35,12 @@ namespace TEngine::Components::Graphics::Services
 
         void render() override;
 
-        std::future<DataActionResult<ErrorCodes, IMeshRenderableObject>> loadMesh(const std::wstring &path) override;
+        std::future<DataActionResult<ErrorCodes, IRenderingStrategy>> loadMesh(const std::wstring &path) override;
 
-        std::shared_ptr<IRenderableObject> addPrimitive(
+        std::shared_ptr<IRenderingStrategy> addPrimitive(
             PrimitiveTypes type,
             std::string texturePath,
-            std::shared_ptr<IRenderableObject> parent = nullptr) override;
+            std::shared_ptr<IRenderingStrategy> parent = nullptr) override;
 
         std::shared_ptr<ICameraStrategy> setActiveCamera(BuildinCameraTypes cameraType) override;
 

@@ -5,8 +5,7 @@
 
 #include "GLFW/glfw3.h"
 
-#include "Components/Graphics/Rendering/Services/RenderingStrategies/IRenderingStrategy.h"
-#include "Components/Graphics/Rendering/Models/RenderableObjects/IRenderableObject.h"
+#include "Components/Graphics/Rendering/Services/RenderingStrategies/RenderingStrategyBase.h"
 #include "Components/Graphics/Rendering/Services/Shaders/IShadersService.h"
 #include "Components/Graphics/ImageLoading/Models/Image.h"
 #include "Components/Graphics/Rendering/Services/Buffers/IBuffersService.h"
@@ -14,25 +13,26 @@
 
 using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Graphics::Rendering::Services::Shaders;
-using namespace TEngine::Components::Graphics::Rendering::Models::RenderableObjects;
 using namespace TEngine::Components::Graphics::ImageLoading::Models;
 using namespace TEngine::Components::Graphics::Rendering::Services::Buffers;
 using namespace TEngine::Components::Graphics::Rendering::Services::Textures;
+using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies;
 
 namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::Primitives
 {
-    class CubeRenderingStrategy : public IRenderingStrategy
+    class CubeRenderingStrategy : public RenderingStrategyBase
     {
     public:
         CubeRenderingStrategy(
             std::shared_ptr<IShadersService> shadersService,
             std::shared_ptr<IBuffersService> bufferCacheService,
             std::shared_ptr<ITexturesService> texturesService,
-            std::shared_ptr<IRenderableObject> cube,
             std::string texturePath);
         ~CubeRenderingStrategy() override;
 
-        void render(const Matrix4x4f &vpMatrix) override;
+        void render(
+            const Matrix4x4f &vpMatrix,
+            const Components::Graphics::Models::Parallelepipedf& viewArea) override;
 
     private:
         void _prepareVertexVbo();
@@ -45,11 +45,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
         std::shared_ptr<IBuffersService> _bufferCacheService;
         std::shared_ptr<ITexturesService> _texturesService;
 
-        std::shared_ptr<IRenderableObject> _cube;
-
         GLuint _shaderProgram, _matrixShaderId, _textureId, _textureSamplerShaderId, _vao;
-
-        Matrix4x4f _vpMatrix, _modelMatrix, _mvpMatrix;
     };
 }
 

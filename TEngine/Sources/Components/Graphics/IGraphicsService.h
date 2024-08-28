@@ -9,10 +9,10 @@
 
 #include "Models/IGraphicsParameters.h"
 #include "MeshLoading/Models/ErrorCodes.h"
-#include "Rendering/Models/RenderableObjects/IMeshRenderableObject.h"
 #include "Models/PrimitiveTypes.h"
 #include "Rendering/Models/Cameras/BuildinCameraTypes.h"
 #include "Rendering/Services/CameraStrategies/ICameraStrategy.h"
+#include "Rendering/Services/RenderingStrategies/IRenderingStrategy.h"
 
 namespace TEngine::Components::Graphics::Services
 {
@@ -30,15 +30,15 @@ namespace TEngine::Components::Graphics::Services
         virtual std::future<
             TEngine::Models::DataActionResult<
                 TEngine::Components::Graphics::MeshLoading::Models::ErrorCodes,
-                TEngine::Components::Graphics::Rendering::Models::RenderableObjects::IMeshRenderableObject>>
+                TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::IRenderingStrategy>>
         loadMesh(const std::wstring &path) = 0;
 
         virtual std::shared_ptr<
-            TEngine::Components::Graphics::Rendering::Models::RenderableObjects::IRenderableObject>
+            TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::IRenderingStrategy>
         addPrimitive(
             TEngine::Components::Graphics::MeshLoading::Models::PrimitiveTypes type,
             std::string texturePath,
-            std::shared_ptr<TEngine::Components::Graphics::Rendering::Models::RenderableObjects::IRenderableObject> parent = nullptr) = 0;
+            std::shared_ptr<TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::IRenderingStrategy> parent = nullptr) = 0;
 
         virtual std::shared_ptr<Components::Graphics::Rendering::Services::CameraStrategies::ICameraStrategy>
             setActiveCamera(Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes cameraType) = 0;
