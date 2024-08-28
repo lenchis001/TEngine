@@ -1,7 +1,5 @@
 #include "RenderingParameters.h"
 
-#include "Optimization/BigWorldParameters.h"
-
 using namespace TEngine::Components::Graphics::Rendering::Models;
 
 RenderingParameters::RenderingParameters()
@@ -12,7 +10,6 @@ RenderingParameters::RenderingParameters()
     setOpenGlMinorVersion(3);
     setTitle("TEngine");
     _isVerticalSyncEnabled = true;
-    setBigWorldParameters(std::make_shared<BigWorldParameters>());
 }
 
 int RenderingParameters::getWidth() const
@@ -73,14 +70,4 @@ bool RenderingParameters::getIsVerticalSyncEnabled() const
 void RenderingParameters::setIsVerticalSyncEnabled(bool value)
 {
     _isVerticalSyncEnabled = value;
-}
-
-std::shared_ptr<IBigWorldParameters> RenderingParameters::getBigWorldParameters() const
-{
-    return _bigWorldParameters;
-}
-
-void RenderingParameters::setBigWorldParameters(std::shared_ptr<IBigWorldParameters> bigWorldParameters)
-{
-    _bigWorldParameters = bigWorldParameters;
 }

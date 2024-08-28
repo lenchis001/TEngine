@@ -69,8 +69,6 @@ void RenderingService::initialize(std::shared_ptr<IRenderingParameters> paramete
 
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 	glEnable(GL_DEPTH_TEST);
-
-	auto bigWorldParameters = parameters->getBigWorldParameters();
 }
 
 bool RenderingService::isShutdownRequested() const

@@ -3,8 +3,6 @@
 
 #include "IRenderingParameters.h"
 
-using namespace TEngine::Components::Graphics::Rendering::Models::Optimization;
-
 namespace TEngine::Components::Graphics::Rendering::Models
 {
     class RenderingParameters : public IRenderingParameters
@@ -36,9 +34,6 @@ namespace TEngine::Components::Graphics::Rendering::Models
 
         void setIsVerticalSyncEnabled(bool value) override;
 
-        std::shared_ptr<IBigWorldParameters> getBigWorldParameters() const override;
-
-        void setBigWorldParameters(std::shared_ptr<IBigWorldParameters> bigWorldParameters) override;
     private:
         int _width;
         int _height;
@@ -46,7 +41,6 @@ namespace TEngine::Components::Graphics::Rendering::Models
         int _openGlMinorVersion;
         std::string _title;
         bool _isVerticalSyncEnabled;
-        std::shared_ptr<IBigWorldParameters> _bigWorldParameters;
     };
 }
 

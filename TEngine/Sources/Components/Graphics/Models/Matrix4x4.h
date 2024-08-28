@@ -167,6 +167,10 @@ namespace TEngine::Components::Graphics::Models
             return _data;
         }
 
+        const Vector3d<T> getPosition() const {
+            return Vector3d<T>(_m14, _m24, _m34);
+        }
+
         void print() const
         {
             // save to string

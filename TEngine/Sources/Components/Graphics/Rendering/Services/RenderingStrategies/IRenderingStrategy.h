@@ -2,6 +2,7 @@
 #define TENGINE_IRENDERINGSTRATEGY_H
 
 #include "memory"
+#include "vector"
 
 #include "Components/Graphics/Models/Vector3d.h"
 #include "Components/Graphics/Models/Matrix4x4.h"
@@ -22,9 +23,11 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
         virtual void setRotation(const Graphics::Models::Vector3df &rotation) = 0;
         virtual void setScale(const Graphics::Models::Vector3df &scale) = 0;
 
-        virtual Graphics::Models::Vector3df getPosition() const = 0;
-        virtual Graphics::Models::Vector3df getRotation() const = 0;
-        virtual Graphics::Models::Vector3df getScale() const = 0;
+        virtual const Graphics::Models::Vector3df &getPosition() const = 0;
+        virtual const Graphics::Models::Vector3df &getRotation() const = 0;
+        virtual const Graphics::Models::Vector3df &getScale() const = 0;
+
+        virtual Graphics::Models::Vector3df getAbsolutePosition() = 0;
 
         virtual const Graphics::Models::Parallelepipedf &getVerticesCude() const = 0;
 
@@ -35,6 +38,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
         virtual ~IRenderingStrategy() = default;
 
         friend RenderingStrategyBase;
+
     protected:
         virtual void _updateModelMatrix(const Components::Graphics::Models::Matrix4x4f &parentMatrix, bool isPrsUpdated = false) = 0;
     };

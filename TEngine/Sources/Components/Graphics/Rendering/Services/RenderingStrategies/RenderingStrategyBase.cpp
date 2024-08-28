@@ -54,19 +54,24 @@ void RenderingStrategyBase::setScale(const Vector3df &scale)
     _updateScaleMatrix();
 }
 
-Vector3df RenderingStrategyBase::getPosition() const
+const Vector3df &RenderingStrategyBase::getPosition() const
 {
     return _position;
 }
 
-Vector3df RenderingStrategyBase::getRotation() const
+const Vector3df &RenderingStrategyBase::getRotation() const
 {
     return _rotation;
 }
 
-Vector3df RenderingStrategyBase::getScale() const
+const Vector3df &RenderingStrategyBase::getScale() const
 {
     return _scale;
+}
+
+Vector3df RenderingStrategyBase::getAbsolutePosition()
+{
+    return _modelMatrix.getPosition();
 }
 
 const Parallelepipedf &RenderingStrategyBase::getVerticesCude() const

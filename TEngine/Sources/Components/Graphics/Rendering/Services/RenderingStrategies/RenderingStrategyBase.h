@@ -24,9 +24,11 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
         void setRotation(const Vector3df &rotation) override;
         void setScale(const Vector3df &scale) override;
 
-        Vector3df getPosition() const override;
-        Vector3df getRotation() const override;
-        Vector3df getScale() const override;
+        const Vector3df &getPosition() const override;
+        const Vector3df &getRotation() const override;
+        const Vector3df &getScale() const override;
+
+        Vector3df getAbsolutePosition() override;
 
         const Parallelepipedf &getVerticesCude() const override;
 
