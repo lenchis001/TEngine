@@ -32,7 +32,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
 
         void render(
             const Matrix4x4f &vpMatrix,
-            const Components::Graphics::Models::Parallelepipedf& viewArea) override;
+            const Components::Graphics::Models::Vector3df& cameraPosition) override;
 
     private:
         void _prepareVertexVbo();

@@ -1,12 +1,13 @@
 #include "RenderingStrategyBase.h"
 
+#include "RenderingOptimizationDecorator.h"
+
 using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies;
 
 RenderingStrategyBase::RenderingStrategyBase() : _position(Vector3df(0.0f, 0.0f, 0.0f)),
                                                  _rotation(Vector3df(0.0f, 0.0f, 0.0f)),
                                                  _scale(Vector3df(1.0f, 1.0f, 1.0f)),
                                                  _parentMatrix(Matrix4x4f(1.0f)),
-                                                 _verticesCube(Parallelepipedf(Vector3df(0.0f, 0.0f, 0.0f), Vector3df(1.0f, 1.0f, 1.0f))),
                                                  _vpMatrix(Matrix4x4f(1.f)),
                                                  _mvpMatrix(Matrix4x4f(1.f))
 {
@@ -23,7 +24,9 @@ const std::vector<std::shared_ptr<IRenderingStrategy>> &RenderingStrategyBase::g
 
 void RenderingStrategyBase::addChild(std::shared_ptr<IRenderingStrategy> child)
 {
-    _children.push_back(child);
+    auto decoratedChild = std::make_shared<RenderingOptimizationDecorator>(child);
+
+    _children.push_back(decoratedChild);
 
     child->_updateModelMatrix(_modelMatrix);
 }
@@ -74,12 +77,7 @@ Vector3df RenderingStrategyBase::getAbsolutePosition()
     return _modelMatrix.getPosition();
 }
 
-const Parallelepipedf &RenderingStrategyBase::getVerticesCude() const
-{
-    return _verticesCube;
-}
-
-void RenderingStrategyBase::render(const Matrix4x4f &vpMatrix, const Parallelepipedf &viewArea)
+void RenderingStrategyBase::render(const Matrix4x4f &vpMatrix, const Vector3df &cameraPosition)
 {
     if (_vpMatrix != vpMatrix)
     {
@@ -90,7 +88,7 @@ void RenderingStrategyBase::render(const Matrix4x4f &vpMatrix, const Parallelepi
 
     for (const auto child : _children)
     {
-        child->render(vpMatrix, viewArea);
+        child->render(vpMatrix, cameraPosition);
     }
 }
 

@@ -29,8 +29,6 @@ namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies
 
         const Matrix4x4f &getVpMatrix() const override;
 
-        const Parallelepipedf &getViewArea() const override;
-
         ~CameraStrategyBase() override = default;
 
         void setAspectRatio(float value) override;
@@ -39,13 +37,11 @@ namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies
         void _recalculateProjection();
         void _recalculateView();
         void _recalculateVp();
-        void _recalculateViewArea();
 
         float _fov, _aspectRatio, _zNear, _zFar;
 
         Vector3df _position, _target;
         Matrix4x4f _projectionMatrix, _viewMatrix, _vpMatrix;
-        Parallelepipedf _viewArea;
     };
 
 }

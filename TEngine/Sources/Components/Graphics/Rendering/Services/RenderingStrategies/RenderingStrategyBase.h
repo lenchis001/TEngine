@@ -30,11 +30,9 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
 
         Vector3df getAbsolutePosition() override;
 
-        const Parallelepipedf &getVerticesCude() const override;
-
         void render(
             const Matrix4x4f &vpMatrix,
-            const Parallelepipedf &viewArea) override;
+            const Components::Graphics::Models::Vector3df &cameraPosition) override;
 
     protected:
         inline const Matrix4x4f &getModelMatrix() const
@@ -65,8 +63,6 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
         Matrix4x4f _modelMatrix;
         Matrix4x4f _parentMatrix;
         Matrix4x4f _vpMatrix, _mvpMatrix;
-
-        Parallelepipedf _verticesCube;
 
         std::vector<std::shared_ptr<IRenderingStrategy>> _children;
     };

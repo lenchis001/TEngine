@@ -21,7 +21,7 @@ int main()
         renderingParameters->setTitle("Demo");
         renderingParameters->setWidth(1024);
         renderingParameters->setHeight(768);
-        renderingParameters->setIsVerticalSyncEnabled(true);
+        renderingParameters->setIsVerticalSyncEnabled(false);
 
         engine->initialize(creationParameters);
 
@@ -31,8 +31,11 @@ int main()
 
         auto cube = graphicsService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp");
 
-        auto cube2 = graphicsService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture1.bmp", cube);
-        cube2->setPosition(Vector3df(3.0f, 0.0f, 0.0f));
+        for(int i = 0; i < 1024; i++)
+        {
+            auto cube2 = graphicsService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture1.bmp", cube);
+            cube2->setPosition(Vector3df(3.0f * i + 5.0f, 0.0f, 0.0f));
+        }
 
         auto rotation = Vector3df(0.0f, 0.0f, 0.0f);
 
@@ -42,9 +45,9 @@ int main()
         while (true)
         {
             auto time = graphicsService->getTime();
-            if (time - previousCheckTime > 1.0)
+            if (time - previousCheckTime > 5.0)
             {
-                std::cout << "FPS: " << framesCounter << std::endl;
+                std::cout << "FPS: " << framesCounter / 5 << std::endl;
 
                 framesCounter = 0;
                 previousCheckTime = time;

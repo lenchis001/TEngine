@@ -89,9 +89,9 @@ void RenderingService::render()
 	{
 		_activeCamera->render();
 		const auto &vpMatrix = _activeCamera->getVpMatrix();
-		const auto &viewArea = _activeCamera->getViewArea();
+		const auto position = _activeCamera->getPosition();
 
-		_root->render(vpMatrix, viewArea);
+		_root->render(vpMatrix, position);
 	}
 
 	glfwSwapBuffers(_window);

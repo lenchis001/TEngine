@@ -61,8 +61,17 @@ namespace TEngine::Components::Graphics::Models
                 getZ() / length);
         }
 
-        Vector3d<T> getNegative() const {
+        Vector3d<T> getNegative() const
+        {
             return Vector3d<T>(-getX(), -getY(), -getZ());
+        }
+
+        T distance(const Vector3d<T> &other) const
+        {
+            T dx = _x - other._x;
+            T dy = _y - other._y;
+            T dz = _z - other._z;
+            return sqrt(dx * dx + dy * dy + dz * dz);
         }
 
     private:

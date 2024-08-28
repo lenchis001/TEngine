@@ -6,18 +6,18 @@
 
 #include "Components/Graphics/Models/Vector3d.h"
 #include "Components/Graphics/Models/Matrix4x4.h"
-#include "Components/Graphics/Models/Parallelepiped.h"
 
 namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies
 {
     class RenderingStrategyBase;
+    class RenderingOptimizationDecorator;
 
     class IRenderingStrategy
     {
     public:
         virtual void render(
             const Components::Graphics::Models::Matrix4x4f &vpMatrix,
-            const Components::Graphics::Models::Parallelepipedf &viewArea) = 0;
+            const Components::Graphics::Models::Vector3df &cameraPosition) = 0;
 
         virtual void setPosition(const Graphics::Models::Vector3df &position) = 0;
         virtual void setRotation(const Graphics::Models::Vector3df &rotation) = 0;
@@ -29,8 +29,6 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
 
         virtual Graphics::Models::Vector3df getAbsolutePosition() = 0;
 
-        virtual const Graphics::Models::Parallelepipedf &getVerticesCude() const = 0;
-
         virtual const std::vector<std::shared_ptr<IRenderingStrategy>> &getChildren() const = 0;
         virtual void addChild(std::shared_ptr<IRenderingStrategy> child) = 0;
         virtual void removeChild(std::shared_ptr<IRenderingStrategy> child) = 0;
@@ -38,6 +36,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
         virtual ~IRenderingStrategy() = default;
 
         friend RenderingStrategyBase;
+        friend RenderingOptimizationDecorator;
 
     protected:
         virtual void _updateModelMatrix(const Components::Graphics::Models::Matrix4x4f &parentMatrix, bool isPrsUpdated = false) = 0;

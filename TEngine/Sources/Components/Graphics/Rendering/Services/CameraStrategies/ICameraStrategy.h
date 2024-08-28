@@ -3,7 +3,6 @@
 
 #include "Components/Graphics/Models/Vector3d.h"
 #include "Components/Graphics/Models/Matrix4x4.h"
-#include "Components/Graphics/Models/Parallelepiped.h"
 
 namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies
 {
@@ -20,8 +19,6 @@ namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies
         virtual void render() = 0;
 
         virtual const TEngine::Components::Graphics::Models::Matrix4x4f &getVpMatrix() const = 0;
-
-        virtual const TEngine::Components::Graphics::Models::Parallelepipedf &getViewArea() const = 0;
 
         virtual void setAspectRatio(float value) = 0;
 

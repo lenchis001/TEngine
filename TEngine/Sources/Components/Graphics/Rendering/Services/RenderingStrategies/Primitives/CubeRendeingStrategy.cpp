@@ -45,9 +45,9 @@ CubeRenderingStrategy::~CubeRenderingStrategy()
 
 void CubeRenderingStrategy::render(
     const Matrix4x4f &vpMatrix,
-    const Components::Graphics::Models::Parallelepipedf& viewArea)
+    const Components::Graphics::Models::Vector3df& cameraPosition)
 {
-    RenderingStrategyBase::render(vpMatrix, viewArea);
+    RenderingStrategyBase::render(vpMatrix, cameraPosition);
 
     glBindVertexArray(_vao);
 
