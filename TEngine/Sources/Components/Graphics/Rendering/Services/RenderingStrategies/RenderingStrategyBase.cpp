@@ -155,19 +155,15 @@ void RenderingStrategyBase::_updateModelMatrix(const Matrix4x4f &parentMatrix, b
         _modelMatrix = _parentMatrix * _translationMatrix * _rotationMatrix * _scaleMatrix;
 
         _updateMvpMatrix();
-    }
 
-    for (const auto child : _children)
-    {
-        child->_updateModelMatrix(_modelMatrix, false);
+        for (const auto &child : _children)
+        {
+            child->_updateModelMatrix(_modelMatrix, false);
+        }
     }
 }
 
 void RenderingStrategyBase::_updateMvpMatrix()
 {
     _mvpMatrix = _vpMatrix * getModelMatrix();
-}
-
-void RenderingStrategyBase::_updateVerticesCube()
-{
 }

@@ -47,6 +47,8 @@ namespace TEngine::Components::Graphics::Models
 
         Matrix4x4(Matrix4x4 &&other)
         {
+            delete[] _data;
+
             _data = other._data;
 
             other._data = nullptr;
@@ -61,6 +63,8 @@ namespace TEngine::Components::Graphics::Models
 
         Matrix4x4 &operator=(Matrix4x4 &&other)
         {
+            delete[] _data;
+
             _data = other._data;
 
             other._data = nullptr;
@@ -154,7 +158,7 @@ namespace TEngine::Components::Graphics::Models
                 return true;
             }
 
-            return std::equal(_data, _data + 16, other._data);
+            return memcmp(_data, other._data, sizeof(T) * 16) == 0;
         }
 
         bool operator!=(const Matrix4x4 &other) const
@@ -162,12 +166,13 @@ namespace TEngine::Components::Graphics::Models
             return !(*this == other);
         }
 
-        const T* getInternalData() const
+        const T *getInternalData() const
         {
             return _data;
         }
 
-        const Vector3d<T> getPosition() const {
+        const Vector3d<T> getPosition() const
+        {
             return Vector3d<T>(_m14, _m24, _m34);
         }
 

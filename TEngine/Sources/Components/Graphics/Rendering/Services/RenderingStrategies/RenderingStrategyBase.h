@@ -53,8 +53,6 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
         void _updateScaleMatrix();
         void _updateMvpMatrix();
 
-        void _updateVerticesCube();
-
         Vector3df _position;
         Vector3df _rotation;
         Vector3df _scale;

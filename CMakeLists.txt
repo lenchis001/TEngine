@@ -28,6 +28,10 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu17")
 endif()
 
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+# add -msse3 to release flags if target is x86 os x64
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|i[3-6]86")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -msse3")
+endif()
 
 set(IS_DEBUG_BUILD CMAKE_BUILD_TYPE STREQUAL "Debug")
 
