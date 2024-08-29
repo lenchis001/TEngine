@@ -3,7 +3,7 @@
 
 #include "ITexturesService.h"
 
-#include "map"
+#include "unordered_map"
 #include "string"
 #include "memory"
 
@@ -30,8 +30,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::Textures
 
         std::shared_ptr<IImageLoadingService> _imageLoadingService;
 
-        std::map<std::string, std::size_t> _usagesCounter;
-        std::map<std::string, GLuint> _textures;
+        std::unordered_map<std::string, std::size_t> _usagesCounter;
+        std::unordered_map<std::string, GLuint> _textures;
     };
 }
 

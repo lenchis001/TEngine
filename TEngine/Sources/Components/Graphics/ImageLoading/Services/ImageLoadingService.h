@@ -3,7 +3,7 @@
 
 #include "string"
 #include "vector"
-#include "map"
+#include "unordered_map"
 
 #include "Components/Graphics/ImageLoading/Plugin/IImageLoadingPlugin.h"
 
@@ -30,7 +30,7 @@ namespace TEngine::Components::Graphics::ImageLoading::Services
         std::vector<std::string> _findPlugins() const;
         std::shared_ptr<IImageLoadingPlugin> _loadPlugin(const std::string &path);
 
-        std::map<std::string, std::shared_ptr<IImageLoadingPlugin>> _plugins;
+        std::unordered_map<std::string, std::shared_ptr<IImageLoadingPlugin>> _plugins;
         std::vector<DYNAMIC_LIB_HANDLE> _loadedLibraries;
     };
 }

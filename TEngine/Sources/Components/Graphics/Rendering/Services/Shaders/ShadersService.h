@@ -4,7 +4,7 @@
 #include "IShadersService.h"
 
 #include "string"
-#include "map"
+#include "unordered_map"
 
 namespace TEngine::Components::Graphics::Rendering::Services::Shaders
 {
@@ -20,8 +20,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::Shaders
     private:
         std::string _readShader(const std::string& shaderFile);
 
-        std::map<std::string, std::size_t> _usagesCounter;
-        std::map<std::string, GLuint> _shaderPrograms;
+        std::unordered_map<std::string, std::size_t> _usagesCounter;
+        std::unordered_map<std::string, GLuint> _shaderPrograms;
     };
 }
 

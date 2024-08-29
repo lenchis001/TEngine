@@ -3,7 +3,7 @@
 
 #include "IBuffersService.h"
 
-#include "map"
+#include "unordered_map"
 #include "string"
 
 namespace TEngine::Components::Graphics::Rendering::Services::Buffers
@@ -26,11 +26,11 @@ namespace TEngine::Components::Graphics::Rendering::Services::Buffers
     private:
         std::hash<std::string> _hashGenerator;
 
-        std::map<std::size_t, GLuint> _vboCache;
-        std::map<std::size_t, std::size_t> _vboUsagesCounter;
+        std::unordered_map<std::size_t, GLuint> _vboCache;
+        std::unordered_map<std::size_t, std::size_t> _vboUsagesCounter;
 
-        std::map<std::size_t, GLuint> _vaoCache;
-        std::map<std::size_t, std::size_t> _vaoUsagesCounter;
+        std::unordered_map<std::size_t, GLuint> _vaoCache;
+        std::unordered_map<std::size_t, std::size_t> _vaoUsagesCounter;
     };
 }
 
