@@ -12,6 +12,8 @@
 #include "Components/Graphics/Rendering/Services/Buffers/BuffersService.h"
 #include "Components/Graphics/Rendering/Services/Textures/TexturesService.h"
 
+#include "Components/Events/Services/EventService.h"
+
 using namespace TEngine;
 using namespace TEngine::Components::Graphics::Services;
 using namespace TEngine::Components::Graphics::Rendering::Services;
@@ -19,6 +21,8 @@ using namespace TEngine::Components::Graphics::MeshLoading::Services;
 using namespace TEngine::Components::Graphics::Rendering::Services::Shaders;
 using namespace TEngine::Components::Graphics::ImageLoading::Services;
 using namespace TEngine::Components::Graphics::Rendering::Services::Textures;
+
+using namespace TEngine::Components::Events::Services;
 
 std::shared_ptr<IEngine> TEngine::createEngine()
 {
@@ -34,5 +38,7 @@ std::shared_ptr<IEngine> TEngine::createEngine()
 
     auto graphicsService = std::make_shared<GraphicsService>(renderingService, meshLoadingService, texturesService);
 
-    return std::make_shared<Engine>(graphicsService);
+    auto eventsService = std::make_shared<EventService>();
+
+    return std::make_shared<Engine>(graphicsService, eventsService);
 }

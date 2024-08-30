@@ -12,6 +12,8 @@
 #include "Components/Graphics/Rendering/Services/Buffers/IBuffersService.h"
 #include "Components/Graphics/Rendering/Services/Textures/ITexturesService.h"
 
+#include "Mixins/ContextAwareMixin.h"
+
 using namespace TEngine::Components::Graphics::Rendering::Models;
 using namespace TEngine::Components::Graphics::MeshLoading::Models;
 using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
@@ -21,11 +23,13 @@ using namespace TEngine::Components::Graphics::Rendering::Services::Buffers;
 using namespace TEngine::Components::Graphics::Rendering::Services::Textures;
 using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies;
 
+using namespace TEngine::Mixins;
+
 using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies;
 
 namespace TEngine::Components::Graphics::Rendering::Services
 {
-    class RenderingService : public IRenderingService
+    class RenderingService : public IRenderingService, public ContextAwareMixin<RenderingService>
     {
     public:
         RenderingService(
@@ -52,7 +56,7 @@ namespace TEngine::Components::Graphics::Rendering::Services
         void setActiveCamera(std::shared_ptr<ICameraStrategy> camera) override;
 
     private:
-        void _onWindowResized(int width, int height);
+        static void _onWindowResized(GLFWwindow* window, int width, int height);
 
         GLFWwindow *_window;
 

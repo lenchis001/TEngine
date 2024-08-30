@@ -28,7 +28,6 @@ RenderingService::RenderingService(
 RenderingService::~RenderingService()
 {
 	glfwSetWindowSizeCallback(_window, nullptr);
-	glfwSetWindowUserPointer(_window, nullptr);
 	glfwTerminate();
 }
 
@@ -60,11 +59,8 @@ void RenderingService::initialize(std::shared_ptr<IRenderingParameters> paramete
 		throw std::runtime_error("Failed to initialize GLEW");
 	}
 
-	glfwSetWindowUserPointer(_window, this);
-	glfwSetWindowSizeCallback(_window, [](GLFWwindow *window, int width, int height)
-							  {
-		auto service = static_cast<RenderingService *>(glfwGetWindowUserPointer(window));
-		service->_onWindowResized(width, height); });
+	setContext(this);
+	glfwSetWindowSizeCallback(_window, &RenderingService::_onWindowResized);
 	glfwSwapInterval(parameters->getIsVerticalSyncEnabled());
 
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
@@ -134,14 +130,16 @@ void RenderingService::setActiveCamera(std::shared_ptr<ICameraStrategy> camera)
 	_activeCamera = camera;
 }
 
-void RenderingService::_onWindowResized(int width, int height)
+void RenderingService::_onWindowResized(GLFWwindow *window, int width, int height)
 {
 #if (defined(_WIN32) || defined(_WIN64))
 	glViewport(0, 0, width, height);
 #endif
 
-	if (_activeCamera)
+	auto that = getContext();
+
+	if (that->_activeCamera)
 	{
-		_activeCamera->setAspectRatio(static_cast<float>(width) / static_cast<float>(height));
+		that->_activeCamera->setAspectRatio(static_cast<float>(width) / static_cast<float>(height));
 	}
 }

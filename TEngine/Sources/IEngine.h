@@ -6,6 +6,7 @@
 #include "Configs/TEngineExport.h"
 
 #include "Components/Graphics/IGraphicsService.h"
+#include "Components/Events/Services/IEventService.h"
 
 #include "Models/IEngineParameters.h"
 
@@ -15,6 +16,8 @@ namespace TEngine
     {
     public:
         virtual std::shared_ptr<TEngine::Components::Graphics::Services::IGraphicsService> getGraphicsService() = 0;
+
+        virtual std::shared_ptr<TEngine::Components::Events::Services::IEventService> getEventService() = 0;
 
         virtual void initialize(std::shared_ptr<TEngine::Models::IEngineParameters> parameters) = 0;
 

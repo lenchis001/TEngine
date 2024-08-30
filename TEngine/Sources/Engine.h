@@ -7,21 +7,27 @@
 
 using namespace TEngine::Models;
 using namespace TEngine::Components::Graphics::Services;
+using namespace TEngine::Components::Events::Services;
 
 namespace TEngine
 {
     class Engine : public IEngine
     {
     public:
-        Engine(std::shared_ptr<IGraphicsService> graphicsService);
+        Engine(
+            std::shared_ptr<IGraphicsService> graphicsService,
+            std::shared_ptr<IEventService> eventService);
         ~Engine();
 
         void initialize(std::shared_ptr<IEngineParameters> parameters) override;
 
         std::shared_ptr<IGraphicsService> getGraphicsService() override;
 
+        std::shared_ptr<IEventService> getEventService() override;
+
     private:
         std::shared_ptr<IGraphicsService> _graphicsService;
+        std::shared_ptr<IEventService> _eventService;
     };
 }
 

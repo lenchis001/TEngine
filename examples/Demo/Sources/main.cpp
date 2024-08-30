@@ -25,6 +25,8 @@ int main()
 
         engine->initialize(creationParameters);
 
+        auto eventService = engine->getEventService();
+
         auto graphicsService = engine->getGraphicsService();
 
         graphicsService->setActiveCamera(TEngine::Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes::BASE);
