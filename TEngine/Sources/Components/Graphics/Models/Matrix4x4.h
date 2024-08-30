@@ -7,6 +7,7 @@
 #include "iostream"
 #include "cstring"
 #include "algorithm"
+#include "cassert"
 
 namespace TEngine::Components::Graphics::Models
 {
@@ -63,6 +64,8 @@ namespace TEngine::Components::Graphics::Models
 
         Matrix4x4 &operator=(Matrix4x4 &&other)
         {
+            assert(_data != other._data && "Self assignment detected");
+
             delete[] _data;
 
             _data = other._data;
