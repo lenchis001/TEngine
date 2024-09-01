@@ -26,19 +26,19 @@ using namespace TEngine::Components::Events::Services;
 
 std::shared_ptr<IEngine> TEngine::createEngine()
 {
+    auto eventsService = std::make_shared<EventService>();
+
     auto imageLoadingService = std::make_shared<ImageLoadingService>();
 
     auto shadersService = std::make_shared<ShadersService>();
     auto bufferCacheService = std::make_shared<BuffersService>();
     auto texturesService = std::make_shared<TexturesService>(imageLoadingService);
 
-    auto renderingService = std::make_shared<RenderingService>(shadersService, bufferCacheService, texturesService);
+    auto renderingService = std::make_shared<RenderingService>(eventsService, shadersService, bufferCacheService, texturesService);
 
     auto meshLoadingService = std::make_shared<MeshLoadingService>();
 
     auto graphicsService = std::make_shared<GraphicsService>(renderingService, meshLoadingService, texturesService);
-
-    auto eventsService = std::make_shared<EventService>();
 
     return std::make_shared<Engine>(graphicsService, eventsService);
 }

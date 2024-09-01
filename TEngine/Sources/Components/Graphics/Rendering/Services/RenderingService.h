@@ -7,12 +7,16 @@
 
 #include "GLFW/glfw3.h"
 
+#include "Mixins/ContextAwareMixin.h"
+
+#include "Components/Events/Services/IEventService.h"
+
 #include "RenderingStrategies/IRenderingStrategy.h"
 #include "Components/Graphics/Rendering/Services/Shaders/IShadersService.h"
 #include "Components/Graphics/Rendering/Services/Buffers/IBuffersService.h"
 #include "Components/Graphics/Rendering/Services/Textures/ITexturesService.h"
 
-#include "Mixins/ContextAwareMixin.h"
+using namespace TEngine::Components::Events::Services;
 
 using namespace TEngine::Components::Graphics::Rendering::Models;
 using namespace TEngine::Components::Graphics::MeshLoading::Models;
@@ -33,6 +37,7 @@ namespace TEngine::Components::Graphics::Rendering::Services
     {
     public:
         RenderingService(
+            std::shared_ptr<IEventService> eventService,
             std::shared_ptr<IShadersService> shadersService,
             std::shared_ptr<IBuffersService> bufferCacheService,
             std::shared_ptr<ITexturesService> texturesService);
@@ -59,6 +64,8 @@ namespace TEngine::Components::Graphics::Rendering::Services
         static void _onWindowResized(GLFWwindow* window, int width, int height);
 
         GLFWwindow *_window;
+
+        std::shared_ptr<IEventService> _eventService;
 
         std::shared_ptr<IRenderingStrategy> _root;
         std::shared_ptr<ICameraStrategy> _activeCamera;

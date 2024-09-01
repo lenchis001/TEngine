@@ -23,14 +23,29 @@ namespace TEngine::Components::Graphics::Models
             return Vector3d<T>(_x + other._x, _y + other._y, _z + other._z);
         }
 
+        Vector3d<T> operator+(T scalar) const
+        {
+            return Vector3d<T>(_x + scalar, _y + scalar, _z + scalar);
+        }
+
         Vector3d<T> operator-(const Vector3d<T> &other) const
         {
             return Vector3d<T>(_x - other._x, _y - other._y, _z - other._z);
         }
 
+        Vector3d<T> operator-(T scalar) const
+        {
+            return Vector3d<T>(_x - scalar, _y - scalar, _z - scalar);
+        }
+
         Vector3d<T> operator*(const Vector3d<T> &other) const
         {
             return Vector3d<T>(_x * other._x, _y * other._y, _z * other._z);
+        }
+
+        Vector3d<T> operator*(T scalar) const
+        {
+            return Vector3d<T>(_x * scalar, _y * scalar, _z * scalar);
         }
 
         Vector3d<T> operator/(const Vector3d<T> &other) const

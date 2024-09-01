@@ -71,7 +71,11 @@ namespace TEngine::Components::Events::Models
         KEY_PAGE_DOWN = 267,
         KEY_HOME = 268,
         KEY_END = 269,
-        KEY_CAPS_LOCK = 280
+        KEY_CAPS_LOCK = 280,
+        KEY_SCROLL_LOCK = 281,
+        KEY_NUM_LOCK = 282,
+        KEY_PRINT_SCREEN = 283,
+        KEY_LEFT_SHIFT = 340,
     };
 
 }

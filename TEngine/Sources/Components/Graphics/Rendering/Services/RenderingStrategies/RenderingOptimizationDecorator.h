@@ -1,5 +1,7 @@
 #include "IRenderingStrategy.h"
 
+#include "memory"
+
 using namespace TEngine::Components::Graphics::Models;
 
 namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies
@@ -39,6 +41,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
         void _updateModelMatrix(const Matrix4x4f &parentMatrix, bool isPrsUpdated = false) override;
 
     private:
+        unsigned int _frameCounter;
+        float _distance;
         std::shared_ptr<IRenderingStrategy> _strategy;
     };
 }

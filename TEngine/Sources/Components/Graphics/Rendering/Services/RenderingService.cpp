@@ -6,17 +6,21 @@
 
 #include "RenderingStrategies/Primitives/CubeRenderingStrategy.h"
 #include "CameraStrategies/CameraStrategyBase.h"
+#include "CameraStrategies/FpsCameraStrategy.h"
 #include "Components/Graphics/Rendering/Services/RenderingStrategies/RenderingStrategyBase.h"
+#include "Components/Graphics/Rendering/Services/RenderingStrategies/RenderingOptimizationDecorator.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies;
 using namespace TEngine::Components::Graphics::Rendering::Services;
 using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::Primitives;
 
 RenderingService::RenderingService(
+	std::shared_ptr<IEventService> eventService,
 	std::shared_ptr<IShadersService> shadersService,
 	std::shared_ptr<IBuffersService> bufferCacheService,
 	std::shared_ptr<ITexturesService> textureService)
 	: _window(nullptr),
+	  _eventService(eventService),
 	  _shadersService(shadersService),
 	  _bufferCacheService(bufferCacheService),
 	  _textureService(textureService),
@@ -107,7 +111,7 @@ std::shared_ptr<IRenderingStrategy> RenderingService::addToRendering(
 
 	(parent ? parent : _root)->addChild(cubeRenderingStrategy);
 
-	return cubeRenderingStrategy;
+	return std::make_shared<RenderingOptimizationDecorator>(cubeRenderingStrategy);
 }
 
 std::shared_ptr<ICameraStrategy> RenderingService::setActiveCamera(BuildinCameraTypes cameraType)
@@ -116,6 +120,9 @@ std::shared_ptr<ICameraStrategy> RenderingService::setActiveCamera(BuildinCamera
 	{
 	case BuildinCameraTypes::BASE:
 		_activeCamera = std::make_shared<CameraStrategyBase>(45.0f, 4.f / 3.f, 0.1f, 100.f, Vector3df(4, 3, 3), Vector3df(0, 0, 0));
+		break;
+	case BuildinCameraTypes::FPS:
+		_activeCamera = std::make_shared<FpsCameraStrategy>(_eventService, 45.0f, 4.f / 3.f, 0.1f, 100.f, Vector3df(4, 3, 3));
 		break;
 	default:
 		_activeCamera = nullptr;

@@ -29,11 +29,11 @@ int main()
 
         auto graphicsService = engine->getGraphicsService();
 
-        graphicsService->setActiveCamera(TEngine::Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes::BASE);
+        graphicsService->setActiveCamera(TEngine::Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes::FPS);
 
         auto cube = graphicsService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp");
 
-        for(int i = 0; i < 4096; i++)
+        for(int i = 0; i < 256; i++)
         {
             auto cube2 = graphicsService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture1.bmp", cube);
             cube2->setPosition(Vector3df(3.0f * i + 5.0f, 0.0f, 0.0f));
@@ -60,8 +60,8 @@ int main()
                 }
             }
 
-            rotation.setY(time);
-            cube->setRotation(rotation);
+            // rotation.setY(time);
+            // cube->setRotation(rotation);
 
             engine->getGraphicsService()->render();
 

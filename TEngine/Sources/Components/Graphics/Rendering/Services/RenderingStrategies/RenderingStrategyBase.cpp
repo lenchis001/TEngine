@@ -1,7 +1,5 @@
 #include "RenderingStrategyBase.h"
 
-#include "RenderingOptimizationDecorator.h"
-
 using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies;
 
 RenderingStrategyBase::RenderingStrategyBase() : _position(Vector3df(0.0f, 0.0f, 0.0f)),
@@ -24,9 +22,7 @@ const std::vector<std::shared_ptr<IRenderingStrategy>> &RenderingStrategyBase::g
 
 void RenderingStrategyBase::addChild(std::shared_ptr<IRenderingStrategy> child)
 {
-    auto decoratedChild = std::make_shared<RenderingOptimizationDecorator>(child);
-
-    _children.push_back(decoratedChild);
+    _children.push_back(child);
 
     child->_updateModelMatrix(_modelMatrix);
 }

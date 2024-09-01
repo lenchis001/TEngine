@@ -6,6 +6,7 @@
 #include "Components/Events/Models/KeyboardKeys.h"
 
 typedef std::function<bool(bool)> KeyboardEventHandler;
+typedef std::function<bool(float, float)> MousePositionEventHandler;
 
 namespace TEngine::Components::Events::Services
 {
@@ -17,6 +18,12 @@ namespace TEngine::Components::Events::Services
         virtual void initialize() = 0;
 
         virtual void registerHandler(Models::KeyboardKeys key, const KeyboardEventHandler &handler) = 0;
+        virtual void registerHandler(const MousePositionEventHandler &handler) = 0;
+
+        virtual void unregisterHandler(Models::KeyboardKeys key, const KeyboardEventHandler &handler) = 0;
+        virtual void unregisterHandler(const MousePositionEventHandler &handler) = 0;
+
+        virtual void setCursorePosition(float x, float y) = 0;
     };
 }
 

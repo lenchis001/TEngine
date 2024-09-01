@@ -6,6 +6,7 @@ namespace TEngine::Components::Graphics::Rendering::Models::Cameras
     enum class BuildinCameraTypes
     {
         BASE,
+        FPS
     };
 }
 

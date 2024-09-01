@@ -1,6 +1,8 @@
 #ifndef TENGINE_MIXINS_CONTEXT_AWARE_MIXIN_H
 #define TENGINE_MIXINS_CONTEXT_AWARE_MIXIN_H
 
+#include "cassert"
+
 namespace TEngine::Mixins
 {
     template <typename T>
@@ -9,7 +11,12 @@ namespace TEngine::Mixins
     protected:
         static T *getContext() { return _context; }
 
-        static void setContext(T *context) { _context = context; }
+        static void setContext(T *context)
+        {
+            assert(_context == nullptr && "Context was already set");
+
+            _context = context;
+        }
 
     private:
         static thread_local T *_context;

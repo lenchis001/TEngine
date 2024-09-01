@@ -3,7 +3,9 @@
 using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies;
 
 RenderingOptimizationDecorator::RenderingOptimizationDecorator(std::shared_ptr<IRenderingStrategy> strategy)
-    : _strategy(strategy)
+    : _strategy(strategy),
+      _frameCounter(0),
+      _distance(0.f)
 {
 }
 
@@ -11,12 +13,17 @@ void RenderingOptimizationDecorator::render(
     const Matrix4x4f &vpMatrix,
     const Vector3df &cameraPosition)
 {
-    auto distance = cameraPosition.distance(_strategy->getAbsolutePosition());
+    if (_frameCounter % 10 == 0)
+    {
+        _distance = cameraPosition.distance(_strategy->getAbsolutePosition());
+    }
 
-    if (distance < 48.f)
+    if (_distance < 100.f)
     {
         _strategy->render(vpMatrix, cameraPosition);
     }
+
+    _frameCounter++;
 }
 
 void RenderingOptimizationDecorator::setPosition(const Vector3df &position)
