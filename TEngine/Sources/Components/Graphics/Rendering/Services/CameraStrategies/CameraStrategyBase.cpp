@@ -50,6 +50,15 @@ void CameraStrategyBase::setTarget(const Vector3df &value)
     _recalculateVp();
 }
 
+void CameraStrategyBase::setTargetAndPosition(const Vector3df &target, const Vector3df &position)
+{
+    _target = target;
+    _position = position;
+
+    _recalculateView();
+    _recalculateVp();
+}
+
 void CameraStrategyBase::render()
 {
     // do nothing

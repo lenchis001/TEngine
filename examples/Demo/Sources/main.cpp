@@ -33,7 +33,7 @@ int main()
 
         auto cube = graphicsService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp");
 
-        for(int i = 0; i < 256; i++)
+        for (int i = 0; i < 256; i++)
         {
             auto cube2 = graphicsService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture1.bmp", cube);
             cube2->setPosition(Vector3df(3.0f * i + 5.0f, 0.0f, 0.0f));

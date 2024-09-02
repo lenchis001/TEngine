@@ -25,6 +25,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies
         const Vector3df &getTarget() const override;
         void setTarget(const Vector3df &value) override;
 
+        void setTargetAndPosition(const Vector3df &target, const Vector3df &position) override;
+
         void render() override;
 
         const Matrix4x4f &getVpMatrix() const override;

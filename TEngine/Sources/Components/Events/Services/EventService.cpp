@@ -48,7 +48,7 @@ void EventService::unregisterHandler(KeyboardKeys key, const KeyboardEventHandle
                                       { return ARE_KEYBOARD_HANDLERS_EQUAL(h, handler); }),
                        handlers.end());
 
-        assert((handlersSize -1) == handlers.size() && "Handler was not found");
+        assert((handlersSize - 1) == handlers.size() && "Handler was not found");
     }
 }
 
@@ -60,7 +60,7 @@ void EventService::unregisterHandler(const MousePositionEventHandler &handler)
                                         { return ARE_MOUSE_HANDLERS_EQUAL(h, handler); }),
                          _mouseHandlers.end());
 
-    assert((handlersSize -1) == _mouseHandlers.size() && "Handler was not found");
+    assert((handlersSize - 1) == _mouseHandlers.size() && "Handler was not found");
 }
 
 void EventService::setCursorePosition(float x, float y)
@@ -72,14 +72,11 @@ void EventService::_keyCallback(GLFWwindow *window, int key, int scancode, int a
 {
     auto that = getContext();
 
-    if (that->_keyboardHandlers.find(static_cast<KeyboardKeys>(key)) != that->_keyboardHandlers.end())
+    for (auto &handler : that->_keyboardHandlers[static_cast<KeyboardKeys>(key)])
     {
-        for (auto &handler : that->_keyboardHandlers[static_cast<KeyboardKeys>(key)])
+        if (handler(action == GLFW_PRESS || action == GLFW_REPEAT))
         {
-            if (handler(action == GLFW_PRESS || action == GLFW_REPEAT))
-            {
-                break;
-            }
+            break;
         }
     }
 }

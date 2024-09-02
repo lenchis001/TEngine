@@ -16,6 +16,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies
         virtual const TEngine::Components::Graphics::Models::Vector3df &getTarget() const = 0;
         virtual void setTarget(const TEngine::Components::Graphics::Models::Vector3df& value) = 0;
 
+        virtual void setTargetAndPosition(const TEngine::Components::Graphics::Models::Vector3df& target, const TEngine::Components::Graphics::Models::Vector3df& position) = 0;
+
         virtual void render() = 0;
 
         virtual const TEngine::Components::Graphics::Models::Matrix4x4f &getVpMatrix() const = 0;

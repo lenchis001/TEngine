@@ -183,13 +183,11 @@ void FpsCameraStrategy::_recalculateState()
         _position = _position - Vector3df(0.0f, _speed * (_isBoostActivated ? 3.0f : 1.0f), 0.0f);
     }
 
-    if (_isMovingForward || _isMovingBackward || _isMovingLeft || _isMovingRight || _isMovingUp, _isMovingDown, _isRorated)
+    if (_isMovingForward || _isMovingBackward || _isMovingLeft || _isMovingRight || _isMovingUp || _isMovingDown || _isRorated)
     {
         _recalculateTarget();
 
-        // set them together
-        setPosition(_position);
-        setTarget(_target);
+        setTargetAndPosition(_target, _position);
     }
 }
 
