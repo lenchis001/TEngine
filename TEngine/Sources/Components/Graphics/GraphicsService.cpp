@@ -14,6 +14,7 @@ GraphicsService::GraphicsService(
 
 void GraphicsService::initialize(std::shared_ptr<IGraphicsParameters> parameters)
 {
+	_meshLoadingService->initialize();
 	_texturesService->initialize();
 	_renderingService->initialize(parameters->getRenderingParameters());
 }
@@ -33,10 +34,9 @@ void GraphicsService::render()
 	_renderingService->render();
 }
 
-std::future<DataActionResult<ErrorCodes, IRenderingStrategy>> GraphicsService::loadMesh(const std::wstring &path)
+std::shared_ptr<IRenderingStrategy> GraphicsService::loadMesh(const std::string &path)
 {
-	return std::async(std::launch::async, [path]() -> DataActionResult<ErrorCodes, IRenderingStrategy>
-					  { throw ""; });
+	return nullptr;
 }
 
 std::shared_ptr<IRenderingStrategy> GraphicsService::addPrimitive(

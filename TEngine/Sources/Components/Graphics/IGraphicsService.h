@@ -8,7 +8,6 @@
 #include "Models/DataActionResult.h"
 
 #include "Models/IGraphicsParameters.h"
-#include "MeshLoading/Models/ErrorCodes.h"
 #include "Models/PrimitiveTypes.h"
 #include "Rendering/Models/Cameras/BuildinCameraTypes.h"
 #include "Rendering/Services/CameraStrategies/ICameraStrategy.h"
@@ -27,11 +26,8 @@ namespace TEngine::Components::Graphics::Services
 
         virtual void render() = 0;
 
-        virtual std::future<
-            TEngine::Models::DataActionResult<
-                TEngine::Components::Graphics::MeshLoading::Models::ErrorCodes,
-                TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::IRenderingStrategy>>
-        loadMesh(const std::wstring &path) = 0;
+        virtual std::shared_ptr<TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::IRenderingStrategy>
+        loadMesh(const std::string &path) = 0;
 
         virtual std::shared_ptr<
             TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::IRenderingStrategy>

@@ -35,7 +35,7 @@ namespace TEngine::Components::Graphics::Services
 
         void render() override;
 
-        std::future<DataActionResult<ErrorCodes, IRenderingStrategy>> loadMesh(const std::wstring &path) override;
+        std::shared_ptr<IRenderingStrategy> loadMesh(const std::string &path) override;
 
         std::shared_ptr<IRenderingStrategy> addPrimitive(
             PrimitiveTypes type,

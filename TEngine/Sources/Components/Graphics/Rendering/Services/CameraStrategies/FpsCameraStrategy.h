@@ -1,4 +1,5 @@
 #include "memory"
+#include "vector"
 
 #include "Components/Graphics/Models/Vector3d.h"
 

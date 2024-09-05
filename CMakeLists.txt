@@ -37,4 +37,5 @@ set(DEBUG CMAKE_BUILD_TYPE STREQUAL "Debug")
 # Include sub-projects.
 add_subdirectory("TEngine")
 add_subdirectory("Plugins/ImageLoading/BmpImageLoadingPlugin")
+add_subdirectory("Plugins/MeshLoading/ObjLoadingPlugin")
 add_subdirectory("examples/Demo")

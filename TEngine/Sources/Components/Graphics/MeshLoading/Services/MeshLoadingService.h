@@ -5,22 +5,31 @@
 
 #include "map"
 
-#include "Components/Graphics/Models/PrimitiveTypes.h"
+#include "Mixins/PluginsLoadingAware.hpp"
 
-using namespace TEngine::Models;
+#include "Components/Graphics/MeshLoading/Plugin/IMeshLoadingPlugin.h"
+
+using namespace TEngine::Mixins;
+
 using namespace TEngine::Components::Graphics::MeshLoading::Models;
-using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies;
+using namespace TEngine::Components::Graphics::MeshLoading::Plugin;
 
 namespace TEngine::Components::Graphics::MeshLoading::Services
 {
-    class MeshLoadingService : public IMeshLoadingService
+    class MeshLoadingService : public PluginsLoadingAware<IMeshLoadingPlugin>, public IMeshLoadingService
     {
     public:
         MeshLoadingService();
 
-        std::future<DataActionResult<ErrorCodes, IRenderingStrategy>> loadMesh(const std::wstring& path) override;
+        void initialize() override;
+
+        std::shared_ptr<IMesh> load(const std::string &path) override;
+
     private:
+        std::shared_ptr<IMesh> _toMesh(std::shared_ptr<IPluginMesh> pluginMesh);
+
+        std::shared_ptr<IShape> _toShape(std::shared_ptr<IPluginShape> pluginShape);
     };
 }
 
-#endif //TENGINE_MESHLOADINGSERVICE_H
+#endif // TENGINE_MESHLOADINGSERVICE_H
