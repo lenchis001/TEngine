@@ -28,7 +28,7 @@ namespace TEngine::Components::Graphics::MeshLoading::Services
     private:
         std::shared_ptr<IMesh> _toMesh(std::shared_ptr<IPluginMesh> pluginMesh);
 
-        std::shared_ptr<IShape> _toShape(std::shared_ptr<IPluginShape> pluginShape);
+        std::shared_ptr<IShape> _toShape(std::shared_ptr<IPluginShape> pluginShape, unsigned int index);
     };
 }
 

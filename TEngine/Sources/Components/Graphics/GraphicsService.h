@@ -42,6 +42,10 @@ namespace TEngine::Components::Graphics::Services
             std::string texturePath,
             std::shared_ptr<IRenderingStrategy> parent = nullptr) override;
 
+        std::shared_ptr<IRenderingStrategy> addMesh(
+            std::string path,
+            std::shared_ptr<IRenderingStrategy> parent = nullptr) override;
+
         std::shared_ptr<ICameraStrategy> setActiveCamera(BuildinCameraTypes cameraType) override;
 
         void setActiveCamera(std::shared_ptr<ICameraStrategy> camera) override;

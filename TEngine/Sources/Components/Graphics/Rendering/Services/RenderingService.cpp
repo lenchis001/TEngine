@@ -4,26 +4,30 @@
 
 #include "RenderingService.h"
 
-#include "RenderingStrategies/Primitives/CubeRenderingStrategy.h"
 #include "CameraStrategies/CameraStrategyBase.h"
 #include "CameraStrategies/FpsCameraStrategy.h"
-#include "Components/Graphics/Rendering/Services/RenderingStrategies/RenderingStrategyBase.h"
-#include "Components/Graphics/Rendering/Services/RenderingStrategies/RenderingOptimizationDecorator.h"
+#include "RenderingStrategies/Primitives/CubeRenderingStrategy.h"
+#include "RenderingStrategies/RenderingStrategyBase.h"
+#include "RenderingStrategies/RenderingOptimizationDecorator.h"
+#include "RenderingStrategies/Meshes/MeshRenderingStrategy.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies;
 using namespace TEngine::Components::Graphics::Rendering::Services;
 using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::Primitives;
+using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::Meshes;
 
 RenderingService::RenderingService(
 	std::shared_ptr<IEventService> eventService,
 	std::shared_ptr<IShadersService> shadersService,
 	std::shared_ptr<IBuffersService> bufferCacheService,
-	std::shared_ptr<ITexturesService> textureService)
+	std::shared_ptr<ITexturesService> textureService,
+	std::shared_ptr<IMeshService> meshService)
 	: _window(nullptr),
 	  _eventService(eventService),
 	  _shadersService(shadersService),
 	  _bufferCacheService(bufferCacheService),
 	  _textureService(textureService),
+	  _meshService(meshService),
 	  _activeCamera(nullptr),
 	  _root(std::make_shared<RenderingStrategyBase>())
 {
@@ -112,6 +116,18 @@ std::shared_ptr<IRenderingStrategy> RenderingService::addToRendering(
 	(parent ? parent : _root)->addChild(cubeRenderingStrategy);
 
 	return std::make_shared<RenderingOptimizationDecorator>(cubeRenderingStrategy);
+}
+
+std::shared_ptr<IRenderingStrategy> RenderingService::addMeshToRendering(
+	std::string meshPath,
+	std::shared_ptr<IRenderingStrategy> parent)
+{
+	auto renderableMesh = _meshService->load(meshPath);
+	auto meshRenderingStrategy = std::make_shared<MeshRenderingStrategy>(renderableMesh);
+
+	(parent ? parent : _root)->addChild(meshRenderingStrategy);
+
+	return std::make_shared<RenderingOptimizationDecorator>(meshRenderingStrategy);
 }
 
 std::shared_ptr<ICameraStrategy> RenderingService::setActiveCamera(BuildinCameraTypes cameraType)

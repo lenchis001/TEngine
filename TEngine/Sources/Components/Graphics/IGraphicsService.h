@@ -36,8 +36,13 @@ namespace TEngine::Components::Graphics::Services
             std::string texturePath,
             std::shared_ptr<TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::IRenderingStrategy> parent = nullptr) = 0;
 
+        virtual std::shared_ptr<TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::IRenderingStrategy>
+        addMesh(
+            std::string path,
+            std::shared_ptr<TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::IRenderingStrategy> parent = nullptr) = 0;
+
         virtual std::shared_ptr<Components::Graphics::Rendering::Services::CameraStrategies::ICameraStrategy>
-            setActiveCamera(Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes cameraType) = 0;
+        setActiveCamera(Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes cameraType) = 0;
 
         virtual void setActiveCamera(std::shared_ptr<Components::Graphics::Rendering::Services::CameraStrategies::ICameraStrategy> camera) = 0;
 

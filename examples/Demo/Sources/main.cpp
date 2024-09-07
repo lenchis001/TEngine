@@ -39,6 +39,9 @@ int main()
             cube2->setPosition(Vector3df(3.0f * i + 5.0f, 0.0f, 0.0f));
         }
 
+        auto sofa = graphicsService->addMesh("C:/Users/Leon/Downloads/TestObj/sofa.obj", cube);
+        sofa->setPosition(Vector3df(0.0f, 0.0f, 10.0f));
+
         auto rotation = Vector3df(0.0f, 0.0f, 0.0f);
 
         int framesCounter = 0;

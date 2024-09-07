@@ -49,6 +49,15 @@ std::shared_ptr<IRenderingStrategy> GraphicsService::addPrimitive(
 	return primitive;
 }
 
+std::shared_ptr<IRenderingStrategy> GraphicsService::addMesh(
+	std::string path,
+	std::shared_ptr<IRenderingStrategy> parent)
+{
+	auto mesh = _renderingService->addMeshToRendering(path, parent);
+
+	return mesh;
+}
+
 std::shared_ptr<ICameraStrategy> GraphicsService::setActiveCamera(BuildinCameraTypes cameraType)
 {
 	return _renderingService->setActiveCamera(cameraType);

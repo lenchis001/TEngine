@@ -15,6 +15,7 @@
 #include "Components/Graphics/Rendering/Services/Shaders/IShadersService.h"
 #include "Components/Graphics/Rendering/Services/Buffers/IBuffersService.h"
 #include "Components/Graphics/Rendering/Services/Textures/ITexturesService.h"
+#include "Components/Graphics/Rendering/Services/Meshes/IMeshService.h"
 
 using namespace TEngine::Components::Events::Services;
 
@@ -26,6 +27,7 @@ using namespace TEngine::Components::Graphics::Rendering::Services::CameraStrate
 using namespace TEngine::Components::Graphics::Rendering::Services::Buffers;
 using namespace TEngine::Components::Graphics::Rendering::Services::Textures;
 using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies;
+using namespace TEngine::Components::Graphics::Rendering::Services::Meshes;
 
 using namespace TEngine::Mixins;
 
@@ -40,7 +42,8 @@ namespace TEngine::Components::Graphics::Rendering::Services
             std::shared_ptr<IEventService> eventService,
             std::shared_ptr<IShadersService> shadersService,
             std::shared_ptr<IBuffersService> bufferCacheService,
-            std::shared_ptr<ITexturesService> texturesService);
+            std::shared_ptr<ITexturesService> texturesService,
+            std::shared_ptr<IMeshService> meshService);
         ~RenderingService();
 
         void initialize(std::shared_ptr<IRenderingParameters> parameters) override;
@@ -52,6 +55,10 @@ namespace TEngine::Components::Graphics::Rendering::Services
         std::shared_ptr<IRenderingStrategy> addToRendering(
             PrimitiveTypes type,
             std::string texturePath,
+            std::shared_ptr<IRenderingStrategy> parent = nullptr) override;
+
+        std::shared_ptr<IRenderingStrategy> addMeshToRendering(
+            std::string meshPath,
             std::shared_ptr<IRenderingStrategy> parent = nullptr) override;
 
         void render() override;
@@ -72,6 +79,7 @@ namespace TEngine::Components::Graphics::Rendering::Services
         std::shared_ptr<IShadersService> _shadersService;
         std::shared_ptr<IBuffersService> _bufferCacheService;
         std::shared_ptr<ITexturesService> _textureService;
+        std::shared_ptr<IMeshService> _meshService;
     };
 }
 

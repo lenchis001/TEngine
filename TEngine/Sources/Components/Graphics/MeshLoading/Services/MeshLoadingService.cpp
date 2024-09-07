@@ -30,19 +30,27 @@ std::shared_ptr<IMesh> MeshLoadingService::_toMesh(std::shared_ptr<IPluginMesh> 
 {
     std::vector<std::shared_ptr<IShape>> shapes;
 
+    unsigned int i = 0;
     for (auto &pluginShape : pluginMesh->getShapes())
     {
-        shapes.push_back(_toShape(pluginShape));
+        shapes.push_back(_toShape(pluginShape, i++));
     }
 
     return std::make_shared<Mesh>(shapes);
 }
 
-std::shared_ptr<IShape> MeshLoadingService::_toShape(std::shared_ptr<IPluginShape> pluginShape)
+std::shared_ptr<IShape> MeshLoadingService::_toShape(std::shared_ptr<IPluginShape> pluginShape, unsigned int index)
 {
+    auto name = pluginShape->getName();
+
+    if(name.empty())
+    {
+        name = "Shape:" + std::to_string(index);
+    }
+
     // todo: use move
     return std::make_shared<Shape>(
-        pluginShape->getName(),
+        name,
         pluginShape->getVertices(),
         pluginShape->getTextures(),
         pluginShape->getNormals(),

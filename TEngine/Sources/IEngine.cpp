@@ -11,6 +11,7 @@
 #include "Components/Graphics/ImageLoading/Services/ImageLoadingService.h"
 #include "Components/Graphics/Rendering/Services/Buffers/BuffersService.h"
 #include "Components/Graphics/Rendering/Services/Textures/TexturesService.h"
+#include "Components/Graphics/Rendering/Services/Meshes/MeshService.h"
 
 #include "Components/Events/Services/EventService.h"
 
@@ -29,14 +30,14 @@ std::shared_ptr<IEngine> TEngine::createEngine()
     auto eventsService = std::make_shared<EventService>();
 
     auto imageLoadingService = std::make_shared<ImageLoadingService>();
+    auto meshLoadingService = std::make_shared<MeshLoadingService>();
 
     auto shadersService = std::make_shared<ShadersService>();
     auto bufferCacheService = std::make_shared<BuffersService>();
     auto texturesService = std::make_shared<TexturesService>(imageLoadingService);
+    auto meshService = std::make_shared<MeshService>(meshLoadingService, bufferCacheService);
 
-    auto renderingService = std::make_shared<RenderingService>(eventsService, shadersService, bufferCacheService, texturesService);
-
-    auto meshLoadingService = std::make_shared<MeshLoadingService>();
+    auto renderingService = std::make_shared<RenderingService>(eventsService, shadersService, bufferCacheService, texturesService, meshService);
 
     auto graphicsService = std::make_shared<GraphicsService>(renderingService, meshLoadingService, texturesService);
 

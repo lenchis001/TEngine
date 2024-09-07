@@ -1,0 +1,36 @@
+#ifndef MESH_SERVICE_H
+#define MESH_SERVICE_H
+
+#include "IMeshService.h"
+
+#include "Components/Graphics/Rendering/Services/Buffers/IBuffersService.h"
+
+#include "memory"
+
+#include "Components/Graphics/MeshLoading/Services/IMeshLoadingService.h"
+
+using namespace TEngine::Components::Graphics::Rendering::Services::Buffers;
+using namespace TEngine::Components::Graphics::Rendering::Models::Meshes;
+using namespace TEngine::Components::Graphics::MeshLoading::Services;
+using namespace TEngine::Components::Graphics::MeshLoading::Models;
+
+namespace TEngine::Components::Graphics::Rendering::Services::Meshes
+{
+    class MeshService : public IMeshService
+    {
+    public:
+        MeshService(
+            std::shared_ptr<IMeshLoadingService> meshLoadingService,
+            std::shared_ptr<IBuffersService> buffersService);
+
+        std::shared_ptr<IRenderableMesh> load(const std::string &path) override;
+
+    private:
+        std::shared_ptr<IRenderableShape> _toRenderableShape(std::shared_ptr<IShape> shape, const std::string& path);
+
+        std::shared_ptr<IMeshLoadingService> _meshLoadingService;
+        std::shared_ptr<IBuffersService> _buffersService;
+    };
+}
+
+#endif // MESH_SERVICE_H
