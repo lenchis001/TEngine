@@ -3,8 +3,10 @@
 
 #include "Components/Graphics/Rendering/Services/RenderingStrategies/RenderingStrategyBase.h"
 
+#include "Components/Graphics/Rendering/Models/Meshes/IRenderableMesh.h"
 #include "Components/Graphics/Rendering/Services/Meshes/IMeshService.h"
 
+using namespace TEngine::Components::Graphics::Rendering::Models::Meshes;
 using namespace TEngine::Components::Graphics::Rendering::Services::Meshes;
 
 namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::Meshes
@@ -13,16 +15,17 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
     {
     public:
         MeshRenderingStrategy(
-            std::shared_ptr<IMeshService> meshService
-    );
+            std::shared_ptr<IMeshService> meshService,
+            const std::string &path);
 
         void render(
             const Matrix4x4f &vpMatrix,
             const Components::Graphics::Models::Vector3df &cameraPosition);
 
     private:
-        void _prepareMesh();
+        void _prepareMesh(const std::string &path);
 
+        std::shared_ptr<Models::Meshes::IRenderableMesh> _renderableMesh;
         std::shared_ptr<IMeshService> _meshService;
     };
 }

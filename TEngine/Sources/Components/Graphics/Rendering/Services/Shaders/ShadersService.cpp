@@ -23,11 +23,13 @@ GLuint ShadersService::take(const std::string &vertexShaderFile, const std::stri
         std::string vertex = _readShader(vertexShaderFile);
         if (vertex.empty())
         {
+            assert(false && "Vertex shader not found!");
             return 0;
         }
         std::string fragment = _readShader(fragmentShaderFile);
         if (fragment.empty())
         {
+            assert(false && "Fragment shader not found!");
             return 0;
         }
 
@@ -43,6 +45,7 @@ GLuint ShadersService::take(const std::string &vertexShaderFile, const std::stri
         glGetShaderiv(vertexShaderId, GL_COMPILE_STATUS, &success);
         if (!success)
         {
+            assert(false && "Vertex shader compilation failed!");
             char infoLog[512];
             glGetShaderInfoLog(vertexShaderId, 512, nullptr, infoLog);
             glDeleteShader(vertexShaderId);
@@ -60,6 +63,7 @@ GLuint ShadersService::take(const std::string &vertexShaderFile, const std::stri
         glGetShaderiv(fragmentShaderId, GL_COMPILE_STATUS, &success);
         if (!success)
         {
+            assert(false && "Fragment shader compilation failed!");
             char infoLog[512];
             glGetShaderInfoLog(fragmentShaderId, 512, nullptr, infoLog);
             glDeleteShader(vertexShaderId);
@@ -74,6 +78,7 @@ GLuint ShadersService::take(const std::string &vertexShaderFile, const std::stri
         glGetProgramiv(shaderProgramId, GL_LINK_STATUS, &success);
         if (!success)
         {
+            assert(false && "Shader program linking failed!");
             char infoLog[512];
             glGetProgramInfoLog(shaderProgramId, 512, nullptr, infoLog);
             glDeleteShader(vertexShaderId);

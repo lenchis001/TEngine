@@ -59,7 +59,7 @@ void CubeRenderingStrategy::render(
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, _textureId);
 
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 6 /*sides*/ * 2 /*triangles in every one*/ * 3 /*verteces in every one*/);
+    glDrawArrays(GL_TRIANGLES, 0, 6 /*sides*/ * 2 /*triangles in every one*/ * 3 /*verteces in every one*/);
 
     glUseProgram(0);
 

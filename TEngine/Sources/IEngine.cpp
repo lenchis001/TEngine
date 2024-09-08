@@ -35,7 +35,7 @@ std::shared_ptr<IEngine> TEngine::createEngine()
     auto shadersService = std::make_shared<ShadersService>();
     auto bufferCacheService = std::make_shared<BuffersService>();
     auto texturesService = std::make_shared<TexturesService>(imageLoadingService);
-    auto meshService = std::make_shared<MeshService>(meshLoadingService, bufferCacheService);
+    auto meshService = std::make_shared<MeshService>(meshLoadingService, bufferCacheService, shadersService);
 
     auto renderingService = std::make_shared<RenderingService>(eventsService, shadersService, bufferCacheService, texturesService, meshService);
 

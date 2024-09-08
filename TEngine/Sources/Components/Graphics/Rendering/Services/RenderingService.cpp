@@ -122,8 +122,7 @@ std::shared_ptr<IRenderingStrategy> RenderingService::addMeshToRendering(
 	std::string meshPath,
 	std::shared_ptr<IRenderingStrategy> parent)
 {
-	auto renderableMesh = _meshService->load(meshPath);
-	auto meshRenderingStrategy = std::make_shared<MeshRenderingStrategy>(renderableMesh);
+	auto meshRenderingStrategy = std::make_shared<MeshRenderingStrategy>(_meshService, meshPath);
 
 	(parent ? parent : _root)->addChild(meshRenderingStrategy);
 

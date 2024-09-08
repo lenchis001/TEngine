@@ -1,7 +1,7 @@
 #ifndef IRENDERABLE_SHAPE_H
 #define IRENDERABLE_SHAPE_H
 
-#include "glfw/glfw3.h"
+#include "GLFW/glfw3.h"
 
 namespace TEngine::Components::Graphics::Rendering::Models::Meshes
 {
@@ -11,6 +11,10 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
         virtual ~IRenderableShape() = default;
         
         virtual GLuint getVAO() const = 0;
+
+        virtual GLuint getProgram() const = 0;
+
+        virtual GLuint getMvpShaderId() const = 0;
 
         virtual unsigned int getVerticesCount() const = 0;
     };

@@ -13,7 +13,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::Meshes
     public:
         virtual ~IMeshService() = default;
 
-        virtual std::shared_ptr<Models::Meshes::IRenderableMesh> load(const std::string &path) = 0;
+        virtual std::shared_ptr<Models::Meshes::IRenderableMesh> take(const std::string &path) = 0;
     };
 }
 

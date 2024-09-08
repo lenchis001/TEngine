@@ -7,14 +7,20 @@
 
 using namespace TEngine::Components::Graphics::Rendering::Services::Meshes;
 
+#define VERTEX_SHADER_SOURCE "BuildinResources/Shaders/Mesh/ColoredShapeVertexShader.glsl"
+#define FRAGMENT_SHADER_SOURCE "BuildinResources/Shaders/Mesh/ColoredShapeFragmentShader.glsl"
+
 MeshService::MeshService(
     std::shared_ptr<IMeshLoadingService> meshLoadingService,
-    std::shared_ptr<IBuffersService> buffersService)
-    : _meshLoadingService(meshLoadingService), _buffersService(buffersService)
+    std::shared_ptr<IBuffersService> buffersService,
+    std::shared_ptr<IShadersService> shadersService)
+    : _meshLoadingService(meshLoadingService),
+      _buffersService(buffersService),
+      _shadersService(shadersService)
 {
 }
 
-std::shared_ptr<IRenderableMesh> MeshService::load(const std::string &path)
+std::shared_ptr<IRenderableMesh> MeshService::take(const std::string &path)
 {
     auto mesh = _meshLoadingService->load(path);
 
@@ -28,7 +34,7 @@ std::shared_ptr<IRenderableMesh> MeshService::load(const std::string &path)
     return std::make_shared<RenderableMesh>(renderableShapes);
 }
 
-std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_ptr<IShape> shape, const std::string& path)
+std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_ptr<IShape> shape, const std::string &path)
 {
     // Prepare vertices VBO
     auto verticesBufferName = path + shape->getName() + "Vertices";
@@ -36,7 +42,7 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
     auto verticesBuffer = _buffersService->takeVbo(verticesBufferName);
     glBindBuffer(GL_ARRAY_BUFFER, verticesBuffer);
 
-    const auto& vertices = shape->getVertices();
+    const auto &vertices = shape->getVertices();
     auto verticesCount = vertices.size();
     glBufferData(GL_ARRAY_BUFFER, verticesCount * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 
@@ -48,9 +54,14 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
     glBindVertexArray(vao);
 
     glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, verticesBuffer);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
     glBindVertexArray(0);
 
-    return std::make_shared<RenderableShape>(vao, verticesCount);
+    // Prepare program
+    auto program = _shadersService->take(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
+    auto matrixShaderId = glGetUniformLocation(program, "MVP");
+
+    return std::make_shared<RenderableShape>(vao, verticesCount, program, matrixShaderId);
 }

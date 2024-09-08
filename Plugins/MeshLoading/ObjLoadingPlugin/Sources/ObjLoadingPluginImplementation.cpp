@@ -1,6 +1,7 @@
 #include "ObjLoadingPluginImplementation.h"
 
 #include "memory"
+#include "iostream"
 
 #include "rapidobj/rapidobj.hpp"
 
@@ -34,7 +35,15 @@ std::shared_ptr<IPluginMesh> ObjLoadingPluginImplementation::load(const std::str
         return nullptr;
     }
 
+    Triangulate(result);
+
     std::vector<std::shared_ptr<IPluginShape>> shapes;
+
+    // positions
+    for (auto &position : result.attributes.positions)
+    {
+        std::cout << "position: " << position << std::endl;
+    }
 
     for (const auto &shape : result.shapes)
     {
@@ -42,7 +51,14 @@ std::shared_ptr<IPluginMesh> ObjLoadingPluginImplementation::load(const std::str
 
         for (auto &indice : shape.mesh.indices)
         {
-            vertices.push_back(result.attributes.positions[indice.position_index]);
+            auto positionIndex = indice.position_index * 3;
+            auto x = result.attributes.positions[positionIndex];
+            auto y = result.attributes.positions[positionIndex + 1];
+            auto z = result.attributes.positions[positionIndex + 2];
+
+            vertices.push_back(x);
+            vertices.push_back(y);
+            vertices.push_back(z);
         }
 
         shapes.push_back(std::make_shared<ObjPluginShape>(
