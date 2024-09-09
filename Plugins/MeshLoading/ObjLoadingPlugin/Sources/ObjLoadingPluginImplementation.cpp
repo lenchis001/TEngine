@@ -39,15 +39,10 @@ std::shared_ptr<IPluginMesh> ObjLoadingPluginImplementation::load(const std::str
 
     std::vector<std::shared_ptr<IPluginShape>> shapes;
 
-    // positions
-    for (auto &position : result.attributes.positions)
-    {
-        std::cout << "position: " << position << std::endl;
-    }
-
     for (const auto &shape : result.shapes)
     {
         std::vector<float> vertices;
+        std::vector<float> normals;
 
         for (auto &indice : shape.mesh.indices)
         {
@@ -59,13 +54,22 @@ std::shared_ptr<IPluginMesh> ObjLoadingPluginImplementation::load(const std::str
             vertices.push_back(x);
             vertices.push_back(y);
             vertices.push_back(z);
-        }
 
+            auto normalIndex = indice.normal_index * 3;
+            auto nx = result.attributes.normals[normalIndex];
+            auto ny = result.attributes.normals[normalIndex + 1];
+            auto nz = result.attributes.normals[normalIndex + 2];
+
+            normals.push_back(nx);
+            normals.push_back(ny);
+            normals.push_back(nz);
+        }
+        
         shapes.push_back(std::make_shared<ObjPluginShape>(
             shape.name,
             vertices,
             std::vector<std::string>(),
-            std::vector<float>(),
+            normals,
             std::vector<float>()));
     }
 

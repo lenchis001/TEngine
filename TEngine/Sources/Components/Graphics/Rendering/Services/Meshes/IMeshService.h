@@ -14,6 +14,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::Meshes
         virtual ~IMeshService() = default;
 
         virtual std::shared_ptr<Models::Meshes::IRenderableMesh> take(const std::string &path) = 0;
+
+        virtual void release(std::shared_ptr<Models::Meshes::IRenderableMesh> renderableMesh) = 0;
     };
 }
 

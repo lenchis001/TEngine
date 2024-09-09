@@ -73,8 +73,10 @@ Vector3df RenderingStrategyBase::getAbsolutePosition()
     return _modelMatrix.getPosition();
 }
 
-void RenderingStrategyBase::render(const Matrix4x4f &vpMatrix, const Vector3df &cameraPosition)
+void RenderingStrategyBase::render(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
 {
+    const auto &vpMatrix = activeCameraStrategy->getVpMatrix();
+
     if (_vpMatrix != vpMatrix)
     {
         _vpMatrix = vpMatrix;
@@ -84,7 +86,7 @@ void RenderingStrategyBase::render(const Matrix4x4f &vpMatrix, const Vector3df &
 
     for (const auto child : _children)
     {
-        child->render(vpMatrix, cameraPosition);
+        child->render(activeCameraStrategy);
     }
 }
 

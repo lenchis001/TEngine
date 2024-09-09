@@ -43,11 +43,9 @@ CubeRenderingStrategy::~CubeRenderingStrategy()
     RELEASE_VBO(UV_VBO_NAME);
 }
 
-void CubeRenderingStrategy::render(
-    const Matrix4x4f &vpMatrix,
-    const Components::Graphics::Models::Vector3df& cameraPosition)
+void CubeRenderingStrategy::render(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
 {
-    RenderingStrategyBase::render(vpMatrix, cameraPosition);
+    RenderingStrategyBase::render(activeCameraStrategy);
 
     glBindVertexArray(_vao);
 

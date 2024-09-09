@@ -31,9 +31,8 @@ int main()
 
         graphicsService->setActiveCamera(TEngine::Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes::FPS);
 
-        auto sofa = graphicsService->addMesh("/Users/leon/Downloads/Bench/Obj/Bench_LowRes.obj");
-        sofa->setPosition(Vector3df(0.0f, 0.0f, 10.0f));
-        sofa->setScale(Vector3df(0.1f, 0.1f, 0.1f));
+        auto sofa = graphicsService->addMesh("./DemoResources/sofa.obj");
+        sofa->setPosition(Vector3df(0.0f, 4.0f, 0.0f));
 
         auto cube = graphicsService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp");
 

@@ -10,30 +10,42 @@ MeshRenderingStrategy::MeshRenderingStrategy(
     : RenderingStrategyBase(),
       _meshService(meshService)
 {
-    _prepareMesh(path);
+    _renderableMesh = _meshService->take(path);
 }
 
-void MeshRenderingStrategy::render(
-    const Matrix4x4f &vpMatrix,
-    const Components::Graphics::Models::Vector3df &cameraPosition)
+MeshRenderingStrategy::~MeshRenderingStrategy()
 {
-    RenderingStrategyBase::render(vpMatrix, cameraPosition);
+    _meshService->release(_renderableMesh);
+}
+
+float p = 3.0;
+
+void MeshRenderingStrategy::render(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
+{
+    RenderingStrategyBase::render(activeCameraStrategy);
+
+    const auto &viewMatrix = activeCameraStrategy->getViewMatrix();
 
     for (auto &shape : _renderableMesh->getShapes())
     {
         glBindVertexArray(shape->getVAO());
 
         glUseProgram(shape->getProgram());
-        glUniformMatrix4fv(shape->getMvpShaderId(), 1, GL_FALSE, getMvpMatrix().getInternalData());
+        glUniformMatrix4fv(shape->getMvpMatrixShaderId(), 1, GL_FALSE, getMvpMatrix().getInternalData());
+        glUniformMatrix4fv(shape->getModelMatrixShaderId(), 1, GL_FALSE, getModelMatrix().getInternalData());
+        glUniformMatrix4fv(shape->getViewMatrixShaderId(), 1, GL_FALSE, viewMatrix.getInternalData());
+
+        if (p > 15)
+        {
+            p = 3.0;
+        }
+
+        float lightPos[] = {0.0f, 5.0f, p += 0.01f};
+        glUniform3fv(shape->getLightPosShaderId(), 1, lightPos);
 
         glDrawArrays(GL_TRIANGLES, 0, shape->getVerticesCount());
 
         glUseProgram(0);
         glBindVertexArray(0);
     }
-}
-
-void MeshRenderingStrategy::_prepareMesh(const std::string &path)
-{
-    _renderableMesh = _meshService->take(path);
 }

@@ -2,9 +2,29 @@
 
 using namespace TEngine::Components::Graphics::Rendering::Models::Meshes;
 
-RenderableShape::RenderableShape(GLuint vao, unsigned int verticesCount, GLuint program, GLuint mvpShaderId)
-    : _vao(vao), _verticesCount(verticesCount), _program(program), _mvpShaderId(mvpShaderId)
+RenderableShape::RenderableShape(
+    std::string name,
+    GLuint vao,
+    unsigned int verticesCount,
+    GLuint program,
+    GLuint mvpMatrixShaderId,
+    GLuint modelMatrixShaderId,
+    GLuint viewMatrixShaderId,
+    GLuint lightPosShaderId)
+    : _name(name),
+      _vao(vao),
+      _verticesCount(verticesCount),
+      _program(program),
+      _mvpMatrixShaderId(mvpMatrixShaderId),
+      _modelMatrixShaderId(modelMatrixShaderId),
+      _viewMatrixShaderId(viewMatrixShaderId),
+      _lightPosShaderId(lightPosShaderId)
 {
+}
+
+const std::string &RenderableShape::getName() const
+{
+    return _name;
 }
 
 GLuint RenderableShape::getVAO() const
@@ -17,9 +37,24 @@ GLuint RenderableShape::getProgram() const
     return _program;
 }
 
-GLuint RenderableShape::getMvpShaderId() const
+GLuint RenderableShape::getMvpMatrixShaderId() const
 {
-    return _mvpShaderId;
+    return _mvpMatrixShaderId;
+}
+
+GLuint RenderableShape::getModelMatrixShaderId() const
+{
+    return _modelMatrixShaderId;
+}
+
+GLuint RenderableShape::getViewMatrixShaderId() const
+{
+    return _viewMatrixShaderId;
+}
+
+GLuint RenderableShape::getLightPosShaderId() const
+{
+    return _lightPosShaderId;
 }
 
 unsigned int RenderableShape::getVerticesCount() const

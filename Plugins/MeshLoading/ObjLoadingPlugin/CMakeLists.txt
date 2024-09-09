@@ -14,6 +14,13 @@ add_custom_command(TARGET ObjLoadingPlugin POST_BUILD
     "$<TARGET_FILE_DIR:TEngine>/Plugins/MeshLoading/${CMAKE_SHARED_LIBRARY_PREFIX}ObjLoadingPlugin${CMAKE_SHARED_LIBRARY_SUFFIX}"
 )
 
+# Copy plugin library to example output directory
+add_custom_command(TARGET ObjLoadingPlugin POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+    "$<TARGET_FILE:ObjLoadingPlugin>"
+    "$<TARGET_FILE_DIR:Demo>/Plugins/MeshLoading/${CMAKE_SHARED_LIBRARY_PREFIX}ObjLoadingPlugin${CMAKE_SHARED_LIBRARY_SUFFIX}"
+)
+
 # --------------------- Dependencies ---------------------
 
 # Download and configure RapidObj

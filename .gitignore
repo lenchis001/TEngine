@@ -336,3 +336,6 @@ out/**
 
 # macOS
 .DS_Store
+
+# obj models
+!examples/Demo/DemoResources/*.obj

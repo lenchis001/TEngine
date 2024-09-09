@@ -8,6 +8,7 @@
 #include "Components/Graphics/Models/Vector3d.h"
 
 using namespace TEngine::Components::Graphics::Models;
+using namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies;
 
 namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies
 {
@@ -30,9 +31,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
 
         Vector3df getAbsolutePosition() override;
 
-        void render(
-            const Matrix4x4f &vpMatrix,
-            const Components::Graphics::Models::Vector3df &cameraPosition) override;
+        void render(std::shared_ptr<ICameraStrategy> activeCameraStrategy) override;
 
     protected:
         inline const Matrix4x4f &getModelMatrix() const

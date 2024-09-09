@@ -31,6 +31,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies
 
         const Matrix4x4f &getVpMatrix() const override;
 
+        const Matrix4x4f &getViewMatrix() const override;
+
         ~CameraStrategyBase() override = default;
 
         void setAspectRatio(float value) override;

@@ -4,6 +4,7 @@
 
 #include "fstream"
 #include "cassert"
+#include "iostream"
 
 #include "GLFW/glfw3.h"
 
@@ -45,10 +46,11 @@ GLuint ShadersService::take(const std::string &vertexShaderFile, const std::stri
         glGetShaderiv(vertexShaderId, GL_COMPILE_STATUS, &success);
         if (!success)
         {
-            assert(false && "Vertex shader compilation failed!");
             char infoLog[512];
             glGetShaderInfoLog(vertexShaderId, 512, nullptr, infoLog);
             glDeleteShader(vertexShaderId);
+            std::cout << infoLog << std::endl;
+            assert(false && infoLog);
             return 0;
         }
 
@@ -63,11 +65,11 @@ GLuint ShadersService::take(const std::string &vertexShaderFile, const std::stri
         glGetShaderiv(fragmentShaderId, GL_COMPILE_STATUS, &success);
         if (!success)
         {
-            assert(false && "Fragment shader compilation failed!");
             char infoLog[512];
             glGetShaderInfoLog(fragmentShaderId, 512, nullptr, infoLog);
             glDeleteShader(vertexShaderId);
             glDeleteShader(fragmentShaderId);
+            assert(false && "Fragment shader compilation failed!");
             return 0;
         }
 
@@ -78,12 +80,12 @@ GLuint ShadersService::take(const std::string &vertexShaderFile, const std::stri
         glGetProgramiv(shaderProgramId, GL_LINK_STATUS, &success);
         if (!success)
         {
-            assert(false && "Shader program linking failed!");
             char infoLog[512];
             glGetProgramInfoLog(shaderProgramId, 512, nullptr, infoLog);
             glDeleteShader(vertexShaderId);
             glDeleteShader(fragmentShaderId);
             glDeleteProgram(shaderProgramId);
+            assert(false && "Shader program linking failed!");
             return 0;
         }
 

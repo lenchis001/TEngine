@@ -9,18 +9,17 @@ RenderingOptimizationDecorator::RenderingOptimizationDecorator(std::shared_ptr<I
 {
 }
 
-void RenderingOptimizationDecorator::render(
-    const Matrix4x4f &vpMatrix,
-    const Vector3df &cameraPosition)
+void RenderingOptimizationDecorator::render(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
 {
     if (_frameCounter % 10 == 0)
     {
+        const auto &cameraPosition = activeCameraStrategy->getPosition();
         _distance = cameraPosition.distance(_strategy->getAbsolutePosition());
     }
 
     if (_distance < 100.f)
     {
-        _strategy->render(vpMatrix, cameraPosition);
+        _strategy->render(activeCameraStrategy);
     }
 
     _frameCounter++;

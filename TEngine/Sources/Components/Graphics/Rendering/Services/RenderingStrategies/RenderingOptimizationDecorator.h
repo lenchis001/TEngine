@@ -3,6 +3,7 @@
 #include "memory"
 
 using namespace TEngine::Components::Graphics::Models;
+using namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies;
 
 namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies
 {
@@ -13,9 +14,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
 
         ~RenderingOptimizationDecorator() override = default;
 
-        void render(
-            const Matrix4x4f &vpMatrix,
-            const Vector3df &cameraPosition) override;
+        void render(std::shared_ptr<ICameraStrategy> activeCameraStrategy) override;
 
         void setPosition(const Vector3df &position) override;
 

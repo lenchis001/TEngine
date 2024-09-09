@@ -6,6 +6,7 @@
 
 #include "Components/Graphics/Models/Vector3d.h"
 #include "Components/Graphics/Models/Matrix4x4.h"
+#include "Components/Graphics/Rendering/Services/CameraStrategies/ICameraStrategy.h"
 
 namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies
 {
@@ -15,9 +16,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
     class IRenderingStrategy
     {
     public:
-        virtual void render(
-            const Components::Graphics::Models::Matrix4x4f &vpMatrix,
-            const Components::Graphics::Models::Vector3df &cameraPosition) = 0;
+        virtual void render(std::shared_ptr<Graphics::Rendering::Services::CameraStrategies::ICameraStrategy> activeCameraStrategy) = 0;
 
         virtual void setPosition(const Graphics::Models::Vector3df &position) = 0;
         virtual void setRotation(const Graphics::Models::Vector3df &rotation) = 0;

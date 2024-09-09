@@ -20,6 +20,8 @@ namespace TEngine::Components::Graphics::MeshLoading::Plugin
         virtual const std::vector<float> &getNormals() const = 0;
 
         virtual const std::vector<float> &getUVs() const = 0;
+
+        
     };
 }
 

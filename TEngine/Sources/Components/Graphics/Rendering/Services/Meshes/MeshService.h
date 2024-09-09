@@ -28,8 +28,10 @@ namespace TEngine::Components::Graphics::Rendering::Services::Meshes
 
         std::shared_ptr<IRenderableMesh> take(const std::string &path) override;
 
+        void release(std::shared_ptr<IRenderableMesh> renderableMesh) override;
+
     private:
-        std::shared_ptr<IRenderableShape> _toRenderableShape(std::shared_ptr<IShape> shape, const std::string& path);
+        std::shared_ptr<IRenderableShape> _toRenderableShape(std::shared_ptr<IShape> shape, const std::string &path);
 
         std::shared_ptr<IMeshLoadingService> _meshLoadingService;
         std::shared_ptr<IBuffersService> _buffersService;

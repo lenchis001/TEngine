@@ -30,9 +30,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
             std::string texturePath);
         ~CubeRenderingStrategy() override;
 
-        void render(
-            const Matrix4x4f &vpMatrix,
-            const Components::Graphics::Models::Vector3df& cameraPosition) override;
+        void render(std::shared_ptr<ICameraStrategy> activeCameraStrategy) override;
 
     private:
         void _prepareVertexVbo();

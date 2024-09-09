@@ -17,14 +17,11 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
         MeshRenderingStrategy(
             std::shared_ptr<IMeshService> meshService,
             const std::string &path);
+        ~MeshRenderingStrategy();
 
-        void render(
-            const Matrix4x4f &vpMatrix,
-            const Components::Graphics::Models::Vector3df &cameraPosition);
+        void render(std::shared_ptr<ICameraStrategy> activeCameraStrategy);
 
     private:
-        void _prepareMesh(const std::string &path);
-
         std::shared_ptr<Models::Meshes::IRenderableMesh> _renderableMesh;
         std::shared_ptr<IMeshService> _meshService;
     };

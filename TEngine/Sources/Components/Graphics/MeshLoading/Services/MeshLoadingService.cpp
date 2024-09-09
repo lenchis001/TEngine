@@ -48,6 +48,8 @@ std::shared_ptr<IShape> MeshLoadingService::_toShape(std::shared_ptr<IPluginShap
         name = "Shape:" + std::to_string(index);
     }
 
+    auto normalsCount = pluginShape->getNormals().size();
+
     // todo: use move
     return std::make_shared<Shape>(
         name,
