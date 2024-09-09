@@ -43,6 +43,12 @@ void MeshRenderingStrategy::render(std::shared_ptr<ICameraStrategy> activeCamera
         float lightPos[] = {0.0f, 5.0f, p += 0.01f};
         glUniform3fv(shape->getLightPosShaderId(), 1, lightPos);
 
+        float lightColor[] = {1.0f, 1.0f, 1.0f};
+        glUniform3fv(shape->getLightColorShaderId(), 1, lightColor);
+
+        float lightPower = 50.0f;
+        glUniform1f(shape->getLightPowerShaderId(), lightPower);
+
         glDrawArrays(GL_TRIANGLES, 0, shape->getVerticesCount());
 
         glUseProgram(0);

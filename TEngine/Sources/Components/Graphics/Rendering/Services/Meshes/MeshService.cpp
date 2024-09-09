@@ -98,6 +98,8 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
     auto modelMatrixShaderId = glGetUniformLocation(program, "modelMatrix");
     auto viewMatrixShaderId = glGetUniformLocation(program, "viewMatrix");
     auto lightPosShaderId = glGetUniformLocation(program, "lightPosition");
+    auto lightColorShaderId = glGetUniformLocation(program, "lightColor");
+    auto lightPowerShaderId = glGetUniformLocation(program, "lightPower");
 
     return std::make_shared<RenderableShape>(
         name,
@@ -107,5 +109,7 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
         mvpMatrixShaderId,
         modelMatrixShaderId,
         viewMatrixShaderId,
-        lightPosShaderId);
+        lightPosShaderId,
+        lightColorShaderId,
+        lightPowerShaderId);
 }

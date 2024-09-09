@@ -10,7 +10,9 @@ RenderableShape::RenderableShape(
     GLuint mvpMatrixShaderId,
     GLuint modelMatrixShaderId,
     GLuint viewMatrixShaderId,
-    GLuint lightPosShaderId)
+    GLuint lightPosShaderId,
+    GLuint lightColorShaderId,
+    GLuint lightPowerShaderId)
     : _name(name),
       _vao(vao),
       _verticesCount(verticesCount),
@@ -18,7 +20,9 @@ RenderableShape::RenderableShape(
       _mvpMatrixShaderId(mvpMatrixShaderId),
       _modelMatrixShaderId(modelMatrixShaderId),
       _viewMatrixShaderId(viewMatrixShaderId),
-      _lightPosShaderId(lightPosShaderId)
+      _lightPosShaderId(lightPosShaderId),
+      _lightColorShaderId(lightColorShaderId),
+      _lightPowerShaderId(lightPowerShaderId)
 {
 }
 
@@ -55,6 +59,16 @@ GLuint RenderableShape::getViewMatrixShaderId() const
 GLuint RenderableShape::getLightPosShaderId() const
 {
     return _lightPosShaderId;
+}
+
+GLuint RenderableShape::getLightColorShaderId() const
+{
+    return _lightColorShaderId;
+}
+
+GLuint RenderableShape::getLightPowerShaderId() const
+{
+    return _lightPowerShaderId;
 }
 
 unsigned int RenderableShape::getVerticesCount() const
