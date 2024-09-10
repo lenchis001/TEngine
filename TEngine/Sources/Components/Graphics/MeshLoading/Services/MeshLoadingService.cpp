@@ -43,7 +43,7 @@ std::shared_ptr<IShape> MeshLoadingService::_toShape(std::shared_ptr<IPluginShap
 {
     auto name = pluginShape->getName();
 
-    if(name.empty())
+    if (name.empty())
     {
         name = "Shape:" + std::to_string(index);
     }
@@ -56,5 +56,6 @@ std::shared_ptr<IShape> MeshLoadingService::_toShape(std::shared_ptr<IPluginShap
         pluginShape->getVertices(),
         pluginShape->getTextures(),
         pluginShape->getNormals(),
-        pluginShape->getUVs());
+        pluginShape->getUVs(),
+        pluginShape->getDiffuseColor());
 }

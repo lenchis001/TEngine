@@ -43,6 +43,20 @@ std::shared_ptr<IPluginMesh> ObjLoadingPluginImplementation::load(const std::str
     {
         std::vector<float> vertices;
         std::vector<float> normals;
+        std::vector<float> colors;
+
+        std::vector<float> diffuseColor(3);
+        if (!shape.mesh.material_ids.empty())
+        {
+            auto material = result.materials[shape.mesh.material_ids[0]];
+            diffuseColor[0] = material.diffuse[0];
+            diffuseColor[1] = material.diffuse[1];
+            diffuseColor[2] = material.diffuse[2];
+        }
+        else
+        {
+            diffuseColor = {.3f, .3f, .3f};
+        }
 
         for (auto &indice : shape.mesh.indices)
         {
@@ -64,13 +78,14 @@ std::shared_ptr<IPluginMesh> ObjLoadingPluginImplementation::load(const std::str
             normals.push_back(ny);
             normals.push_back(nz);
         }
-        
+
         shapes.push_back(std::make_shared<ObjPluginShape>(
             shape.name,
             vertices,
             std::vector<std::string>(),
             normals,
-            std::vector<float>()));
+            std::vector<float>(),
+            diffuseColor));
     }
 
     return std::make_shared<ObjPluginMesh>(shapes);

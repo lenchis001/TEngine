@@ -21,7 +21,7 @@ namespace TEngine::Components::Graphics::MeshLoading::Plugin
 
         virtual const std::vector<float> &getUVs() const = 0;
 
-        
+        virtual const std::vector<float> &getDiffuseColor() const = 0;
     };
 }
 

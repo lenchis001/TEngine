@@ -1,6 +1,7 @@
 #ifndef IRENDERABLE_SHAPE_H
 #define IRENDERABLE_SHAPE_H
 
+#include "vector"
 #include "string"
 
 #include "GLFW/glfw3.h"
@@ -29,6 +30,10 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
         virtual GLuint getLightColorShaderId() const = 0;
 
         virtual GLuint getLightPowerShaderId() const = 0;
+
+        virtual GLuint getShapeColorShaderId() const = 0;
+
+        virtual const std::vector<float>& getDiffuseColor() const = 0;
 
         virtual unsigned int getVerticesCount() const = 0;
     };

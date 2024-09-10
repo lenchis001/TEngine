@@ -12,12 +12,13 @@ out vec3 color;
 uniform vec3 lightPosition;
 uniform vec3 lightColor;
 uniform float lightPower;
+uniform vec3 shapeColor;
 
 void main(){
 	// Material properties
-	vec3 MaterialDiffuseColor = vec3(0.3,0.3,0.3);
+	vec3 MaterialDiffuseColor = shapeColor;
 	vec3 MaterialAmbientColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
-	vec3 MaterialSpecularColor = vec3(0.3,0.3,0.3);
+	vec3 MaterialSpecularColor = shapeColor;
 
 	// Distance to the light
 	float distance = length( lightPosition - positionWorldspace );

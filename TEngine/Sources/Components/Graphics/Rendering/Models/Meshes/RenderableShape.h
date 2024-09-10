@@ -18,7 +18,9 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
             GLuint viewMatrixShaderId,
             GLuint lightPosShaderId,
             GLuint lightColorShaderId,
-            GLuint lightPowerShaderId);
+            GLuint lightPowerShaderId,
+            GLuint shapeColorShaderId,
+            const std::vector<float>& diffuseColor);
         ~RenderableShape() = default;
 
         const std::string &getName() const override;
@@ -39,6 +41,10 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
 
         GLuint getLightPowerShaderId() const override;
 
+        GLuint getShapeColorShaderId() const override;
+
+        const std::vector<float> &getDiffuseColor() const override;
+
         unsigned int getVerticesCount() const override;
 
     private:
@@ -51,6 +57,8 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
         GLuint _lightPosShaderId;
         GLuint _lightColorShaderId;
         GLuint _lightPowerShaderId;
+        GLuint _shapeColorShaderId;
+        std::vector<float> _diffuseColor;
         unsigned int _verticesCount;
     };
 }
