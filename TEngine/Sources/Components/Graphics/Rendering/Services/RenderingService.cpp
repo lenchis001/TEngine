@@ -111,9 +111,10 @@ std::shared_ptr<IRenderingStrategy> RenderingService::addToRendering(
 		_textureService,
 		texturePath);
 
-	(parent ? parent : _root)->addChild(cubeRenderingStrategy);
+	auto decoratedCubeRenderingStrategy = std::make_shared<RenderingOptimizationDecorator>(cubeRenderingStrategy);
+	(parent ? parent : _root)->addChild(decoratedCubeRenderingStrategy);
 
-	return std::make_shared<RenderingOptimizationDecorator>(cubeRenderingStrategy);
+	return decoratedCubeRenderingStrategy;
 }
 
 std::shared_ptr<IRenderingStrategy> RenderingService::addMeshToRendering(
@@ -122,9 +123,10 @@ std::shared_ptr<IRenderingStrategy> RenderingService::addMeshToRendering(
 {
 	auto meshRenderingStrategy = std::make_shared<MeshRenderingStrategy>(_meshService, meshPath);
 
-	(parent ? parent : _root)->addChild(meshRenderingStrategy);
+	auto decoratedMeshRenderingStrategy = std::make_shared<RenderingOptimizationDecorator>(meshRenderingStrategy);
+	(parent ? parent : _root)->addChild(decoratedMeshRenderingStrategy);
 
-	return std::make_shared<RenderingOptimizationDecorator>(meshRenderingStrategy);
+	return decoratedMeshRenderingStrategy;
 }
 
 std::shared_ptr<ICameraStrategy> RenderingService::setActiveCamera(BuildinCameraTypes cameraType)

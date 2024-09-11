@@ -6,6 +6,7 @@
 #include "Components/Graphics/Rendering/Services/Shaders/IShadersService.h"
 #include "Components/Graphics/Rendering/Services/Buffers/IBuffersService.h"
 
+#include "map"
 #include "memory"
 
 #include "Components/Graphics/MeshLoading/Services/IMeshLoadingService.h"
@@ -25,6 +26,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::Meshes
             std::shared_ptr<IMeshLoadingService> meshLoadingService,
             std::shared_ptr<IBuffersService> buffersService,
             std::shared_ptr<IShadersService> shadersService);
+        ~MeshService() override;
 
         std::shared_ptr<IRenderableMesh> take(const std::string &path) override;
 
@@ -32,6 +34,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::Meshes
 
     private:
         std::shared_ptr<IRenderableShape> _toRenderableShape(std::shared_ptr<IShape> shape, const std::string &path);
+
+        std::map<std::string, std::pair<std::size_t, std::shared_ptr<IRenderableMesh>>> _renderableMeshes;
 
         std::shared_ptr<IMeshLoadingService> _meshLoadingService;
         std::shared_ptr<IBuffersService> _buffersService;

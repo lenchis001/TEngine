@@ -49,7 +49,7 @@ GLuint ShadersService::take(const std::string &vertexShaderFile, const std::stri
             char infoLog[512];
             glGetShaderInfoLog(vertexShaderId, 512, nullptr, infoLog);
             glDeleteShader(vertexShaderId);
-            std::cout << infoLog << std::endl;
+            std::cerr << infoLog << std::endl;
             assert(false && infoLog);
             return 0;
         }
@@ -69,6 +69,7 @@ GLuint ShadersService::take(const std::string &vertexShaderFile, const std::stri
             glGetShaderInfoLog(fragmentShaderId, 512, nullptr, infoLog);
             glDeleteShader(vertexShaderId);
             glDeleteShader(fragmentShaderId);
+            std::cerr << infoLog << std::endl;
             assert(false && "Fragment shader compilation failed!");
             return 0;
         }
@@ -85,6 +86,7 @@ GLuint ShadersService::take(const std::string &vertexShaderFile, const std::stri
             glDeleteShader(vertexShaderId);
             glDeleteShader(fragmentShaderId);
             glDeleteProgram(shaderProgramId);
+            std::cerr << infoLog << std::endl;
             assert(false && "Shader program linking failed!");
             return 0;
         }

@@ -57,7 +57,10 @@ namespace TEngine::Components::Graphics::Models
 
         Matrix4x4 &operator=(const Matrix4x4 &other)
         {
-            std::memcpy(_data, other._data, sizeof(T) * 16);
+            if (this->_data != other._data)
+            {
+                std::memcpy(_data, other._data, sizeof(T) * 16);
+            }
 
             return *this;
         }

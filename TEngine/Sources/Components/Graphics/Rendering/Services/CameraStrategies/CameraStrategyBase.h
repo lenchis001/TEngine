@@ -29,9 +29,13 @@ namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies
 
         void render() override;
 
-        const Matrix4x4f &getVpMatrix() const override;
+        inline const Matrix4x4f &getVpMatrix() const override {
+            return _vpMatrix;
+        }
 
-        const Matrix4x4f &getViewMatrix() const override;
+        inline const Matrix4x4f &getViewMatrix() const override {
+            return _viewMatrix;
+        }
 
         ~CameraStrategyBase() override = default;
 

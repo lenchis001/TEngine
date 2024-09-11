@@ -64,16 +64,6 @@ void CameraStrategyBase::render()
     // do nothing
 }
 
-const Matrix4x4f &CameraStrategyBase::getVpMatrix() const
-{
-    return _vpMatrix;
-}
-
-const Matrix4x4f &CameraStrategyBase::getViewMatrix() const
-{
-    return _viewMatrix;
-}
-
 void CameraStrategyBase::_recalculateProjection()
 {
     float tanHalfFov = tan(_fov / 2.f);

@@ -31,15 +31,12 @@ int main()
 
         graphicsService->setActiveCamera(TEngine::Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes::FPS);
 
-        auto sofa = graphicsService->addMesh("./DemoResources/sofa.obj");
-        sofa->setPosition(Vector3df(0.0f, 4.0f, 0.0f));
-
         auto cube = graphicsService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp");
 
-        for (int i = 0; i < 256; i++)
+        for (int i = 0; i < 128; i++)
         {
-            auto cube2 = graphicsService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture1.bmp", cube);
-            cube2->setPosition(Vector3df(3.0f * i + 5.0f, 0.0f, 0.0f));
+            auto sofa = graphicsService->addMesh("./DemoResources/sofa.obj");
+            sofa->setPosition(Vector3df(3.0f * i + 5.0f, 0.0f, 0.0f));
         }
 
         auto rotation = Vector3df(0.0f, 0.0f, 0.0f);
@@ -63,10 +60,7 @@ int main()
                 }
             }
 
-            // rotation.setY(time);
-            // cube->setRotation(rotation);
-
-            engine->getGraphicsService()->render();
+            graphicsService->render();
 
             framesCounter++;
         }

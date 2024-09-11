@@ -1,5 +1,7 @@
 #include "GL/glew.h"
 
+#include "cassert"
+
 #include "MeshService.h"
 
 #include "Components/Graphics/Rendering/Models/Meshes/RenderableMesh.h"
@@ -23,8 +25,21 @@ MeshService::MeshService(
 {
 }
 
+MeshService::~MeshService()
+{
+    assert(_renderableMeshes.empty() && "All renderable meshes should be released before MeshService destruction");
+}
+
 std::shared_ptr<IRenderableMesh> MeshService::take(const std::string &path)
 {
+    auto renderableMeshIterator = _renderableMeshes.find(path);
+    if (renderableMeshIterator != _renderableMeshes.end())
+    {
+        renderableMeshIterator->second.first++;
+
+        return renderableMeshIterator->second.second;
+    }
+
     auto mesh = _meshLoadingService->load(path);
 
     std::vector<std::shared_ptr<IRenderableShape>> renderableShapes;
@@ -34,17 +49,29 @@ std::shared_ptr<IRenderableMesh> MeshService::take(const std::string &path)
         renderableShapes.push_back(_toRenderableShape(shape, path));
     }
 
-    return std::make_shared<RenderableMesh>(renderableShapes);
+    auto renderableMesh = std::make_shared<RenderableMesh>(path, renderableShapes);
+    _renderableMeshes[path] = {1, renderableMesh};
+
+    return renderableMesh;
 }
 
 void MeshService::release(std::shared_ptr<IRenderableMesh> renderableMesh)
 {
-    for (auto &shape : renderableMesh->getShapes())
+    auto renderableMeshIterator = _renderableMeshes.find(renderableMesh->getSource());
+    assert(renderableMeshIterator != _renderableMeshes.end() && "Renderable mesh should be taken before releasing");
+
+    renderableMeshIterator->second.first--;
+
+    if (renderableMeshIterator->second.first == 0)
     {
-        _buffersService->releaseVbo(toVertexName(shape->getName()));
-        _buffersService->releaseVbo(toNormalName(shape->getName()));
-        _buffersService->releaseVao(shape->getName());
-        _shadersService->release(shape->getProgram());
+        _renderableMeshes.erase(renderableMeshIterator);
+        for (auto &shape : renderableMesh->getShapes())
+        {
+            _buffersService->releaseVbo(toVertexName(shape->getName()));
+            _buffersService->releaseVbo(toNormalName(shape->getName()));
+            _buffersService->releaseVao(shape->getName());
+            _shadersService->release(shape->getProgram());
+        }
     }
 }
 

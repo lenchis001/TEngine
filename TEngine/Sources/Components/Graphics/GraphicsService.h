@@ -33,7 +33,10 @@ namespace TEngine::Components::Graphics::Services
 
         double getTime() const override;
 
-        void render() override;
+        inline void render() override
+        {
+            _renderingService->render();
+        }
 
         std::shared_ptr<IRenderingStrategy> loadMesh(const std::string &path) override;
 

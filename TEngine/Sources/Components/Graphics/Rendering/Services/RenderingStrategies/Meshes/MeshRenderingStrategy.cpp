@@ -18,8 +18,6 @@ MeshRenderingStrategy::~MeshRenderingStrategy()
     _meshService->release(_renderableMesh);
 }
 
-float p = 3.0;
-
 void MeshRenderingStrategy::render(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
 {
     RenderingStrategyBase::render(activeCameraStrategy);
@@ -35,12 +33,7 @@ void MeshRenderingStrategy::render(std::shared_ptr<ICameraStrategy> activeCamera
         glUniformMatrix4fv(shape->getModelMatrixShaderId(), 1, GL_FALSE, getModelMatrix().getInternalData());
         glUniformMatrix4fv(shape->getViewMatrixShaderId(), 1, GL_FALSE, viewMatrix.getInternalData());
 
-        if (p > 15)
-        {
-            p = 3.0;
-        }
-
-        float lightPos[] = {0.0f, 5.0f, p += 0.01f};
+        float lightPos[] = {0.0f, 7.0f, 10.0f};
         glUniform3fv(shape->getLightPosShaderId(), 1, lightPos);
 
         float lightColor[] = {1.0f, 1.0f, 1.0f};

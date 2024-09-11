@@ -11,7 +11,7 @@ RenderingOptimizationDecorator::RenderingOptimizationDecorator(std::shared_ptr<I
 
 void RenderingOptimizationDecorator::render(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
 {
-    if (_frameCounter % 10 == 0)
+    if ((_frameCounter % 30) == 0)
     {
         const auto &cameraPosition = activeCameraStrategy->getPosition();
         _distance = cameraPosition.distance(_strategy->getAbsolutePosition());

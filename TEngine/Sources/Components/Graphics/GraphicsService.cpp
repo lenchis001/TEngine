@@ -29,11 +29,6 @@ double GraphicsService::getTime() const
 	return _renderingService->getTime();
 }
 
-void GraphicsService::render()
-{
-	_renderingService->render();
-}
-
 std::shared_ptr<IRenderingStrategy> GraphicsService::loadMesh(const std::string &path)
 {
 	return nullptr;

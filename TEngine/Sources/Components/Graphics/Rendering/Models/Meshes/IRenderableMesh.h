@@ -3,6 +3,7 @@
 
 #include "memory"
 #include "vector"
+#include "string"
 
 #include "IRenderableShape.h"
 
@@ -12,6 +13,8 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
     {
     public:
         virtual ~IRenderableMesh() = default;
+
+        virtual const std::string& getSource() const = 0;
 
         virtual const std::vector<std::shared_ptr<IRenderableShape>>& getShapes() const = 0;
     };
