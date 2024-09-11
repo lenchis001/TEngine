@@ -24,6 +24,7 @@ namespace TEngine::Components::Events::Services
         virtual void unregisterHandler(const MousePositionEventHandler &handler) = 0;
 
         virtual void setCursorePosition(float x, float y) = 0;
+        virtual void setCursorVisibility(bool isVisible) = 0;
     };
 }
 

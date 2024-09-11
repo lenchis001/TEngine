@@ -31,6 +31,7 @@ namespace TEngine::Components::Events::Services
         void unregisterHandler(const MousePositionEventHandler &handler) override;
 
         void setCursorePosition(float x, float y) override;
+        void setCursorVisibility(bool isVisible) override;
 
     private:
         static void _keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);

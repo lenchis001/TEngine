@@ -47,6 +47,7 @@ FpsCameraStrategy::FpsCameraStrategy(
     _recalculateState();
 
     _eventService->setCursorePosition(1024 / 2, 768 / 2);
+    _eventService->setCursorVisibility(false);
 }
 
 FpsCameraStrategy::~FpsCameraStrategy()

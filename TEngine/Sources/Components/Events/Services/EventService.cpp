@@ -68,6 +68,11 @@ void EventService::setCursorePosition(float x, float y)
     glfwSetCursorPos(glfwGetCurrentContext(), x, y);
 }
 
+void EventService::setCursorVisibility(bool isVisible)
+{
+    glfwSetInputMode(glfwGetCurrentContext(), GLFW_CURSOR, isVisible ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
+}
+
 void EventService::_keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
     auto that = getContext();
