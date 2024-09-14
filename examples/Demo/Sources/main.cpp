@@ -44,6 +44,10 @@ int main()
         int framesCounter = 0;
         double previousCheckTime = graphicsService->getTime();
 
+        auto audioService = engine->getAudioService();
+        auto source = audioService->take("C:/Users/Leon/Downloads/test.ogg");
+        source->play();
+
         while (true)
         {
             auto time = graphicsService->getTime();

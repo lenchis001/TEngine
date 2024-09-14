@@ -58,7 +58,6 @@ FetchContent_Declare(
     glew
     GIT_REPOSITORY https://github.com/Perlmint/glew-cmake.git
     GIT_TAG        master
-    SOURCE_DIR     ${CMAKE_CURRENT_BINARY_DIR}/glew
 )
 
 FetchContent_GetProperties(glew)
@@ -75,3 +74,78 @@ target_include_directories(TEngine PRIVATE ${glew_SOURCE_DIR}/include)
 
 # Add GLEW library
 target_link_libraries(TEngine PRIVATE glew)
+
+# --------------------- Add OpenAL library ---------------------
+
+# Download and configure OpenAL
+include(FetchContent)
+
+FetchContent_Declare(
+    openal
+    GIT_REPOSITORY https://github.com/kcat/openal-soft.git
+    GIT_TAG        1.23.1
+)
+
+FetchContent_GetProperties(openal)
+
+if(NOT openal_POPULATED)
+    FetchContent_Populate(openal)
+    add_subdirectory(${openal_SOURCE_DIR} ${openal_BINARY_DIR})
+endif()
+
+# Add OpenAL includes
+target_include_directories(TEngine PRIVATE ${openal_SOURCE_DIR}/include)
+
+# Add OpenAL library
+target_link_libraries(TEngine PRIVATE OpenAL)
+
+# --------------------- Add ogg library ---------------------
+
+# Download and configure ogg
+include(FetchContent)
+
+FetchContent_Declare(
+    ogg
+    GIT_REPOSITORY https://github.com/xiph/ogg.git
+    GIT_TAG        v1.3.5
+)
+
+FetchContent_GetProperties(ogg)
+
+if(NOT ogg_POPULATED)
+    FetchContent_Populate(ogg)
+    add_subdirectory(${ogg_SOURCE_DIR} ${ogg_BINARY_DIR})
+endif()
+
+# Add ogg includes
+target_include_directories(TEngine PRIVATE ${ogg_SOURCE_DIR}/include)
+
+# Add ogg library
+target_link_libraries(TEngine PRIVATE ogg)
+
+# --------------------- Add vorbis library ---------------------
+
+# Download and configure vorbis
+include(FetchContent)
+
+FetchContent_Declare(
+    vorbis
+    GIT_REPOSITORY https://github.com/xiph/vorbis.git
+    GIT_TAG        v1.3.6
+)
+
+set(OGG_INCLUDE_DIRS ${ogg_SOURCE_DIR}/include)
+set(OGG_LIBRARIES ogg)
+
+FetchContent_GetProperties(vorbis)
+
+if(NOT vorbis_POPULATED)
+    FetchContent_Populate(vorbis)
+    add_subdirectory(${vorbis_SOURCE_DIR} ${vorbis_BINARY_DIR})
+endif()
+
+# Add vorbis includes
+target_include_directories(TEngine PRIVATE ${vorbis_SOURCE_DIR}/include)
+
+# Add vorbis library
+target_link_libraries(TEngine PRIVATE vorbis vorbisfile)

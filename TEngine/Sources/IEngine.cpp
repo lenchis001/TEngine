@@ -12,6 +12,8 @@
 #include "Components/Graphics/Rendering/Services/Buffers/BuffersService.h"
 #include "Components/Graphics/Rendering/Services/Textures/TexturesService.h"
 #include "Components/Graphics/Rendering/Services/Meshes/MeshService.h"
+#include "Components/Audio/Services/Readers/VorbisOggReader.h"
+#include "Components/Audio/Services/AudioService.h"
 
 #include "Components/Events/Services/EventService.h"
 
@@ -22,6 +24,8 @@ using namespace TEngine::Components::Graphics::MeshLoading::Services;
 using namespace TEngine::Components::Graphics::Rendering::Services::Shaders;
 using namespace TEngine::Components::Graphics::ImageLoading::Services;
 using namespace TEngine::Components::Graphics::Rendering::Services::Textures;
+using namespace TEngine::Components::Audio::Services::Readers;
+using namespace TEngine::Components::Audio::Services;
 
 using namespace TEngine::Components::Events::Services;
 
@@ -41,5 +45,8 @@ std::shared_ptr<IEngine> TEngine::createEngine()
 
     auto graphicsService = std::make_shared<GraphicsService>(renderingService, meshLoadingService, texturesService);
 
-    return std::make_shared<Engine>(graphicsService, eventsService);
+    auto vorbisOggReader = std::make_shared<VorbisOggReader>();
+    auto audioService = std::make_shared<AudioService>(vorbisOggReader);
+
+    return std::make_shared<Engine>(graphicsService, eventsService, audioService);
 }

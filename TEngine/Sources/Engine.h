@@ -8,6 +8,7 @@
 using namespace TEngine::Models;
 using namespace TEngine::Components::Graphics::Services;
 using namespace TEngine::Components::Events::Services;
+using namespace TEngine::Components::Audio::Services;
 
 namespace TEngine
 {
@@ -16,7 +17,8 @@ namespace TEngine
     public:
         Engine(
             std::shared_ptr<IGraphicsService> graphicsService,
-            std::shared_ptr<IEventService> eventService);
+            std::shared_ptr<IEventService> eventService,
+            std::shared_ptr<IAudioService> audioService);
         ~Engine();
 
         void initialize(std::shared_ptr<IEngineParameters> parameters) override;
@@ -25,9 +27,12 @@ namespace TEngine
 
         std::shared_ptr<IEventService> getEventService() override;
 
+        std::shared_ptr<IAudioService> getAudioService() override;
+
     private:
         std::shared_ptr<IGraphicsService> _graphicsService;
         std::shared_ptr<IEventService> _eventService;
+        std::shared_ptr<IAudioService> _audioService;
     };
 }
 
