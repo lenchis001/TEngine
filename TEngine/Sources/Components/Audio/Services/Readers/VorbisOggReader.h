@@ -19,17 +19,19 @@ namespace TEngine::Components::Audio::Services::Readers
     public:
         ~VorbisOggReader();
 
-        bool read(const std::string &path, ALuint source) override;
+        bool take(const std::string &path, ALuint source) override;
+
+        void release(const std::string &path) override;
 
     private:
-        void _readOggBlock(ALuint bufferId, std::size_t size, std::shared_ptr<OggVorbis_File> vorbisFile);
+        void _readOggBlock(const SoundInfo &soundInfo, std::size_t size, std::shared_ptr<OggVorbis_File> vorbisFile);
 
-        static std::size_t ReadOgg(void* ptr, size_t size, size_t nmemb, void* datasource);
-        static int SeekOgg(void* datasource, ogg_int64_t offset, int whence);
-        static int CloseOgg(void* datasource);
-        static long TellOgg(void* datasource);
+        static std::size_t _readOgg(void *ptr, size_t size, size_t nmemb, void *datasource);
+        static int _seekOgg(void *datasource, ogg_int64_t offset, int whence);
+        static int _closeOgg(void *datasource);
+        static long _tellOgg(void *datasource);
 
-        std::map<ALuint, SoundInfo> _buffers;
+        std::map<std::string, SoundInfo> _buffers;
     };
 }
 

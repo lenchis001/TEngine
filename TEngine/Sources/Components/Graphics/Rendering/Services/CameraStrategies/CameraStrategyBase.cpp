@@ -33,6 +33,11 @@ void CameraStrategyBase::setPosition(const Vector3df &value)
 {
     _position = value;
 
+    for (auto &trackingStrategy : _trackingStrategies)
+    {
+        trackingStrategy->onPositionUpdated(value);
+    }
+
     _recalculateView();
     _recalculateVp();
 }
@@ -46,6 +51,11 @@ void CameraStrategyBase::setTarget(const Vector3df &value)
 {
     _target = value;
 
+    for (auto &trackingStrategy : _trackingStrategies)
+    {
+        trackingStrategy->onTargetUpdated(value);
+    }
+
     _recalculateView();
     _recalculateVp();
 }
@@ -55,6 +65,12 @@ void CameraStrategyBase::setTargetAndPosition(const Vector3df &target, const Vec
     _target = target;
     _position = position;
 
+    for (auto &trackingStrategy : _trackingStrategies)
+    {
+        trackingStrategy->onPositionUpdated(position);
+        trackingStrategy->onTargetUpdated(target);
+    }
+
     _recalculateView();
     _recalculateVp();
 }
@@ -62,6 +78,18 @@ void CameraStrategyBase::setTargetAndPosition(const Vector3df &target, const Vec
 void CameraStrategyBase::render()
 {
     // do nothing
+}
+
+void CameraStrategyBase::setAspectRatio(float value)
+{
+    _aspectRatio = value;
+    _recalculateProjection();
+    _recalculateVp();
+}
+
+void CameraStrategyBase::addTrackingStrategy(std::shared_ptr<ICameraTrackingStrategy> trackingStrategy)
+{
+    _trackingStrategies.push_back(trackingStrategy);
 }
 
 void CameraStrategyBase::_recalculateProjection()
@@ -101,11 +129,4 @@ void CameraStrategyBase::_recalculateView()
 void CameraStrategyBase::_recalculateVp()
 {
     _vpMatrix = _projectionMatrix * _viewMatrix;
-}
-
-void CameraStrategyBase::setAspectRatio(float value)
-{
-    _aspectRatio = value;
-    _recalculateProjection();
-    _recalculateVp();
 }

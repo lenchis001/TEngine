@@ -1,7 +1,8 @@
 #ifndef TENGINE_AUDIOSERVICE_H
 #define TENGINE_AUDIOSERVICE_H
 
-#include "memory"
+#include <memory>
+#include <map>
 
 #include "AL/alc.h"
 #include "AL/al.h"
@@ -38,6 +39,8 @@ namespace TEngine::Components::Audio::Services
         ALCcontext *_context;
 
         std::shared_ptr<IReader> _reader;
+
+        std::map<std::shared_ptr<IAudioSource>, std::pair<std::string, ALuint>> _sources;
     };
 }
 

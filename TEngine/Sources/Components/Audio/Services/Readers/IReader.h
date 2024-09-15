@@ -12,7 +12,9 @@ namespace TEngine::Components::Audio::Services::Readers
     public:
         virtual ~IReader() = default;
 
-        virtual bool read(const std::string &path, ALuint source) = 0;
+        virtual bool take(const std::string &path, ALuint source) = 0;
+
+        virtual void release(const std::string &path) = 0;
     };
 }
 

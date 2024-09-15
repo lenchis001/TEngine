@@ -4,6 +4,8 @@
 #include "Components/Graphics/Models/Vector3d.h"
 #include "Components/Graphics/Models/Matrix4x4.h"
 
+#include "Tracking/ICameraTrackingStrategy.h"
+
 namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies
 {
 
@@ -25,6 +27,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies
         virtual const TEngine::Components::Graphics::Models::Matrix4x4f &getViewMatrix() const = 0;
 
         virtual void setAspectRatio(float value) = 0;
+
+        virtual void addTrackingStrategy(std::shared_ptr<Tracking::ICameraTrackingStrategy> trackingStrategy) = 0;
 
         virtual ~ICameraStrategy() = default;
     };

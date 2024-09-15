@@ -3,10 +3,8 @@
 
 #include "FpsCameraStrategy.h"
 
-#include "iostream"
-
-#include "algorithm"
-#include "functional"
+#include <algorithm>
+#include <functional>
 
 using namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies;
 

@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <memory>
+#include <cassert>
 
 #include "Components/Audio/Services/AlMacroses.h"
 
@@ -12,16 +13,13 @@ using namespace TEngine::Components::Audio::Services::Readers;
 
 VorbisOggReader::~VorbisOggReader()
 {
-    for (auto currentBuffer = _buffers.begin(); currentBuffer != _buffers.end(); currentBuffer++)
-    {
-        alDeleteBuffers(1, &currentBuffer->second.ID);
-    }
+    assert(_buffers.empty() && "Buffers were not deleted properly");
 }
 
-bool VorbisOggReader::read(const std::string &path, ALuint sourceId)
+bool VorbisOggReader::take(const std::string &path, ALuint sourceId)
 {
     bool Streamed = false;
-    
+
     int i, DynBuffs = 1;
     ogg_int64_t BlockSize;
     // OAL specific
@@ -31,10 +29,10 @@ bool VorbisOggReader::read(const std::string &path, ALuint sourceId)
     ov_callbacks cb;
 
     // Fill cb struct
-    cb.close_func = &VorbisOggReader::CloseOgg;
-    cb.read_func = &VorbisOggReader::ReadOgg;
-    cb.seek_func = &VorbisOggReader::SeekOgg;
-    cb.tell_func = &VorbisOggReader::TellOgg;
+    cb.close_func = &VorbisOggReader::_closeOgg;
+    cb.read_func = &VorbisOggReader::_readOgg;
+    cb.seek_func = &VorbisOggReader::_seekOgg;
+    cb.tell_func = &VorbisOggReader::_tellOgg;
 
     // Create OggVorbis_File struct
     auto vorbisFile = std::make_shared<OggVorbis_File>();
@@ -52,29 +50,27 @@ bool VorbisOggReader::read(const std::string &path, ALuint sourceId)
     }
 
     // Check for existance of sound
-    if (!Streamed)
-    {
-        for (auto currentBuffer = _buffers.begin(); currentBuffer != _buffers.end();
-             currentBuffer++)
-        {
-            if (currentBuffer->second.Filename == path)
-                BufID = currentBuffer->first;
-        }
-        BlockSize = ov_pcm_total(vorbisFile.get(), -1) * 4;
-    }
-    else
+    if (Streamed)
     {
         BlockSize = DYNBUF_SIZE;
         DynBuffs = NUM_OF_DYNBUF;
     }
+    else
+    {
+        auto targetIterator = _buffers.find(path);
 
-    // Return vorbis_comment and vorbis_info structures
-    //mComment = ov_comment(vorbisFile.get(), -1);
+        if (targetIterator != _buffers.end())
+        {
+            BufID = targetIterator->second.ID;
+        }
+
+        BlockSize = ov_pcm_total(vorbisFile.get(), -1) * 4;
+    }
+
     auto mInfo = ov_info(vorbisFile.get(), -1);
 
     // Fill buffer infos
     buffer.Rate = mInfo->rate;
-    buffer.Filename = path;
     buffer.Format = (mInfo->channels == 1) ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
 
     // Fill buffers with data each block by DYNBUF_SIZE bytes
@@ -87,9 +83,9 @@ bool VorbisOggReader::read(const std::string &path, ALuint sourceId)
             if (CHECK_ERROR())
                 return false;
             _buffers.insert(
-                std::pair<ALuint, SoundInfo>(buffer.ID, buffer));
+                std::pair<std::string, SoundInfo>(path, buffer));
             // Read amount (DYNBUF_SIZE) data into each buffer
-            _readOggBlock(buffer.ID, static_cast<std::size_t>(BlockSize), vorbisFile);
+            _readOggBlock(buffer, static_cast<std::size_t>(BlockSize), vorbisFile);
             if (CHECK_ERROR())
                 return false;
 
@@ -105,7 +101,7 @@ bool VorbisOggReader::read(const std::string &path, ALuint sourceId)
     }
     else
     {
-        alSourcei(sourceId, AL_BUFFER, _buffers[BufID].ID);
+        alSourcei(sourceId, AL_BUFFER, _buffers[path].ID);
     }
 
     oggFilestream.close();
@@ -113,7 +109,18 @@ bool VorbisOggReader::read(const std::string &path, ALuint sourceId)
     return true;
 }
 
-void VorbisOggReader::_readOggBlock(ALuint bufferId, std::size_t size, std::shared_ptr<OggVorbis_File> vorbisFile)
+void VorbisOggReader::release(const std::string &path)
+{
+    auto targetIterator = _buffers.find(path);
+
+    if (targetIterator != _buffers.end())
+    {
+        alDeleteBuffers(1, &targetIterator->second.ID);
+        _buffers.erase(targetIterator);
+    }
+}
+
+void VorbisOggReader::_readOggBlock(const SoundInfo &soundInfo, std::size_t size, std::shared_ptr<OggVorbis_File> vorbisFile)
 {
     char eof = 0;
     int current_section;
@@ -124,6 +131,7 @@ void VorbisOggReader::_readOggBlock(ALuint bufferId, std::size_t size, std::shar
 
     if (size < 1)
         return;
+
     PCM = new char[size];
 
     // Read loop
@@ -144,22 +152,24 @@ void VorbisOggReader::_readOggBlock(ALuint bufferId, std::size_t size, std::shar
             TotalRet += ret;
         }
     }
+
     if (TotalRet > 0)
     {
-        alBufferData(bufferId, _buffers[bufferId].Format, (void *)PCM, TotalRet,
-                     _buffers[bufferId].Rate);
+        alBufferData(soundInfo.ID, soundInfo.Format, (void *)PCM, TotalRet,
+                     soundInfo.Rate);
     }
+
     delete[] PCM;
 }
 
-std::size_t VorbisOggReader::ReadOgg(void *ptr, size_t size, size_t nmemb, void *datasource)
+std::size_t VorbisOggReader::_readOgg(void *ptr, size_t size, size_t nmemb, void *datasource)
 {
     std::ifstream *file = static_cast<std::ifstream *>(datasource);
     file->read(static_cast<char *>(ptr), size * nmemb);
     return file->gcount();
 }
 
-int VorbisOggReader::SeekOgg(void *datasource, ogg_int64_t offset, int whence)
+int VorbisOggReader::_seekOgg(void *datasource, ogg_int64_t offset, int whence)
 {
     std::ifstream *file = static_cast<std::ifstream *>(datasource);
     std::ios_base::seekdir dir;
@@ -181,14 +191,14 @@ int VorbisOggReader::SeekOgg(void *datasource, ogg_int64_t offset, int whence)
     return file->good() ? 0 : -1;
 }
 
-int VorbisOggReader::CloseOgg(void *datasource)
+int VorbisOggReader::_closeOgg(void *datasource)
 {
     std::ifstream *file = static_cast<std::ifstream *>(datasource);
     file->close();
     return 0;
 }
 
-long VorbisOggReader::TellOgg(void *datasource)
+long VorbisOggReader::_tellOgg(void *datasource)
 {
     std::ifstream *file = static_cast<std::ifstream *>(datasource);
     return file->tellg();

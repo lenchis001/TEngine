@@ -1,9 +1,13 @@
 #ifndef TENGINE_CAMERASTRATEGYBASE_H
 #define TENGINE_CAMERASTRATEGYBASE_H
 
+#include <memory>
+#include <vector>
+
 #include "ICameraStrategy.h"
 
 using namespace TEngine::Components::Graphics::Models;
+using namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies::Tracking;
 
 namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies
 {
@@ -29,17 +33,21 @@ namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies
 
         void render() override;
 
-        inline const Matrix4x4f &getVpMatrix() const override {
+        inline const Matrix4x4f &getVpMatrix() const override
+        {
             return _vpMatrix;
         }
 
-        inline const Matrix4x4f &getViewMatrix() const override {
+        inline const Matrix4x4f &getViewMatrix() const override
+        {
             return _viewMatrix;
         }
 
         ~CameraStrategyBase() override = default;
 
         void setAspectRatio(float value) override;
+
+        void addTrackingStrategy(std::shared_ptr<ICameraTrackingStrategy> trackingStrategy) override;
 
     protected:
         void _recalculateProjection();
@@ -50,6 +58,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies
 
         Vector3df _position, _target;
         Matrix4x4f _projectionMatrix, _viewMatrix, _vpMatrix;
+
+        std::vector<std::shared_ptr<ICameraTrackingStrategy>> _trackingStrategies;
     };
 
 }

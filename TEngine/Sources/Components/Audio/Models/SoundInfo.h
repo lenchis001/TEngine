@@ -3,14 +3,15 @@
 
 #include <string>
 
+#include "AL/al.h"
+
 namespace TEngine::Components::Audio::Models
 {
     struct SoundInfo
     {
-        unsigned int ID;
-        std::string Filename;
-        unsigned int Rate;
-        unsigned int Format;
+        ALuint ID;
+        ALuint Rate;
+        ALuint Format;
     };
 }
 

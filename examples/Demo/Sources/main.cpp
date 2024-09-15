@@ -39,14 +39,14 @@ int main()
             sofa->setPosition(Vector3df(3.0f * i + 5.0f, 0.0f, 0.0f));
         }
 
-        auto rotation = Vector3df(0.0f, 0.0f, 0.0f);
-
         int framesCounter = 0;
         double previousCheckTime = graphicsService->getTime();
 
         auto audioService = engine->getAudioService();
-        auto source = audioService->take("C:/Users/Leon/Downloads/test.ogg");
+        auto source = audioService->take("./DemoResources/birds.ogg");
+
         source->play();
+        source->setPosition(0.0f, 0.0f, 0.0f);
 
         while (true)
         {
@@ -68,6 +68,8 @@ int main()
 
             framesCounter++;
         }
+
+        audioService->release(source);
     }
 
     return 0;

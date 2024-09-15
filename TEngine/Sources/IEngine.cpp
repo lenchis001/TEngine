@@ -33,6 +33,9 @@ std::shared_ptr<IEngine> TEngine::createEngine()
 {
     auto eventsService = std::make_shared<EventService>();
 
+    auto vorbisOggReader = std::make_shared<VorbisOggReader>();
+    auto audioService = std::make_shared<AudioService>(vorbisOggReader);
+
     auto imageLoadingService = std::make_shared<ImageLoadingService>();
     auto meshLoadingService = std::make_shared<MeshLoadingService>();
 
@@ -43,10 +46,7 @@ std::shared_ptr<IEngine> TEngine::createEngine()
 
     auto renderingService = std::make_shared<RenderingService>(eventsService, shadersService, bufferCacheService, texturesService, meshService);
 
-    auto graphicsService = std::make_shared<GraphicsService>(renderingService, meshLoadingService, texturesService);
-
-    auto vorbisOggReader = std::make_shared<VorbisOggReader>();
-    auto audioService = std::make_shared<AudioService>(vorbisOggReader);
+    auto graphicsService = std::make_shared<GraphicsService>(renderingService, meshLoadingService, texturesService, audioService);
 
     return std::make_shared<Engine>(graphicsService, eventsService, audioService);
 }

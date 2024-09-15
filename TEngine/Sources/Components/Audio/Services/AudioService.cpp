@@ -1,6 +1,7 @@
 #include "AudioService.h"
 
 #include <exception>
+#include <cassert>
 
 #include "AL/al.h"
 
@@ -22,6 +23,8 @@ AudioService::~AudioService()
     alcDestroyContext(_context);
     // Close sound device
     alcCloseDevice(_device);
+
+    assert(_sources.empty() && "Not all sources were released");
 }
 
 void AudioService::initialize()
@@ -67,20 +70,37 @@ std::shared_ptr<IAudioSource> AudioService::take(const std::string &path)
     alSourcef(sourceId, AL_PITCH, 1.0f);
     alSourcef(sourceId, AL_GAIN, 1.0f);
 
-    auto result = _reader->read(path, sourceId);
+    auto readingResult = _reader->take(path, sourceId);
 
-    if (!result)
+    if (!readingResult)
     {
         alDeleteSources(1, &sourceId);
         return nullptr;
     }
 
-    return std::make_shared<AudioSource>(sourceId);
+    auto result = std::make_shared<AudioSource>(sourceId);
+
+    _sources.insert(
+        std::pair<std::shared_ptr<IAudioSource>, std::pair<std::string, ALuint>>(
+            result,
+            std::pair<std::string, ALuint>(path, sourceId)));
+
+    return result;
 }
 
 void AudioService::release(const std::shared_ptr<IAudioSource> source)
 {
+    auto targetIterator = _sources.find(source);
 
+    if (targetIterator == _sources.end())
+    {
+        throw std::exception();
+    }
+
+    alDeleteSources(1, &targetIterator->second.second);
+    _reader->release(targetIterator->second.first);
+
+    _sources.erase(targetIterator);
 }
 
 void AudioService::setListenerPosition(float x, float y, float z)
