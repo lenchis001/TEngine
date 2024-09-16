@@ -14,7 +14,8 @@ RenderableShape::RenderableShape(
     GLuint lightColorShaderId,
     GLuint lightPowerShaderId,
     GLuint shapeColorShaderId,
-    const std::vector<float>& diffuseColor)
+    const std::vector<float> &diffuseColor,
+    GLuint textureId)
     : _name(name),
       _vao(vao),
       _verticesCount(verticesCount),
@@ -26,7 +27,8 @@ RenderableShape::RenderableShape(
       _lightColorShaderId(lightColorShaderId),
       _lightPowerShaderId(lightPowerShaderId),
       _shapeColorShaderId(shapeColorShaderId),
-      _diffuseColor(diffuseColor)
+      _diffuseColor(diffuseColor),
+      _textureId(textureId)
 {
 }
 
@@ -83,6 +85,11 @@ GLuint RenderableShape::getShapeColorShaderId() const
 const std::vector<float> &RenderableShape::getDiffuseColor() const
 {
     return _diffuseColor;
+}
+
+GLuint RenderableShape::getTextureId() const
+{
+    return _textureId;
 }
 
 unsigned int RenderableShape::getVerticesCount() const

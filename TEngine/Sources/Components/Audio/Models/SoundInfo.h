@@ -12,6 +12,8 @@ namespace TEngine::Components::Audio::Models
         ALuint ID;
         ALuint Rate;
         ALuint Format;
+
+        unsigned int usingCount;
     };
 }
 

@@ -60,7 +60,7 @@ void CubeRenderingStrategy::render(std::shared_ptr<ICameraStrategy> activeCamera
     glDrawArrays(GL_TRIANGLES, 0, 6 /*sides*/ * 2 /*triangles in every one*/ * 3 /*verteces in every one*/);
 
     glUseProgram(0);
-
+    glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);
 }
 

@@ -31,10 +31,14 @@ int main()
 
         graphicsService->setActiveCamera(TEngine::Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes::FPS);
 
-        auto cube = graphicsService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp");
-
-        for (int i = 0; i < 128; i++)
+        for (int i = 1; i < 128; i++)
         {
+            auto cube = graphicsService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp");
+            cube->setPosition(Vector3df(-3.0f * i, 0.0f, 0.0f));
+
+            auto testCube = graphicsService->addMesh("./DemoResources/test cube/cube.obj");
+            testCube->setPosition(Vector3df(0.0f, 0.0f, 3.0f * i));
+
             auto sofa = graphicsService->addMesh("./DemoResources/sofa.obj");
             sofa->setPosition(Vector3df(3.0f * i + 5.0f, 0.0f, 0.0f));
         }

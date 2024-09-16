@@ -9,19 +9,24 @@
 
 using namespace TEngine::Components::Graphics::Rendering::Services::Meshes;
 
-#define VERTEX_SHADER_SOURCE "BuildinResources/Shaders/Mesh/ColoredShapeVertexShader.glsl"
-#define FRAGMENT_SHADER_SOURCE "BuildinResources/Shaders/Mesh/ColoredShapeFragmentShader.glsl"
+#define COLORED_VERTEX_SHADER_SOURCE "BuildinResources/Shaders/Mesh/ColoredShapeVertexShader.glsl"
+#define COLORED_FRAGMENT_SHADER_SOURCE "BuildinResources/Shaders/Mesh/ColoredShapeFragmentShader.glsl"
+#define TEXTURED_VERTEX_SHADER_SOURCE "BuildinResources/Shaders/Mesh/TexturedShapeVertexShader.glsl"
+#define TEXTURED_FRAGMENT_SHADER_SOURCE "BuildinResources/Shaders/Mesh/TexturedShapeFragmentShader.glsl"
 
 #define toVertexName(name) name + "Vertices"
 #define toNormalName(name) name + "Normals"
+#define toUvName(name) name + "UVs"
 
 MeshService::MeshService(
     std::shared_ptr<IMeshLoadingService> meshLoadingService,
     std::shared_ptr<IBuffersService> buffersService,
-    std::shared_ptr<IShadersService> shadersService)
+    std::shared_ptr<IShadersService> shadersService,
+    std::shared_ptr<ITexturesService> texturesService)
     : _meshLoadingService(meshLoadingService),
       _buffersService(buffersService),
-      _shadersService(shadersService)
+      _shadersService(shadersService),
+      _texturesService(texturesService)
 {
 }
 
@@ -71,6 +76,9 @@ void MeshService::release(std::shared_ptr<IRenderableMesh> renderableMesh)
             _buffersService->releaseVbo(toNormalName(shape->getName()));
             _buffersService->releaseVao(shape->getName());
             _shadersService->release(shape->getProgram());
+
+            if(shape->getTextureId() != 0)
+                _texturesService->release(shape->getTextureId());
         }
     }
 }
@@ -100,8 +108,24 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
     const auto &normals = shape->getNormals();
     auto normalsCount = normals.size();
     glBufferData(GL_ARRAY_BUFFER, normalsCount * sizeof(float), normals.data(), GL_STATIC_DRAW);
-
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    // Prepare UVs VBO
+    auto isTextured = !shape->getUVs().empty() && !shape->getTexturePath().empty();
+
+    GLuint uvsBuffer = 0;
+    if (isTextured)
+    {
+        auto uvsBufferName = toUvName(name);
+
+        uvsBuffer = _buffersService->takeVbo(uvsBufferName);
+        glBindBuffer(GL_ARRAY_BUFFER, uvsBuffer);
+
+        const auto &uvs = shape->getUVs();
+        auto uvsCount = uvs.size();
+        glBufferData(GL_ARRAY_BUFFER, uvsCount * sizeof(float), uvs.data(), GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
 
     // Prepare VAO
     auto vao = _buffersService->takeVao(name);
@@ -116,10 +140,19 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
     glBindBuffer(GL_ARRAY_BUFFER, normalsBuffer);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
+    if (isTextured)
+    {
+        glEnableVertexAttribArray(2);
+        glBindBuffer(GL_ARRAY_BUFFER, uvsBuffer);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+    }
+
     glBindVertexArray(0);
 
     // Prepare program
-    auto program = _shadersService->take(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
+    auto vertedShader = isTextured ? TEXTURED_VERTEX_SHADER_SOURCE : COLORED_VERTEX_SHADER_SOURCE;
+    auto fragmentShader = isTextured ? TEXTURED_FRAGMENT_SHADER_SOURCE : COLORED_FRAGMENT_SHADER_SOURCE;
+    auto program = _shadersService->take(vertedShader, fragmentShader);
 
     auto mvpMatrixShaderId = glGetUniformLocation(program, "MVP");
     auto modelMatrixShaderId = glGetUniformLocation(program, "modelMatrix");
@@ -128,6 +161,18 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
     auto lightColorShaderId = glGetUniformLocation(program, "lightColor");
     auto lightPowerShaderId = glGetUniformLocation(program, "lightPower");
     auto shapeColorShaderId = glGetUniformLocation(program, "shapeColor");
+
+    // Prepare texture
+    GLuint textureId;
+    
+    if(isTextured)
+    {
+        textureId = _texturesService->take(shape->getTexturePath());
+    }
+    else
+    {
+        textureId = 0;
+    }
 
     return std::make_shared<RenderableShape>(
         name,
@@ -141,5 +186,6 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
         lightColorShaderId,
         lightPowerShaderId,
         shapeColorShaderId,
-        shape->getDiffuseColor());
+        shape->getDiffuseColor(),
+        textureId);
 }

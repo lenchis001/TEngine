@@ -15,13 +15,13 @@ namespace TEngine::Components::Graphics::MeshLoading::Plugin
 
         virtual const std::vector<float> &getVertices() const = 0;
 
-        virtual const std::vector<std::string> &getTextures() const = 0;
-
         virtual const std::vector<float> &getNormals() const = 0;
 
         virtual const std::vector<float> &getUVs() const = 0;
 
         virtual const std::vector<float> &getDiffuseColor() const = 0;
+
+        virtual const std::string &getTexturePath() const = 0;
     };
 }
 

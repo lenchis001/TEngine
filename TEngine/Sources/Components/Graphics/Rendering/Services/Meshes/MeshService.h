@@ -1,13 +1,14 @@
 #ifndef MESH_SERVICE_H
 #define MESH_SERVICE_H
 
+#include <map>
+#include <memory>
+
 #include "IMeshService.h"
 
 #include "Components/Graphics/Rendering/Services/Shaders/IShadersService.h"
 #include "Components/Graphics/Rendering/Services/Buffers/IBuffersService.h"
-
-#include "map"
-#include "memory"
+#include "Components/Graphics/Rendering/Services/Textures/ITexturesService.h"
 
 #include "Components/Graphics/MeshLoading/Services/IMeshLoadingService.h"
 
@@ -16,6 +17,7 @@ using namespace TEngine::Components::Graphics::Rendering::Services::Buffers;
 using namespace TEngine::Components::Graphics::Rendering::Models::Meshes;
 using namespace TEngine::Components::Graphics::MeshLoading::Services;
 using namespace TEngine::Components::Graphics::MeshLoading::Models;
+using namespace TEngine::Components::Graphics::Rendering::Services::Textures;
 
 namespace TEngine::Components::Graphics::Rendering::Services::Meshes
 {
@@ -25,7 +27,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::Meshes
         MeshService(
             std::shared_ptr<IMeshLoadingService> meshLoadingService,
             std::shared_ptr<IBuffersService> buffersService,
-            std::shared_ptr<IShadersService> shadersService);
+            std::shared_ptr<IShadersService> shadersService,
+            std::shared_ptr<ITexturesService> texturesService);
         ~MeshService() override;
 
         std::shared_ptr<IRenderableMesh> take(const std::string &path) override;
@@ -40,6 +43,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::Meshes
         std::shared_ptr<IMeshLoadingService> _meshLoadingService;
         std::shared_ptr<IBuffersService> _buffersService;
         std::shared_ptr<IShadersService> _shadersService;
+        std::shared_ptr<ITexturesService> _texturesService;
     };
 }
 

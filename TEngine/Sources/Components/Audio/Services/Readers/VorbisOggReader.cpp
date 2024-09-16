@@ -72,6 +72,7 @@ bool VorbisOggReader::take(const std::string &path, ALuint sourceId)
     // Fill buffer infos
     buffer.Rate = mInfo->rate;
     buffer.Format = (mInfo->channels == 1) ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
+    buffer.usingCount = 1;
 
     // Fill buffers with data each block by DYNBUF_SIZE bytes
     if (Streamed || !BufID)
@@ -101,7 +102,10 @@ bool VorbisOggReader::take(const std::string &path, ALuint sourceId)
     }
     else
     {
-        alSourcei(sourceId, AL_BUFFER, _buffers[path].ID);
+        auto targetIterator = _buffers.find(path);
+        targetIterator->second.usingCount++;
+
+        alSourcei(sourceId, AL_BUFFER, targetIterator->second.ID);
     }
 
     oggFilestream.close();
@@ -113,7 +117,13 @@ void VorbisOggReader::release(const std::string &path)
 {
     auto targetIterator = _buffers.find(path);
 
-    if (targetIterator != _buffers.end())
+    assert(targetIterator != _buffers.end() && "Buffer not found");
+
+    if (targetIterator->second.usingCount > 1)
+    {
+        targetIterator->second.usingCount--;
+    }
+    else
     {
         alDeleteBuffers(1, &targetIterator->second.ID);
         _buffers.erase(targetIterator);

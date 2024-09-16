@@ -54,8 +54,8 @@ std::shared_ptr<IShape> MeshLoadingService::_toShape(std::shared_ptr<IPluginShap
     return std::make_shared<Shape>(
         name,
         pluginShape->getVertices(),
-        pluginShape->getTextures(),
         pluginShape->getNormals(),
         pluginShape->getUVs(),
-        pluginShape->getDiffuseColor());
+        pluginShape->getDiffuseColor(),
+        pluginShape->getTexturePath());
 }

@@ -43,15 +43,18 @@ std::shared_ptr<IPluginMesh> ObjLoadingPluginImplementation::load(const std::str
     {
         std::vector<float> vertices;
         std::vector<float> normals;
-        std::vector<float> colors;
+        std::vector<float> uvs;
 
         std::vector<float> diffuseColor(3);
+        std::string texturePath;
         if (!shape.mesh.material_ids.empty())
         {
             auto material = result.materials[shape.mesh.material_ids[0]];
             diffuseColor[0] = material.diffuse[0];
             diffuseColor[1] = material.diffuse[1];
             diffuseColor[2] = material.diffuse[2];
+
+            texturePath = material.diffuse_texname;
         }
         else
         {
@@ -77,15 +80,24 @@ std::shared_ptr<IPluginMesh> ObjLoadingPluginImplementation::load(const std::str
             normals.push_back(nx);
             normals.push_back(ny);
             normals.push_back(nz);
+
+            if (indice.texcoord_index != -1)
+            {
+                auto uvIndex = indice.texcoord_index * 2;
+                auto u = result.attributes.texcoords[uvIndex];
+                auto v = result.attributes.texcoords[uvIndex + 1];
+                uvs.push_back(u);
+                uvs.push_back(v);
+            }
         }
 
         shapes.push_back(std::make_shared<ObjPluginShape>(
             shape.name,
             vertices,
-            std::vector<std::string>(),
             normals,
-            std::vector<float>(),
-            diffuseColor));
+            uvs,
+            diffuseColor,
+            texturePath));
     }
 
     return std::make_shared<ObjPluginMesh>(shapes);

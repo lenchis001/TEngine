@@ -44,9 +44,16 @@ void MeshRenderingStrategy::render(std::shared_ptr<ICameraStrategy> activeCamera
 
         glUniform3fv(shape->getShapeColorShaderId(), 1, shape->getDiffuseColor().data());
 
+        if (shape->getTextureId())
+        {
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, shape->getTextureId());
+        }
+
         glDrawArrays(GL_TRIANGLES, 0, shape->getVerticesCount());
 
         glUseProgram(0);
+        glBindTexture(GL_TEXTURE_2D, 0);
         glBindVertexArray(0);
     }
 }

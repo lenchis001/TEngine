@@ -35,6 +35,8 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
 
         virtual const std::vector<float>& getDiffuseColor() const = 0;
 
+        virtual GLuint getTextureId() const = 0;
+
         virtual unsigned int getVerticesCount() const = 0;
     };
 }

@@ -20,7 +20,8 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
             GLuint lightColorShaderId,
             GLuint lightPowerShaderId,
             GLuint shapeColorShaderId,
-            const std::vector<float>& diffuseColor);
+            const std::vector<float>& diffuseColor,
+            GLuint textureId);
         ~RenderableShape() = default;
 
         const std::string &getName() const override;
@@ -47,6 +48,8 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
 
         unsigned int getVerticesCount() const override;
 
+        GLuint getTextureId() const override;
+
     private:
         std::string _name;
         GLuint _vao;
@@ -59,6 +62,7 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
         GLuint _lightPowerShaderId;
         GLuint _shapeColorShaderId;
         std::vector<float> _diffuseColor;
+        GLuint _textureId;
         unsigned int _verticesCount;
     };
 }
