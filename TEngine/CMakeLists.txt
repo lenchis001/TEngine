@@ -149,3 +149,53 @@ target_include_directories(TEngine PRIVATE ${vorbis_SOURCE_DIR}/include)
 
 # Add vorbis library
 target_link_libraries(TEngine PRIVATE vorbis vorbisfile)
+
+# --------------------- Add boost library ---------------------
+cmake_policy(SET CMP0167 NEW)
+
+# Download and configure boost
+include(FetchContent)
+
+FetchContent_Declare(
+    boost
+    GIT_REPOSITORY https://github.com/boostorg/boost.git
+    GIT_TAG        boost-1.86.0
+)
+
+FetchContent_MakeAvailable(boost)
+
+# Set BOOST_ROOT and CMAKE_PREFIX_PATH to the fetched Boost directory
+set(BOOST_ROOT ${boost_SOURCE_DIR})
+set(CMAKE_PREFIX_PATH ${BOOST_ROOT} ${CMAKE_PREFIX_PATH})
+
+find_package(Boost REQUIRED)
+
+if(Boost_FOUND)
+  message(STATUS "Boost found!")
+else()
+  message(FATAL_ERROR "Boost not found!")
+endif()
+
+# --------------------- Add OpenVDB library ---------------------
+
+# Download and configure OpenVDB
+include(FetchContent)
+
+FetchContent_Declare(
+    openvdb
+    GIT_REPOSITORY https://github.com/AcademySoftwareFoundation/openvdb.git
+    GIT_TAG        v11.0.0
+)
+
+FetchContent_GetProperties(openvdb)
+
+if(NOT openvdb_POPULATED)
+    FetchContent_Populate(openvdb)
+    add_subdirectory(${openvdb_SOURCE_DIR} ${openvdb_BINARY_DIR})
+endif()
+
+# Add OpenVDB includes
+target_include_directories(TEngine PRIVATE ${openvdb_SOURCE_DIR}/openvdb/include)
+
+# Add OpenVDB library
+target_link_libraries(TEngine PRIVATE openvdb)
