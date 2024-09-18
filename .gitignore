@@ -338,4 +338,4 @@ out/**
 .DS_Store
 
 # obj models
-!examples/Demo/DemoResources/*.obj
+!examples/Demo/DemoResources/**/*.obj
