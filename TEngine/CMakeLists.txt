@@ -157,28 +157,59 @@ cmake_policy(SET CMP0167 NEW)
 include(FetchContent)
 
 FetchContent_Declare(
-    boost
-    GIT_REPOSITORY https://github.com/boostorg/boost.git
-    GIT_TAG        boost-1.86.0
+  Boost
+  URL https://github.com/boostorg/boost/releases/download/boost-1.84.0/boost-1.84.0.tar.xz
+  URL_MD5 893b5203b862eb9bbd08553e24ff146a
+  DOWNLOAD_EXTRACT_TIMESTAMP ON
+  EXCLUDE_FROM_ALL
 )
 
-FetchContent_MakeAvailable(boost)
+set(BOOST_INCLUDE_LIBRARIES filesystem iostreams)
+FetchContent_GetProperties(Boost)
 
-# Set BOOST_ROOT and CMAKE_PREFIX_PATH to the fetched Boost directory
-set(BOOST_ROOT ${boost_SOURCE_DIR})
-set(CMAKE_PREFIX_PATH ${BOOST_ROOT} ${CMAKE_PREFIX_PATH})
+if(NOT Boost_POPULATED)
+  FetchContent_Populate(Boost)
 
-find_package(Boost REQUIRED)
-
-if(Boost_FOUND)
-  message(STATUS "Boost found!")
-else()
-  message(FATAL_ERROR "Boost not found!")
+  add_subdirectory(${boost_SOURCE_DIR} ${boost_BINARY_DIR})
 endif()
+
+target_link_libraries(
+  TEngine
+  PRIVATE Boost::filesystem)
+
+# --------------------- Add TBB library ---------------------
+# Include FetchContent module
+include(FetchContent)
+
+# Declare TBB dependency
+FetchContent_Declare(
+  tbb
+  GIT_REPOSITORY https://github.com/oneapi-src/oneTBB.git
+  GIT_TAG v2021.5.0 # You can specify the version you need
+)
+
+unset(TBB_TEST CACHE)
+set(TBB_TEST OFF CACHE BOOL "Disable TBB tests")
+# unset(TBB_FIND_PACKAGE CACHE)
+# set(TBB_FIND_PACKAGE ON CACHE BOOL "Enable TBB find_package mode")
+# unset(TBB_INSTALL CACHE)
+# set(TBB_INSTALL OFF CACHE BOOL "Disable TBB installation")
+
+#set(TBB_DIR ${Tbb_BINARY_DIR} CACHE PATH "Path to TBBConfig.cmake")
+
+# Fetch TBB
+FetchContent_MakeAvailable(tbb)
+
+# Set TBB include directories and libraries
+set(Tbb_INCLUDE_DIR ${tbb_SOURCE_DIR}/include)
+unset (Tbb_LIB_COMPONENTS CACHE)
+set(Tbb_LIB_COMPONENTS ${tbb_BINARY_DIR}/libtbb.so CACHE STRING "Path to TBB library")
+#set(tbb ${tbb_BINARY_DIR}/libtbb.so)
 
 # --------------------- Add OpenVDB library ---------------------
 
 # Download and configure OpenVDB
+
 include(FetchContent)
 
 FetchContent_Declare(

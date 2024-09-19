@@ -50,7 +50,6 @@ GLuint ShadersService::take(const std::string &vertexShaderFile, const std::stri
             glGetShaderInfoLog(vertexShaderId, 512, nullptr, infoLog);
             glDeleteShader(vertexShaderId);
             std::cerr << infoLog << std::endl;
-            assert(false && infoLog);
             return 0;
         }
 
