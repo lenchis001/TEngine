@@ -13,3 +13,9 @@ add_custom_command(TARGET BmpImageLoadingPlugin POST_BUILD
     "$<TARGET_FILE:BmpImageLoadingPlugin>"
     "$<TARGET_FILE_DIR:TEngine>/Plugins/ImageLoading/${CMAKE_SHARED_LIBRARY_PREFIX}BmpImageLoadingPlugin${CMAKE_SHARED_LIBRARY_SUFFIX}"
 )
+
+add_custom_command(TARGET BmpImageLoadingPlugin POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+    "$<TARGET_FILE:BmpImageLoadingPlugin>"
+    "$<TARGET_FILE_DIR:Demo>/Plugins/ImageLoading/${CMAKE_SHARED_LIBRARY_PREFIX}BmpImageLoadingPlugin${CMAKE_SHARED_LIBRARY_SUFFIX}"
+)

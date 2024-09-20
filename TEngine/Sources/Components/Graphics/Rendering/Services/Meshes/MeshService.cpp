@@ -111,6 +111,7 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     // Prepare UVs VBO
+    auto texPath = shape->getTexturePath();
     auto isTextured = !shape->getUVs().empty() && !shape->getTexturePath().empty();
 
     GLuint uvsBuffer = 0;

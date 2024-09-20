@@ -63,6 +63,11 @@ FetchContent_Declare(
 FetchContent_GetProperties(glew)
 if(NOT glew_POPULATED)
     FetchContent_Populate(glew)
+
+    # Set GLEW to build as a static library
+    set(BUILD_SHARED_LIBS OFF CACHE BOOL " " FORCE)
+    set(glew-cmake_BUILD_SHARED OFF CACHE BOOL " " FORCE)
+
     add_subdirectory(${glew_SOURCE_DIR}/build/cmake ${glew_BINARY_DIR})
 endif()
 
@@ -73,12 +78,14 @@ set_target_properties(glew PROPERTIES FOLDER external)
 target_include_directories(TEngine PRIVATE ${glew_SOURCE_DIR}/include)
 
 # Add GLEW library
-target_link_libraries(TEngine PRIVATE glew)
+target_link_libraries(TEngine PRIVATE glew_s)
 
 # --------------------- Add OpenAL library ---------------------
 
 # Download and configure OpenAL
 include(FetchContent)
+
+set(LIBTYPE STATIC)
 
 FetchContent_Declare(
     openal
@@ -151,28 +158,6 @@ target_include_directories(TEngine PRIVATE ${vorbis_SOURCE_DIR}/include)
 target_link_libraries(TEngine PRIVATE vorbis vorbisfile)
 
 # --------------------- Add boost library ---------------------
-cmake_policy(SET CMP0167 NEW)
-
-# Download and configure boost
-include(FetchContent)
-
-FetchContent_Declare(
-  Boost
-  URL https://github.com/boostorg/boost/releases/download/boost-1.84.0/boost-1.84.0.tar.xz
-  URL_MD5 893b5203b862eb9bbd08553e24ff146a
-  DOWNLOAD_EXTRACT_TIMESTAMP ON
-  EXCLUDE_FROM_ALL
-)
-
-set(BOOST_INCLUDE_LIBRARIES filesystem iostreams)
-FetchContent_GetProperties(Boost)
-
-if(NOT Boost_POPULATED)
-  FetchContent_Populate(Boost)
-
-  add_subdirectory(${boost_SOURCE_DIR} ${boost_BINARY_DIR})
-endif()
-
 target_link_libraries(
   TEngine
   PRIVATE Boost::filesystem)

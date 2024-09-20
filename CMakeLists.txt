@@ -31,6 +31,33 @@ endif()
 
 set(DEBUG CMAKE_BUILD_TYPE STREQUAL "Debug")
 
+# Common dependencies ---------------------------------------------------
+
+# --------------------- Add boost library ---------------------
+cmake_policy(SET CMP0167 NEW)
+
+# Download and configure boost
+include(FetchContent)
+
+FetchContent_Declare(
+  Boost
+  URL https://github.com/boostorg/boost/releases/download/boost-1.84.0/boost-1.84.0.tar.xz
+  URL_MD5 893b5203b862eb9bbd08553e24ff146a
+  DOWNLOAD_EXTRACT_TIMESTAMP ON
+  EXCLUDE_FROM_ALL
+)
+
+set(BOOST_INCLUDE_LIBRARIES filesystem)
+FetchContent_GetProperties(Boost)
+
+if(NOT Boost_POPULATED)
+  FetchContent_Populate(Boost)
+
+  add_subdirectory(${boost_SOURCE_DIR} ${boost_BINARY_DIR})
+endif()
+
+# -----------------------------------------------------------------------
+
 # Include sub-projects.
 add_subdirectory("TEngine")
 add_subdirectory("Plugins/ImageLoading/BmpImageLoadingPlugin")

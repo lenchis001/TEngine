@@ -46,3 +46,8 @@ target_include_directories(ObjLoadingPlugin PRIVATE ${rapidobj_SOURCE_DIR}/inclu
 
 # Add RapidObj library
 target_link_libraries(ObjLoadingPlugin PRIVATE rapidobj)
+
+# --------------------- Add boost library ---------------------
+target_link_libraries(
+  ObjLoadingPlugin
+  PRIVATE Boost::filesystem)

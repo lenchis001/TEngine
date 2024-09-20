@@ -5,6 +5,8 @@
 
 #include "rapidobj/rapidobj.hpp"
 
+#include "boost/filesystem.hpp"
+
 #include "Models/ObjPluginShape.h"
 #include "Models/ObjPluginMesh.h"
 
@@ -54,7 +56,12 @@ std::shared_ptr<IPluginMesh> ObjLoadingPluginImplementation::load(const std::str
             diffuseColor[1] = material.diffuse[1];
             diffuseColor[2] = material.diffuse[2];
 
-            texturePath = material.diffuse_texname;
+            if (!material.diffuse_texname.empty())
+            {
+                auto meshDirectory = boost::filesystem::path(path).parent_path();
+
+                texturePath = boost::filesystem::absolute(material.diffuse_texname, meshDirectory).string();
+            }
         }
         else
         {
