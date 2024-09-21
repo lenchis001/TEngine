@@ -5,9 +5,11 @@
 
 #include "Components/Graphics/Rendering/Models/Meshes/IRenderableMesh.h"
 #include "Components/Graphics/Rendering/Services/Meshes/IMeshService.h"
+#include "Components/Graphics/Rendering/Services/Lights/ILightServices.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Models::Meshes;
 using namespace TEngine::Components::Graphics::Rendering::Services::Meshes;
+using namespace TEngine::Components::Graphics::Rendering::Services::Lights;
 
 namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies::Meshes
 {
@@ -16,6 +18,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
     public:
         MeshRenderingStrategy(
             std::shared_ptr<IMeshService> meshService,
+            std::shared_ptr<ILightServices> lightServices,
             const std::string &path);
         ~MeshRenderingStrategy();
 
@@ -24,6 +27,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategie
     private:
         std::shared_ptr<Models::Meshes::IRenderableMesh> _renderableMesh;
         std::shared_ptr<IMeshService> _meshService;
+        std::shared_ptr<ILightServices> _lightServices;
     };
 }
 

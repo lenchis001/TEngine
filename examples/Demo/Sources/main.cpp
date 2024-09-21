@@ -36,7 +36,7 @@ int main()
             for (int j = 1; j < 32; j++)
             {
                 auto cube = graphicsService->addMesh("./DemoResources/test plane/plane.obj");
-                cube->setPosition(Vector3df(-2.0f * i, 0.0f, 2.0f * j));
+                cube->setPosition(Vector3df(2.0f * i, 0.0f, 2.0f * j));
             }
 
             auto cube = graphicsService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp");

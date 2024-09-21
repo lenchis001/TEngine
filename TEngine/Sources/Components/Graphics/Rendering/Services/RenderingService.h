@@ -16,6 +16,7 @@
 #include "Components/Graphics/Rendering/Services/Buffers/IBuffersService.h"
 #include "Components/Graphics/Rendering/Services/Textures/ITexturesService.h"
 #include "Components/Graphics/Rendering/Services/Meshes/IMeshService.h"
+#include "Components/Graphics/Rendering/Services/Lights/ILightServices.h"
 
 using namespace TEngine::Components::Events::Services;
 
@@ -28,6 +29,7 @@ using namespace TEngine::Components::Graphics::Rendering::Services::Buffers;
 using namespace TEngine::Components::Graphics::Rendering::Services::Textures;
 using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies;
 using namespace TEngine::Components::Graphics::Rendering::Services::Meshes;
+using namespace TEngine::Components::Graphics::Rendering::Services::Lights;
 
 using namespace TEngine::Mixins;
 
@@ -43,7 +45,8 @@ namespace TEngine::Components::Graphics::Rendering::Services
             std::shared_ptr<IShadersService> shadersService,
             std::shared_ptr<IBuffersService> bufferCacheService,
             std::shared_ptr<ITexturesService> texturesService,
-            std::shared_ptr<IMeshService> meshService);
+            std::shared_ptr<IMeshService> meshService,
+            std::shared_ptr<ILightServices> lightServices);
         ~RenderingService();
 
         void initialize(std::shared_ptr<IRenderingParameters> parameters) override;
@@ -80,6 +83,7 @@ namespace TEngine::Components::Graphics::Rendering::Services
         std::shared_ptr<IBuffersService> _bufferCacheService;
         std::shared_ptr<ITexturesService> _textureService;
         std::shared_ptr<IMeshService> _meshService;
+        std::shared_ptr<ILightServices> _lightServices;
     };
 }
 

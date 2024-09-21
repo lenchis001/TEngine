@@ -12,6 +12,7 @@
 #include "Components/Graphics/Rendering/Services/Buffers/BuffersService.h"
 #include "Components/Graphics/Rendering/Services/Textures/TexturesService.h"
 #include "Components/Graphics/Rendering/Services/Meshes/MeshService.h"
+#include "Components/Graphics/Rendering/Services/Lights/LightService.h"
 #include "Components/Audio/Services/Readers/VorbisOggReader.h"
 #include "Components/Audio/Services/AudioService.h"
 
@@ -24,6 +25,8 @@ using namespace TEngine::Components::Graphics::MeshLoading::Services;
 using namespace TEngine::Components::Graphics::Rendering::Services::Shaders;
 using namespace TEngine::Components::Graphics::ImageLoading::Services;
 using namespace TEngine::Components::Graphics::Rendering::Services::Textures;
+using namespace TEngine::Components::Graphics::Rendering::Services::Lights;
+
 using namespace TEngine::Components::Audio::Services::Readers;
 using namespace TEngine::Components::Audio::Services;
 
@@ -43,8 +46,9 @@ std::shared_ptr<IEngine> TEngine::createEngine()
     auto bufferCacheService = std::make_shared<BuffersService>();
     auto texturesService = std::make_shared<TexturesService>(imageLoadingService);
     auto meshService = std::make_shared<MeshService>(meshLoadingService, bufferCacheService, shadersService, texturesService);
+    auto lightServices = std::make_shared<LightService>();
 
-    auto renderingService = std::make_shared<RenderingService>(eventsService, shadersService, bufferCacheService, texturesService, meshService);
+    auto renderingService = std::make_shared<RenderingService>(eventsService, shadersService, bufferCacheService, texturesService, meshService, lightServices);
 
     auto graphicsService = std::make_shared<GraphicsService>(renderingService, meshLoadingService, texturesService, audioService);
 
