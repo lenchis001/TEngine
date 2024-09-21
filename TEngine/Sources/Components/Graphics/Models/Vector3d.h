@@ -5,11 +5,22 @@
 
 namespace TEngine::Components::Graphics::Models
 {
+    #define _x _data[0]
+    #define x(v) _data[0] = v
+    #define _y _data[1]
+    #define y(v) _data[1] = v
+    #define _z _data[2]
+    #define z(v) _data[2] = v
+
     template <class T>
     class Vector3d
     {
     public:
-        Vector3d(T x, T y, T z) : _x(x), _y(y), _z(z) {}
+        Vector3d(T x, T y, T z) {
+            _x = x;
+            _y = y;
+            _z = z;
+        }
 
         inline T getX() const { return _x; }
         inline void setX(T value) { _x = value; }
@@ -17,6 +28,11 @@ namespace TEngine::Components::Graphics::Models
         inline void setY(T value) { _y = value; }
         inline T getZ() const { return _z; }
         inline void setZ(T value) { _z = value; }
+
+        const T* getInternalData() const
+        {
+            return _data;
+        }
 
         Vector3d<T> operator+(const Vector3d<T> &other) const
         {
@@ -90,9 +106,7 @@ namespace TEngine::Components::Graphics::Models
         }
 
     private:
-        T _x;
-        T _y;
-        T _z;
+        T _data[3];
     };
 
     typedef Vector3d<float> Vector3df;

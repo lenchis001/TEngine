@@ -21,13 +21,15 @@ RenderingService::RenderingService(
 	std::shared_ptr<IShadersService> shadersService,
 	std::shared_ptr<IBuffersService> bufferCacheService,
 	std::shared_ptr<ITexturesService> textureService,
-	std::shared_ptr<IMeshService> meshService)
+	std::shared_ptr<IMeshService> meshService,
+	std::shared_ptr<ILightServices> lightServices)
 	: _window(nullptr),
 	  _eventService(eventService),
 	  _shadersService(shadersService),
 	  _bufferCacheService(bufferCacheService),
 	  _textureService(textureService),
 	  _meshService(meshService),
+	  _lightServices(lightServices),
 	  _activeCamera(nullptr),
 	  _root(std::make_shared<RenderingStrategyBase>())
 {
@@ -87,6 +89,8 @@ double RenderingService::getTime() const
 
 void RenderingService::render()
 {
+	_lightServices->update();
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if (_activeCamera)
@@ -121,7 +125,7 @@ std::shared_ptr<IRenderingStrategy> RenderingService::addMeshToRendering(
 	std::string meshPath,
 	std::shared_ptr<IRenderingStrategy> parent)
 {
-	auto meshRenderingStrategy = std::make_shared<MeshRenderingStrategy>(_meshService, meshPath);
+	auto meshRenderingStrategy = std::make_shared<MeshRenderingStrategy>(_meshService, _lightServices, meshPath);
 
 	auto decoratedMeshRenderingStrategy = std::make_shared<RenderingOptimizationDecorator>(meshRenderingStrategy);
 	(parent ? parent : _root)->addChild(decoratedMeshRenderingStrategy);

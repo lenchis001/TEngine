@@ -6,9 +6,11 @@ using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStr
 
 MeshRenderingStrategy::MeshRenderingStrategy(
     std::shared_ptr<IMeshService> meshService,
+    std::shared_ptr<ILightServices> lightServices,
     const std::string &path)
     : RenderingStrategyBase(),
-      _meshService(meshService)
+      _meshService(meshService),
+      _lightServices(lightServices)
 {
     _renderableMesh = _meshService->take(path);
 }
@@ -33,11 +35,12 @@ void MeshRenderingStrategy::render(std::shared_ptr<ICameraStrategy> activeCamera
         glUniformMatrix4fv(shape->getModelMatrixShaderId(), 1, GL_FALSE, getModelMatrix().getInternalData());
         glUniformMatrix4fv(shape->getViewMatrixShaderId(), 1, GL_FALSE, viewMatrix.getInternalData());
 
-        float lightPos[] = {0.0f, 7.0f, 10.0f};
-        glUniform3fv(shape->getLightPosShaderId(), 1, lightPos);
+        auto pointLight = _lightServices->getPointLight();
 
-        float lightColor[] = {1.0f, 1.0f, 1.0f};
-        glUniform3fv(shape->getLightColorShaderId(), 1, lightColor);
+        auto m = pointLight->getPosition().getInternalData();
+        glUniform3fv(shape->getLightPosShaderId(), 1, pointLight->getPosition().getInternalData());
+
+        glUniform3fv(shape->getLightColorShaderId(), 1, pointLight->getDiffuseColor().getInternalData());
 
         float lightPower = 50.0f;
         glUniform1f(shape->getLightPowerShaderId(), lightPower);

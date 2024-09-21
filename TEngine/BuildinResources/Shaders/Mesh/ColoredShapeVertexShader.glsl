@@ -18,23 +18,18 @@ void main()
 	// Output position of the vertex, in clip space : MVP * position
 	gl_Position = MVP * vec4(vertexPosition, 1);
 
-	mat3 modelMatrix3 = mat3(modelMatrix);
-	mat3 viewMatrix3 = mat3(viewMatrix);
-
 	// Position of the vertex, in worldspace : modelMatrix * position
-	positionWorldspace = modelMatrix3 * vertexPosition;
-
-	mat3 vmMatrix = viewMatrix3 * modelMatrix3;
+	positionWorldspace = (modelMatrix * vec4(vertexPosition, 1)).xyz;
 
 	// Vector that goes from the vertex to the camera, in camera space.
 	// In camera space, the camera is at the origin (0,0,0).
-	vec3 vertexPositionCameraspace = vmMatrix * vertexPosition;
+	vec3 vertexPositionCameraspace = (viewMatrix * modelMatrix * vec4(vertexPosition, 1)).xyz;
 	eyeDirectionCameraspace = -vertexPositionCameraspace;
 
 	// Vector that goes from the vertex to the light, in camera space. modelMatrix is ommited because it's identity.
-	vec3 lightPositionCameraspace = viewMatrix3 * lightPosition;
+	vec3 lightPositionCameraspace = (viewMatrix * vec4(lightPosition, 1)).xyz;
 	lightDirectionCameraspace = lightPositionCameraspace + eyeDirectionCameraspace;
 
 	// Normal of the the vertex, in camera space
-	normalCameraspace = vmMatrix * vertexNormal; // Only correct if ModelMatrix does not scale the model ! Use its inverse transpose if not.
+	normalCameraspace = (viewMatrix * modelMatrix * vec4(vertexNormal, 0)).xyz; // Only correct if ModelMatrix does not scale the model ! Use its inverse transpose if not.
 }
