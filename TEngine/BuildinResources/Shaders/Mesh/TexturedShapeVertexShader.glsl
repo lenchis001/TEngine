@@ -17,7 +17,6 @@ uniform vec3 lightPosition;
 
 void main()
 {
-
 	// Output position of the vertex, in clip space : MVP * position
 	gl_Position = MVP * vec4(vertexPosition, 1);
 
