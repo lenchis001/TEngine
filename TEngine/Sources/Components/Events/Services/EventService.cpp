@@ -63,9 +63,9 @@ void EventService::unregisterHandler(const MousePositionEventHandler &handler)
     assert((handlersSize - 1) == _mouseHandlers.size() && "Handler was not found");
 }
 
-void EventService::setCursorePosition(float x, float y)
+void EventService::setCursorePosition(const Vector2di &value)
 {
-    glfwSetCursorPos(glfwGetCurrentContext(), x, y);
+    glfwSetCursorPos(glfwGetCurrentContext(), value.getX(), value.getY());
 }
 
 void EventService::setCursorVisibility(bool isVisible)

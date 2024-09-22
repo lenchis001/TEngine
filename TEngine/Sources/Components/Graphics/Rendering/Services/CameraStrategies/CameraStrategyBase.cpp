@@ -7,13 +7,13 @@ using namespace TEngine::Components::Graphics::Rendering::Services::CameraStrate
 
 CameraStrategyBase::CameraStrategyBase(
     float fov,
-    float aspectRatio,
+    const Vector2di& windowSize,
     float zNear,
     float zFar,
     const Models::Vector3df &position,
     const Models::Vector3df &target)
     : _fov(fov),
-      _aspectRatio(aspectRatio),
+      _aspectRatio(windowSize.getX() / windowSize.getY()),
       _zNear(zNear),
       _zFar(zFar),
       _position(position),
@@ -80,9 +80,9 @@ void CameraStrategyBase::render()
     // do nothing
 }
 
-void CameraStrategyBase::setAspectRatio(float value)
+void CameraStrategyBase::setWindowSize(const Vector2di &value)
 {
-    _aspectRatio = value;
+    _aspectRatio = static_cast<float>(value.getX()) / static_cast<float>(value.getY());
     _recalculateProjection();
     _recalculateVp();
 }

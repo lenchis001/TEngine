@@ -5,29 +5,26 @@
 
 namespace TEngine::Components::Graphics::Models
 {
-    #define _x _data[0]
-    #define x(v) _data[0] = v
-    #define _y _data[1]
-    #define y(v) _data[1] = v
-    #define _z _data[2]
-    #define z(v) _data[2] = v
+    #define __Vector3dx _data[0]
+    #define __Vector3dy _data[1]
+    #define __Vector3dz _data[2]
 
     template <class T>
     class Vector3d
     {
     public:
         Vector3d(T x, T y, T z) {
-            _x = x;
-            _y = y;
-            _z = z;
+            __Vector3dx = x;
+            __Vector3dy = y;
+            __Vector3dz = z;
         }
 
-        inline T getX() const { return _x; }
-        inline void setX(T value) { _x = value; }
-        inline T getY() const { return _y; }
-        inline void setY(T value) { _y = value; }
-        inline T getZ() const { return _z; }
-        inline void setZ(T value) { _z = value; }
+        inline T getX() const { return __Vector3dx; }
+        inline void setX(T value) { __Vector3dx = value; }
+        inline T getY() const { return __Vector3dy; }
+        inline void setY(T value) { __Vector3dy = value; }
+        inline T getZ() const { return __Vector3dz; }
+        inline void setZ(T value) { __Vector3dz = value; }
 
         const T* getInternalData() const
         {
@@ -36,37 +33,37 @@ namespace TEngine::Components::Graphics::Models
 
         Vector3d<T> operator+(const Vector3d<T> &other) const
         {
-            return Vector3d<T>(_x + other._x, _y + other._y, _z + other._z);
+            return Vector3d<T>(__Vector3dx + other.__Vector3dx, __Vector3dy + other.__Vector3dy, __Vector3dz + other.__Vector3dz);
         }
 
         Vector3d<T> operator+(T scalar) const
         {
-            return Vector3d<T>(_x + scalar, _y + scalar, _z + scalar);
+            return Vector3d<T>(__Vector3dx + scalar, __Vector3dy + scalar, __Vector3dz + scalar);
         }
 
         Vector3d<T> operator-(const Vector3d<T> &other) const
         {
-            return Vector3d<T>(_x - other._x, _y - other._y, _z - other._z);
+            return Vector3d<T>(__Vector3dx - other.__Vector3dx, __Vector3dy - other.__Vector3dy, __Vector3dz - other.__Vector3dz);
         }
 
         Vector3d<T> operator-(T scalar) const
         {
-            return Vector3d<T>(_x - scalar, _y - scalar, _z - scalar);
+            return Vector3d<T>(__Vector3dx - scalar, __Vector3dy - scalar, __Vector3dz - scalar);
         }
 
         Vector3d<T> operator*(const Vector3d<T> &other) const
         {
-            return Vector3d<T>(_x * other._x, _y * other._y, _z * other._z);
+            return Vector3d<T>(__Vector3dx * other.__Vector3dx, __Vector3dy * other.__Vector3dy, __Vector3dz * other.__Vector3dz);
         }
 
         Vector3d<T> operator*(T scalar) const
         {
-            return Vector3d<T>(_x * scalar, _y * scalar, _z * scalar);
+            return Vector3d<T>(__Vector3dx * scalar, __Vector3dy * scalar, __Vector3dz * scalar);
         }
 
         Vector3d<T> operator/(const Vector3d<T> &other) const
         {
-            return Vector3d<T>(_x / other._x, _y / other._y, _z / other._z);
+            return Vector3d<T>(__Vector3dx / other.__Vector3dx, __Vector3dy / other.__Vector3dy, __Vector3dz / other.__Vector3dz);
         }
 
         Vector3d<T> cross(const Vector3d<T> otherVector) const
@@ -99,9 +96,9 @@ namespace TEngine::Components::Graphics::Models
 
         T distance(const Vector3d<T> &other) const
         {
-            T dx = _x - other._x;
-            T dy = _y - other._y;
-            T dz = _z - other._z;
+            T dx = __Vector3dx - other.__Vector3dx;
+            T dy = __Vector3dy - other.__Vector3dy;
+            T dz = __Vector3dz - other.__Vector3dz;
             return sqrt(dx * dx + dy * dy + dz * dz);
         }
 

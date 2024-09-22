@@ -135,13 +135,15 @@ std::shared_ptr<IRenderingStrategy> RenderingService::addMeshToRendering(
 
 std::shared_ptr<ICameraStrategy> RenderingService::setActiveCamera(BuildinCameraTypes cameraType)
 {
+	auto windowSize = _getWindowSize();
+
 	switch (cameraType)
 	{
 	case BuildinCameraTypes::BASE:
-		_activeCamera = std::make_shared<CameraStrategyBase>(45.0f, 4.f / 3.f, 0.1f, 100.f, Vector3df(4, 3, 3), Vector3df(0, 0, 0));
+		_activeCamera = std::make_shared<CameraStrategyBase>(45.0f, windowSize, 0.1f, 100.f, Vector3df(4, 3, 3), Vector3df(0, 0, 0));
 		break;
 	case BuildinCameraTypes::FPS:
-		_activeCamera = std::make_shared<FpsCameraStrategy>(_eventService, 45.0f, 4.f / 3.f, 0.1f, 100.f, Vector3df(4, 3, 3));
+		_activeCamera = std::make_shared<FpsCameraStrategy>(_eventService, 45.0f, windowSize, 0.1f, 100.f, Vector3df(4, 3, 3));
 		break;
 	default:
 		_activeCamera = nullptr;
@@ -166,6 +168,14 @@ void RenderingService::_onWindowResized(GLFWwindow *window, int width, int heigh
 
 	if (that->_activeCamera)
 	{
-		that->_activeCamera->setAspectRatio(static_cast<float>(width) / static_cast<float>(height));
+		that->_activeCamera->setWindowSize(Vector2di(width, height));
 	}
+}
+
+Vector2di RenderingService::_getWindowSize() const
+{
+	int width, height;
+	glfwGetWindowSize(_window, &width, &height);
+
+	return Vector2di(width, height);
 }

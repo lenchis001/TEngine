@@ -10,9 +10,9 @@
 
 #include "Mixins/ContextAwareMixin.h"
 
+using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Events::Models;
 using namespace TEngine::Mixins;
-using namespace TEngine::Components::Events::Models;
 
 namespace TEngine::Components::Events::Services
 {
@@ -30,7 +30,7 @@ namespace TEngine::Components::Events::Services
         void unregisterHandler(KeyboardKeys key, const KeyboardEventHandler &handler) override;
         void unregisterHandler(const MousePositionEventHandler &handler) override;
 
-        void setCursorePosition(float x, float y) override;
+        void setCursorePosition(const Vector2di& value) override;
         void setCursorVisibility(bool isVisible) override;
 
     private:

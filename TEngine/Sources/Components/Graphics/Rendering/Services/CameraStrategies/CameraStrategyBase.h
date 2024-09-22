@@ -6,6 +6,8 @@
 
 #include "ICameraStrategy.h"
 
+#include "Components/Graphics/Models/Vector2d.h"
+
 using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies::Tracking;
 
@@ -17,7 +19,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies
     public:
         CameraStrategyBase(
             float fov,
-            float aspectRatio,
+            const Vector2di& windowSize,
             float zNear,
             float zFar,
             const Vector3df &position,
@@ -45,7 +47,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies
 
         ~CameraStrategyBase() override = default;
 
-        void setAspectRatio(float value) override;
+        void setWindowSize(const Vector2di &value) override;
 
         void addTrackingStrategy(std::shared_ptr<ICameraTrackingStrategy> trackingStrategy) override;
 

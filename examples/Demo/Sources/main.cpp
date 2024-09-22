@@ -19,8 +19,8 @@ int main()
 
         auto renderingParameters = creationParameters->getGraphicsParameters()->getRenderingParameters();
         renderingParameters->setTitle("Demo");
-        renderingParameters->setWidth(1024);
-        renderingParameters->setHeight(768);
+        renderingParameters->setWidth(1280);
+        renderingParameters->setHeight(720);
         renderingParameters->setIsVerticalSyncEnabled(true);
 
         engine->initialize(creationParameters);

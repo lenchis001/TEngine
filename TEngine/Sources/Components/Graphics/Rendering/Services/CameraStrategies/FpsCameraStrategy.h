@@ -19,13 +19,15 @@ namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies
         FpsCameraStrategy(
             std::shared_ptr<IEventService> eventService,
             float fov,
-            float aspectRatio,
+            const Vector2di &windowSize,
             float zNear,
             float zFar,
             const Vector3df &position);
         ~FpsCameraStrategy() override;
 
         void render() override;
+
+        void setWindowSize(const Vector2di &value) override;
 
     private:
         bool _onMouseMoved(float x, float y);
@@ -44,6 +46,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies
         float _phi, _theta, _radius;
         bool _isMovingForward, _isMovingBackward, _isMovingLeft, _isMovingRight, _isMovingUp, _isMovingDown, _isBoostActivated, _isRorated;
         Vector3df _position, _target;
+        Vector2di _windowCenter;
 
         std::shared_ptr<IEventService> _eventService;
 

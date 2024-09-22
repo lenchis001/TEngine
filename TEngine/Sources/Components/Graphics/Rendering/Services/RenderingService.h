@@ -18,8 +18,11 @@
 #include "Components/Graphics/Rendering/Services/Meshes/IMeshService.h"
 #include "Components/Graphics/Rendering/Services/Lights/ILightServices.h"
 
+#include "Components/Graphics/Models/Vector2d.h"
+
 using namespace TEngine::Components::Events::Services;
 
+using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Graphics::Rendering::Models;
 using namespace TEngine::Components::Graphics::MeshLoading::Models;
 using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
@@ -72,6 +75,8 @@ namespace TEngine::Components::Graphics::Rendering::Services
 
     private:
         static void _onWindowResized(GLFWwindow* window, int width, int height);
+
+        Vector2di _getWindowSize() const;
 
         GLFWwindow *_window;
 

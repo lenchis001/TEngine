@@ -13,11 +13,11 @@ using namespace TEngine::Components::Events::Models;
 FpsCameraStrategy::FpsCameraStrategy(
     std::shared_ptr<IEventService> eventService,
     float fov,
-    float aspectRatio,
+    const Vector2di &windowSize,
     float zNear,
     float zFar,
     const Vector3df &position)
-    : CameraStrategyBase(fov, aspectRatio, zNear, zFar, position, Vector3df(0.0f, 0.0f, 0.0f)),
+    : CameraStrategyBase(fov, windowSize, zNear, zFar, position, Vector3df(0.0f, 0.0f, 0.0f)),
       _eventService(eventService),
       _speed(0.1f),
       _phi(0.0f),
@@ -31,7 +31,8 @@ FpsCameraStrategy::FpsCameraStrategy(
       _isMovingRight(false),
       _isMovingUp(false),
       _isMovingDown(false),
-      _isBoostActivated(false)
+      _isBoostActivated(false),
+      _windowCenter(windowSize / 2)
 {
     _eventService->registerHandler(std::bind(&FpsCameraStrategy::_onMouseMoved, this, std::placeholders::_1, std::placeholders::_2));
     _eventService->registerHandler(KeyboardKeys::KEY_W, std::bind(&FpsCameraStrategy::_onKeyWPressed, this, std::placeholders::_1));
@@ -42,9 +43,7 @@ FpsCameraStrategy::FpsCameraStrategy(
     _eventService->registerHandler(KeyboardKeys::KEY_E, std::bind(&FpsCameraStrategy::_onKeyEPressed, this, std::placeholders::_1));
     _eventService->registerHandler(KeyboardKeys::KEY_LEFT_SHIFT, std::bind(&FpsCameraStrategy::_onKeyShiftPressed, this, std::placeholders::_1));
 
-    _recalculateState();
-
-    _eventService->setCursorePosition(1024 / 2, 768 / 2);
+    setWindowSize(Vector2di(1280, 720));
     _eventService->setCursorVisibility(false);
 }
 
@@ -66,10 +65,19 @@ void FpsCameraStrategy::render()
     CameraStrategyBase::render();
 }
 
+void FpsCameraStrategy::setWindowSize(const Vector2di &value)
+{
+    CameraStrategyBase::setWindowSize(value);
+
+    _windowCenter = value / 2;
+
+    _eventService->setCursorePosition(_windowCenter);
+}
+
 bool FpsCameraStrategy::_onMouseMoved(float x, float y)
 {
-    auto xDelta = x - 1024 / 2;
-    auto yDelta = y - 768 / 2;
+    auto xDelta = x - _windowCenter.getX();
+    auto yDelta = y - _windowCenter.getY();
 
     _phi += xDelta * 0.001f;
     if (_phi > 2 * M_PI)
@@ -84,7 +92,7 @@ bool FpsCameraStrategy::_onMouseMoved(float x, float y)
     _theta += yDelta * 0.001f;
     _theta = std::clamp(_theta, 0.0f, static_cast<float>(M_PI));
 
-    _eventService->setCursorePosition(1024 / 2, 768 / 2);
+    _eventService->setCursorePosition(_windowCenter);
 
     _isRorated = true;
 
