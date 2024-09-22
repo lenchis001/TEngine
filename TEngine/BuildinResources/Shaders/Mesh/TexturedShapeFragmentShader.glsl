@@ -3,7 +3,6 @@
 // Interpolated values from the vertex shaders
 in vec3 attenuationCosTheta;
 in vec3 attenuationCosAlpha5;
-in vec3 lightDirectionCameraspace;
 in vec2 UV;
 
 // Output data
