@@ -22,7 +22,8 @@ RenderingService::RenderingService(
 	std::shared_ptr<IBuffersService> bufferCacheService,
 	std::shared_ptr<ITexturesService> textureService,
 	std::shared_ptr<IMeshService> meshService,
-	std::shared_ptr<ILightServices> lightServices)
+	std::shared_ptr<ILightServices> lightServices,
+	std::shared_ptr<IGuiService> guiService)
 	: _window(nullptr),
 	  _eventService(eventService),
 	  _shadersService(shadersService),
@@ -30,6 +31,7 @@ RenderingService::RenderingService(
 	  _textureService(textureService),
 	  _meshService(meshService),
 	  _lightServices(lightServices),
+	  _guiService(guiService),
 	  _activeCamera(nullptr),
 	  _root(std::make_shared<RenderingStrategyBase>())
 {
@@ -75,6 +77,8 @@ void RenderingService::initialize(std::shared_ptr<IRenderingParameters> paramete
 
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 	glEnable(GL_DEPTH_TEST);
+
+	_guiService->initialize();
 }
 
 bool RenderingService::isShutdownRequested() const
@@ -99,6 +103,8 @@ void RenderingService::render()
 
 		_root->render(_activeCamera);
 	}
+
+	_guiService->render();
 
 	glfwSwapBuffers(_window);
 	glfwPollEvents();
