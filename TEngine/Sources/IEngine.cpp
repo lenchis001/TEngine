@@ -49,7 +49,7 @@ std::shared_ptr<IEngine> TEngine::createEngine()
     auto texturesService = std::make_shared<TexturesService>(imageLoadingService);
     auto meshService = std::make_shared<MeshService>(meshLoadingService, bufferCacheService, shadersService, texturesService);
     auto lightServices = std::make_shared<LightService>();
-    auto guiService = std::make_shared<GuiService>();
+    auto guiService = std::make_shared<GuiService>(eventsService);
 
     auto renderingService = std::make_shared<RenderingService>(eventsService, shadersService, bufferCacheService, texturesService, meshService, lightServices, guiService);
 

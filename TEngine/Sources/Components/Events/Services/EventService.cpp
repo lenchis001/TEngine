@@ -6,7 +6,7 @@
 using namespace TEngine::Components::Events::Services;
 
 #define ARE_KEYBOARD_HANDLERS_EQUAL(h1, h2) (h1.target_type() == h2.target_type() && h1.target<KeyboardEventHandler>() == h2.target<KeyboardEventHandler>())
-#define ARE_MOUSE_HANDLERS_EQUAL(h1, h2) (h1.target_type() == h2.target_type() && h1.target<MousePositionEventHandler>() == h2.target<MousePositionEventHandler>())
+#define ARE_MOUSE_HANDLERS_EQUAL(h1, h2) (h1.target_type() == h2.target_type() && h1.target<CursorMoveEventHandler>() == h2.target<CursorMoveEventHandler>())
 
 EventService::~EventService()
 {
@@ -15,7 +15,7 @@ EventService::~EventService()
         assert(handlers.second.empty() && "Not all keyboard handlers were unregistered");
     }
 
-    assert(_mouseHandlers.empty() && "Not all mouse handlers were unregistered");
+    assert(_cursorMoveHandlers.empty() && "Not all mouse handlers were unregistered");
 }
 
 void EventService::initialize()
@@ -23,20 +23,16 @@ void EventService::initialize()
     setContext(this);
 
     glfwSetKeyCallback(glfwGetCurrentContext(), &EventService::_keyCallback);
-    glfwSetCursorPosCallback(glfwGetCurrentContext(), &EventService::_mousePosCallback);
+    glfwSetCursorPosCallback(glfwGetCurrentContext(), &EventService::_cursorPosCallback);
+    glfwSetMouseButtonCallback(glfwGetCurrentContext(), &EventService::_mouseButtonCallback);
 }
 
-void EventService::registerHandler(KeyboardKeys key, const KeyboardEventHandler &handler)
+void EventService::registerKeyHandler(KeyboardKeys key, const KeyboardEventHandler &handler)
 {
     _keyboardHandlers[key].push_back(handler);
 }
 
-void EventService::registerHandler(const MousePositionEventHandler &handler)
-{
-    _mouseHandlers.push_back(handler);
-}
-
-void EventService::unregisterHandler(KeyboardKeys key, const KeyboardEventHandler &handler)
+void EventService::unregisterKeyHandler(KeyboardKeys key, const KeyboardEventHandler &handler)
 {
     if (_keyboardHandlers.find(key) != _keyboardHandlers.end())
     {
@@ -52,15 +48,36 @@ void EventService::unregisterHandler(KeyboardKeys key, const KeyboardEventHandle
     }
 }
 
-void EventService::unregisterHandler(const MousePositionEventHandler &handler)
+void EventService::registerCursorMoveHandler(const CursorMoveEventHandler &handler)
 {
-    auto handlersSize = _mouseHandlers.size();
+    _cursorMoveHandlers.push_back(handler);
+}
 
-    _mouseHandlers.erase(std::remove_if(_mouseHandlers.begin(), _mouseHandlers.end(), [&handler](const MousePositionEventHandler &h)
+void EventService::unregisterCursorMoveHandler(const CursorMoveEventHandler &handler)
+{
+    auto handlersSize = _cursorMoveHandlers.size();
+
+    _cursorMoveHandlers.erase(std::remove_if(_cursorMoveHandlers.begin(), _cursorMoveHandlers.end(), [&handler](const CursorMoveEventHandler &h)
                                         { return ARE_MOUSE_HANDLERS_EQUAL(h, handler); }),
-                         _mouseHandlers.end());
+                         _cursorMoveHandlers.end());
 
-    assert((handlersSize - 1) == _mouseHandlers.size() && "Handler was not found");
+    assert((handlersSize - 1) == _cursorMoveHandlers.size() && "Handler was not found");
+}
+
+void EventService::registerMouseButtonHandler(const MouseButtonEventHandler &handler)
+{
+    _mouseButtonHandlers.push_back(handler);
+}
+
+void EventService::unregisterMouseButtonHandler(const MouseButtonEventHandler &handler)
+{
+    auto handlersSize = _mouseButtonHandlers.size();
+
+    _mouseButtonHandlers.erase(std::remove_if(_mouseButtonHandlers.begin(), _mouseButtonHandlers.end(), [&handler](const MouseButtonEventHandler &h)
+                                        { return h.target_type() == handler.target_type() && h.target<MouseButtonEventHandler>() == handler.target<MouseButtonEventHandler>(); }),
+                         _mouseButtonHandlers.end());
+
+    assert((handlersSize - 1) == _mouseButtonHandlers.size() && "Handler was not found");
 }
 
 void EventService::setCursorePosition(const Vector2di &value)
@@ -86,13 +103,26 @@ void EventService::_keyCallback(GLFWwindow *window, int key, int scancode, int a
     }
 }
 
-void EventService::_mousePosCallback(GLFWwindow *window, double xpos, double ypos)
+void EventService::_cursorPosCallback(GLFWwindow *window, double xpos, double ypos)
 {
     auto that = getContext();
 
-    for (auto &handler : that->_mouseHandlers)
+    for (auto &handler : that->_cursorMoveHandlers)
     {
         if (handler(xpos, ypos))
+        {
+            break;
+        }
+    }
+}
+
+void EventService::_mouseButtonCallback(GLFWwindow *window, int button, int action, int mods)
+{
+    auto that = getContext();
+
+    for (auto &handler : that->_mouseButtonHandlers)
+    {
+        if (handler(button, action, mods))
         {
             break;
         }

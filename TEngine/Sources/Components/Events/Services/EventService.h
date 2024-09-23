@@ -24,21 +24,26 @@ namespace TEngine::Components::Events::Services
 
         void initialize() override;
 
-        void registerHandler(KeyboardKeys key, const KeyboardEventHandler &handler) override;
-        void registerHandler(const MousePositionEventHandler &handler) override;
+        void registerKeyHandler(KeyboardKeys key, const KeyboardEventHandler &handler) override;
+        void unregisterKeyHandler(KeyboardKeys key, const KeyboardEventHandler &handler) override;
 
-        void unregisterHandler(KeyboardKeys key, const KeyboardEventHandler &handler) override;
-        void unregisterHandler(const MousePositionEventHandler &handler) override;
+        void registerCursorMoveHandler(const CursorMoveEventHandler &handler) override;
+        void unregisterCursorMoveHandler(const CursorMoveEventHandler &handler) override;
+
+        void registerMouseButtonHandler(const MouseButtonEventHandler &handler) override;
+        void unregisterMouseButtonHandler(const MouseButtonEventHandler &handler) override;
 
         void setCursorePosition(const Vector2di& value) override;
         void setCursorVisibility(bool isVisible) override;
 
     private:
         static void _keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
-        static void _mousePosCallback(GLFWwindow *window, double xpos, double ypos);
+        static void _cursorPosCallback(GLFWwindow *window, double xpos, double ypos);
+        static void _mouseButtonCallback(GLFWwindow *window, int button, int action, int mods);
 
         std::unordered_map<KeyboardKeys, std::vector<KeyboardEventHandler>> _keyboardHandlers;
-        std::vector<MousePositionEventHandler> _mouseHandlers;
+        std::vector<CursorMoveEventHandler> _cursorMoveHandlers;
+        std::vector<MouseButtonEventHandler> _mouseButtonHandlers;
     };
 }
 

@@ -34,14 +34,14 @@ FpsCameraStrategy::FpsCameraStrategy(
       _isBoostActivated(false),
       _windowCenter(windowSize / 2)
 {
-    _eventService->registerHandler(std::bind(&FpsCameraStrategy::_onMouseMoved, this, std::placeholders::_1, std::placeholders::_2));
-    _eventService->registerHandler(KeyboardKeys::KEY_W, std::bind(&FpsCameraStrategy::_onKeyWPressed, this, std::placeholders::_1));
-    _eventService->registerHandler(KeyboardKeys::KEY_S, std::bind(&FpsCameraStrategy::_onKeySPressed, this, std::placeholders::_1));
-    _eventService->registerHandler(KeyboardKeys::KEY_A, std::bind(&FpsCameraStrategy::_onKeyAPressed, this, std::placeholders::_1));
-    _eventService->registerHandler(KeyboardKeys::KEY_D, std::bind(&FpsCameraStrategy::_onKeyDPressed, this, std::placeholders::_1));
-    _eventService->registerHandler(KeyboardKeys::KEY_Q, std::bind(&FpsCameraStrategy::_onKeyQPressed, this, std::placeholders::_1));
-    _eventService->registerHandler(KeyboardKeys::KEY_E, std::bind(&FpsCameraStrategy::_onKeyEPressed, this, std::placeholders::_1));
-    _eventService->registerHandler(KeyboardKeys::KEY_LEFT_SHIFT, std::bind(&FpsCameraStrategy::_onKeyShiftPressed, this, std::placeholders::_1));
+    _eventService->registerCursorMoveHandler(std::bind(&FpsCameraStrategy::_onMouseMoved, this, std::placeholders::_1, std::placeholders::_2));
+    _eventService->registerKeyHandler(KeyboardKeys::KEY_W, std::bind(&FpsCameraStrategy::_onKeyWPressed, this, std::placeholders::_1));
+    _eventService->registerKeyHandler(KeyboardKeys::KEY_S, std::bind(&FpsCameraStrategy::_onKeySPressed, this, std::placeholders::_1));
+    _eventService->registerKeyHandler(KeyboardKeys::KEY_A, std::bind(&FpsCameraStrategy::_onKeyAPressed, this, std::placeholders::_1));
+    _eventService->registerKeyHandler(KeyboardKeys::KEY_D, std::bind(&FpsCameraStrategy::_onKeyDPressed, this, std::placeholders::_1));
+    _eventService->registerKeyHandler(KeyboardKeys::KEY_Q, std::bind(&FpsCameraStrategy::_onKeyQPressed, this, std::placeholders::_1));
+    _eventService->registerKeyHandler(KeyboardKeys::KEY_E, std::bind(&FpsCameraStrategy::_onKeyEPressed, this, std::placeholders::_1));
+    _eventService->registerKeyHandler(KeyboardKeys::KEY_LEFT_SHIFT, std::bind(&FpsCameraStrategy::_onKeyShiftPressed, this, std::placeholders::_1));
 
     setWindowSize(Vector2di(1280, 720));
     _eventService->setCursorVisibility(false);
@@ -49,14 +49,14 @@ FpsCameraStrategy::FpsCameraStrategy(
 
 FpsCameraStrategy::~FpsCameraStrategy()
 {
-    _eventService->unregisterHandler(std::bind(&FpsCameraStrategy::_onMouseMoved, this, std::placeholders::_1, std::placeholders::_2));
-    _eventService->unregisterHandler(KeyboardKeys::KEY_W, std::bind(&FpsCameraStrategy::_onKeyWPressed, this, std::placeholders::_1));
-    _eventService->unregisterHandler(KeyboardKeys::KEY_S, std::bind(&FpsCameraStrategy::_onKeySPressed, this, std::placeholders::_1));
-    _eventService->unregisterHandler(KeyboardKeys::KEY_A, std::bind(&FpsCameraStrategy::_onKeyAPressed, this, std::placeholders::_1));
-    _eventService->unregisterHandler(KeyboardKeys::KEY_D, std::bind(&FpsCameraStrategy::_onKeyDPressed, this, std::placeholders::_1));
-    _eventService->unregisterHandler(KeyboardKeys::KEY_Q, std::bind(&FpsCameraStrategy::_onKeyQPressed, this, std::placeholders::_1));
-    _eventService->unregisterHandler(KeyboardKeys::KEY_E, std::bind(&FpsCameraStrategy::_onKeyEPressed, this, std::placeholders::_1));
-    _eventService->unregisterHandler(KeyboardKeys::KEY_LEFT_SHIFT, std::bind(&FpsCameraStrategy::_onKeyShiftPressed, this, std::placeholders::_1));
+    _eventService->unregisterCursorMoveHandler(std::bind(&FpsCameraStrategy::_onMouseMoved, this, std::placeholders::_1, std::placeholders::_2));
+    _eventService->unregisterKeyHandler(KeyboardKeys::KEY_W, std::bind(&FpsCameraStrategy::_onKeyWPressed, this, std::placeholders::_1));
+    _eventService->unregisterKeyHandler(KeyboardKeys::KEY_S, std::bind(&FpsCameraStrategy::_onKeySPressed, this, std::placeholders::_1));
+    _eventService->unregisterKeyHandler(KeyboardKeys::KEY_A, std::bind(&FpsCameraStrategy::_onKeyAPressed, this, std::placeholders::_1));
+    _eventService->unregisterKeyHandler(KeyboardKeys::KEY_D, std::bind(&FpsCameraStrategy::_onKeyDPressed, this, std::placeholders::_1));
+    _eventService->unregisterKeyHandler(KeyboardKeys::KEY_Q, std::bind(&FpsCameraStrategy::_onKeyQPressed, this, std::placeholders::_1));
+    _eventService->unregisterKeyHandler(KeyboardKeys::KEY_E, std::bind(&FpsCameraStrategy::_onKeyEPressed, this, std::placeholders::_1));
+    _eventService->unregisterKeyHandler(KeyboardKeys::KEY_LEFT_SHIFT, std::bind(&FpsCameraStrategy::_onKeyShiftPressed, this, std::placeholders::_1));
 }
 
 void FpsCameraStrategy::render()
