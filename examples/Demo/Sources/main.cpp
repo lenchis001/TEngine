@@ -61,9 +61,9 @@ int main()
         while (true)
         {
             auto time = graphicsService->getTime();
-            if (time - previousCheckTime > 10.0)
+            if (time - previousCheckTime > 1.0)
             {
-                std::cout << "FPS: " << framesCounter / 10 << std::endl;
+                std::cout << "FPS: " << framesCounter / 1 << std::endl;
 
                 framesCounter = 0;
                 previousCheckTime = time;

@@ -17,6 +17,8 @@ GuiService::~GuiService()
 
     _eventService->unregisterCursorMoveHandler(std::bind(&GuiService::_onCursorMove, this, std::placeholders::_1, std::placeholders::_2));
     _eventService->unregisterMouseButtonHandler(std::bind(&GuiService::_onMouseButtonClick, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+    _eventService->unregisterScrollHandler(std::bind(&GuiService::_onScroll, this, std::placeholders::_1, std::placeholders::_2));
+    _eventService->unregisterKeyHandler(std::bind(&GuiService::_onKey, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
 }
 
 void GuiService::initialize()
@@ -35,6 +37,8 @@ void GuiService::initialize()
 
     _eventService->registerCursorMoveHandler(std::bind(&GuiService::_onCursorMove, this, std::placeholders::_1, std::placeholders::_2));
     _eventService->registerMouseButtonHandler(std::bind(&GuiService::_onMouseButtonClick, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+    _eventService->registerScrollHandler(std::bind(&GuiService::_onScroll, this, std::placeholders::_1, std::placeholders::_2));
+    _eventService->registerKeyHandler(std::bind(&GuiService::_onKey, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
 }
 
 void GuiService::render()
@@ -63,11 +67,25 @@ bool GuiService::_onMouseButtonClick(int button, int action, int mods)
     return false;
 }
 
+bool GuiService::_onScroll(float xoffset, float yoffset)
+{
+    ImGui_ImplGlfw_ScrollCallback(glfwGetCurrentContext(), xoffset, yoffset);
+
+    return false;
+}
+
+bool GuiService::_onKey(int key, int scancode, int action, int mods)
+{
+    ImGui_ImplGlfw_KeyCallback(glfwGetCurrentContext(), key, scancode, action, mods);
+
+    return false;
+}
+
 // bd->PrevUserCallbackWindowFocus = glfwSetWindowFocusCallback(window, ImGui_ImplGlfw_WindowFocusCallback);
 // bd->PrevUserCallbackCursorEnter = glfwSetCursorEnterCallback(window, ImGui_ImplGlfw_CursorEnterCallback);
 // +   bd->PrevUserCallbackCursorPos = glfwSetCursorPosCallback(window, ImGui_ImplGlfw_CursorPosCallback);
-// bd->PrevUserCallbackMousebutton = glfwSetMouseButtonCallback(window, ImGui_ImplGlfw_MouseButtonCallback);
-// bd->PrevUserCallbackScroll = glfwSetScrollCallback(window, ImGui_ImplGlfw_ScrollCallback);
-// bd->PrevUserCallbackKey = glfwSetKeyCallback(window, ImGui_ImplGlfw_KeyCallback);
-// bd->PrevUserCallbackChar = glfwSetCharCallback(window, ImGui_ImplGlfw_CharCallback);
+// +   bd->PrevUserCallbackMousebutton = glfwSetMouseButtonCallback(window, ImGui_ImplGlfw_MouseButtonCallback);
+// +   bd->PrevUserCallbackScroll = glfwSetScrollCallback(window, ImGui_ImplGlfw_ScrollCallback);
+// +   bd->PrevUserCallbackKey = glfwSetKeyCallback(window, ImGui_ImplGlfw_KeyCallback);
+// +   bd->PrevUserCallbackChar = glfwSetCharCallback(window, ImGui_ImplGlfw_CharCallback);
 // bd->PrevUserCallbackMonitor = glfwSetMonitorCallback(ImGui_ImplGlfw_MonitorCallback);

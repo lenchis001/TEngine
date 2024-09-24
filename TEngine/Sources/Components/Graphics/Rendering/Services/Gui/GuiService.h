@@ -26,6 +26,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::Gui
     private:
         bool _onCursorMove(float xpos, float ypos);
         bool _onMouseButtonClick(int button, int action, int mods);
+        bool _onScroll(float xoffset, float yoffset);
+        bool _onKey(int key, int scancode, int action, int mods);
 
         std::shared_ptr<Events::Services::IEventService> _eventService;
     };

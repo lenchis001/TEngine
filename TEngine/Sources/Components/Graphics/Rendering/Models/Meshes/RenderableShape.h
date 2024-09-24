@@ -20,7 +20,7 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
             GLuint lightColorShaderId,
             GLuint lightPowerShaderId,
             GLuint shapeColorShaderId,
-            const std::vector<float>& diffuseColor,
+            const std::vector<float> &diffuseColor,
             GLuint textureId);
         ~RenderableShape() = default;
 
@@ -49,6 +49,8 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
         unsigned int getVerticesCount() const override;
 
         GLuint getTextureId() const override;
+
+        bool isTextured() const override;
 
     private:
         std::string _name;

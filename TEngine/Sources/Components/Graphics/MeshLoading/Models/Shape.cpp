@@ -47,3 +47,8 @@ const std::string &Shape::getTexturePath() const
 {
     return _texturePath;
 }
+
+bool Shape::isTextured() const
+{
+    return !_uvs.empty() && !_texturePath.empty();
+}

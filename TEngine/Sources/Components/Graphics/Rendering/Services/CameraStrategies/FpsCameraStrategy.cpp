@@ -35,13 +35,7 @@ FpsCameraStrategy::FpsCameraStrategy(
       _windowCenter(windowSize / 2)
 {
     _eventService->registerCursorMoveHandler(std::bind(&FpsCameraStrategy::_onMouseMoved, this, std::placeholders::_1, std::placeholders::_2));
-    _eventService->registerKeyHandler(KeyboardKeys::KEY_W, std::bind(&FpsCameraStrategy::_onKeyWPressed, this, std::placeholders::_1));
-    _eventService->registerKeyHandler(KeyboardKeys::KEY_S, std::bind(&FpsCameraStrategy::_onKeySPressed, this, std::placeholders::_1));
-    _eventService->registerKeyHandler(KeyboardKeys::KEY_A, std::bind(&FpsCameraStrategy::_onKeyAPressed, this, std::placeholders::_1));
-    _eventService->registerKeyHandler(KeyboardKeys::KEY_D, std::bind(&FpsCameraStrategy::_onKeyDPressed, this, std::placeholders::_1));
-    _eventService->registerKeyHandler(KeyboardKeys::KEY_Q, std::bind(&FpsCameraStrategy::_onKeyQPressed, this, std::placeholders::_1));
-    _eventService->registerKeyHandler(KeyboardKeys::KEY_E, std::bind(&FpsCameraStrategy::_onKeyEPressed, this, std::placeholders::_1));
-    _eventService->registerKeyHandler(KeyboardKeys::KEY_LEFT_SHIFT, std::bind(&FpsCameraStrategy::_onKeyShiftPressed, this, std::placeholders::_1));
+    _eventService->registerKeyHandler(std::bind(&FpsCameraStrategy::_onKeyPressed, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
 
     setWindowSize(Vector2di(1280, 720));
     _eventService->setCursorVisibility(false);
@@ -50,13 +44,7 @@ FpsCameraStrategy::FpsCameraStrategy(
 FpsCameraStrategy::~FpsCameraStrategy()
 {
     _eventService->unregisterCursorMoveHandler(std::bind(&FpsCameraStrategy::_onMouseMoved, this, std::placeholders::_1, std::placeholders::_2));
-    _eventService->unregisterKeyHandler(KeyboardKeys::KEY_W, std::bind(&FpsCameraStrategy::_onKeyWPressed, this, std::placeholders::_1));
-    _eventService->unregisterKeyHandler(KeyboardKeys::KEY_S, std::bind(&FpsCameraStrategy::_onKeySPressed, this, std::placeholders::_1));
-    _eventService->unregisterKeyHandler(KeyboardKeys::KEY_A, std::bind(&FpsCameraStrategy::_onKeyAPressed, this, std::placeholders::_1));
-    _eventService->unregisterKeyHandler(KeyboardKeys::KEY_D, std::bind(&FpsCameraStrategy::_onKeyDPressed, this, std::placeholders::_1));
-    _eventService->unregisterKeyHandler(KeyboardKeys::KEY_Q, std::bind(&FpsCameraStrategy::_onKeyQPressed, this, std::placeholders::_1));
-    _eventService->unregisterKeyHandler(KeyboardKeys::KEY_E, std::bind(&FpsCameraStrategy::_onKeyEPressed, this, std::placeholders::_1));
-    _eventService->unregisterKeyHandler(KeyboardKeys::KEY_LEFT_SHIFT, std::bind(&FpsCameraStrategy::_onKeyShiftPressed, this, std::placeholders::_1));
+    _eventService->unregisterKeyHandler(std::bind(&FpsCameraStrategy::_onKeyPressed, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
 }
 
 void FpsCameraStrategy::render()
@@ -99,51 +87,32 @@ bool FpsCameraStrategy::_onMouseMoved(float x, float y)
     return true;
 }
 
-bool FpsCameraStrategy::_onKeyWPressed(bool isPressed)
+#define GLFW_PRESS 1
+
+bool FpsCameraStrategy::_onKeyPressed(int key, int scancode, int action, int mods)
 {
-    _isMovingForward = isPressed;
-
-    return true;
-}
-
-bool FpsCameraStrategy::_onKeySPressed(bool isPressed)
-{
-    _isMovingBackward = isPressed;
-
-    return true;
-}
-
-bool FpsCameraStrategy::_onKeyAPressed(bool isPressed)
-{
-    _isMovingLeft = isPressed;
-
-    return true;
-}
-
-bool FpsCameraStrategy::_onKeyDPressed(bool isPressed)
-{
-    _isMovingRight = isPressed;
-
-    return true;
-}
-
-bool FpsCameraStrategy::_onKeyQPressed(bool isPressed)
-{
-    _isMovingUp = isPressed;
-
-    return true;
-}
-
-bool FpsCameraStrategy::_onKeyEPressed(bool isPressed)
-{
-    _isMovingDown = isPressed;
-
-    return true;
-}
-
-bool FpsCameraStrategy::_onKeyShiftPressed(bool isPressed)
-{
-    _isBoostActivated = isPressed;
+    if (key == (int)KeyboardKeys::KEY_W)
+    {
+        _isMovingForward = action == GLFW_PRESS;
+    } else if (key == (int)KeyboardKeys::KEY_S)
+    {
+        _isMovingBackward = action == GLFW_PRESS;
+    } else if (key == (int)KeyboardKeys::KEY_A)
+    {
+        _isMovingLeft = action == GLFW_PRESS;
+    } else if (key == (int)KeyboardKeys::KEY_D)
+    {
+        _isMovingRight = action == GLFW_PRESS;
+    } else if (key == (int)KeyboardKeys::KEY_Q)
+    {
+        _isMovingUp = action == GLFW_PRESS;
+    } else if (key == (int)KeyboardKeys::KEY_E)
+    {
+        _isMovingDown = action == GLFW_PRESS;
+    } else if (key == (int)KeyboardKeys::KEY_LEFT_SHIFT)
+    {
+        _isBoostActivated = action == GLFW_PRESS;
+    }
 
     return true;
 }

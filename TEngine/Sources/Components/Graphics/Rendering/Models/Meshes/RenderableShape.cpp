@@ -96,3 +96,8 @@ unsigned int RenderableShape::getVerticesCount() const
 {
     return _verticesCount;
 }
+
+bool RenderableShape::isTextured() const
+{
+    return _textureId != 0;
+}

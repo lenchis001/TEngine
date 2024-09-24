@@ -22,6 +22,8 @@ namespace TEngine::Components::Graphics::MeshLoading::Models
         virtual const std::vector<float> &getDiffuseColor() const = 0;
 
         virtual const std::string &getTexturePath() const = 0;
+
+        virtual bool isTextured() const = 0;
     };
 }
 
