@@ -21,7 +21,7 @@ int main()
         renderingParameters->setTitle("Demo");
         renderingParameters->setWidth(1280);
         renderingParameters->setHeight(720);
-        renderingParameters->setIsVerticalSyncEnabled(true);
+        renderingParameters->setIsVerticalSyncEnabled(false);
 
         engine->initialize(creationParameters);
 
@@ -57,6 +57,9 @@ int main()
 
         source->play();
         source->setPosition(0.0f, 0.0f, 0.0f);
+
+        auto window1 = graphicsService->addWindow();
+        window1->setFullscreen(true);
 
         while (true)
         {

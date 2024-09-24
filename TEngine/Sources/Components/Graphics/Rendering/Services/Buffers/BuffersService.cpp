@@ -33,7 +33,6 @@ GLuint BuffersService::getVbo(const std::string &name)
 GLuint BuffersService::takeVbo(const std::string &name)
 {
     auto hash = _hashGenerator(name);
-    std::cout<<"Name: "<<name<<" Hash: "<<hash<<std::endl;
 
     if (existsVbo(name))
     {

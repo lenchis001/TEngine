@@ -35,6 +35,7 @@ using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStr
 using namespace TEngine::Components::Graphics::Rendering::Services::Meshes;
 using namespace TEngine::Components::Graphics::Rendering::Services::Lights;
 using namespace TEngine::Components::Graphics::Rendering::Services::Gui;
+using namespace TEngine::Components::Graphics::Rendering::Services::Gui::ControlRenderingStrategies;
 
 using namespace TEngine::Mixins;
 
@@ -75,6 +76,8 @@ namespace TEngine::Components::Graphics::Rendering::Services
         std::shared_ptr<ICameraStrategy> setActiveCamera(BuildinCameraTypes cameraType) override;
 
         void setActiveCamera(std::shared_ptr<ICameraStrategy> camera) override;
+
+        std::shared_ptr<IWindowRenderingStrategy> addWindow() override;
 
     private:
         static void _onWindowResized(GLFWwindow* window, int width, int height);

@@ -164,6 +164,11 @@ void RenderingService::setActiveCamera(std::shared_ptr<ICameraStrategy> camera)
 	_activeCamera = camera;
 }
 
+std::shared_ptr<IWindowRenderingStrategy> RenderingService::addWindow()
+{
+	return _guiService->addWindow();
+}
+
 void RenderingService::_onWindowResized(GLFWwindow *window, int width, int height)
 {
 #if (defined(_WIN32) || defined(_WIN64))

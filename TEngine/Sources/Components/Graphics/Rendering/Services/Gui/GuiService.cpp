@@ -1,11 +1,12 @@
 #include "GuiService.h"
 
-#include "GLFW/glfw3.h"
+#include "ControlRenderingStrategies/WindowRenderingStrategy.h"
+#include "ControlRenderingStrategies/ImageRenderingStrategy.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Services::Gui;
 
-GuiService::GuiService(std::shared_ptr<Events::Services::IEventService> eventService)
-    : _eventService(eventService)
+GuiService::GuiService(std::shared_ptr<IEventService> eventService, std::shared_ptr<ITexturesService> texturesService)
+    : _eventService(eventService), _texturesService(texturesService)
 {
 }
 
@@ -47,10 +48,25 @@ void GuiService::render()
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    ImGui::ShowDemoWindow();
+    for (auto &control : _controls)
+    {
+        control->render();
+    }
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+std::shared_ptr<IWindowRenderingStrategy> GuiService::addWindow()
+{
+    auto window = std::make_shared<WindowRenderingStrategy>();
+
+    auto image = std::make_shared<ImageRenderingStrategy>(_texturesService, "C:/Users/Leon/Downloads/Untitled.bmp");
+    window->addChild(image);
+
+    _controls.push_back(window);
+
+    return window;
 }
 
 bool GuiService::_onCursorMove(float xpos, float ypos)
