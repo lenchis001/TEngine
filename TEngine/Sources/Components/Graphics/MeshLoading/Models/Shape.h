@@ -27,6 +27,8 @@ namespace TEngine::Components::Graphics::MeshLoading::Models
         const std::vector<float> &getDiffuseColor() const override;
 
         const std::string &getTexturePath() const override;
+
+        bool isTextured() const override;
     private:
         std::string _name;
         std::vector<float> _vertices;

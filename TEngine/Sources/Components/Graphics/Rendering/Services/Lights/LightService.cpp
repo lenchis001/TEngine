@@ -24,8 +24,8 @@ void LightService::update()
         asc = true;
     }
 
-    position.setX(position.getX() + (asc ? 0.5f : -0.5f));
-    position.setZ(position.getZ() + (asc ? 0.5f : -0.5f));
+    position.setX(position.getX() + (asc ? 0.3f : -0.3f));
+    position.setZ(position.getZ() + (asc ? 0.3f : -0.3f));
 
     _pointLight->setPosition(position);
 }

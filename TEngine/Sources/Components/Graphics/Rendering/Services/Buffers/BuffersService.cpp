@@ -28,6 +28,8 @@ GLuint BuffersService::getVbo(const std::string &name)
     return _vboCache[hash];
 }
 
+#include <iostream>
+
 GLuint BuffersService::takeVbo(const std::string &name)
 {
     auto hash = _hashGenerator(name);

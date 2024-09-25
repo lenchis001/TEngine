@@ -21,7 +21,7 @@ int main()
         renderingParameters->setTitle("Demo");
         renderingParameters->setWidth(1280);
         renderingParameters->setHeight(720);
-        renderingParameters->setIsVerticalSyncEnabled(true);
+        renderingParameters->setIsVerticalSyncEnabled(false);
 
         engine->initialize(creationParameters);
 
@@ -29,7 +29,7 @@ int main()
 
         auto graphicsService = engine->getGraphicsService();
 
-        graphicsService->setActiveCamera(TEngine::Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes::FPS);
+        graphicsService->setActiveCamera(TEngine::Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes::BASE);
 
         for (int i = 1; i < 32; i++)
         {
@@ -58,12 +58,17 @@ int main()
         source->play();
         source->setPosition(0.0f, 0.0f, 0.0f);
 
+        auto window1 = graphicsService->addWindow();
+        auto image = graphicsService->addImage("./DemoResources/texture2.bmp");
+        image->setSize(Vector2di(100, 100));
+        window1->addChild(image);
+
         while (true)
         {
             auto time = graphicsService->getTime();
-            if (time - previousCheckTime > 10.0)
+            if (time - previousCheckTime > 1.0)
             {
-                std::cout << "FPS: " << framesCounter / 10 << std::endl;
+                std::cout << "FPS: " << framesCounter / 1 << std::endl;
 
                 framesCounter = 0;
                 previousCheckTime = time;

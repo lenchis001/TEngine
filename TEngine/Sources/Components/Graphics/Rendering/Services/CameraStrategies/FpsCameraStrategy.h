@@ -30,14 +30,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies
         void setWindowSize(const Vector2di &value) override;
 
     private:
+        bool _onKeyPressed(int key, int scancode, int action, int mods);
         bool _onMouseMoved(float x, float y);
-        bool _onKeyWPressed(bool isPressed);
-        bool _onKeySPressed(bool isPressed);
-        bool _onKeyAPressed(bool isPressed);
-        bool _onKeyDPressed(bool isPressed);
-        bool _onKeyQPressed(bool isPressed);
-        bool _onKeyEPressed(bool isPressed);
-        bool _onKeyShiftPressed(bool isPressed);
 
         void _recalculateState();
         void _recalculateTarget();

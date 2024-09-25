@@ -21,6 +21,7 @@ using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
 using namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies;
 using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies;
 using namespace TEngine::Components::Graphics::Rendering::Services::Textures;
+using namespace TEngine::Components::Graphics::Rendering::Services::Gui::ControlRenderingStrategies;
 using namespace TEngine::Components::Audio::Services;
 
 using namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies::Tracking;
@@ -47,8 +48,6 @@ namespace TEngine::Components::Graphics::Services
             _renderingService->render();
         }
 
-        std::shared_ptr<IRenderingStrategy> loadMesh(const std::string &path) override;
-
         std::shared_ptr<IRenderingStrategy> addPrimitive(
             PrimitiveTypes type,
             std::string texturePath,
@@ -61,6 +60,10 @@ namespace TEngine::Components::Graphics::Services
         std::shared_ptr<ICameraStrategy> setActiveCamera(BuildinCameraTypes cameraType) override;
 
         void setActiveCamera(std::shared_ptr<ICameraStrategy> camera) override;
+
+        std::shared_ptr<IWindowRenderingStrategy> addWindow() override;
+
+        std::shared_ptr<IImageRenderingStrategy> addImage(const std::string &path) override;
 
     private:
         std::shared_ptr<IRenderingService> _renderingService;

@@ -4,7 +4,7 @@
 namespace TEngine::Components::Events::Models
 {
 
-    enum class KeyboardKeys
+    enum class KeyboardKeys : int
     {
         KEY_UNKNOWN = -1,
         KEY_SPACE = 32,

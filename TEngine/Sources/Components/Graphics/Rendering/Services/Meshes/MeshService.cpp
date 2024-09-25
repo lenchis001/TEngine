@@ -74,6 +74,8 @@ void MeshService::release(std::shared_ptr<IRenderableMesh> renderableMesh)
         {
             _buffersService->releaseVbo(toVertexName(shape->getName()));
             _buffersService->releaseVbo(toNormalName(shape->getName()));
+            if(shape->isTextured())
+                _buffersService->releaseVbo(toUvName(shape->getName()));
             _buffersService->releaseVao(shape->getName());
             _shadersService->release(shape->getProgram());
 
@@ -112,7 +114,7 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
 
     // Prepare UVs VBO
     auto texPath = shape->getTexturePath();
-    auto isTextured = !shape->getUVs().empty() && !shape->getTexturePath().empty();
+    auto isTextured = shape->isTextured();
 
     GLuint uvsBuffer = 0;
     if (isTextured)

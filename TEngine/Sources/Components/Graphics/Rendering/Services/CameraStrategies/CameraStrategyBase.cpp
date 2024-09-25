@@ -13,7 +13,7 @@ CameraStrategyBase::CameraStrategyBase(
     const Models::Vector3df &position,
     const Models::Vector3df &target)
     : _fov(fov),
-      _aspectRatio(windowSize.getX() / windowSize.getY()),
+      _aspectRatio(static_cast<float>(windowSize.getX()) / static_cast<float>(windowSize.getY())),
       _zNear(zNear),
       _zFar(zFar),
       _position(position),

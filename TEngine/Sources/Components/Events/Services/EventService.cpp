@@ -5,17 +5,13 @@
 
 using namespace TEngine::Components::Events::Services;
 
-#define ARE_KEYBOARD_HANDLERS_EQUAL(h1, h2) (h1.target_type() == h2.target_type() && h1.target<KeyboardEventHandler>() == h2.target<KeyboardEventHandler>())
-#define ARE_MOUSE_HANDLERS_EQUAL(h1, h2) (h1.target_type() == h2.target_type() && h1.target<MousePositionEventHandler>() == h2.target<MousePositionEventHandler>())
-
 EventService::~EventService()
 {
-    for (auto &handlers : _keyboardHandlers)
-    {
-        assert(handlers.second.empty() && "Not all keyboard handlers were unregistered");
-    }
-
-    assert(_mouseHandlers.empty() && "Not all mouse handlers were unregistered");
+    assert(_keyboardHandlers.empty() && "Not all keyboard handlers were unregistered");
+    assert(_cursorMoveHandlers.empty() && "Not all mouse handlers were unregistered");
+    assert(_mouseButtonHandlers.empty() && "Not all mouse button handlers were unregistered");
+    assert(_scrollHandlers.empty() && "Not all scroll handlers were unregistered");
+    assert(_charHandlers.empty() && "Not all char handlers were unregistered");
 }
 
 void EventService::initialize()
@@ -23,44 +19,60 @@ void EventService::initialize()
     setContext(this);
 
     glfwSetKeyCallback(glfwGetCurrentContext(), &EventService::_keyCallback);
-    glfwSetCursorPosCallback(glfwGetCurrentContext(), &EventService::_mousePosCallback);
+    glfwSetCursorPosCallback(glfwGetCurrentContext(), &EventService::_cursorPosCallback);
+    glfwSetMouseButtonCallback(glfwGetCurrentContext(), &EventService::_mouseButtonCallback);
+    glfwSetScrollCallback(glfwGetCurrentContext(), &EventService::_scrollCallback);
+    glfwSetCharCallback(glfwGetCurrentContext(), &EventService::_charCallback);
 }
 
-void EventService::registerHandler(KeyboardKeys key, const KeyboardEventHandler &handler)
+void EventService::registerKeyHandler(const KeyboardEventHandler &handler)
 {
-    _keyboardHandlers[key].push_back(handler);
+    _keyboardHandlers.push_back(handler);
 }
 
-void EventService::registerHandler(const MousePositionEventHandler &handler)
+void EventService::unregisterKeyHandler(const KeyboardEventHandler &handler)
 {
-    _mouseHandlers.push_back(handler);
+    removeEventHandler(_keyboardHandlers, handler);
 }
 
-void EventService::unregisterHandler(KeyboardKeys key, const KeyboardEventHandler &handler)
+void EventService::registerCursorMoveHandler(const CursorMoveEventHandler &handler)
 {
-    if (_keyboardHandlers.find(key) != _keyboardHandlers.end())
-    {
-        auto &handlers = _keyboardHandlers[key];
-
-        auto handlersSize = handlers.size();
-
-        handlers.erase(std::remove_if(handlers.begin(), handlers.end(), [&handler](const KeyboardEventHandler &h)
-                                      { return ARE_KEYBOARD_HANDLERS_EQUAL(h, handler); }),
-                       handlers.end());
-
-        assert((handlersSize - 1) == handlers.size() && "Handler was not found");
-    }
+    _cursorMoveHandlers.push_back(handler);
 }
 
-void EventService::unregisterHandler(const MousePositionEventHandler &handler)
+void EventService::unregisterCursorMoveHandler(const CursorMoveEventHandler &handler)
 {
-    auto handlersSize = _mouseHandlers.size();
+    removeEventHandler(_cursorMoveHandlers, handler);
+}
 
-    _mouseHandlers.erase(std::remove_if(_mouseHandlers.begin(), _mouseHandlers.end(), [&handler](const MousePositionEventHandler &h)
-                                        { return ARE_MOUSE_HANDLERS_EQUAL(h, handler); }),
-                         _mouseHandlers.end());
+void EventService::registerMouseButtonHandler(const MouseButtonEventHandler &handler)
+{
+    _mouseButtonHandlers.push_back(handler);
+}
 
-    assert((handlersSize - 1) == _mouseHandlers.size() && "Handler was not found");
+void EventService::unregisterMouseButtonHandler(const MouseButtonEventHandler &handler)
+{
+    removeEventHandler(_mouseButtonHandlers, handler);
+}
+
+void EventService::registerScrollHandler(const ScrollEventHandler &handler)
+{
+    _scrollHandlers.push_back(handler);
+}
+
+void EventService::unregisterScrollHandler(const ScrollEventHandler &handler)
+{
+    removeEventHandler(_scrollHandlers, handler);
+}
+
+void EventService::registerCharHandler(const CharEventHandler &handler)
+{
+    _charHandlers.push_back(handler);
+}
+
+void EventService::unregisterCharHandler(const CharEventHandler &handler)
+{
+    removeEventHandler(_charHandlers, handler);
 }
 
 void EventService::setCursorePosition(const Vector2di &value)
@@ -77,22 +89,61 @@ void EventService::_keyCallback(GLFWwindow *window, int key, int scancode, int a
 {
     auto that = getContext();
 
-    for (auto &handler : that->_keyboardHandlers[static_cast<KeyboardKeys>(key)])
+    for (auto &handler : that->_keyboardHandlers)
     {
-        if (handler(action == GLFW_PRESS || action == GLFW_REPEAT))
+        if (handler(key, scancode, action, mods))
         {
             break;
         }
     }
 }
 
-void EventService::_mousePosCallback(GLFWwindow *window, double xpos, double ypos)
+void EventService::_cursorPosCallback(GLFWwindow *window, double xpos, double ypos)
 {
     auto that = getContext();
 
-    for (auto &handler : that->_mouseHandlers)
+    for (auto &handler : that->_cursorMoveHandlers)
     {
         if (handler(xpos, ypos))
+        {
+            break;
+        }
+    }
+}
+
+void EventService::_mouseButtonCallback(GLFWwindow *window, int button, int action, int mods)
+{
+    auto that = getContext();
+
+    for (auto &handler : that->_mouseButtonHandlers)
+    {
+        if (handler(button, action, mods))
+        {
+            break;
+        }
+    }
+}
+
+void EventService::_scrollCallback(GLFWwindow *window, double xoffset, double yoffset)
+{
+    auto that = getContext();
+
+    for (auto &handler : that->_scrollHandlers)
+    {
+        if (handler(xoffset, yoffset))
+        {
+            break;
+        }
+    }
+}
+
+void EventService::_charCallback(GLFWwindow *window, unsigned int codepoint)
+{
+    auto that = getContext();
+
+    for (auto &handler : that->_charHandlers)
+    {
+        if (handler(codepoint))
         {
             break;
         }

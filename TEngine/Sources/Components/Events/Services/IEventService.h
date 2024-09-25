@@ -7,8 +7,11 @@
 
 #include "Components/Events/Models/KeyboardKeys.h"
 
-typedef std::function<bool(bool)> KeyboardEventHandler;
-typedef std::function<bool(float, float)> MousePositionEventHandler;
+typedef std::function<bool(int, int, int, int)> KeyboardEventHandler;
+typedef std::function<bool(float, float)> CursorMoveEventHandler;
+typedef std::function<bool(int, int, int)> MouseButtonEventHandler;
+typedef std::function<bool(float, float)> ScrollEventHandler;
+typedef std::function<bool(unsigned int)> CharEventHandler;
 
 namespace TEngine::Components::Events::Services
 {
@@ -19,11 +22,20 @@ namespace TEngine::Components::Events::Services
 
         virtual void initialize() = 0;
 
-        virtual void registerHandler(Models::KeyboardKeys key, const KeyboardEventHandler &handler) = 0;
-        virtual void registerHandler(const MousePositionEventHandler &handler) = 0;
+        virtual void registerKeyHandler(const KeyboardEventHandler &handler) = 0;
+        virtual void unregisterKeyHandler(const KeyboardEventHandler &handler) = 0;
 
-        virtual void unregisterHandler(Models::KeyboardKeys key, const KeyboardEventHandler &handler) = 0;
-        virtual void unregisterHandler(const MousePositionEventHandler &handler) = 0;
+        virtual void registerCursorMoveHandler(const CursorMoveEventHandler &handler) = 0;
+        virtual void unregisterCursorMoveHandler(const CursorMoveEventHandler &handler) = 0;
+
+        virtual void registerMouseButtonHandler(const MouseButtonEventHandler &handler) = 0;
+        virtual void unregisterMouseButtonHandler(const MouseButtonEventHandler &handler) = 0;
+
+        virtual void registerScrollHandler(const ScrollEventHandler &handler) = 0;
+        virtual void unregisterScrollHandler(const ScrollEventHandler &handler) = 0;
+
+        virtual void registerCharHandler(const CharEventHandler &handler) = 0;
+        virtual void unregisterCharHandler(const CharEventHandler &handler) = 0;
 
         virtual void setCursorePosition(const Graphics::Models::Vector2di& value) = 0;
         virtual void setCursorVisibility(bool isVisible) = 0;
