@@ -3,8 +3,6 @@
 
 #include <string>
 
-#include "Components/Graphics/Models/Vector2d.h"
-
 #include "IControlRenderingStrategy.h"
 
 namespace TEngine::Components::Graphics::Rendering::Services::Gui::ControlRenderingStrategies
@@ -12,10 +10,6 @@ namespace TEngine::Components::Graphics::Rendering::Services::Gui::ControlRender
     class IWindowRenderingStrategy : virtual public IControlRenderingStrategy
     {
     public:
-        virtual void setSize(const Graphics::Models::Vector2di &value) = 0;
-
-        virtual void setPosition(const Graphics::Models::Vector2di &value) = 0;
-
         virtual void setTitle(const std::string &title) = 0;
 
         virtual void setResizable(bool resizable) = 0;

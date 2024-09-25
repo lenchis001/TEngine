@@ -3,6 +3,8 @@
 
 #include <memory>
 
+#include "Components/Graphics/Models/Vector2d.h"
+
 namespace TEngine::Components::Graphics::Rendering::Services::Gui::ControlRenderingStrategies
 {
     class IControlRenderingStrategy
@@ -15,6 +17,10 @@ namespace TEngine::Components::Graphics::Rendering::Services::Gui::ControlRender
         virtual void addChild(std::shared_ptr<IControlRenderingStrategy> value) = 0;
 
         virtual void removeChild(std::shared_ptr<IControlRenderingStrategy> value) = 0;
+
+        virtual void setSize(const Graphics::Models::Vector2di &value) = 0;
+
+        virtual void setPosition(const Graphics::Models::Vector2di &value) = 0;
     };
 }
 

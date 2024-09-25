@@ -26,10 +26,6 @@ namespace TEngine::Components::Graphics::Rendering::Services::Gui::ControlRender
         void render() override;
 
     private:
-        bool _isSizeSet;
-        Vector2di _size;
-        bool _isPositionSet;
-        Vector2di _position;
         std::string _title;
         bool _resizable;
         bool _fullscreen;

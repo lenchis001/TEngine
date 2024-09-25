@@ -8,28 +8,10 @@ using namespace TEngine::Components::Graphics::Rendering::Services::Gui::Control
 
 WindowRenderingStrategy::WindowRenderingStrategy()
     : ControlStrategyBase(),
-      _isSizeSet(true),
-      _size(0, 0),
-      _isPositionSet(true),
-      _position(0, 0),
       _title("Window"),
       _resizable(true),
       _fullscreen(false)
 {
-}
-
-void WindowRenderingStrategy::setSize(const Vector2di &value)
-{
-    assert(value.getX() > 0 && value.getY() > 0 && "Size must be greater than 0!");
-
-    _size = value;
-    _isSizeSet = false;
-}
-
-void WindowRenderingStrategy::setPosition(const Vector2di &value)
-{
-    _position = value;
-    _isPositionSet = false;
 }
 
 void WindowRenderingStrategy::setTitle(const std::string &title)

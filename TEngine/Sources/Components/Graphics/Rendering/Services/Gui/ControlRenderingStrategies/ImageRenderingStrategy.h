@@ -13,20 +13,21 @@
 #include "ControlStrategyBase.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Services::Textures;
+using namespace TEngine::Components::Graphics::Models;
 
 namespace TEngine::Components::Graphics::Rendering::Services::Gui::ControlRenderingStrategies
 {
     class ImageRenderingStrategy : public ControlStrategyBase, public IImageRenderingStrategy
     {
     public:
-        ImageRenderingStrategy(std::shared_ptr<ITexturesService> textureService, const std::string& path);
+        ImageRenderingStrategy(std::shared_ptr<ITexturesService> textureService, const std::string &path);
         ~ImageRenderingStrategy() override;
 
         void render() override;
 
-        private:
-            std::shared_ptr<ITexturesService> _textureService;
-            GLuint _textureId;
+    private:
+        std::shared_ptr<ITexturesService> _textureService;
+        GLuint _textureId;
     };
 }
 

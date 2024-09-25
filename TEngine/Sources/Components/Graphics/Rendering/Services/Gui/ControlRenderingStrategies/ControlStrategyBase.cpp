@@ -5,6 +5,13 @@
 
 using namespace TEngine::Components::Graphics::Rendering::Services::Gui::ControlRenderingStrategies;
 
+ControlStrategyBase::ControlStrategyBase() : _isSizeSet(true),
+                                             _size(0, 0),
+                                             _isPositionSet(true),
+                                             _position(0, 0)
+{
+}
+
 void ControlStrategyBase::render()
 {
     for (auto &child : _children)

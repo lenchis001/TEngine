@@ -17,5 +17,11 @@ ImageRenderingStrategy::~ImageRenderingStrategy()
 
 void ImageRenderingStrategy::render()
 {
-    ImGui::Image(reinterpret_cast<void*>(_textureId), ImVec2(720, 480));
+    if (!_isPositionSet){
+        ImGui::SetCursorPos(ImVec2(_position.getX(), _position.getY()));
+
+        _isPositionSet = true;
+    }
+
+    ImGui::Image(reinterpret_cast<void*>(_textureId), ImVec2(_size.getX(), _size.getY()));
 }
