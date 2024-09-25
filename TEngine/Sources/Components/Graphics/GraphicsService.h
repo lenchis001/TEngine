@@ -63,6 +63,8 @@ namespace TEngine::Components::Graphics::Services
 
         std::shared_ptr<IWindowRenderingStrategy> addWindow() override;
 
+        std::shared_ptr<IImageRenderingStrategy> addImage(const std::string &path) override;
+
     private:
         std::shared_ptr<IRenderingService> _renderingService;
         std::shared_ptr<IMeshLoadingService> _meshLoadingService;

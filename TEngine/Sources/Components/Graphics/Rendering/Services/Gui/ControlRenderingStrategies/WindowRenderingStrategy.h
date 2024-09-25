@@ -13,10 +13,6 @@ namespace TEngine::Components::Graphics::Rendering::Services::Gui::ControlRender
     public:
         WindowRenderingStrategy();
 
-        void setSize(const Vector2di &value) override;
-
-        void setPosition(const Vector2di &value) override;
-
         void setTitle(const std::string &title) override;
 
         void setResizable(bool resizable) override;

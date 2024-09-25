@@ -61,12 +61,16 @@ std::shared_ptr<IWindowRenderingStrategy> GuiService::addWindow()
 {
     auto window = std::make_shared<WindowRenderingStrategy>();
 
-    auto image = std::make_shared<ImageRenderingStrategy>(_texturesService, "C:/Users/Leon/Downloads/Untitled.bmp");
-    window->addChild(image);
-
     _controls.push_back(window);
 
     return window;
+}
+
+std::shared_ptr<IImageRenderingStrategy> GuiService::addImage(const std::string &path)
+{
+    auto image = std::make_shared<ImageRenderingStrategy>(_texturesService, path);
+
+    return image;
 }
 
 bool GuiService::_onCursorMove(float xpos, float ypos)

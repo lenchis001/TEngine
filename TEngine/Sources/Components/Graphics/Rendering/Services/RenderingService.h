@@ -79,6 +79,7 @@ namespace TEngine::Components::Graphics::Rendering::Services
 
         std::shared_ptr<IWindowRenderingStrategy> addWindow() override;
 
+        std::shared_ptr<IImageRenderingStrategy> addImage(const std::string &path) override;
     private:
         static void _onWindowResized(GLFWwindow* window, int width, int height);
 

@@ -169,6 +169,11 @@ std::shared_ptr<IWindowRenderingStrategy> RenderingService::addWindow()
 	return _guiService->addWindow();
 }
 
+std::shared_ptr<IImageRenderingStrategy> RenderingService::addImage(const std::string &path)
+{
+	return _guiService->addImage(path);
+}
+
 void RenderingService::_onWindowResized(GLFWwindow *window, int width, int height)
 {
 #if (defined(_WIN32) || defined(_WIN64))

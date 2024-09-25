@@ -38,3 +38,15 @@ void ControlStrategyBase::removeChild(std::shared_ptr<IControlRenderingStrategy>
 
     _children.erase(it);
 }
+
+void ControlStrategyBase::setSize(const Vector2di &value)
+{
+    _size = value;
+    _isSizeSet = true;
+}
+
+void ControlStrategyBase::setPosition(const Vector2di &value)
+{
+    _position = value;
+    _isPositionSet = true;
+}

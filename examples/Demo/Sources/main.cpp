@@ -59,7 +59,9 @@ int main()
         source->setPosition(0.0f, 0.0f, 0.0f);
 
         auto window1 = graphicsService->addWindow();
-        window1->setFullscreen(true);
+        auto image = graphicsService->addImage("./DemoResources/texture2.bmp");
+        image->setSize(Vector2di(100, 100));
+        window1->addChild(image);
 
         while (true)
         {

@@ -8,6 +8,7 @@
 #include "Components/Graphics/Rendering/Services/CameraStrategies/ICameraStrategy.h"
 #include "Components/Graphics/Rendering/Services/RenderingStrategies/IRenderingStrategy.h"
 #include "Components/Graphics/Rendering/Services/Gui/ControlRenderingStrategies/IWindowRenderingStrategy.h"
+#include "Components/Graphics/Rendering/Services/Gui/ControlRenderingStrategies/IImageRenderingStrategy.h"
 #include "Components/Graphics/Models/PrimitiveTypes.h"
 
 namespace TEngine::Components::Graphics::Rendering::Services
@@ -40,6 +41,8 @@ namespace TEngine::Components::Graphics::Rendering::Services
         virtual void setActiveCamera(std::shared_ptr<Components::Graphics::Rendering::Services::CameraStrategies::ICameraStrategy> camera) = 0;
 
         virtual std::shared_ptr<Components::Graphics::Rendering::Services::Gui::ControlRenderingStrategies::IWindowRenderingStrategy> addWindow() = 0;
+
+        virtual std::shared_ptr<Components::Graphics::Rendering::Services::Gui::ControlRenderingStrategies::IImageRenderingStrategy> addImage(const std::string &path) = 0;
     };
 }
 

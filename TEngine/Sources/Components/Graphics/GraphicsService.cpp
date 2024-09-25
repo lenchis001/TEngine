@@ -76,3 +76,8 @@ std::shared_ptr<IWindowRenderingStrategy> GraphicsService::addWindow()
 {
 	return _renderingService->addWindow();
 }
+
+std::shared_ptr<IImageRenderingStrategy> GraphicsService::addImage(const std::string &path)
+{
+	return _renderingService->addImage(path);
+}

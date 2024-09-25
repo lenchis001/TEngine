@@ -31,6 +31,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::Gui
 
         std::shared_ptr<IWindowRenderingStrategy> addWindow() override;
 
+        std::shared_ptr<IImageRenderingStrategy> addImage(const std::string &path) override;
+
     private:
         bool _onCursorMove(float xpos, float ypos);
         bool _onMouseButtonClick(int button, int action, int mods);
