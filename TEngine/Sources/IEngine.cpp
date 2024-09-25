@@ -5,15 +5,16 @@
 #include "Engine.h"
 
 #include "Components/Graphics/GraphicsService.h"
-#include "Components/Graphics/Rendering/Services/RenderingService.h"
+#include "Components/Graphics/Rendering/Services/Scene/SceneService.h"
 #include "Components/Graphics/MeshLoading/Services/MeshLoadingService.h"
-#include "Components/Graphics/Rendering/Services/Shaders/ShadersService.h"
+#include "Components/Graphics/Rendering/Services/Scene/Shaders/ShadersService.h"
 #include "Components/Graphics/ImageLoading/Services/ImageLoadingService.h"
-#include "Components/Graphics/Rendering/Services/Buffers/BuffersService.h"
+#include "Components/Graphics/Rendering/Services/Scene/Buffers/BuffersService.h"
 #include "Components/Graphics/Rendering/Services/Textures/TexturesService.h"
-#include "Components/Graphics/Rendering/Services/Meshes/MeshService.h"
-#include "Components/Graphics/Rendering/Services/Lights/LightService.h"
+#include "Components/Graphics/Rendering/Services/Scene/Meshes/MeshService.h"
+#include "Components/Graphics/Rendering/Services/Scene/Lights/LightService.h"
 #include "Components/Graphics/Rendering/Services/Gui/GuiService.h"
+#include "Components/Graphics/CameraTracking/ListenerCameraTrackingStrategy.h"
 #include "Components/Audio/Services/Readers/VorbisOggReader.h"
 #include "Components/Audio/Services/AudioService.h"
 
@@ -23,11 +24,12 @@ using namespace TEngine;
 using namespace TEngine::Components::Graphics::Services;
 using namespace TEngine::Components::Graphics::Rendering::Services;
 using namespace TEngine::Components::Graphics::MeshLoading::Services;
-using namespace TEngine::Components::Graphics::Rendering::Services::Shaders;
+using namespace TEngine::Components::Graphics::Rendering::Services::Scene::Shaders;
 using namespace TEngine::Components::Graphics::ImageLoading::Services;
 using namespace TEngine::Components::Graphics::Rendering::Services::Textures;
-using namespace TEngine::Components::Graphics::Rendering::Services::Lights;
+using namespace TEngine::Components::Graphics::Rendering::Services::Scene::Lights;
 using namespace TEngine::Components::Graphics::Rendering::Services::Gui;
+using namespace TEngine::Components::Graphics::CameraTracking;
 
 using namespace TEngine::Components::Audio::Services::Readers;
 using namespace TEngine::Components::Audio::Services;
@@ -51,9 +53,13 @@ std::shared_ptr<IEngine> TEngine::createEngine()
     auto lightServices = std::make_shared<LightService>();
     auto guiService = std::make_shared<GuiService>(eventsService, texturesService);
 
-    auto renderingService = std::make_shared<RenderingService>(eventsService, shadersService, bufferCacheService, texturesService, meshService, lightServices, guiService);
 
-    auto graphicsService = std::make_shared<GraphicsService>(renderingService, meshLoadingService, texturesService, audioService);
+    auto buildinCameraTrackingStrategies = std::vector<std::shared_ptr<ICameraTrackingStrategy>> {
+        std::make_shared<ListenerCameraTrackingStrategy>(audioService)
+    };
+    auto sceneService = std::make_shared<SceneService>(eventsService, shadersService, bufferCacheService, texturesService, meshService, lightServices, buildinCameraTrackingStrategies);
+
+    auto graphicsService = std::make_shared<GraphicsService>(sceneService, guiService, meshLoadingService, texturesService);
 
     return std::make_shared<Engine>(graphicsService, eventsService, audioService);
 }

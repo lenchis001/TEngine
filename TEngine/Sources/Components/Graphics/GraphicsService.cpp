@@ -1,3 +1,5 @@
+#include "GL/glew.h"
+
 #include "GraphicsService.h"
 
 #include "Components/Graphics/CameraTracking/ListenerCameraTrackingStrategy.h"
@@ -7,77 +9,111 @@ using namespace TEngine::Components::Graphics::Services;
 using namespace TEngine::Components::Graphics::CameraTracking;
 
 GraphicsService::GraphicsService(
-	std::shared_ptr<IRenderingService> renderingService,
+	std::shared_ptr<ISceneService> sceneService,
+	std::shared_ptr<IGuiService> guiService,
 	std::shared_ptr<IMeshLoadingService> meshLoadingService,
-	std::shared_ptr<ITexturesService> texturesService,
-	std::shared_ptr<IAudioService> audioService)
-	: _renderingService(renderingService),
+	std::shared_ptr<ITexturesService> texturesService)
+	: _sceneService(sceneService),
+	  _guiService(guiService),
 	  _meshLoadingService(meshLoadingService),
 	  _texturesService(texturesService)
 {
-	_cameraTrackingStrategies.push_back(std::make_shared<ListenerCameraTrackingStrategy>(audioService));
+}
+
+GraphicsService::~GraphicsService()
+{
+	glfwSetWindowSizeCallback(_window, nullptr);
+	glfwTerminate();
 }
 
 void GraphicsService::initialize(std::shared_ptr<IGraphicsParameters> parameters)
 {
+	_initializeGlfw(parameters);
+	
 	_meshLoadingService->initialize();
 	_texturesService->initialize();
-	_renderingService->initialize(parameters->getRenderingParameters());
+	_guiService->initialize();
 }
 
 bool GraphicsService::isShutdownRequested() const
 {
-	return _renderingService->isShutdownRequested();
+	return glfwWindowShouldClose(_window) != 0;
 }
 
 double GraphicsService::getTime() const
 {
-	return _renderingService->getTime();
+	return _sceneService->getTime();
 }
 
-std::shared_ptr<IRenderingStrategy> GraphicsService::addPrimitive(
-	PrimitiveTypes type, 
-	std::string texturePath,
-	std::shared_ptr<IRenderingStrategy> parent)
+std::shared_ptr<ISceneService> GraphicsService::getSceneService()
 {
-	return _renderingService->addToRendering(type, texturePath, parent);
+	return _sceneService;
 }
 
-std::shared_ptr<IRenderingStrategy> GraphicsService::addMesh(
-	std::string path,
-	std::shared_ptr<IRenderingStrategy> parent)
+std::shared_ptr<IGuiService> GraphicsService::getGuiService()
 {
-	return _renderingService->addMeshToRendering(path, parent);
+	return _guiService;
 }
 
-std::shared_ptr<ICameraStrategy> GraphicsService::setActiveCamera(BuildinCameraTypes cameraType)
+void GraphicsService::render()
 {
-	auto camera = _renderingService->setActiveCamera(cameraType);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	for (auto &trackingStrategy : _cameraTrackingStrategies)
+	_sceneService->render();
+	_guiService->render();
+
+	glfwSwapBuffers(_window);
+	glfwPollEvents();
+}
+
+void GraphicsService::_initializeGlfw(std::shared_ptr<IGraphicsParameters> parameters)
+{
+	// Initialize GLFW
+	if (!glfwInit())
 	{
-		camera->addTrackingStrategy(trackingStrategy);
+		throw std::runtime_error("Failed to initialize GLFW");
 	}
 
-	return camera;
-}
+	glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, parameters->getOpenGlMajorVersion());
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, parameters->getOpenGlMinorVersion());
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make macOS happy; should not be needed
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-void GraphicsService::setActiveCamera(std::shared_ptr<ICameraStrategy> camera)
-{
-	_renderingService->setActiveCamera(camera);
-
-	for (auto &trackingStrategy : _cameraTrackingStrategies)
+	_window = glfwCreateWindow(parameters->getWidth(), parameters->getHeight(), parameters->getTitle().c_str(), NULL, NULL);
+	if (_window == NULL)
 	{
-		camera->addTrackingStrategy(trackingStrategy);
+		glfwTerminate();
+		throw std::runtime_error("Failed to open GLFW window");
 	}
+
+	glfwMakeContextCurrent(_window);
+
+	if (glewInit() != GLEW_OK)
+	{
+		throw std::runtime_error("Failed to initialize GLEW");
+	}
+
+	setContext(this);
+	glfwSetWindowSizeCallback(_window, &GraphicsService::_onWindowResized);
+	glfwSwapInterval(parameters->getIsVerticalSyncEnabled());
+
+	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+	glEnable(GL_DEPTH_TEST);
 }
 
-std::shared_ptr<IWindowRenderingStrategy> GraphicsService::addWindow()
+void GraphicsService::_onWindowResized(GLFWwindow *window, int width, int height)
 {
-	return _renderingService->addWindow();
-}
+	#if (defined(_WIN32) || defined(_WIN64))
+	glViewport(0, 0, width, height);
+#endif
 
-std::shared_ptr<IImageRenderingStrategy> GraphicsService::addImage(const std::string &path)
-{
-	return _renderingService->addImage(path);
+	auto that = getContext();
+	auto sceneService = that->getSceneService();
+	auto activeCamera = sceneService->getActiveCamera();
+
+	if (activeCamera)
+	{
+		activeCamera->setWindowSize(Vector2di(width, height));
+	}
 }

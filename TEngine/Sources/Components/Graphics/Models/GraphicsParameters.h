@@ -3,8 +3,6 @@
 
 #include "IGraphicsParameters.h"
 
-using namespace TEngine::Components::Graphics::Rendering::Models;
-
 namespace TEngine::Components::Graphics::Models
 {
     class GraphicsParameters : public IGraphicsParameters
@@ -12,12 +10,37 @@ namespace TEngine::Components::Graphics::Models
     public:
         GraphicsParameters();
 
-        std::shared_ptr<IRenderingParameters> getRenderingParameters();
+        int getWidth() const override;
 
-        void setRenderingParameters(const std::shared_ptr<IRenderingParameters> renderingParameters);
+        void setWidth(int width) override;
+
+        int getHeight() const override;
+
+        void setHeight(int height) override;
+
+        int getOpenGlMajorVersion() const override;
+
+        void setOpenGlMinorVersion(int openGlMinorVersion) override;
+
+        int getOpenGlMinorVersion() const override;
+
+        void setOpenGlMajorVersion(int openGlMajorVersion) override;
+
+        const std::string &getTitle() const override;
+
+        void setTitle(const std::string &title) override;
+
+        bool getIsVerticalSyncEnabled() const override;
+
+        void setIsVerticalSyncEnabled(bool value) override;
 
     private:
-        std::shared_ptr<IRenderingParameters> _renderingParameters;
+        int _width;
+        int _height;
+        int _openGlMajorVersion;
+        int _openGlMinorVersion;
+        std::string _title;
+        bool _isVerticalSyncEnabled;
     };
 }
 

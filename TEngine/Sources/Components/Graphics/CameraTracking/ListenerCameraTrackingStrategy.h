@@ -1,11 +1,11 @@
 #include <memory>
 
-#include "Components/Graphics/Rendering/Services/CameraStrategies/Tracking/ICameraTrackingStrategy.h"
+#include "Components/Graphics/Rendering/Services/Scene/CameraStrategies/Tracking/ICameraTrackingStrategy.h"
 
 #include "Components/Audio/Services/IAudioService.h"
 
 using namespace TEngine::Components::Graphics::Models;
-using namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies::Tracking;
+using namespace TEngine::Components::Graphics::Rendering::Services::Scene::CameraStrategies::Tracking;
 using namespace TEngine::Components::Audio::Services;
 
 namespace TEngine::Components::Graphics::CameraTracking

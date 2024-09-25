@@ -1,21 +1,73 @@
 #include "GraphicsParameters.h"
 
-#include "Components/Graphics/Rendering/Models/RenderingParameters.h"
-
 using namespace TEngine::Components::Graphics::Models;
-using namespace TEngine::Components::Graphics::Rendering::Models;
 
 GraphicsParameters::GraphicsParameters()
 {
-    setRenderingParameters(std::make_shared<RenderingParameters>());
+    setWidth(1280);
+    setHeight(720);
+    setOpenGlMajorVersion(3);
+    setOpenGlMinorVersion(3);
+    setTitle("TEngine");
+    setIsVerticalSyncEnabled(true);
 }
 
-std::shared_ptr<IRenderingParameters> GraphicsParameters::getRenderingParameters()
+int GraphicsParameters::getWidth() const
 {
-    return _renderingParameters;
+    return _width;
 }
 
-void GraphicsParameters::setRenderingParameters(std::shared_ptr<IRenderingParameters> renderingParameters)
+void GraphicsParameters::setWidth(int width)
 {
-    _renderingParameters = renderingParameters;
+    _width = width;
+}
+
+int GraphicsParameters::getHeight() const
+{
+    return _height;
+}
+
+void GraphicsParameters::setHeight(int height)
+{
+    _height = height;
+}
+
+int GraphicsParameters::getOpenGlMajorVersion() const
+{
+    return _openGlMajorVersion;
+}
+
+void GraphicsParameters::setOpenGlMinorVersion(int openGlMinorVersion)
+{
+    _openGlMinorVersion = openGlMinorVersion;
+}
+
+int GraphicsParameters::getOpenGlMinorVersion() const
+{
+    return _openGlMinorVersion;
+}
+
+void GraphicsParameters::setOpenGlMajorVersion(int openGlMajorVersion)
+{
+    _openGlMajorVersion = openGlMajorVersion;
+}
+
+const std::string &GraphicsParameters::getTitle() const
+{
+    return _title;
+}
+
+void GraphicsParameters::setTitle(const std::string &title)
+{
+    _title = title;
+}
+
+bool GraphicsParameters::getIsVerticalSyncEnabled() const
+{
+    return _isVerticalSyncEnabled;
+}
+
+void GraphicsParameters::setIsVerticalSyncEnabled(bool value)
+{
+    _isVerticalSyncEnabled = value;
 }

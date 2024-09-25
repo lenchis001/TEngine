@@ -4,38 +4,39 @@
 #include <memory>
 #include <vector>
 
+#include "GLFW/glfw3.h"
+
 #include "IGraphicsService.h"
 
-#include "Rendering/Services/IRenderingService.h"
+#include "Mixins/ContextAwareMixin.h"
+
 #include "MeshLoading/Services/IMeshLoadingService.h"
 #include "Rendering/Services/Textures/ITexturesService.h"
-#include "Components/Audio/Services/IAudioService.h"
-#include "Components/Graphics/Rendering/Services/CameraStrategies/Tracking/ICameraTrackingStrategy.h"
 
 using namespace TEngine::Models;
-using namespace TEngine::Components::Graphics::Rendering::Services;
+using namespace TEngine::Components::Graphics::Rendering::Services::Scene;
 using namespace TEngine::Components::Graphics::MeshLoading::Services;
 using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Graphics::MeshLoading::Models;
 using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
-using namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies;
-using namespace TEngine::Components::Graphics::Rendering::Services::RenderingStrategies;
 using namespace TEngine::Components::Graphics::Rendering::Services::Textures;
-using namespace TEngine::Components::Graphics::Rendering::Services::Gui::ControlRenderingStrategies;
-using namespace TEngine::Components::Audio::Services;
+using namespace TEngine::Mixins;
 
-using namespace TEngine::Components::Graphics::Rendering::Services::CameraStrategies::Tracking;
+using namespace TEngine::Components::Graphics::Rendering::Services;
+using namespace TEngine::Components::Graphics::Rendering::Services::Gui;
 
 namespace TEngine::Components::Graphics::Services
 {
-    class GraphicsService : public IGraphicsService
+    class GraphicsService : public IGraphicsService, public ContextAwareMixin<GraphicsService>
     {
     public:
         GraphicsService(
-            std::shared_ptr<IRenderingService> renderingService,
+            std::shared_ptr<ISceneService> sceneService,
+            std::shared_ptr<IGuiService> guiService,
             std::shared_ptr<IMeshLoadingService> meshLoadingService,
-            std::shared_ptr<ITexturesService> texturesService,
-            std::shared_ptr<IAudioService> audioService);
+            std::shared_ptr<ITexturesService> texturesService);
+
+        ~GraphicsService();
 
         void initialize(std::shared_ptr<IGraphicsParameters> parameters) override;
 
@@ -43,34 +44,23 @@ namespace TEngine::Components::Graphics::Services
 
         double getTime() const override;
 
-        inline void render() override
-        {
-            _renderingService->render();
-        }
+        void render() override;
 
-        std::shared_ptr<IRenderingStrategy> addPrimitive(
-            PrimitiveTypes type,
-            std::string texturePath,
-            std::shared_ptr<IRenderingStrategy> parent = nullptr) override;
+        std::shared_ptr<ISceneService> getSceneService() override;
 
-        std::shared_ptr<IRenderingStrategy> addMesh(
-            std::string path,
-            std::shared_ptr<IRenderingStrategy> parent = nullptr) override;
-
-        std::shared_ptr<ICameraStrategy> setActiveCamera(BuildinCameraTypes cameraType) override;
-
-        void setActiveCamera(std::shared_ptr<ICameraStrategy> camera) override;
-
-        std::shared_ptr<IWindowRenderingStrategy> addWindow() override;
-
-        std::shared_ptr<IImageRenderingStrategy> addImage(const std::string &path) override;
+        std::shared_ptr<IGuiService> getGuiService() override;
 
     private:
-        std::shared_ptr<IRenderingService> _renderingService;
+        void _initializeGlfw(std::shared_ptr<IGraphicsParameters> parameters);
+
+        static void _onWindowResized(GLFWwindow* window, int width, int height);
+
+        GLFWwindow *_window;
+
+        std::shared_ptr<ISceneService> _sceneService;
+        std::shared_ptr<IGuiService> _guiService;
         std::shared_ptr<IMeshLoadingService> _meshLoadingService;
         std::shared_ptr<ITexturesService> _texturesService;
-
-        std::vector<std::shared_ptr<ICameraTrackingStrategy>> _cameraTrackingStrategies;
     };
 }
 
