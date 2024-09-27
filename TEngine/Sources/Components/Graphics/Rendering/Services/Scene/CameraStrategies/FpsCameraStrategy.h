@@ -25,7 +25,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::CameraStrat
             const Vector3df &position);
         ~FpsCameraStrategy() override;
 
-        void render() override;
+        void render(double time) override;
 
         void setWindowSize(const Vector2di &value) override;
 
@@ -33,7 +33,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::CameraStrat
         bool _onKeyPressed(int key, int scancode, int action, int mods);
         bool _onMouseMoved(float x, float y);
 
-        void _recalculateState();
+        void _recalculateState(double time);
         void _recalculateTarget();
 
         float _speed;
@@ -41,6 +41,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::CameraStrat
         bool _isMovingForward, _isMovingBackward, _isMovingLeft, _isMovingRight, _isMovingUp, _isMovingDown, _isBoostActivated, _isRorated;
         Vector3df _position, _target;
         Vector2di _windowCenter;
+        double _lastTime;
 
         std::shared_ptr<IEventService> _eventService;
 

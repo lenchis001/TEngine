@@ -29,7 +29,7 @@ int main()
         auto sceneService = graphicsService->getSceneService();
         auto guiService = graphicsService->getGuiService();
 
-        sceneService->setActiveCamera(TEngine::Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes::BASE);
+        sceneService->setActiveCamera(TEngine::Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes::FPS);
 
         for (int i = 1; i < 32; i++)
         {

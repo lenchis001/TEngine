@@ -180,4 +180,44 @@ if(NOT imgui_POPULATED)
 endif()
 
 target_include_directories(TEngine PRIVATE ${imgui_SOURCE_DIR} ${imgui_SOURCE_DIR}/backends)
-target_sources(TEngine PRIVATE ${imgui_SOURCE_DIR}/imgui.cpp ${imgui_SOURCE_DIR}/imgui_draw.cpp ${imgui_SOURCE_DIR}/imgui_widgets.cpp ${imgui_SOURCE_DIR}/imgui_tables.cpp ${imgui_SOURCE_DIR}/imgui_demo.cpp ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp)
+target_sources(TEngine PRIVATE 
+    ${imgui_SOURCE_DIR}/imgui.cpp
+    ${imgui_SOURCE_DIR}/imgui_draw.cpp
+    ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+    ${imgui_SOURCE_DIR}/imgui_tables.cpp
+    ${imgui_SOURCE_DIR}/imgui_demo.cpp
+    ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
+    ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp)
+
+# --------------------- Add bullet physics library ---------------------
+
+# Download and configure bullet
+include(FetchContent)
+
+FetchContent_Declare(
+    bullet
+    GIT_REPOSITORY https://github.com/bulletphysics/bullet3.git
+    GIT_TAG        3.25
+)
+
+FetchContent_GetProperties(bullet)
+
+unset(BUILD_BULLET2_DEMOS CACHE)
+set(BUILD_BULLET2_DEMOS OFF CACHE BOOL " " FORCE)
+unset(BUILD_CPU_DEMOS CACHE)
+set(BUILD_CPU_DEMOS OFF CACHE BOOL " " FORCE)
+unset(BUILD_OPENGL3_DEMOS CACHE)
+set(BUILD_OPENGL3_DEMOS OFF CACHE BOOL " " FORCE)
+unset (BUILD_UNIT_TESTS CACHE)
+set(BUILD_UNIT_TESTS OFF CACHE BOOL " " FORCE)
+
+if(NOT bullet_POPULATED)
+    FetchContent_Populate(bullet)
+    add_subdirectory(${bullet_SOURCE_DIR} ${bullet_BINARY_DIR})
+endif()
+
+# Add bullet includes
+target_include_directories(TEngine PRIVATE ${bullet_SOURCE_DIR}/src)
+
+# Add bullet library
+target_link_libraries(TEngine PRIVATE BulletDynamics BulletCollision LinearMath)

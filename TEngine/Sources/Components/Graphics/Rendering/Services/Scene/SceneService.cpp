@@ -23,6 +23,7 @@ SceneService::SceneService(
 	std::shared_ptr<ITexturesService> textureService,
 	std::shared_ptr<IMeshService> meshService,
 	std::shared_ptr<ILightServices> lightServices,
+	std::shared_ptr<IPhysicsService> physicsService,
 	std::vector<std::shared_ptr<ICameraTrackingStrategy>> buildinCameraTrackingStrategies)
 	: _eventService(eventService),
 	  _shadersService(shadersService),
@@ -30,24 +31,26 @@ SceneService::SceneService(
 	  _textureService(textureService),
 	  _meshService(meshService),
 	  _lightServices(lightServices),
+	  _physicsService(physicsService),
 	  _activeCamera(nullptr),
 	  _root(std::make_shared<RenderingStrategyBase>()),
 	  _buildinCameraTrackingStrategies(buildinCameraTrackingStrategies)
 {
 }
 
-double SceneService::getTime() const
+void SceneService::initialize()
 {
-	return glfwGetTime();
+	_physicsService->initialize();
 }
 
-void SceneService::render()
+void SceneService::render(double time)
 {
 	_lightServices->update();
+	_physicsService->update(time);
 
 	if (_activeCamera)
 	{
-		_activeCamera->render();
+		_activeCamera->render(time);
 
 		_root->render(_activeCamera);
 	}

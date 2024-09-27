@@ -21,7 +21,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::CameraStrat
 
         virtual void setTargetAndPosition(const TEngine::Components::Graphics::Models::Vector3df& target, const TEngine::Components::Graphics::Models::Vector3df& position) = 0;
 
-        virtual void render() = 0;
+        virtual void render(double time) = 0;
 
         virtual const TEngine::Components::Graphics::Models::Matrix4x4f &getVpMatrix() const = 0;
 

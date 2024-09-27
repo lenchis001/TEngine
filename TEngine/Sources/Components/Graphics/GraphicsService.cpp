@@ -32,6 +32,7 @@ void GraphicsService::initialize(std::shared_ptr<IGraphicsParameters> parameters
 	
 	_meshLoadingService->initialize();
 	_texturesService->initialize();
+	_sceneService->initialize();
 	_guiService->initialize();
 }
 
@@ -42,7 +43,7 @@ bool GraphicsService::isShutdownRequested() const
 
 double GraphicsService::getTime() const
 {
-	return _sceneService->getTime();
+	return glfwGetTime();
 }
 
 std::shared_ptr<ISceneService> GraphicsService::getSceneService()
@@ -59,7 +60,7 @@ void GraphicsService::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	_sceneService->render();
+	_sceneService->render(getTime());
 	_guiService->render();
 
 	glfwSwapBuffers(_window);

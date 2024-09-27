@@ -37,7 +37,6 @@ void MeshRenderingStrategy::render(std::shared_ptr<ICameraStrategy> activeCamera
 
         auto pointLight = _lightServices->getPointLight();
 
-        auto m = pointLight->getPosition().getInternalData();
         glUniform3fv(shape->getLightPosShaderId(), 1, pointLight->getPosition().getInternalData());
 
         glUniform3fv(shape->getLightColorShaderId(), 1, pointLight->getDiffuseColor().getInternalData());

@@ -10,6 +10,8 @@ using namespace TEngine::Components::Graphics::Rendering::Services::Scene::Camer
 
 using namespace TEngine::Components::Events::Models;
 
+#define BOOSTED_SPEED(normalSpeed) (normalSpeed * 2.f)
+
 FpsCameraStrategy::FpsCameraStrategy(
     std::shared_ptr<IEventService> eventService,
     float fov,
@@ -19,7 +21,7 @@ FpsCameraStrategy::FpsCameraStrategy(
     const Vector3df &position)
     : CameraStrategyBase(fov, windowSize, zNear, zFar, position, Vector3df(0.0f, 0.0f, 0.0f)),
       _eventService(eventService),
-      _speed(0.1f),
+      _speed(3.f),
       _phi(0.0f),
       _theta(M_PI * 3 / 4),
       _position(position),
@@ -32,7 +34,8 @@ FpsCameraStrategy::FpsCameraStrategy(
       _isMovingUp(false),
       _isMovingDown(false),
       _isBoostActivated(false),
-      _windowCenter(windowSize / 2)
+      _windowCenter(windowSize / 2),
+      _lastTime(0.0)
 {
     _eventService->registerCursorMoveHandler(std::bind(&FpsCameraStrategy::_onMouseMoved, this, std::placeholders::_1, std::placeholders::_2));
     _eventService->registerKeyHandler(std::bind(&FpsCameraStrategy::_onKeyPressed, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
@@ -47,10 +50,10 @@ FpsCameraStrategy::~FpsCameraStrategy()
     _eventService->unregisterKeyHandler(std::bind(&FpsCameraStrategy::_onKeyPressed, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
 }
 
-void FpsCameraStrategy::render()
+void FpsCameraStrategy::render(double time)
 {
-    _recalculateState();
-    CameraStrategyBase::render();
+    _recalculateState(time);
+    CameraStrategyBase::render(time);
 }
 
 void FpsCameraStrategy::setWindowSize(const Vector2di &value)
@@ -87,50 +90,65 @@ bool FpsCameraStrategy::_onMouseMoved(float x, float y)
     return true;
 }
 
-#define GLFW_PRESS 1
+#define GLFW_RELEASE 0
 
 bool FpsCameraStrategy::_onKeyPressed(int key, int scancode, int action, int mods)
 {
     if (key == (int)KeyboardKeys::KEY_W)
     {
-        _isMovingForward = action == GLFW_PRESS;
-    } else if (key == (int)KeyboardKeys::KEY_S)
+        _isMovingForward = action != GLFW_RELEASE;
+    }
+    else if (key == (int)KeyboardKeys::KEY_S)
     {
-        _isMovingBackward = action == GLFW_PRESS;
-    } else if (key == (int)KeyboardKeys::KEY_A)
+        _isMovingBackward = action != GLFW_RELEASE;
+    }
+    else if (key == (int)KeyboardKeys::KEY_A)
     {
-        _isMovingLeft = action == GLFW_PRESS;
-    } else if (key == (int)KeyboardKeys::KEY_D)
+        _isMovingLeft = action != GLFW_RELEASE;
+    }
+    else if (key == (int)KeyboardKeys::KEY_D)
     {
-        _isMovingRight = action == GLFW_PRESS;
-    } else if (key == (int)KeyboardKeys::KEY_Q)
+        _isMovingRight = action != GLFW_RELEASE;
+    }
+    else if (key == (int)KeyboardKeys::KEY_Q)
     {
-        _isMovingUp = action == GLFW_PRESS;
-    } else if (key == (int)KeyboardKeys::KEY_E)
+        _isMovingUp = action != GLFW_RELEASE;
+    }
+    else if (key == (int)KeyboardKeys::KEY_E)
     {
-        _isMovingDown = action == GLFW_PRESS;
-    } else if (key == (int)KeyboardKeys::KEY_LEFT_SHIFT)
+        _isMovingDown = action != GLFW_RELEASE;
+    }
+    else if (key == (int)KeyboardKeys::KEY_LEFT_SHIFT)
     {
-        _isBoostActivated = action == GLFW_PRESS;
+        _isBoostActivated = action != GLFW_RELEASE;
     }
 
     return true;
 }
 
-void FpsCameraStrategy::_recalculateState()
+void FpsCameraStrategy::_recalculateState(double time)
 {
+    if(_lastTime == 0.0)
+    {
+        _lastTime = time;
+    }
+
+    auto deltaTime = time - _lastTime;
+    _lastTime = time;
+    auto speed = _speed * (_isBoostActivated ? BOOSTED_SPEED(deltaTime) : deltaTime);
+
     if (_isMovingForward)
     {
         auto direction = _position - _target;
 
-        _position = _position - direction.getNormalized() * (_speed * (_isBoostActivated ? 3.0f : 1.0f));
+        _position = _position - direction.getNormalized() * speed;
     }
 
     if (_isMovingBackward)
     {
         auto direction = _position - _target;
 
-        _position = _position + direction.getNormalized() * (_speed * (_isBoostActivated ? 3.0f : 1.0f));
+        _position = _position + direction.getNormalized() * speed;
     }
 
     if (_isMovingLeft)
@@ -138,7 +156,7 @@ void FpsCameraStrategy::_recalculateState()
         auto direction = _position - _target;
         auto right = direction.cross(Vector3df(0.0f, 1.0f, 0.0f));
 
-        _position = _position + right.getNormalized() * (_speed * (_isBoostActivated ? 3.0f : 1.0f));
+        _position = _position + right.getNormalized() * speed;
     }
 
     if (_isMovingRight)
@@ -146,17 +164,17 @@ void FpsCameraStrategy::_recalculateState()
         auto direction = _position - _target;
         auto right = direction.cross(Vector3df(0.0f, 1.0f, 0.0f));
 
-        _position = _position - right.getNormalized() * (_speed * (_isBoostActivated ? 3.0f : 1.0f));
+        _position = _position - right.getNormalized() * speed;
     }
 
     if (_isMovingUp)
     {
-        _position = _position + Vector3df(0.0f, _speed * (_isBoostActivated ? 3.0f : 1.0f), 0.0f);
+        _position = _position + Vector3df(0.0f, speed, 0.0f);
     }
 
     if (_isMovingDown)
     {
-        _position = _position - Vector3df(0.0f, _speed * (_isBoostActivated ? 3.0f : 1.0f), 0.0f);
+        _position = _position - Vector3df(0.0f, speed, 0.0f);
     }
 
     if (_isMovingForward || _isMovingBackward || _isMovingLeft || _isMovingRight || _isMovingUp || _isMovingDown || _isRorated)

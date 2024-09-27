@@ -15,9 +15,9 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene
     public:
         virtual ~ISceneService() = default;
 
-        virtual double getTime() const = 0;
+        virtual void initialize() = 0;
 
-        virtual void render() = 0;
+        virtual void render(double time) = 0;
 
         virtual std::shared_ptr<RenderingStrategies::IRenderingStrategy> addToRendering(
             Components::Graphics::MeshLoading::Models::PrimitiveTypes type,

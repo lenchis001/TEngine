@@ -75,7 +75,7 @@ void CameraStrategyBase::setTargetAndPosition(const Vector3df &target, const Vec
     _recalculateVp();
 }
 
-void CameraStrategyBase::render()
+void CameraStrategyBase::render(double time)
 {
     // do nothing
 }

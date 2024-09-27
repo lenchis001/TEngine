@@ -13,6 +13,7 @@
 #include "Components/Graphics/Rendering/Services/Textures/TexturesService.h"
 #include "Components/Graphics/Rendering/Services/Scene/Meshes/MeshService.h"
 #include "Components/Graphics/Rendering/Services/Scene/Lights/LightService.h"
+#include "Components/Graphics/Rendering/Services/Scene/Physics/PhysicsService.h"
 #include "Components/Graphics/Rendering/Services/Gui/GuiService.h"
 #include "Components/Graphics/CameraTracking/ListenerCameraTrackingStrategy.h"
 #include "Components/Audio/Services/Readers/VorbisOggReader.h"
@@ -28,6 +29,7 @@ using namespace TEngine::Components::Graphics::Rendering::Services::Scene::Shade
 using namespace TEngine::Components::Graphics::ImageLoading::Services;
 using namespace TEngine::Components::Graphics::Rendering::Services::Textures;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::Lights;
+using namespace TEngine::Components::Graphics::Rendering::Services::Scene::Physics;
 using namespace TEngine::Components::Graphics::Rendering::Services::Gui;
 using namespace TEngine::Components::Graphics::CameraTracking;
 
@@ -51,13 +53,14 @@ std::shared_ptr<IEngine> TEngine::createEngine()
     auto texturesService = std::make_shared<TexturesService>(imageLoadingService);
     auto meshService = std::make_shared<MeshService>(meshLoadingService, bufferCacheService, shadersService, texturesService);
     auto lightServices = std::make_shared<LightService>();
-    auto guiService = std::make_shared<GuiService>(eventsService, texturesService);
-
+    auto physicsService = std::make_shared<PhysicsService>();
 
     auto buildinCameraTrackingStrategies = std::vector<std::shared_ptr<ICameraTrackingStrategy>> {
         std::make_shared<ListenerCameraTrackingStrategy>(audioService)
     };
-    auto sceneService = std::make_shared<SceneService>(eventsService, shadersService, bufferCacheService, texturesService, meshService, lightServices, buildinCameraTrackingStrategies);
+    auto sceneService = std::make_shared<SceneService>(eventsService, shadersService, bufferCacheService, texturesService, meshService, lightServices, physicsService, buildinCameraTrackingStrategies);
+
+    auto guiService = std::make_shared<GuiService>(eventsService, texturesService);
 
     auto graphicsService = std::make_shared<GraphicsService>(sceneService, guiService, meshLoadingService, texturesService);
 

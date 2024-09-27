@@ -33,7 +33,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::CameraStrat
 
         void setTargetAndPosition(const Vector3df &target, const Vector3df &position) override;
 
-        void render() override;
+        void render(double time) override;
 
         inline const Matrix4x4f &getVpMatrix() const override
         {

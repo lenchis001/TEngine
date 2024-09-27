@@ -13,6 +13,7 @@
 #include "Components/Graphics/Rendering/Services/Textures/ITexturesService.h"
 #include "Meshes/IMeshService.h"
 #include "Lights/ILightServices.h"
+#include "Physics/IPhysicsService.h"
 #include "CameraStrategies/Tracking/ICameraTrackingStrategy.h"
 
 #include "Components/Graphics/Models/Vector2d.h"
@@ -30,6 +31,7 @@ using namespace TEngine::Components::Graphics::Rendering::Services::Textures;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::Meshes;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::Lights;
+using namespace TEngine::Components::Graphics::Rendering::Services::Scene::Physics;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::CameraStrategies::Tracking;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies;
 
@@ -45,9 +47,10 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene
             std::shared_ptr<ITexturesService> texturesService,
             std::shared_ptr<IMeshService> meshService,
             std::shared_ptr<ILightServices> lightServices,
+            std::shared_ptr<IPhysicsService> physicsService,
             std::vector<std::shared_ptr<ICameraTrackingStrategy>> buildinCameraTrackingStrategies);
 
-        double getTime() const override;
+        void initialize() override;
 
         std::shared_ptr<IRenderingStrategy> addToRendering(
             PrimitiveTypes type,
@@ -58,7 +61,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene
             std::string meshPath,
             std::shared_ptr<IRenderingStrategy> parent = nullptr) override;
 
-        void render() override;
+        void render(double time) override;
 
         std::shared_ptr<ICameraStrategy> getActiveCamera() override;
 
@@ -79,6 +82,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene
         std::shared_ptr<ITexturesService> _textureService;
         std::shared_ptr<IMeshService> _meshService;
         std::shared_ptr<ILightServices> _lightServices;
+        std::shared_ptr<IPhysicsService> _physicsService;
 
         std::vector<std::shared_ptr<ICameraTrackingStrategy>> _buildinCameraTrackingStrategies;
     };
