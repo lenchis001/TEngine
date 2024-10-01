@@ -1,7 +1,7 @@
 #ifndef TENGINE_PRIMITIVETYPES_H
 #define TENGINE_PRIMITIVETYPES_H
 
-namespace TEngine::Components::Graphics::MeshLoading::Models
+namespace TEngine::Components::Graphics::Rendering::Models::Meshes
 {
     enum class PrimitiveTypes
     {
@@ -9,9 +9,7 @@ namespace TEngine::Components::Graphics::MeshLoading::Models
         Sphere,
         Cylinder,
         Cone,
-        Plane,
-
-        Mesh
+        Plane
     };
 }
 

@@ -59,3 +59,8 @@ void MeshRenderingStrategy::render(std::shared_ptr<ICameraStrategy> activeCamera
         glBindVertexArray(0);
     }
 }
+
+const std::vector<float> &MeshRenderingStrategy::getVertices() const
+{
+    throw std::runtime_error("Not implemented");
+}

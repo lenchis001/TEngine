@@ -22,10 +22,13 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
             const std::string &path);
         ~MeshRenderingStrategy();
 
-        void render(std::shared_ptr<ICameraStrategy> activeCameraStrategy);
+        void render(std::shared_ptr<ICameraStrategy> activeCameraStrategy) override;
+
+    protected:
+        const std::vector<float> &getVertices() const override;
 
     private:
-        std::shared_ptr<Models::Meshes::IRenderableMesh> _renderableMesh;
+        std::shared_ptr<IRenderableMesh> _renderableMesh;
         std::shared_ptr<IMeshService> _meshService;
         std::shared_ptr<ILightServices> _lightServices;
     };

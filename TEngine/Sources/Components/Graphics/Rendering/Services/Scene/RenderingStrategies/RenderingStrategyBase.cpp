@@ -24,12 +24,17 @@ void RenderingStrategyBase::addChild(std::shared_ptr<IRenderingStrategy> child)
 {
     _children.push_back(child);
 
-    child->_updateModelMatrix(_modelMatrix);
+    child->_onAttachedToParent(shared_from_this());
 }
 
 void RenderingStrategyBase::removeChild(std::shared_ptr<IRenderingStrategy> child)
 {
-    _children.erase(std::remove(_children.begin(), _children.end(), child), _children.end());
+    auto childIterator = _children.erase(std::remove(_children.begin(), _children.end(), child), _children.end());
+
+    if (childIterator != _children.end())
+    {
+        child->_onDetachedFromParent();
+    }
 }
 
 void RenderingStrategyBase::setPosition(const Vector3df &position)
@@ -68,9 +73,19 @@ const Vector3df &RenderingStrategyBase::getScale() const
     return _scale;
 }
 
-Vector3df RenderingStrategyBase::getAbsolutePosition()
+Vector3df RenderingStrategyBase::getAbsolutePosition() const
 {
     return _modelMatrix.getPosition();
+}
+
+Vector3df RenderingStrategyBase::getAbsoluteRotation() const
+{
+    return _modelMatrix.getRotation();
+}
+
+Vector3df RenderingStrategyBase::getAbsoluteScale() const
+{
+    return _modelMatrix.getScale();
 }
 
 void RenderingStrategyBase::render(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
@@ -145,6 +160,16 @@ void RenderingStrategyBase::_updateScaleMatrix()
     _updateModelMatrix(_parentMatrix, true);
 }
 
+const std::vector<float> &RenderingStrategyBase::getVertices() const
+{
+    throw std::runtime_error("Not allowed");
+}
+
+const Matrix4x4f &RenderingStrategyBase::getModelMatrix() const
+{
+    return _modelMatrix;
+}
+
 void RenderingStrategyBase::_updateModelMatrix(const Matrix4x4f &parentMatrix, bool isPrsUpdated)
 {
     if (isPrsUpdated || _parentMatrix != parentMatrix)
@@ -159,6 +184,20 @@ void RenderingStrategyBase::_updateModelMatrix(const Matrix4x4f &parentMatrix, b
             child->_updateModelMatrix(_modelMatrix, false);
         }
     }
+}
+
+void RenderingStrategyBase::_onAttachedToParent(std::shared_ptr<IRenderingStrategy> parent)
+{
+    _parentMatrix = parent->getModelMatrix();
+
+    _updateModelMatrix(_parentMatrix);
+}
+
+void RenderingStrategyBase::_onDetachedFromParent()
+{
+    _parentMatrix = Matrix4x4f(1.0f);
+
+    _updateModelMatrix(_parentMatrix);
 }
 
 void RenderingStrategyBase::_updateMvpMatrix()

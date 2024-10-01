@@ -3,7 +3,8 @@
 
 #include "IRenderingStrategy.h"
 
-#include "vector"
+#include <memory>
+#include <vector>
 
 #include "Components/Graphics/Models/Vector3d.h"
 
@@ -12,7 +13,7 @@ using namespace TEngine::Components::Graphics::Rendering::Services::Scene::Camer
 
 namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies
 {
-    class RenderingStrategyBase : public IRenderingStrategy
+    class RenderingStrategyBase : public std::enable_shared_from_this<RenderingStrategyBase>, public IRenderingStrategy
     {
     public:
         RenderingStrategyBase();
@@ -29,22 +30,25 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
         const Vector3df &getRotation() const override;
         const Vector3df &getScale() const override;
 
-        Vector3df getAbsolutePosition() override;
+        Vector3df getAbsolutePosition() const override;
+        Vector3df getAbsoluteRotation() const override;
+        Vector3df getAbsoluteScale() const override;
 
         void render(std::shared_ptr<ICameraStrategy> activeCameraStrategy) override;
 
     protected:
-        inline const Matrix4x4f &getModelMatrix() const
-        {
-            return _modelMatrix;
-        }
+        const std::vector<float> &getVertices() const override;
 
-        inline const Matrix4x4f &getMvpMatrix() const
-        {
-            return _mvpMatrix;
-        }
+        const Matrix4x4f &getModelMatrix() const override;
 
         void _updateModelMatrix(const Matrix4x4f &parentMatrix, bool isPrsUpdated = false) final;
+
+        void _onAttachedToParent(std::shared_ptr<IRenderingStrategy> parent) override;
+        void _onDetachedFromParent() override;
+
+        inline const Matrix4x4f &getMvpMatrix() const {
+            return _mvpMatrix;
+        }
 
     private:
         void _updateTranslationMatrix();

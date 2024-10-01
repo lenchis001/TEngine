@@ -3,11 +3,11 @@
 
 #include "Vector3d.h"
 
-#include "string"
-#include "iostream"
-#include "cstring"
-#include "algorithm"
-#include "cassert"
+#include <string>
+#include <iostream>
+#include <algorithm>
+#include <cassert>
+#include <math.h>
 
 namespace TEngine::Components::Graphics::Models
 {
@@ -180,6 +180,22 @@ namespace TEngine::Components::Graphics::Models
         const Vector3d<T> getPosition() const
         {
             return Vector3d<T>(_m14, _m24, _m34);
+        }
+
+        Vector3d<T> getRotation() const
+        {
+            return Vector3d<T>(
+                atan2(_m32, _m33),
+                asin(-_m31),
+                atan2(_m21, _m11));
+        }
+
+        Vector3d<T> getScale() const
+        {
+            return Vector3d<T>(
+                Vector3d<T>(_m11, _m12, _m13).getGength(),
+                Vector3d<T>(_m21, _m22, _m23).getGength(),
+                Vector3d<T>(_m31, _m32, _m33).getGength());
         }
 
         void print() const

@@ -1,7 +1,7 @@
 #ifndef TENGINE_CUBE_RENDERING_STRATEGY_H
 #define TENGINE_CUBE_RENDERING_STRATEGY_H
 
-#include "memory"
+#include <memory>
 
 #include "GLFW/glfw3.h"
 
@@ -32,6 +32,9 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
 
         void render(std::shared_ptr<ICameraStrategy> activeCameraStrategy) override;
 
+    protected:
+        const std::vector<float> &getVertices() const override;
+
     private:
         void _prepareVertexVbo();
         void _prepareTexture(std::string texturePath);
@@ -44,6 +47,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
         std::shared_ptr<ITexturesService> _texturesService;
 
         GLuint _shaderProgram, _matrixShaderId, _textureId, _textureSamplerShaderId, _vao;
+
+        static std::vector<float> _vertices;
     };
 }
 

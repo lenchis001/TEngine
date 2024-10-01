@@ -21,8 +21,8 @@
 using namespace TEngine::Components::Events::Services;
 
 using namespace TEngine::Components::Graphics::Models;
-using namespace TEngine::Components::Graphics::Rendering::Models;
-using namespace TEngine::Components::Graphics::MeshLoading::Models;
+using namespace TEngine::Components::Graphics::Rendering::Models::Physics;
+using namespace TEngine::Components::Graphics::Rendering::Models::Meshes;
 using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::Shaders;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::CameraStrategies;
@@ -55,11 +55,13 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene
         std::shared_ptr<IRenderingStrategy> addToRendering(
             PrimitiveTypes type,
             std::string texturePath,
-            std::shared_ptr<IRenderingStrategy> parent = nullptr) override;
+            std::shared_ptr<IRenderingStrategy> parent = nullptr,
+            PhysicsFlags physicsFlags = PhysicsFlags::NONE) override;
 
         std::shared_ptr<IRenderingStrategy> addMeshToRendering(
             std::string meshPath,
-            std::shared_ptr<IRenderingStrategy> parent = nullptr) override;
+            std::shared_ptr<IRenderingStrategy> parent = nullptr,
+            PhysicsFlags physicsFlags = PhysicsFlags::NONE) override;
 
         void render(double time) override;
 

@@ -55,9 +55,19 @@ const Vector3df &RenderingOptimizationDecorator::getScale() const
     return _strategy->getScale();
 }
 
-Vector3df RenderingOptimizationDecorator::getAbsolutePosition()
+Vector3df RenderingOptimizationDecorator::getAbsolutePosition() const
 {
     return _strategy->getAbsolutePosition();
+}
+
+Vector3df RenderingOptimizationDecorator::getAbsoluteRotation() const
+{
+    return _strategy->getAbsoluteRotation();
+}
+
+Vector3df RenderingOptimizationDecorator::getAbsoluteScale() const
+{
+    return _strategy->getAbsoluteScale();
 }
 
 const std::vector<std::shared_ptr<IRenderingStrategy>> &RenderingOptimizationDecorator::getChildren() const
@@ -75,7 +85,27 @@ void RenderingOptimizationDecorator::removeChild(std::shared_ptr<IRenderingStrat
     _strategy->removeChild(child);
 }
 
+const std::vector<float> &RenderingOptimizationDecorator::getVertices() const
+{
+    return _strategy->getVertices();
+}
+
+const Matrix4x4f &RenderingOptimizationDecorator::getModelMatrix() const
+{
+    return _strategy->getModelMatrix();
+}
+
 void RenderingOptimizationDecorator::_updateModelMatrix(const Matrix4x4f &parentMatrix, bool isPrsUpdated)
 {
     _strategy->_updateModelMatrix(parentMatrix, isPrsUpdated);
+}
+
+void RenderingOptimizationDecorator::_onAttachedToParent(std::shared_ptr<IRenderingStrategy> parent)
+{
+    _strategy->_onAttachedToParent(parent);
+}
+
+void RenderingOptimizationDecorator::_onDetachedFromParent()
+{
+    _strategy->_onDetachedFromParent();
 }

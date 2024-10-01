@@ -3,6 +3,7 @@
 #include "memory"
 
 using namespace TEngine::Components::Graphics::Models;
+using namespace TEngine::Components::Graphics::Rendering::Models::Physics;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::CameraStrategies;
 
 namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies
@@ -28,7 +29,11 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
 
         const Vector3df &getScale() const override;
 
-        Vector3df getAbsolutePosition() override;
+        Vector3df getAbsolutePosition() const override;
+
+        Vector3df getAbsoluteRotation() const override;
+
+        Vector3df getAbsoluteScale() const override;
 
         const std::vector<std::shared_ptr<IRenderingStrategy>> &getChildren() const override;
 
@@ -37,7 +42,14 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
         void removeChild(std::shared_ptr<IRenderingStrategy> child) override;
 
     protected:
+        const std::vector<float> &getVertices() const override;
+
+        const Graphics::Models::Matrix4x4f &getModelMatrix() const override;
+
         void _updateModelMatrix(const Matrix4x4f &parentMatrix, bool isPrsUpdated = false) override;
+
+        void _onAttachedToParent(std::shared_ptr<IRenderingStrategy> parent) override;
+        void _onDetachedFromParent() override;
 
     private:
         unsigned int _frameCounter;

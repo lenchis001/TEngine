@@ -4,11 +4,11 @@
 #include "memory"
 #include "vector"
 
-#include "Components/Graphics/Models/PrimitiveTypes.h"
 #include "Components/Graphics/Models/Vector3d.h"
 
-using namespace TEngine::Components::Graphics::MeshLoading::Models;
+using namespace TEngine::Components::Graphics::Rendering::Models::Meshes;
 using namespace TEngine::Components::Graphics::Models;
+using namespace TEngine::Components::Graphics::Rendering::Models::Physics;
 
 int main()
 {
@@ -39,8 +39,12 @@ int main()
                 cube->setPosition(Vector3df(2.0f * i, 0.0f, 2.0f * j));
             }
 
-            auto cube = sceneService->addToRendering(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp");
+            auto cube = sceneService->addToRendering(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp", nullptr, PhysicsFlags::STATIC);
             cube->setPosition(Vector3df(-3.0f * i, 0.0f, 0.0f));
+
+
+            auto cube2 = sceneService->addToRendering(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp", nullptr, PhysicsFlags::DYNAMIC);
+            cube2->setPosition(Vector3df(-3.0f * i, 4.f*i, 0.0f));
 
             auto testCube = sceneService->addMeshToRendering("./DemoResources/test cube/cube.obj");
             testCube->setPosition(Vector3df(0.0f, 0.0f, 3.0f * i));
@@ -59,8 +63,9 @@ int main()
         source->setPosition(0.0f, 0.0f, 0.0f);
 
         auto window1 = guiService->addWindow();
+        window1->setSize(Vector2di(100, 200));
         auto image = guiService->addImage("./DemoResources/texture2.bmp");
-        image->setSize(Vector2di(100, 100));
+        image->setSize(Vector2di(400, 100));
         window1->addChild(image);
 
         while (true)
@@ -68,8 +73,6 @@ int main()
             auto time = graphicsService->getTime();
             if (time - previousCheckTime > 1.0)
             {
-                std::cout << "FPS: " << framesCounter / 1 << std::endl;
-
                 framesCounter = 0;
                 previousCheckTime = time;
 

@@ -1,12 +1,13 @@
 #ifndef TENGINE_ISCENESERVICE_H
 #define TENGINE_ISCENESERVICE_H
 
-#include "memory"
+#include <memory>
 
 #include "Components/Graphics/Rendering/Models/Cameras/BuildinCameraTypes.h"
 #include "Components/Graphics/Rendering/Services/Scene/CameraStrategies/ICameraStrategy.h"
 #include "Components/Graphics/Rendering/Services/Scene/RenderingStrategies/IRenderingStrategy.h"
-#include "Components/Graphics/Models/PrimitiveTypes.h"
+#include "Components/Graphics/Rendering/Models/Meshes/PrimitiveTypes.h"
+#include "Components/Graphics/Rendering/Models/Physics/PhysicsFlags.h"
 
 namespace TEngine::Components::Graphics::Rendering::Services::Scene
 {
@@ -20,13 +21,15 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene
         virtual void render(double time) = 0;
 
         virtual std::shared_ptr<RenderingStrategies::IRenderingStrategy> addToRendering(
-            Components::Graphics::MeshLoading::Models::PrimitiveTypes type,
+            Components::Graphics::Rendering::Models::Meshes::PrimitiveTypes type,
             std::string texturePath,
-            std::shared_ptr<RenderingStrategies::IRenderingStrategy> parent = nullptr) = 0;
+            std::shared_ptr<RenderingStrategies::IRenderingStrategy> parent = nullptr,
+            Rendering::Models::Physics::PhysicsFlags physics = Rendering::Models::Physics::PhysicsFlags::NONE) = 0;
 
         virtual std::shared_ptr<RenderingStrategies::IRenderingStrategy> addMeshToRendering(
             std::string meshPath,
-            std::shared_ptr<RenderingStrategies::IRenderingStrategy> parent = nullptr) = 0;
+            std::shared_ptr<RenderingStrategies::IRenderingStrategy> parent = nullptr,
+            Rendering::Models::Physics::PhysicsFlags physics = Rendering::Models::Physics::PhysicsFlags::NONE) = 0;
 
         virtual std::shared_ptr<CameraStrategies::ICameraStrategy> getActiveCamera() = 0;
 

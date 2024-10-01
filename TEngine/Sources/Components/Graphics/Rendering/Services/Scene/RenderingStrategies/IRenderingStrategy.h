@@ -1,17 +1,19 @@
 #ifndef TENGINE_IRENDERINGSTRATEGY_H
 #define TENGINE_IRENDERINGSTRATEGY_H
 
-#include "memory"
-#include "vector"
+#include <memory>
+#include <vector>
 
 #include "Components/Graphics/Models/Vector3d.h"
 #include "Components/Graphics/Models/Matrix4x4.h"
 #include "Components/Graphics/Rendering/Services/Scene/CameraStrategies/ICameraStrategy.h"
+#include "Components/Graphics/Rendering/Models/Physics/PhysicsFlags.h"
 
 namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies
 {
     class RenderingStrategyBase;
     class RenderingOptimizationDecorator;
+    class PhysicsRenderingDecorator;
 
     class IRenderingStrategy
     {
@@ -26,7 +28,9 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
         virtual const Graphics::Models::Vector3df &getRotation() const = 0;
         virtual const Graphics::Models::Vector3df &getScale() const = 0;
 
-        virtual Graphics::Models::Vector3df getAbsolutePosition() = 0;
+        virtual Graphics::Models::Vector3df getAbsolutePosition() const = 0;
+        virtual Graphics::Models::Vector3df getAbsoluteRotation() const = 0;
+        virtual Graphics::Models::Vector3df getAbsoluteScale() const = 0;
 
         virtual const std::vector<std::shared_ptr<IRenderingStrategy>> &getChildren() const = 0;
         virtual void addChild(std::shared_ptr<IRenderingStrategy> child) = 0;
@@ -36,9 +40,17 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
 
         friend RenderingStrategyBase;
         friend RenderingOptimizationDecorator;
+        friend PhysicsRenderingDecorator;
 
     protected:
+        virtual const std::vector<float> &getVertices() const = 0;
+
+        virtual const Graphics::Models::Matrix4x4f &getModelMatrix() const = 0;
+
         virtual void _updateModelMatrix(const Components::Graphics::Models::Matrix4x4f &parentMatrix, bool isPrsUpdated = false) = 0;
+
+        virtual void _onAttachedToParent(std::shared_ptr<IRenderingStrategy> parent) = 0;
+        virtual void _onDetachedFromParent() = 0;
     };
 }
 

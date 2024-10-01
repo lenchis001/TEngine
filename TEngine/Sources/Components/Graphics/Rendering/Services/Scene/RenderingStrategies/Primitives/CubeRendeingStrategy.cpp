@@ -1,6 +1,6 @@
 #include "GL/glew.h"
 
-#include "algorithm"
+#include <algorithm>
 
 #include "CubeRenderingStrategy.h"
 
@@ -72,45 +72,7 @@ void CubeRenderingStrategy::_prepareVertexVbo()
 
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-    GLfloat vertices[] = {
-        -1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f, 1.0f,
-        -1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, -1.0f,
-        -1.0f, -1.0f, -1.0f,
-        -1.0f, 1.0f, -1.0f,
-        1.0f, -1.0f, 1.0f,
-        -1.0f, -1.0f, -1.0f,
-        1.0f, -1.0f, -1.0f,
-        1.0f, 1.0f, -1.0f,
-        1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f, -1.0f,
-        -1.0f, 1.0f, 1.0f,
-        -1.0f, 1.0f, -1.0f,
-        1.0f, -1.0f, 1.0f,
-        -1.0f, -1.0f, 1.0f,
-        -1.0f, -1.0f, -1.0f,
-        -1.0f, 1.0f, 1.0f,
-        -1.0f, -1.0f, 1.0f,
-        1.0f, -1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, -1.0f, -1.0f,
-        1.0f, 1.0f, -1.0f,
-        1.0f, -1.0f, -1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, -1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, -1.0f,
-        -1.0f, 1.0f, -1.0f,
-        1.0f, 1.0f, 1.0f,
-        -1.0f, 1.0f, -1.0f,
-        -1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        -1.0f, 1.0f, 1.0f,
-        1.0f, -1.0f, 1.0f};
-
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(float), _vertices.data(), GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
@@ -202,3 +164,46 @@ void CubeRenderingStrategy::_prepareShader()
     _matrixShaderId = glGetUniformLocation(_shaderProgram, "MVP");
     _textureSamplerShaderId = glGetUniformLocation(_shaderProgram, "textureSampler");
 }
+
+const std::vector<float> &CubeRenderingStrategy::getVertices() const
+{
+    return _vertices;
+}
+
+std::vector<float> CubeRenderingStrategy::_vertices = {
+    -1.0f, -1.0f, -1.0f,
+    -1.0f, -1.0f, 1.0f,
+    -1.0f, 1.0f, 1.0f,
+    1.0f, 1.0f, -1.0f,
+    -1.0f, -1.0f, -1.0f,
+    -1.0f, 1.0f, -1.0f,
+    1.0f, -1.0f, 1.0f,
+    -1.0f, -1.0f, -1.0f,
+    1.0f, -1.0f, -1.0f,
+    1.0f, 1.0f, -1.0f,
+    1.0f, -1.0f, -1.0f,
+    -1.0f, -1.0f, -1.0f,
+    -1.0f, -1.0f, -1.0f,
+    -1.0f, 1.0f, 1.0f,
+    -1.0f, 1.0f, -1.0f,
+    1.0f, -1.0f, 1.0f,
+    -1.0f, -1.0f, 1.0f,
+    -1.0f, -1.0f, -1.0f,
+    -1.0f, 1.0f, 1.0f,
+    -1.0f, -1.0f, 1.0f,
+    1.0f, -1.0f, 1.0f,
+    1.0f, 1.0f, 1.0f,
+    1.0f, -1.0f, -1.0f,
+    1.0f, 1.0f, -1.0f,
+    1.0f, -1.0f, -1.0f,
+    1.0f, 1.0f, 1.0f,
+    1.0f, -1.0f, 1.0f,
+    1.0f, 1.0f, 1.0f,
+    1.0f, 1.0f, -1.0f,
+    -1.0f, 1.0f, -1.0f,
+    1.0f, 1.0f, 1.0f,
+    -1.0f, 1.0f, -1.0f,
+    -1.0f, 1.0f, 1.0f,
+    1.0f, 1.0f, 1.0f,
+    -1.0f, 1.0f, 1.0f,
+    1.0f, -1.0f, 1.0f};

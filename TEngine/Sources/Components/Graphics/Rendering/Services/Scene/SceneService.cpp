@@ -10,6 +10,7 @@
 #include "RenderingStrategies/RenderingStrategyBase.h"
 #include "RenderingStrategies/RenderingOptimizationDecorator.h"
 #include "RenderingStrategies/Meshes/MeshRenderingStrategy.h"
+#include "RenderingStrategies/PhysicsRenderingDecorator.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene;
@@ -59,15 +60,21 @@ void SceneService::render(double time)
 std::shared_ptr<IRenderingStrategy> SceneService::addToRendering(
 	PrimitiveTypes type,
 	std::string texturePath,
-	std::shared_ptr<IRenderingStrategy> parent)
+	std::shared_ptr<IRenderingStrategy> parent,
+	PhysicsFlags physicsFlags)
 {
-	auto cubeRenderingStrategy = std::make_shared<CubeRenderingStrategy>(
+	std::shared_ptr<IRenderingStrategy> strategy = std::make_shared<CubeRenderingStrategy>(
 		_shadersService,
 		_bufferCacheService,
 		_textureService,
 		texturePath);
 
-	auto decoratedCubeRenderingStrategy = std::make_shared<RenderingOptimizationDecorator>(cubeRenderingStrategy);
+	if(physicsFlags != PhysicsFlags::NONE)
+	{
+		strategy = std::make_shared<PhysicsRenderingDecorator>(_physicsService, strategy, physicsFlags);
+	}
+
+	auto decoratedCubeRenderingStrategy = std::make_shared<RenderingOptimizationDecorator>(strategy);
 	(parent ? parent : _root)->addChild(decoratedCubeRenderingStrategy);
 
 	return decoratedCubeRenderingStrategy;
@@ -75,7 +82,8 @@ std::shared_ptr<IRenderingStrategy> SceneService::addToRendering(
 
 std::shared_ptr<IRenderingStrategy> SceneService::addMeshToRendering(
 	std::string meshPath,
-	std::shared_ptr<IRenderingStrategy> parent)
+	std::shared_ptr<IRenderingStrategy> parent,
+	PhysicsFlags physicsFlags)
 {
 	auto meshRenderingStrategy = std::make_shared<MeshRenderingStrategy>(_meshService, _lightServices, meshPath);
 

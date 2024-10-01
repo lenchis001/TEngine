@@ -94,6 +94,11 @@ namespace TEngine::Components::Graphics::Models
             return Vector3d<T>(-getX(), -getY(), -getZ());
         }
 
+        T getGength() const
+        {
+            return sqrt(getX() * getX() + getY() * getY() + getZ() * getZ());
+        }
+
         T distance(const Vector3d<T> &other) const
         {
             T dx = __Vector3dx - other.__Vector3dx;
