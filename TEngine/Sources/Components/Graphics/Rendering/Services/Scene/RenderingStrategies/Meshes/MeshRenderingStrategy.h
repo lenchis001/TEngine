@@ -24,7 +24,6 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
 
         void render(std::shared_ptr<ICameraStrategy> activeCameraStrategy) override;
 
-    protected:
         const std::vector<float> &getVertices() const override;
 
     private:

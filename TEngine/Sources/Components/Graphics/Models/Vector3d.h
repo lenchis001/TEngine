@@ -66,6 +66,11 @@ namespace TEngine::Components::Graphics::Models
             return Vector3d<T>(__Vector3dx / other.__Vector3dx, __Vector3dy / other.__Vector3dy, __Vector3dz / other.__Vector3dz);
         }
 
+        Vector3d<T> operator/(T scalar) const
+        {
+            return Vector3d<T>(__Vector3dx / scalar, __Vector3dy / scalar, __Vector3dz / scalar);
+        }
+
         Vector3d<T> cross(const Vector3d<T> otherVector) const
         {
             return Vector3d(
@@ -94,7 +99,7 @@ namespace TEngine::Components::Graphics::Models
             return Vector3d<T>(-getX(), -getY(), -getZ());
         }
 
-        T getGength() const
+        T getLength() const
         {
             return sqrt(getX() * getX() + getY() * getY() + getZ() * getZ());
         }

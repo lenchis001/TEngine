@@ -8,6 +8,8 @@
 
 #include "btBulletDynamicsCommon.h"
 
+#include "Components/Graphics/Models/Vector2d.h"
+
 using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies;
 
@@ -23,13 +25,9 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::Physics
 
         void update(double time) override;
 
-        void addStaticBox(
-            const Vector3df &size,
-            std::shared_ptr<IRenderingStrategy> renderingStrategy) override;
-
-        void addDynamicBox(
-            const Vector3df &size,
-            std::shared_ptr<IRenderingStrategy> renderingStrategy) override;
+        void addBox(
+            std::shared_ptr<IRenderingStrategy> renderingStrategy,
+            float mass) override;
 
         void setPosition(
             const std::shared_ptr<IRenderingStrategy> renderingStrategy,
@@ -37,6 +35,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::Physics
 
     private:
         void _syncRenderingState();
+
+        static Vector3df _getSize(const std::vector<float> &vertices);
 
         btDiscreteDynamicsWorld *_dynamicsWorld;
 

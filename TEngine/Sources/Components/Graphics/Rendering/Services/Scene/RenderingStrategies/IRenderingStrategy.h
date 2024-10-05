@@ -35,6 +35,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
         virtual const std::vector<std::shared_ptr<IRenderingStrategy>> &getChildren() const = 0;
         virtual void addChild(std::shared_ptr<IRenderingStrategy> child) = 0;
         virtual void removeChild(std::shared_ptr<IRenderingStrategy> child) = 0;
+        
+        virtual const std::vector<float> &getVertices() const = 0;
 
         virtual ~IRenderingStrategy() = default;
 
@@ -43,8 +45,6 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
         friend PhysicsRenderingDecorator;
 
     protected:
-        virtual const std::vector<float> &getVertices() const = 0;
-
         virtual const Graphics::Models::Matrix4x4f &getModelMatrix() const = 0;
 
         virtual void _updateModelMatrix(const Components::Graphics::Models::Matrix4x4f &parentMatrix, bool isPrsUpdated = false) = 0;

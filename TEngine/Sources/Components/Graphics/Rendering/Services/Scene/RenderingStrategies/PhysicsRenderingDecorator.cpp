@@ -95,15 +95,13 @@ void PhysicsRenderingDecorator::_onAttachedToParent(std::shared_ptr<IRenderingSt
 {
     _strategy->_onAttachedToParent(parent);
 
-    auto size = Vector3df(2.f, 2.f, 2.f);
-
     switch (_physicsFlags)
     {
     case PhysicsFlags::STATIC:
-        _physicsService->addStaticBox(size, _strategy);
+        _physicsService->addBox(_strategy, 0.f);
         break;
     case PhysicsFlags::DYNAMIC:
-        _physicsService->addDynamicBox(size, _strategy);
+        _physicsService->addBox(_strategy, 1.f);
         break;
     }
 }

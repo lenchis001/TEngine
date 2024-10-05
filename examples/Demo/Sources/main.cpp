@@ -73,6 +73,8 @@ int main()
             auto time = graphicsService->getTime();
             if (time - previousCheckTime > 1.0)
             {
+                window1->setTitle("FPS: " + std::to_string(framesCounter));
+
                 framesCounter = 0;
                 previousCheckTime = time;
 

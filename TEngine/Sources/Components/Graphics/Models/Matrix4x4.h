@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cassert>
 #include <math.h>
+#include <cstring>
 
 namespace TEngine::Components::Graphics::Models
 {
@@ -193,9 +194,9 @@ namespace TEngine::Components::Graphics::Models
         Vector3d<T> getScale() const
         {
             return Vector3d<T>(
-                Vector3d<T>(_m11, _m12, _m13).getGength(),
-                Vector3d<T>(_m21, _m22, _m23).getGength(),
-                Vector3d<T>(_m31, _m32, _m33).getGength());
+                Vector3d<T>(_m11, _m12, _m13).getLength(),
+                Vector3d<T>(_m21, _m22, _m23).getLength(),
+                Vector3d<T>(_m31, _m32, _m33).getLength());
         }
 
         void print() const

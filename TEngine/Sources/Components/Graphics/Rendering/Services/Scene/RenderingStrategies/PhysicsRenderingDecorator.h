@@ -47,9 +47,9 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
 
         void removeChild(std::shared_ptr<IRenderingStrategy> child) override;
 
-    protected:
         const std::vector<float> &getVertices() const override;
 
+    protected:
         const Matrix4x4f &getModelMatrix() const override;
 
         void _updateModelMatrix(const Matrix4x4f &parentMatrix, bool isPrsUpdated = false) override;

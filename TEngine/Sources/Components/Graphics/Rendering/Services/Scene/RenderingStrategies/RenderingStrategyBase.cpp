@@ -202,5 +202,5 @@ void RenderingStrategyBase::_onDetachedFromParent()
 
 void RenderingStrategyBase::_updateMvpMatrix()
 {
-    _mvpMatrix = _vpMatrix * getModelMatrix();
+    _mvpMatrix = _vpMatrix * _modelMatrix;
 }

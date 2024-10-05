@@ -45,17 +45,17 @@ void PhysicsService::update(double time)
     auto deltaTime = time - _lastTime;
     _lastTime = time;
 
-    _dynamicsWorld->stepSimulation(deltaTime, 10, 1.0 / 120.0);
+    _dynamicsWorld->stepSimulation(deltaTime, 10, 1.0 / 60.0);
     _syncRenderingState();
 }
 
-void PhysicsService::addStaticBox(
-    const Vector3df &size,
-    std::shared_ptr<IRenderingStrategy> renderingStrategy)
+void PhysicsService::addBox(
+    std::shared_ptr<IRenderingStrategy> renderingStrategy,
+    float mass)
 {
-    btCollisionShape *groundShape = new btBoxShape(btVector3(size.getX(), size.getY(), size.getZ()));
+    auto halfSize = _getSize(renderingStrategy->getVertices()) / 2.f;
 
-    btScalar mass(0.);
+    btCollisionShape *groundShape = new btBoxShape(btVector3(halfSize.getX(), halfSize.getY(), halfSize.getZ()));
 
     // rigidbody is dynamic if and only if mass is non zero, otherwise static
     bool isDynamic = (mass != 0.f);
@@ -72,32 +72,6 @@ void PhysicsService::addStaticBox(
     _objects[renderingStrategy] = body;
 
     // add the body to the dynamics world
-    _dynamicsWorld->addRigidBody(body);
-}
-
-void PhysicsService::addDynamicBox(
-    const Vector3df &size,
-    std::shared_ptr<IRenderingStrategy> renderingStrategy)
-{
-    btCollisionShape *shape = new btBoxShape(btVector3(size.getX(), size.getY(), size.getZ()));
-
-    /// Create Dynamic Objects
-    btScalar mass(1.f);
-
-    // rigidbody is dynamic if and only if mass is non zero, otherwise static
-    bool isDynamic = (mass != 0.f);
-
-    btVector3 localInertia(0, 0, 0);
-    if (isDynamic)
-        shape->calculateLocalInertia(mass, localInertia);
-
-    // using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-    btDefaultMotionState *myMotionState = new btDefaultMotionState();
-    btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, shape, localInertia);
-    btRigidBody *body = new btRigidBody(rbInfo);
-
-    _objects[renderingStrategy] = body;
-
     _dynamicsWorld->addRigidBody(body);
 }
 
@@ -136,4 +110,54 @@ void PhysicsService::_syncRenderingState()
         object.first->setPosition(Vector3df(position.getX(), position.getY(), position.getZ()));
         object.first->setRotation(Vector3df(rotation.getX(), rotation.getY(), rotation.getZ()));
     }
+}
+
+Vector3df PhysicsService::_getSize(const std::vector<float> &vertices)
+{
+    float minX = 0;
+    float minY = 0;
+    float minZ = 0;
+
+    float maxX = 0;
+    float maxY = 0;
+    float maxZ = 0;
+
+    for (size_t i = 0; i < vertices.size(); i += 3)
+    {
+        auto x = vertices[i];
+        auto y = vertices[i + 1];
+        auto z = vertices[i + 2];
+
+        if (x < minX)
+        {
+            minX = x;
+        }
+
+        if (y < minY)
+        {
+            minY = y;
+        }
+
+        if (z < minZ)
+        {
+            minZ = z;
+        }
+
+        if (x > maxX)
+        {
+            maxX = x;
+        }
+
+        if (y > maxY)
+        {
+            maxY = y;
+        }
+
+        if (z > maxZ)
+        {
+            maxZ = z;
+        }
+    }
+
+    return Vector3df(maxX - minX, maxY - minY, maxZ - minZ);
 }

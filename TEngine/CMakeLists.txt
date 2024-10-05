@@ -27,6 +27,7 @@ FetchContent_Declare(
     glfw
     GIT_REPOSITORY https://github.com/glfw/glfw.git
     GIT_TAG        master
+    GIT_SHALLOW    TRUE
 )
 
 FetchContent_GetProperties(glfw)
@@ -58,6 +59,7 @@ FetchContent_Declare(
     glew
     GIT_REPOSITORY https://github.com/Perlmint/glew-cmake.git
     GIT_TAG        master
+    GIT_SHALLOW    TRUE
 )
 
 FetchContent_GetProperties(glew)
@@ -91,6 +93,7 @@ FetchContent_Declare(
     openal
     GIT_REPOSITORY https://github.com/kcat/openal-soft.git
     GIT_TAG        1.23.1
+    GIT_SHALLOW    TRUE
 )
 
 FetchContent_GetProperties(openal)
@@ -115,6 +118,7 @@ FetchContent_Declare(
     ogg
     GIT_REPOSITORY https://github.com/xiph/ogg.git
     GIT_TAG        v1.3.5
+    GIT_SHALLOW    TRUE
 )
 
 FetchContent_GetProperties(ogg)
@@ -139,6 +143,7 @@ FetchContent_Declare(
     vorbis
     GIT_REPOSITORY https://github.com/xiph/vorbis.git
     GIT_TAG        v1.3.6
+    GIT_SHALLOW    TRUE
 )
 
 set(OGG_INCLUDE_DIRS ${ogg_SOURCE_DIR}/include)
@@ -171,6 +176,7 @@ FetchContent_Declare(
     imgui
     GIT_REPOSITORY https://github.com/ocornut/imgui.git
     GIT_TAG        v1.91.2
+    GIT_SHALLOW    TRUE
 )
 
 FetchContent_GetProperties(imgui)
@@ -196,8 +202,7 @@ include(FetchContent)
 
 FetchContent_Declare(
     bullet
-    GIT_REPOSITORY https://github.com/bulletphysics/bullet3.git
-    GIT_TAG        3.25
+    URL https://codeload.github.com/bulletphysics/bullet3/tar.gz/refs/tags/3.25
 )
 
 FetchContent_GetProperties(bullet)

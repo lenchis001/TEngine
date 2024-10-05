@@ -18,14 +18,9 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::Physics
 
         virtual void update(double time) = 0;
 
-        virtual void addStaticBox(
-            const Graphics::Models::Vector3df &size,
-            std::shared_ptr<RenderingStrategies::IRenderingStrategy> renderingStrategy
-            ) = 0;
-
-        virtual void addDynamicBox(
-            const Graphics::Models::Vector3df &size,
-            std::shared_ptr<RenderingStrategies::IRenderingStrategy> renderingStrategy
+        virtual void addBox(
+            std::shared_ptr<RenderingStrategies::IRenderingStrategy> renderingStrategy,
+            float mass
             ) = 0;
 
         virtual void setPosition(
