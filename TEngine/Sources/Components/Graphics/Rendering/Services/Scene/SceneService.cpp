@@ -57,7 +57,7 @@ void SceneService::render(double time)
 	}
 }
 
-std::shared_ptr<IRenderingStrategy> SceneService::addToRendering(
+std::shared_ptr<IRenderingStrategy> SceneService::addPrimitive(
 	PrimitiveTypes type,
 	std::string texturePath,
 	std::shared_ptr<IRenderingStrategy> parent,
@@ -80,14 +80,19 @@ std::shared_ptr<IRenderingStrategy> SceneService::addToRendering(
 	return decoratedCubeRenderingStrategy;
 }
 
-std::shared_ptr<IRenderingStrategy> SceneService::addMeshToRendering(
+std::shared_ptr<IRenderingStrategy> SceneService::addMesh(
 	std::string meshPath,
 	std::shared_ptr<IRenderingStrategy> parent,
 	PhysicsFlags physicsFlags)
 {
-	auto meshRenderingStrategy = std::make_shared<MeshRenderingStrategy>(_meshService, _lightServices, meshPath);
+	std::shared_ptr<IRenderingStrategy> strategy = std::make_shared<MeshRenderingStrategy>(_meshService, _lightServices, meshPath);
 
-	auto decoratedMeshRenderingStrategy = std::make_shared<RenderingOptimizationDecorator>(meshRenderingStrategy);
+	if(physicsFlags != PhysicsFlags::NONE)
+	{
+		strategy = std::make_shared<PhysicsRenderingDecorator>(_physicsService, strategy, physicsFlags);
+	}
+
+	auto decoratedMeshRenderingStrategy = std::make_shared<RenderingOptimizationDecorator>(strategy);
 	(parent ? parent : _root)->addChild(decoratedMeshRenderingStrategy);
 
 	return decoratedMeshRenderingStrategy;

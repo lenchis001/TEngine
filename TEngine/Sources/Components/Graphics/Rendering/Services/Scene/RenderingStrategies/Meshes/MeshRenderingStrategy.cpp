@@ -52,7 +52,7 @@ void MeshRenderingStrategy::render(std::shared_ptr<ICameraStrategy> activeCamera
             glBindTexture(GL_TEXTURE_2D, shape->getTextureId());
         }
 
-        glDrawArrays(GL_TRIANGLES, 0, shape->getVerticesCount());
+        glDrawArrays(GL_TRIANGLES, 0, shape->getVertices().size());
 
         glUseProgram(0);
         glBindTexture(GL_TEXTURE_2D, 0);
@@ -60,7 +60,14 @@ void MeshRenderingStrategy::render(std::shared_ptr<ICameraStrategy> activeCamera
     }
 }
 
-const std::vector<float> &MeshRenderingStrategy::getVertices() const
+std::vector<float> MeshRenderingStrategy::getVertices() const
 {
-    throw std::runtime_error("Not implemented");
+    std::vector<float> allVertices;
+
+    for (const auto &shape : _renderableMesh->getShapes())
+    {
+        allVertices.insert(allVertices.end(), shape->getVertices().begin(), shape->getVertices().end());
+    }
+
+    return allVertices;
 }

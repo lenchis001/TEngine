@@ -165,7 +165,7 @@ void CubeRenderingStrategy::_prepareShader()
     _textureSamplerShaderId = glGetUniformLocation(_shaderProgram, "textureSampler");
 }
 
-const std::vector<float> &CubeRenderingStrategy::getVertices() const
+std::vector<float> CubeRenderingStrategy::getVertices() const
 {
     return _vertices;
 }

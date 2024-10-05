@@ -73,6 +73,24 @@ const Vector3df &RenderingStrategyBase::getScale() const
     return _scale;
 }
 
+void RenderingStrategyBase::setAbsolutePosition(const Vector3df &position)
+{
+    auto parentPosition = _parentMatrix.getPosition();
+
+    auto diff = position - parentPosition;
+
+    setPosition(diff);
+}
+
+void RenderingStrategyBase::setAbsoluteRotation(const Vector3df &rotation)
+{
+    auto parentRotation = _parentMatrix.getRotation();
+
+    auto diff = rotation - parentRotation;
+
+    setRotation(diff);
+}
+
 Vector3df RenderingStrategyBase::getAbsolutePosition() const
 {
     return _modelMatrix.getPosition();
@@ -160,7 +178,7 @@ void RenderingStrategyBase::_updateScaleMatrix()
     _updateModelMatrix(_parentMatrix, true);
 }
 
-const std::vector<float> &RenderingStrategyBase::getVertices() const
+std::vector<float> RenderingStrategyBase::getVertices() const
 {
     throw std::runtime_error("Not allowed");
 }

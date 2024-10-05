@@ -5,7 +5,7 @@ using namespace TEngine::Components::Graphics::Rendering::Models::Meshes;
 RenderableShape::RenderableShape(
     std::string name,
     GLuint vao,
-    unsigned int verticesCount,
+    const std::vector<float> vertices,
     GLuint program,
     GLuint mvpMatrixShaderId,
     GLuint modelMatrixShaderId,
@@ -18,7 +18,7 @@ RenderableShape::RenderableShape(
     GLuint textureId)
     : _name(name),
       _vao(vao),
-      _verticesCount(verticesCount),
+      _vertices(vertices),
       _program(program),
       _mvpMatrixShaderId(mvpMatrixShaderId),
       _modelMatrixShaderId(modelMatrixShaderId),
@@ -92,9 +92,9 @@ GLuint RenderableShape::getTextureId() const
     return _textureId;
 }
 
-unsigned int RenderableShape::getVerticesCount() const
+const std::vector<float> &RenderableShape::getVertices() const
 {
-    return _verticesCount;
+    return _vertices;
 }
 
 bool RenderableShape::isTextured() const

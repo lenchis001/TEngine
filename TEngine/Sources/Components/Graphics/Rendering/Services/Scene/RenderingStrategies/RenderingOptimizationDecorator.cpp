@@ -55,6 +55,16 @@ const Vector3df &RenderingOptimizationDecorator::getScale() const
     return _strategy->getScale();
 }
 
+void RenderingOptimizationDecorator::setAbsolutePosition(const Vector3df &position)
+{
+    _strategy->setAbsolutePosition(position);
+}
+
+void RenderingOptimizationDecorator::setAbsoluteRotation(const Vector3df &rotation)
+{
+    _strategy->setAbsoluteRotation(rotation);
+}
+
 Vector3df RenderingOptimizationDecorator::getAbsolutePosition() const
 {
     return _strategy->getAbsolutePosition();
@@ -85,7 +95,7 @@ void RenderingOptimizationDecorator::removeChild(std::shared_ptr<IRenderingStrat
     _strategy->removeChild(child);
 }
 
-const std::vector<float> &RenderingOptimizationDecorator::getVertices() const
+std::vector<float> RenderingOptimizationDecorator::getVertices() const
 {
     return _strategy->getVertices();
 }

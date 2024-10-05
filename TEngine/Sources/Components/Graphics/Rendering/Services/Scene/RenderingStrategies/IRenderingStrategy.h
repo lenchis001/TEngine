@@ -28,6 +28,9 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
         virtual const Graphics::Models::Vector3df &getRotation() const = 0;
         virtual const Graphics::Models::Vector3df &getScale() const = 0;
 
+        virtual void setAbsolutePosition(const Graphics::Models::Vector3df &position) = 0;
+        virtual void setAbsoluteRotation(const Graphics::Models::Vector3df &rotation) = 0;
+
         virtual Graphics::Models::Vector3df getAbsolutePosition() const = 0;
         virtual Graphics::Models::Vector3df getAbsoluteRotation() const = 0;
         virtual Graphics::Models::Vector3df getAbsoluteScale() const = 0;
@@ -36,7 +39,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
         virtual void addChild(std::shared_ptr<IRenderingStrategy> child) = 0;
         virtual void removeChild(std::shared_ptr<IRenderingStrategy> child) = 0;
         
-        virtual const std::vector<float> &getVertices() const = 0;
+        virtual std::vector<float> getVertices() const = 0;
 
         virtual ~IRenderingStrategy() = default;
 

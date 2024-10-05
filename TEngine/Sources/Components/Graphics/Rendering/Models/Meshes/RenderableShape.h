@@ -11,7 +11,7 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
         RenderableShape(
             std::string name,
             GLuint vao,
-            unsigned int verticesCount,
+            const std::vector<float> vertices,
             GLuint program,
             GLuint mvpMatrixShaderId,
             GLuint modelMatrixShaderId,
@@ -46,7 +46,7 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
 
         const std::vector<float> &getDiffuseColor() const override;
 
-        unsigned int getVerticesCount() const override;
+        const std::vector<float>& getVertices() const override;
 
         GLuint getTextureId() const override;
 
@@ -65,7 +65,7 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
         GLuint _shapeColorShaderId;
         std::vector<float> _diffuseColor;
         GLuint _textureId;
-        unsigned int _verticesCount;
+        std::vector<float> _vertices;
     };
 }
 

@@ -20,13 +20,13 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene
 
         virtual void render(double time) = 0;
 
-        virtual std::shared_ptr<RenderingStrategies::IRenderingStrategy> addToRendering(
+        virtual std::shared_ptr<RenderingStrategies::IRenderingStrategy> addPrimitive(
             Components::Graphics::Rendering::Models::Meshes::PrimitiveTypes type,
             std::string texturePath,
             std::shared_ptr<RenderingStrategies::IRenderingStrategy> parent = nullptr,
             Rendering::Models::Physics::PhysicsFlags physics = Rendering::Models::Physics::PhysicsFlags::NONE) = 0;
 
-        virtual std::shared_ptr<RenderingStrategies::IRenderingStrategy> addMeshToRendering(
+        virtual std::shared_ptr<RenderingStrategies::IRenderingStrategy> addMesh(
             std::string meshPath,
             std::shared_ptr<RenderingStrategies::IRenderingStrategy> parent = nullptr,
             Rendering::Models::Physics::PhysicsFlags physics = Rendering::Models::Physics::PhysicsFlags::NONE) = 0;

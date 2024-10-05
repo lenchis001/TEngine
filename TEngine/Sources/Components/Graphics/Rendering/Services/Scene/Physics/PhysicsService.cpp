@@ -107,8 +107,8 @@ void PhysicsService::_syncRenderingState()
         auto position = transform.getOrigin();
         auto rotation = transform.getRotation();
 
-        object.first->setPosition(Vector3df(position.getX(), position.getY(), position.getZ()));
-        object.first->setRotation(Vector3df(rotation.getX(), rotation.getY(), rotation.getZ()));
+        object.first->setAbsolutePosition(Vector3df(position.getX(), position.getY(), position.getZ()));
+        object.first->setAbsoluteRotation(Vector3df(rotation.getX(), rotation.getY(), rotation.getZ()));
     }
 }
 

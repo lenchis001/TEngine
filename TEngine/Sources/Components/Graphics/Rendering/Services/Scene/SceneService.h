@@ -52,13 +52,13 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene
 
         void initialize() override;
 
-        std::shared_ptr<IRenderingStrategy> addToRendering(
+        std::shared_ptr<IRenderingStrategy> addPrimitive(
             PrimitiveTypes type,
             std::string texturePath,
             std::shared_ptr<IRenderingStrategy> parent = nullptr,
             PhysicsFlags physicsFlags = PhysicsFlags::NONE) override;
 
-        std::shared_ptr<IRenderingStrategy> addMeshToRendering(
+        std::shared_ptr<IRenderingStrategy> addMesh(
             std::string meshPath,
             std::shared_ptr<IRenderingStrategy> parent = nullptr,
             PhysicsFlags physicsFlags = PhysicsFlags::NONE) override;

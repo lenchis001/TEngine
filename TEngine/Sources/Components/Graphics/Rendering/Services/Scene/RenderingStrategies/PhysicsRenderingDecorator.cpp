@@ -5,7 +5,7 @@ using namespace TEngine::Components::Graphics::Rendering::Services::Scene::Rende
 PhysicsRenderingDecorator::PhysicsRenderingDecorator(std::shared_ptr<IPhysicsService> physicsService, std::shared_ptr<IRenderingStrategy> strategy, PhysicsFlags physicsFlags)
     : _physicsService(physicsService),
       _strategy(strategy),
-        _physicsFlags(physicsFlags)
+      _physicsFlags(physicsFlags)
 {
 }
 
@@ -18,7 +18,7 @@ void PhysicsRenderingDecorator::setPosition(const Vector3df &position)
 {
     _strategy->setPosition(position);
 
-    _physicsService->setPosition(_strategy, position);
+    _physicsService->setPosition(_strategy, _strategy->getAbsolutePosition());
 }
 
 void PhysicsRenderingDecorator::setRotation(const Vector3df &rotation)
@@ -44,6 +44,16 @@ const Vector3df &PhysicsRenderingDecorator::getRotation() const
 const Vector3df &PhysicsRenderingDecorator::getScale() const
 {
     return _strategy->getScale();
+}
+
+void PhysicsRenderingDecorator::setAbsolutePosition(const Vector3df &position)
+{
+    _strategy->setAbsolutePosition(position);
+}
+
+void PhysicsRenderingDecorator::setAbsoluteRotation(const Vector3df &rotation)
+{
+    _strategy->setAbsoluteRotation(rotation);
 }
 
 Vector3df PhysicsRenderingDecorator::getAbsolutePosition() const
@@ -76,7 +86,7 @@ void PhysicsRenderingDecorator::removeChild(std::shared_ptr<IRenderingStrategy> 
     _strategy->removeChild(child);
 }
 
-const std::vector<float> &PhysicsRenderingDecorator::getVertices() const
+std::vector<float> PhysicsRenderingDecorator::getVertices() const
 {
     return _strategy->getVertices();
 }

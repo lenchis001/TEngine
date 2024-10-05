@@ -22,7 +22,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
         void addChild(std::shared_ptr<IRenderingStrategy> child) override;
         void removeChild(std::shared_ptr<IRenderingStrategy> child) override;
 
-        const std::vector<float> &getVertices() const override;
+        std::vector<float> getVertices() const override;
 
         void setPosition(const Vector3df &position) override;
         void setRotation(const Vector3df &rotation) override;
@@ -31,6 +31,9 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
         const Vector3df &getPosition() const override;
         const Vector3df &getRotation() const override;
         const Vector3df &getScale() const override;
+
+        void setAbsolutePosition(const Vector3df &position) override;
+        void setAbsoluteRotation(const Vector3df &rotation) override;
 
         Vector3df getAbsolutePosition() const override;
         Vector3df getAbsoluteRotation() const override;

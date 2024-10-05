@@ -96,8 +96,7 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
     glBindBuffer(GL_ARRAY_BUFFER, verticesBuffer);
 
     const auto &vertices = shape->getVertices();
-    auto verticesCount = vertices.size();
-    glBufferData(GL_ARRAY_BUFFER, verticesCount * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -180,7 +179,7 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
     return std::make_shared<RenderableShape>(
         name,
         vao,
-        verticesCount,
+        vertices,
         program,
         mvpMatrixShaderId,
         modelMatrixShaderId,
