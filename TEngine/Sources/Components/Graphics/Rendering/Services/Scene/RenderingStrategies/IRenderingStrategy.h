@@ -38,6 +38,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
         virtual const std::vector<std::shared_ptr<IRenderingStrategy>> &getChildren() const = 0;
         virtual void addChild(std::shared_ptr<IRenderingStrategy> child) = 0;
         virtual void removeChild(std::shared_ptr<IRenderingStrategy> child) = 0;
+        virtual void removeAllChildren() = 0;
         
         virtual std::vector<float> getVertices() const = 0;
 

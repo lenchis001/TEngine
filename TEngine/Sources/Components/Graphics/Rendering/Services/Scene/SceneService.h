@@ -52,6 +52,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene
 
         void initialize() override;
 
+        void deinitialize() override;
+
         std::shared_ptr<IRenderingStrategy> addPrimitive(
             PrimitiveTypes type,
             std::string texturePath,
@@ -62,6 +64,10 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene
             std::string meshPath,
             std::shared_ptr<IRenderingStrategy> parent = nullptr,
             PhysicsFlags physicsFlags = PhysicsFlags::NONE) override;
+
+        std::shared_ptr<IRenderingStrategy> addSolidbox(
+            Vector3df size,
+            std::shared_ptr<IRenderingStrategy> parent = nullptr) override;
 
         void render(double time) override;
 

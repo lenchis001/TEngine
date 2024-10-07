@@ -44,6 +44,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
         void addChild(std::shared_ptr<IRenderingStrategy> child) override;
 
         void removeChild(std::shared_ptr<IRenderingStrategy> child) override;
+
+        void removeAllChildren() override;
         
         std::vector<float> getVertices() const override;
 

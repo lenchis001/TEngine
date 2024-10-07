@@ -95,6 +95,11 @@ void RenderingOptimizationDecorator::removeChild(std::shared_ptr<IRenderingStrat
     _strategy->removeChild(child);
 }
 
+void RenderingOptimizationDecorator::removeAllChildren()
+{
+    _strategy->removeAllChildren();
+}
+
 std::vector<float> RenderingOptimizationDecorator::getVertices() const
 {
     return _strategy->getVertices();

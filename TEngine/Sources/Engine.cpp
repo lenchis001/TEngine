@@ -27,6 +27,11 @@ void Engine::initialize(std::shared_ptr<IEngineParameters> parameters)
     _audioService->initialize();
 }
 
+void Engine::deinitialize()
+{
+    _graphicsService->deinitialize();
+}
+
 std::shared_ptr<IGraphicsService> Engine::getGraphicsService()
 {
     return _graphicsService;

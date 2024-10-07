@@ -31,16 +31,20 @@ int main()
 
         sceneService->setActiveCamera(TEngine::Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes::FPS);
 
+        auto solid = sceneService->addSolidbox(Vector3df(15.0f, 1.0f, 15.0f));
+        solid->setPosition(Vector3df(0.0f, -5.0f, 0.0f));
+        solid->setRotation(Vector3df(.0f, .0f, .5f));
+
         for (int i = 1; i < 32; i++)
         {
             for (int j = 1; j < 32; j++)
             {
-                auto cube = sceneService->addMesh("./DemoResources/test plane/plane.obj", nullptr, PhysicsFlags::STATIC);
+                auto cube = sceneService->addMesh("./DemoResources/test plane/plane.obj");
                 cube->setPosition(Vector3df(2.0f * i, 0.0f, 2.0f * j));
             }
             
             auto cube3 = sceneService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp", nullptr, PhysicsFlags::DYNAMIC);
-            cube3->setPosition(Vector3df(3.0f * i, 4.f * i, i * 2.0f));
+            cube3->setPosition(Vector3df(2.0f * i, 4.f * i, i * 2.0f));
 
             auto cube = sceneService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp", nullptr, PhysicsFlags::STATIC);
             cube->setPosition(Vector3df(-3.0f * i, 0.0f, 0.0f));
@@ -64,19 +68,22 @@ int main()
         source->play();
         source->setPosition(0.0f, 0.0f, 0.0f);
 
-        auto window1 = guiService->addWindow();
-        window1->setSize(Vector2di(100, 200));
-        auto image = guiService->addImage("./DemoResources/texture2.bmp");
-        image->setSize(Vector2di(400, 100));
-        window1->addChild(image);
+        // auto window1 = guiService->addWindow();
+        // window1->setSize(Vector2di(100, 100));
+        
+        // auto image = guiService->addImage("./DemoResources/texture2.bmp");
+        // image->setSize(Vector2di(400, 100));
+        // window1->addChild(image);
+
+        // auto input1 = guiService->addInput();
+        // input1->setSize(Vector2di(400, 100));
+        // window1->addChild(input1);
 
         while (true)
         {
             auto time = graphicsService->getTime();
             if (time - previousCheckTime > 1.0)
             {
-                window1->setTitle("FPS: " + std::to_string(framesCounter));
-
                 framesCounter = 0;
                 previousCheckTime = time;
 
@@ -92,6 +99,7 @@ int main()
         }
 
         audioService->release(source);
+        engine->deinitialize();
     }
 
     return 0;

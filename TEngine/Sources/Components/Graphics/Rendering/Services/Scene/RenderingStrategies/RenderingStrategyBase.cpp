@@ -37,6 +37,16 @@ void RenderingStrategyBase::removeChild(std::shared_ptr<IRenderingStrategy> chil
     }
 }
 
+void RenderingStrategyBase::removeAllChildren()
+{
+    for (const auto child : _children)
+    {
+        child->_onDetachedFromParent();
+    }
+
+    _children.clear();
+}
+
 void RenderingStrategyBase::setPosition(const Vector3df &position)
 {
     _position = position;

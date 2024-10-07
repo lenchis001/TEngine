@@ -23,6 +23,7 @@ void EventService::initialize()
     glfwSetMouseButtonCallback(glfwGetCurrentContext(), &EventService::_mouseButtonCallback);
     glfwSetScrollCallback(glfwGetCurrentContext(), &EventService::_scrollCallback);
     glfwSetCharCallback(glfwGetCurrentContext(), &EventService::_charCallback);
+    glfwSetCursorEnterCallback(glfwGetCurrentContext(), &EventService::_cursorEnterCallback);
 }
 
 void EventService::registerKeyHandler(const KeyboardEventHandler &handler)
@@ -73,6 +74,16 @@ void EventService::registerCharHandler(const CharEventHandler &handler)
 void EventService::unregisterCharHandler(const CharEventHandler &handler)
 {
     removeEventHandler(_charHandlers, handler);
+}
+
+void EventService::registerCursorEnterHandler(const CursorEnterEventHandler &handler)
+{
+    _cursorEnterHandlers.push_back(handler);
+}
+
+void EventService::unregisterCursorEnterHandler(const CursorEnterEventHandler &handler)
+{
+    removeEventHandler(_cursorEnterHandlers, handler);
 }
 
 void EventService::setCursorePosition(const Vector2di &value)
@@ -144,6 +155,19 @@ void EventService::_charCallback(GLFWwindow *window, unsigned int codepoint)
     for (auto &handler : that->_charHandlers)
     {
         if (handler(codepoint))
+        {
+            break;
+        }
+    }
+}
+
+void EventService::_cursorEnterCallback(GLFWwindow *window, int entered)
+{
+    auto that = getContext();
+
+    for (auto &handler : that->_cursorEnterHandlers)
+    {
+        if (handler(entered))
         {
             break;
         }

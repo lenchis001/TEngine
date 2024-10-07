@@ -11,11 +11,13 @@
 #include "RenderingStrategies/RenderingOptimizationDecorator.h"
 #include "RenderingStrategies/Meshes/MeshRenderingStrategy.h"
 #include "RenderingStrategies/PhysicsRenderingDecorator.h"
+#include "RenderingStrategies/Solid/SolidboxRenderingStrategy.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies::Primitives;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies::Meshes;
+using namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies::Solid;
 
 SceneService::SceneService(
 	std::shared_ptr<IEventService> eventService,
@@ -44,6 +46,11 @@ void SceneService::initialize()
 	_physicsService->initialize();
 }
 
+void SceneService::deinitialize()
+{
+	_root->removeAllChildren();
+}
+
 void SceneService::render(double time)
 {
 	_lightServices->update();
@@ -69,7 +76,7 @@ std::shared_ptr<IRenderingStrategy> SceneService::addPrimitive(
 		_textureService,
 		texturePath);
 
-	if(physicsFlags != PhysicsFlags::NONE)
+	if (physicsFlags != PhysicsFlags::NONE)
 	{
 		strategy = std::make_shared<PhysicsRenderingDecorator>(_physicsService, strategy, physicsFlags);
 	}
@@ -87,7 +94,7 @@ std::shared_ptr<IRenderingStrategy> SceneService::addMesh(
 {
 	std::shared_ptr<IRenderingStrategy> strategy = std::make_shared<MeshRenderingStrategy>(_meshService, _lightServices, meshPath);
 
-	if(physicsFlags != PhysicsFlags::NONE)
+	if (physicsFlags != PhysicsFlags::NONE)
 	{
 		strategy = std::make_shared<PhysicsRenderingDecorator>(_physicsService, strategy, physicsFlags);
 	}
@@ -96,6 +103,25 @@ std::shared_ptr<IRenderingStrategy> SceneService::addMesh(
 	(parent ? parent : _root)->addChild(decoratedMeshRenderingStrategy);
 
 	return decoratedMeshRenderingStrategy;
+}
+
+std::shared_ptr<IRenderingStrategy> SceneService::addSolidbox(
+	Vector3df size,
+	std::shared_ptr<IRenderingStrategy> parent)
+{
+	std::shared_ptr<IRenderingStrategy> strategy = std::make_shared<SolidboxRenderingStrategy>(
+		_shadersService,
+		_bufferCacheService,
+		_textureService,
+		"./DemoResources/texture2.bmp",
+		size);
+
+	strategy = std::make_shared<PhysicsRenderingDecorator>(_physicsService, strategy, PhysicsFlags::STATIC);
+
+	auto decoratedSolidboxRenderingStrategy = std::make_shared<RenderingOptimizationDecorator>(strategy);
+	(parent ? parent : _root)->addChild(decoratedSolidboxRenderingStrategy);
+
+	return decoratedSolidboxRenderingStrategy;
 }
 
 std::shared_ptr<ICameraStrategy> SceneService::setActiveCamera(BuildinCameraTypes cameraType)

@@ -51,6 +51,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
 
         void removeChild(std::shared_ptr<IRenderingStrategy> child) override;
 
+        void removeAllChildren() override;
+
         std::vector<float> getVertices() const override;
 
     protected:

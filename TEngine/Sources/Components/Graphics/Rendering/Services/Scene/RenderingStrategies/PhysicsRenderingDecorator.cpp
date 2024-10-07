@@ -24,6 +24,8 @@ void PhysicsRenderingDecorator::setPosition(const Vector3df &position)
 void PhysicsRenderingDecorator::setRotation(const Vector3df &rotation)
 {
     _strategy->setRotation(rotation);
+
+    _physicsService->setRotation(_strategy, _strategy->getAbsoluteRotation());
 }
 
 void PhysicsRenderingDecorator::setScale(const Vector3df &scale)
@@ -86,6 +88,11 @@ void PhysicsRenderingDecorator::removeChild(std::shared_ptr<IRenderingStrategy> 
     _strategy->removeChild(child);
 }
 
+void PhysicsRenderingDecorator::removeAllChildren()
+{
+    _strategy->removeAllChildren();
+}
+
 std::vector<float> PhysicsRenderingDecorator::getVertices() const
 {
     return _strategy->getVertices();
@@ -119,4 +126,6 @@ void PhysicsRenderingDecorator::_onAttachedToParent(std::shared_ptr<IRenderingSt
 void PhysicsRenderingDecorator::_onDetachedFromParent()
 {
     _strategy->_onDetachedFromParent();
+
+    _physicsService->removeBox(_strategy);
 }

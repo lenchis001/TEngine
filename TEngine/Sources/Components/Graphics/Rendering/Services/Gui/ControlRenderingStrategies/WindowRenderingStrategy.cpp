@@ -38,11 +38,13 @@ void WindowRenderingStrategy::render()
     if (!_isSizeSet)
     {
         ImGui::SetNextWindowSize(ImVec2(_size.getX(), _size.getY()));
+        _isSizeSet = true;
     }
 
     if (!_isPositionSet)
     {
         ImGui::SetNextWindowPos(ImVec2(_position.getX(), _position.getY()));
+        _isPositionSet = true;
     }
 
     ImGuiWindowFlags flags = _resizable ? ImGuiWindowFlags_None : ImGuiWindowFlags_NoResize;

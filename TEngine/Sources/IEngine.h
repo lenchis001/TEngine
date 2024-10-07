@@ -24,6 +24,8 @@ namespace TEngine
 
         virtual void initialize(std::shared_ptr<TEngine::Models::IEngineParameters> parameters) = 0;
 
+        virtual void deinitialize() = 0;
+
         virtual ~IEngine() = default;
     };
 

@@ -2,6 +2,7 @@
 
 #include "ControlRenderingStrategies/WindowRenderingStrategy.h"
 #include "ControlRenderingStrategies/ImageRenderingStrategy.h"
+#include "ControlRenderingStrategies/InputRenderingStrategy.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Services::Gui;
 
@@ -20,6 +21,8 @@ GuiService::~GuiService()
     _eventService->unregisterMouseButtonHandler(std::bind(&GuiService::_onMouseButtonClick, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
     _eventService->unregisterScrollHandler(std::bind(&GuiService::_onScroll, this, std::placeholders::_1, std::placeholders::_2));
     _eventService->unregisterKeyHandler(std::bind(&GuiService::_onKey, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
+    _eventService->unregisterCharHandler(std::bind(&GuiService::_onChar, this, std::placeholders::_1));
+    _eventService->unregisterCursorEnterHandler(std::bind(&GuiService::_onCursorEnter, this, std::placeholders::_1));
 }
 
 void GuiService::initialize()
@@ -40,6 +43,8 @@ void GuiService::initialize()
     _eventService->registerMouseButtonHandler(std::bind(&GuiService::_onMouseButtonClick, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
     _eventService->registerScrollHandler(std::bind(&GuiService::_onScroll, this, std::placeholders::_1, std::placeholders::_2));
     _eventService->registerKeyHandler(std::bind(&GuiService::_onKey, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
+    _eventService->registerCharHandler(std::bind(&GuiService::_onChar, this, std::placeholders::_1));
+    _eventService->registerCursorEnterHandler(std::bind(&GuiService::_onCursorEnter, this, std::placeholders::_1));
 }
 
 void GuiService::render()
@@ -73,6 +78,13 @@ std::shared_ptr<IImageRenderingStrategy> GuiService::addImage(const std::string 
     return image;
 }
 
+std::shared_ptr<IInputRenderingStrategy> GuiService::addInput()
+{
+    auto input = std::make_shared<InputRenderingStrategy>();
+
+    return input;
+}
+
 bool GuiService::_onCursorMove(float xpos, float ypos)
 {
     ImGui_ImplGlfw_CursorPosCallback(glfwGetCurrentContext(), xpos, ypos);
@@ -97,6 +109,20 @@ bool GuiService::_onScroll(float xoffset, float yoffset)
 bool GuiService::_onKey(int key, int scancode, int action, int mods)
 {
     ImGui_ImplGlfw_KeyCallback(glfwGetCurrentContext(), key, scancode, action, mods);
+
+    return false;
+}
+
+bool GuiService::_onChar(unsigned int codepoint)
+{
+    ImGui_ImplGlfw_CharCallback(glfwGetCurrentContext(), codepoint);
+
+    return false;
+}
+
+bool GuiService::_onCursorEnter(bool entered)
+{
+    ImGui_ImplGlfw_CursorEnterCallback(glfwGetCurrentContext(), entered);
 
     return false;
 }

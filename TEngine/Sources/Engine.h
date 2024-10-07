@@ -23,6 +23,8 @@ namespace TEngine
 
         void initialize(std::shared_ptr<IEngineParameters> parameters) override;
 
+        void deinitialize() override;
+
         std::shared_ptr<IGraphicsService> getGraphicsService() override;
 
         std::shared_ptr<IEventService> getEventService() override;

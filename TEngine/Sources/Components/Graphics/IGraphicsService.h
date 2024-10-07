@@ -18,6 +18,8 @@ namespace TEngine::Components::Graphics::Services
     public:
         virtual void initialize(std::shared_ptr<TEngine::Components::Graphics::Models::IGraphicsParameters> parameters) = 0;
 
+        virtual void deinitialize() = 0;
+
         virtual bool isShutdownRequested() const = 0;
 
         virtual double getTime() const = 0;

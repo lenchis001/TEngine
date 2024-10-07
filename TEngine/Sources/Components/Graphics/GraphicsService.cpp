@@ -36,6 +36,11 @@ void GraphicsService::initialize(std::shared_ptr<IGraphicsParameters> parameters
 	_guiService->initialize();
 }
 
+void GraphicsService::deinitialize()
+{
+	_sceneService->deinitialize();
+}
+
 bool GraphicsService::isShutdownRequested() const
 {
 	return glfwWindowShouldClose(_window) != 0;

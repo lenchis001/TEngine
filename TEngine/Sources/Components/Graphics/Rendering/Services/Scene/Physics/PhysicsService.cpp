@@ -8,6 +8,9 @@ PhysicsService::PhysicsService() : _lastTime(0.0)
 
 PhysicsService::~PhysicsService()
 {
+    assert(_objects.empty() && "Not all objects were removed from the physics service");
+
+    delete _dynamicsWorld;
 }
 
 void PhysicsService::initialize()
@@ -49,10 +52,14 @@ void PhysicsService::update(double time)
     _syncRenderingState();
 }
 
+int counter = 0;
+
 void PhysicsService::addBox(
     std::shared_ptr<IRenderingStrategy> renderingStrategy,
     float mass)
 {
+    assert(_objects.find(renderingStrategy) == _objects.end() && "Object already exists");
+
     auto halfSize = _getSize(renderingStrategy->getVertices()) / 2.f;
 
     btCollisionShape *groundShape = new btBoxShape(btVector3(halfSize.getX(), halfSize.getY(), halfSize.getZ()));
@@ -69,10 +76,32 @@ void PhysicsService::addBox(
     btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, groundShape, localInertia);
     btRigidBody *body = new btRigidBody(rbInfo);
 
+    counter++;
     _objects[renderingStrategy] = body;
 
     // add the body to the dynamics world
     _dynamicsWorld->addRigidBody(body);
+}
+
+void PhysicsService::removeBox(
+    std::shared_ptr<IRenderingStrategy> renderingStrategy)
+{
+    auto object = _objects.find(renderingStrategy);
+
+    if (object != _objects.end())
+    {
+        _dynamicsWorld->removeRigidBody(object->second);
+
+        delete object->second->getMotionState();
+        delete object->second->getCollisionShape();
+        delete object->second;
+
+        _objects.erase(object);
+    }
+    else
+    {
+        assert(false && "Object not found");
+    }
 }
 
 void PhysicsService::setPosition(
@@ -88,6 +117,35 @@ void PhysicsService::setPosition(
 
         transform.setOrigin(btVector3(position.getX(), position.getY(), position.getZ()));
 
+        delete object->second->getMotionState();
+        object->second->setMotionState(new btDefaultMotionState(transform));
+        object->second->activate(true);
+    }
+    else
+    {
+        assert(false && "Object not found");
+    }
+}
+
+void PhysicsService::setRotation(
+    const std::shared_ptr<IRenderingStrategy> renderingStrategy,
+    const Vector3df &rotation)
+{
+    auto object = _objects.find(renderingStrategy);
+
+    if (object != _objects.end())
+    {
+        btTransform transform;
+        object->second->getMotionState()->getWorldTransform(transform);
+
+        // We need to multiply by 2 because bullet physics uses twice more rotation than we do
+        auto btRotation = rotation * 2;
+
+        std::cout << "Rotation: " << btRotation.getX() << " " << btRotation.getY() << " " << btRotation.getZ() << std::endl;
+
+        transform.setRotation(btQuaternion(btRotation.getY(), btRotation.getX(), btRotation.getZ()));
+
+        delete object->second->getMotionState();
         object->second->setMotionState(new btDefaultMotionState(transform));
         object->second->activate(true);
     }
@@ -105,10 +163,11 @@ void PhysicsService::_syncRenderingState()
         object.second->getMotionState()->getWorldTransform(transform);
 
         auto position = transform.getOrigin();
-        auto rotation = transform.getRotation();
-
         object.first->setAbsolutePosition(Vector3df(position.getX(), position.getY(), position.getZ()));
-        object.first->setAbsoluteRotation(Vector3df(rotation.getX(), rotation.getY(), rotation.getZ()));
+
+        btScalar x, y, z;
+        transform.getRotation().getEulerZYX(z, y, x);
+        object.first->setAbsoluteRotation(Vector3df(x, y, z) / 2);
     }
 }
 

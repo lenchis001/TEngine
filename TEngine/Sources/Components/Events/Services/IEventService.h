@@ -12,6 +12,7 @@ typedef std::function<bool(float, float)> CursorMoveEventHandler;
 typedef std::function<bool(int, int, int)> MouseButtonEventHandler;
 typedef std::function<bool(float, float)> ScrollEventHandler;
 typedef std::function<bool(unsigned int)> CharEventHandler;
+typedef std::function<bool(bool)> CursorEnterEventHandler;
 
 namespace TEngine::Components::Events::Services
 {
@@ -36,6 +37,9 @@ namespace TEngine::Components::Events::Services
 
         virtual void registerCharHandler(const CharEventHandler &handler) = 0;
         virtual void unregisterCharHandler(const CharEventHandler &handler) = 0;
+
+        virtual void registerCursorEnterHandler(const CursorEnterEventHandler &handler) = 0;
+        virtual void unregisterCursorEnterHandler(const CursorEnterEventHandler &handler) = 0;
 
         virtual void setCursorePosition(const Graphics::Models::Vector2di& value) = 0;
         virtual void setCursorVisibility(bool isVisible) = 0;

@@ -40,6 +40,8 @@ namespace TEngine::Components::Graphics::Services
 
         void initialize(std::shared_ptr<IGraphicsParameters> parameters) override;
 
+        void deinitialize() override;
+
         bool isShutdownRequested() const override;
 
         double getTime() const override;

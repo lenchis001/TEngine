@@ -23,9 +23,18 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::Physics
             float mass
             ) = 0;
 
+        virtual void removeBox(
+            std::shared_ptr<RenderingStrategies::IRenderingStrategy> renderingStrategy
+            ) = 0;
+
         virtual void setPosition(
             const std::shared_ptr<RenderingStrategies::IRenderingStrategy> renderingStrategy,
             const Graphics::Models::Vector3df &position
+            ) = 0;
+
+        virtual void setRotation(
+            const std::shared_ptr<RenderingStrategies::IRenderingStrategy> renderingStrategy,
+            const Graphics::Models::Vector3df &rotation
             ) = 0;
     };
 }

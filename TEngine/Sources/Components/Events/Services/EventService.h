@@ -40,6 +40,9 @@ namespace TEngine::Components::Events::Services
         void registerCharHandler(const CharEventHandler &handler) override;
         void unregisterCharHandler(const CharEventHandler &handler) override;
 
+        void registerCursorEnterHandler(const CursorEnterEventHandler &handler) override;
+        void unregisterCursorEnterHandler(const CursorEnterEventHandler &handler) override;
+
         void setCursorePosition(const Vector2di &value) override;
         void setCursorVisibility(bool isVisible) override;
 
@@ -49,6 +52,7 @@ namespace TEngine::Components::Events::Services
         static void _mouseButtonCallback(GLFWwindow *window, int button, int action, int mods);
         static void _scrollCallback(GLFWwindow *window, double xoffset, double yoffset);
         static void _charCallback(GLFWwindow *window, unsigned int codepoint);
+        static void _cursorEnterCallback(GLFWwindow *window, int entered);
 
         template <class T>
         static void removeEventHandler(std::vector<T> &handlers, const T &handler)
@@ -67,6 +71,7 @@ namespace TEngine::Components::Events::Services
         std::vector<MouseButtonEventHandler> _mouseButtonHandlers;
         std::vector<ScrollEventHandler> _scrollHandlers;
         std::vector<CharEventHandler> _charHandlers;
+        std::vector<CursorEnterEventHandler> _cursorEnterHandlers;
     };
 }
 

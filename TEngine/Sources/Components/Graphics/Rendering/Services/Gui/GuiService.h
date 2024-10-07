@@ -33,11 +33,15 @@ namespace TEngine::Components::Graphics::Rendering::Services::Gui
 
         std::shared_ptr<IImageRenderingStrategy> addImage(const std::string &path) override;
 
+        std::shared_ptr<IInputRenderingStrategy> addInput() override;
+
     private:
         bool _onCursorMove(float xpos, float ypos);
         bool _onMouseButtonClick(int button, int action, int mods);
         bool _onScroll(float xoffset, float yoffset);
         bool _onKey(int key, int scancode, int action, int mods);
+        bool _onChar(unsigned int codepoint);
+        bool _onCursorEnter(bool entered);
 
         std::shared_ptr<Events::Services::IEventService> _eventService;
         std::shared_ptr<ITexturesService> _texturesService;

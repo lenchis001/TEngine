@@ -185,10 +185,11 @@ namespace TEngine::Components::Graphics::Models
 
         Vector3d<T> getRotation() const
         {
-            return Vector3d<T>(
-                atan2(_m32, _m33),
-                asin(-_m31),
-                atan2(_m21, _m11));
+            T x = atan2(_m32, _m33);
+            T y = atan2(-_m31, sqrt(_m32 * _m32 + _m33 * _m33));
+            T z = atan2(_m21, _m11);
+
+            return Vector3d<T>(x, y, z);
         }
 
         Vector3d<T> getScale() const
