@@ -7,7 +7,11 @@ file(GLOB_RECURSE demo_sources_files
 )
 
 # Add the executable target
-add_executable(Demo ${demo_sources_files})
+if (WIN32)
+    add_executable(Demo WIN32 ${demo_sources_files})
+else()
+    add_executable(Demo ${demo_sources_files})
+endif()
 
 # Include the TEngine library
 

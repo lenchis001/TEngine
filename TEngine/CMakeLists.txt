@@ -26,7 +26,7 @@ include(FetchContent)
 FetchContent_Declare(
     glfw
     GIT_REPOSITORY https://github.com/glfw/glfw.git
-    GIT_TAG        master
+    GIT_TAG        3.4
     GIT_SHALLOW    TRUE
 )
 
@@ -58,7 +58,7 @@ include(FetchContent)
 FetchContent_Declare(
     glew
     GIT_REPOSITORY https://github.com/Perlmint/glew-cmake.git
-    GIT_TAG        master
+    GIT_TAG        glew-cmake-2.2.0
     GIT_SHALLOW    TRUE
 )
 
@@ -69,18 +69,19 @@ if(NOT glew_POPULATED)
     # Set GLEW to build as a static library
     set(BUILD_SHARED_LIBS OFF CACHE BOOL " " FORCE)
     set(glew-cmake_BUILD_SHARED OFF CACHE BOOL " " FORCE)
+    set(ONLY_LIBS ON CACHE BOOL " " FORCE)
 
-    add_subdirectory(${glew_SOURCE_DIR}/build/cmake ${glew_BINARY_DIR})
+    add_subdirectory(${glew_SOURCE_DIR} ${glew_BINARY_DIR})
 endif()
 
-# Set GLEW as an external project
-set_target_properties(glew PROPERTIES FOLDER external)
+# # Set GLEW as an external project
+# set_target_properties(glew PROPERTIES FOLDER external)
 
 # Add GLEW includes
 target_include_directories(TEngine PRIVATE ${glew_SOURCE_DIR}/include)
 
 # Add GLEW library
-target_link_libraries(TEngine PRIVATE glew_s)
+target_link_libraries(TEngine PRIVATE libglew_static)
 
 # --------------------- Add OpenAL library ---------------------
 
