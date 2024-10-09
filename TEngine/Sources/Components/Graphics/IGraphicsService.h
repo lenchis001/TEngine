@@ -1,9 +1,12 @@
 #ifndef TENGINE_IGRAPHICSSERVICE_H
 #define TENGINE_IGRAPHICSSERVICE_H
 
-#include "future"
-#include "memory"
-#include "string"
+#include <memory>
+#include <string>
+
+#ifdef _WIN32
+#include <windows.h>
+#endif
 
 #include "Models/DataActionResult.h"
 
@@ -31,6 +34,10 @@ namespace TEngine::Components::Graphics::Services
         virtual std::shared_ptr<Rendering::Services::Gui::IGuiService> getGuiService() = 0;
 
         virtual ~IGraphicsService() = default;
+
+        #ifdef _WIN32
+        virtual HWND getWindowHandler() = 0;
+        #endif
     };
 }
 

@@ -13,6 +13,8 @@ else()
     add_executable(Alice ${alice_sources_files})
 endif()
 
+target_include_directories(Alice PUBLIC "Sources")
+
 # Include the TEngine library
 target_include_directories(Alice PRIVATE "../../TEngine/Sources")
 

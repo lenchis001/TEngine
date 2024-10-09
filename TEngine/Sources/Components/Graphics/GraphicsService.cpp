@@ -2,6 +2,11 @@
 
 #include "GraphicsService.h"
 
+#define GLFW_EXPOSE_NATIVE_WIN32
+#define GLFW_EXPOSE_NATIVE_WGL
+#define GLFW_NATIVE_INCLUDE_NONE
+#include "GLFW/glfw3native.h"
+
 #include "Components/Graphics/CameraTracking/ListenerCameraTrackingStrategy.h"
 
 using namespace TEngine::Components::Graphics::Services;
@@ -61,6 +66,13 @@ std::shared_ptr<IGuiService> GraphicsService::getGuiService()
 	return _guiService;
 }
 
+#ifdef _WIN32
+HWND GraphicsService::getWindowHandler()
+{
+	return glfwGetWin32Window(_window);
+}
+#endif
+
 void GraphicsService::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -85,6 +97,8 @@ void GraphicsService::_initializeGlfw(std::shared_ptr<IGraphicsParameters> param
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, parameters->getOpenGlMinorVersion());
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make macOS happy; should not be needed
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+	glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 
 	_window = glfwCreateWindow(parameters->getWidth(), parameters->getHeight(), parameters->getTitle().c_str(), NULL, NULL);
 	if (_window == NULL)

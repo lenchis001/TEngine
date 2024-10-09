@@ -52,6 +52,10 @@ namespace TEngine::Components::Graphics::Services
 
         std::shared_ptr<IGuiService> getGuiService() override;
 
+        #ifdef _WIN32
+        HWND getWindowHandler() override;
+        #endif
+
     private:
         void _initializeGlfw(std::shared_ptr<IGraphicsParameters> parameters);
 
