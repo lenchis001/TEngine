@@ -7,20 +7,6 @@ add_library(ObjLoadingPlugin SHARED ${sources_files})
 
 target_include_directories(ObjLoadingPlugin PUBLIC "Sources" "../../../TEngine/Sources/Components/Graphics/MeshLoading/Plugin")
 
-# Copy plugin library to TEngine output directory
-add_custom_command(TARGET ObjLoadingPlugin POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
-    "$<TARGET_FILE:ObjLoadingPlugin>"
-    "$<TARGET_FILE_DIR:TEngine>/Plugins/MeshLoading/${CMAKE_SHARED_LIBRARY_PREFIX}ObjLoadingPlugin${CMAKE_SHARED_LIBRARY_SUFFIX}"
-)
-
-# Copy plugin library to example output directory
-add_custom_command(TARGET ObjLoadingPlugin POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
-    "$<TARGET_FILE:ObjLoadingPlugin>"
-    "$<TARGET_FILE_DIR:Demo>/Plugins/MeshLoading/${CMAKE_SHARED_LIBRARY_PREFIX}ObjLoadingPlugin${CMAKE_SHARED_LIBRARY_SUFFIX}"
-)
-
 # --------------------- Dependencies ---------------------
 
 # Download and configure RapidObj

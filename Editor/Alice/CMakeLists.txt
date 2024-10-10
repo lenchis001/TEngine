@@ -28,11 +28,33 @@ add_custom_command(TARGET Alice POST_BUILD
     "$<TARGET_FILE_DIR:Alice>/AliceResources"
 )
 
-# Copy TEngine library
+# Copy TEngine library to Alice
 add_custom_command(TARGET Alice POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy
-    "$<TARGET_FILE_DIR:TEngine>/${CMAKE_SHARED_LIBRARY_PREFIX}TEngine${CMAKE_SHARED_LIBRARY_SUFFIX}"
+    "$<TARGET_FILE:TEngine>"
     "$<TARGET_FILE_DIR:Alice>/"
+)
+
+# Add post-build command to run a Python script
+add_custom_command(TARGET Alice
+                   POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E echo "Running shaders processing..."
+                   COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/shader_builder.py "${CMAKE_SOURCE_DIR}/TEngine/BuildinResources/Shaders" "$<TARGET_FILE_DIR:Alice>/BuildinResources/Shaders"
+                   COMMAND ${CMAKE_COMMAND} -E echo "Shaders processing completed."
+                   COMMENT "Executing post-build shaders processing")
+
+# Copy plugin library to Alice output directory
+add_custom_command(TARGET Alice POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+    "$<TARGET_FILE:BmpImageLoadingPlugin>"
+    "$<TARGET_FILE_DIR:Alice>/Plugins/ImageLoading/${CMAKE_SHARED_LIBRARY_PREFIX}BmpImageLoadingPlugin${CMAKE_SHARED_LIBRARY_SUFFIX}"
+)
+
+# Copy plugin library to Alice output directory
+add_custom_command(TARGET Alice POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+    "$<TARGET_FILE:ObjLoadingPlugin>"
+    "$<TARGET_FILE_DIR:Alice>/Plugins/MeshLoading/${CMAKE_SHARED_LIBRARY_PREFIX}ObjLoadingPlugin${CMAKE_SHARED_LIBRARY_SUFFIX}"
 )
 
 # --------------------- Dependencies ---------------------

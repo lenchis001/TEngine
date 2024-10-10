@@ -38,9 +38,23 @@ add_custom_command(TARGET Demo POST_BUILD
     "$<TARGET_FILE_DIR:Demo>/DemoResources"
 )
 
-# Copy TEngine library
+# Copy TEngine library to demo
 add_custom_command(TARGET Demo POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy
-    "$<TARGET_FILE_DIR:TEngine>/${CMAKE_SHARED_LIBRARY_PREFIX}TEngine${CMAKE_SHARED_LIBRARY_SUFFIX}"
+    "$<TARGET_FILE:TEngine>"
     "$<TARGET_FILE_DIR:Demo>/"
+)
+
+# Copy plugin library to Demo output directory
+add_custom_command(TARGET Demo POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+    "$<TARGET_FILE:BmpImageLoadingPlugin>"
+    "$<TARGET_FILE_DIR:Demo>/Plugins/ImageLoading/${CMAKE_SHARED_LIBRARY_PREFIX}BmpImageLoadingPlugin${CMAKE_SHARED_LIBRARY_SUFFIX}"
+)
+
+# Copy plugin library to example output directory
+add_custom_command(TARGET Demo POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+    "$<TARGET_FILE:ObjLoadingPlugin>"
+    "$<TARGET_FILE_DIR:Demo>/Plugins/MeshLoading/${CMAKE_SHARED_LIBRARY_PREFIX}ObjLoadingPlugin${CMAKE_SHARED_LIBRARY_SUFFIX}"
 )
