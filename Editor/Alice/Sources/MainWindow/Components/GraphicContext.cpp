@@ -49,7 +49,7 @@ GraphicContext::~GraphicContext()
 #ifdef _WIN32
                         auto windowHandler = _engine->getGraphicsService()->getWindowHandler();
                         closeWindow(windowHandler);
-#endif // _WIN32        
+#endif // _WIN32
                     });
 
         _renderThread.join();

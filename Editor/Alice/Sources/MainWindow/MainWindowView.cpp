@@ -2,11 +2,16 @@
 
 #include "Components/GraphicContext.h"
 
+#include "Children/MainMenu/MainMenuView.h"
+
 using namespace Alice::MainWindow;
 
 MainWindowView::MainWindowView(std::shared_ptr<MainWindow::IMainWindowPresenter> presenter)
     : wxFrame(nullptr, wxID_ANY, "Alice Editor")
 {
+    _mainMenuView = std::make_shared<MainMenuView>();
+    SetMenuBar(_mainMenuView.get());
+
     wxPanel* panel = new wxPanel(this, wxID_ANY);
     wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
     auto display = new wxStaticText(panel, wxID_ANY, "0");

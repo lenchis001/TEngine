@@ -11,9 +11,14 @@
 #include "wx/wx.h"
 #endif
 
+#include "IMainWindowPresenter.h"
+
 #include "Components/IGraphicContext.h"
 
+#include "Children/MainMenu/IMainMenuView.h"
+
 using namespace Alice::MainWindow::Components;
+using namespace Alice::MainWindow::Children::MainMenu;
 
 namespace Alice::MainWindow
 {
@@ -24,6 +29,8 @@ namespace Alice::MainWindow
 
     private:
         std::shared_ptr<IGraphicContext> _graphicContext;
+
+        std::shared_ptr<IMainMenuView> _mainMenuView;
 
         wxDECLARE_EVENT_TABLE();
     };
