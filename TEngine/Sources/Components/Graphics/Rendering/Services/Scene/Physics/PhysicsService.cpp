@@ -141,8 +141,6 @@ void PhysicsService::setRotation(
         // We need to multiply by 2 because bullet physics uses twice more rotation than we do
         auto btRotation = rotation * 2;
 
-        std::cout << "Rotation: " << btRotation.getX() << " " << btRotation.getY() << " " << btRotation.getZ() << std::endl;
-
         transform.setRotation(btQuaternion(btRotation.getY(), btRotation.getX(), btRotation.getZ()));
 
         delete object->second->getMotionState();

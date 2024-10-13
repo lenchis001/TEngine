@@ -2,7 +2,7 @@
 
 using namespace Alice::MainWindow;
 
-void MainWindowPresenter::injectView(std::weak_ptr<IMainWindowView> view)
+void MainWindowPresenter::injectView(IMainWindowView* view)
 {
     _view = view;
 }

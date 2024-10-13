@@ -8,10 +8,10 @@ namespace Alice::MainWindow
     class MainWindowPresenter : public IMainWindowPresenter
     {
     public:
-        void injectView(std::weak_ptr<IMainWindowView> view);
+        void injectView(IMainWindowView* view);
 
     private:
-        std::weak_ptr<IMainWindowView> _view;
+        IMainWindowView* _view;
     };
 }
 

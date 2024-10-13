@@ -25,21 +25,27 @@ namespace TEngine::Components::Events::Services
 
         virtual void registerKeyHandler(const KeyboardEventHandler &handler) = 0;
         virtual void unregisterKeyHandler(const KeyboardEventHandler &handler) = 0;
+        virtual void fireKeyHandler(int key, int scancode, int action, int mods) = 0;
 
         virtual void registerCursorMoveHandler(const CursorMoveEventHandler &handler) = 0;
         virtual void unregisterCursorMoveHandler(const CursorMoveEventHandler &handler) = 0;
+        virtual void fireCursorMoveHandler(float xpos, float ypos) = 0;
 
         virtual void registerMouseButtonHandler(const MouseButtonEventHandler &handler) = 0;
         virtual void unregisterMouseButtonHandler(const MouseButtonEventHandler &handler) = 0;
+        virtual void fireMouseButtonHandler(int button, int action, int mods) = 0;
 
         virtual void registerScrollHandler(const ScrollEventHandler &handler) = 0;
         virtual void unregisterScrollHandler(const ScrollEventHandler &handler) = 0;
+        virtual void fireScrollHandler(float xoffset, float yoffset) = 0;
 
         virtual void registerCharHandler(const CharEventHandler &handler) = 0;
         virtual void unregisterCharHandler(const CharEventHandler &handler) = 0;
+        virtual void fireCharHandler(unsigned int codepoint) = 0;
 
         virtual void registerCursorEnterHandler(const CursorEnterEventHandler &handler) = 0;
         virtual void unregisterCursorEnterHandler(const CursorEnterEventHandler &handler) = 0;
+        virtual void fireCursorEnterHandler(bool entered) = 0;
 
         virtual void setCursorePosition(const Graphics::Models::Vector2di& value) = 0;
         virtual void setCursorVisibility(bool isVisible) = 0;

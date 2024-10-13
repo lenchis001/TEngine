@@ -1,59 +1,56 @@
-#ifndef TENGINE_EVENT_SERVICE_H
-#define TENGINE_EVENT_SERVICE_H
+#ifndef TENGINE_EVENT_SERVICE_BASE_H
+#define TENGINE_EVENT_SERVICE_BASE_H
 
 #include "IEventService.h"
 
-#include "unordered_map"
-#include "vector"
+#include <unordered_map>
+#include <vector>
 #include <algorithm>
-
-#include "GLFW/glfw3.h"
-
-#include "Mixins/ContextAwareMixin.h"
+#include <cassert>
 
 using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Events::Models;
-using namespace TEngine::Mixins;
 
 namespace TEngine::Components::Events::Services
 {
-    class EventService : public IEventService, public ContextAwareMixin<EventService>
+    class EventServiceBase : public IEventService
     {
     public:
-        EventService() = default;
-        ~EventService() override;
-
-        void initialize() override;
+        ~EventServiceBase() override;
 
         void registerKeyHandler(const KeyboardEventHandler &handler) override;
         void unregisterKeyHandler(const KeyboardEventHandler &handler) override;
+        void fireKeyHandler(int key, int scancode, int action, int mods) override;
 
         void registerCursorMoveHandler(const CursorMoveEventHandler &handler) override;
         void unregisterCursorMoveHandler(const CursorMoveEventHandler &handler) override;
+        void fireCursorMoveHandler(float xpos, float ypos) override;
 
         void registerMouseButtonHandler(const MouseButtonEventHandler &handler) override;
         void unregisterMouseButtonHandler(const MouseButtonEventHandler &handler) override;
+        void fireMouseButtonHandler(int button, int action, int mods) override;
 
         void registerScrollHandler(const ScrollEventHandler &handler) override;
         void unregisterScrollHandler(const ScrollEventHandler &handler) override;
+        void fireScrollHandler(float xoffset, float yoffset) override;
 
         void registerCharHandler(const CharEventHandler &handler) override;
         void unregisterCharHandler(const CharEventHandler &handler) override;
+        void fireCharHandler(unsigned int codepoint) override;
 
         void registerCursorEnterHandler(const CursorEnterEventHandler &handler) override;
         void unregisterCursorEnterHandler(const CursorEnterEventHandler &handler) override;
+        void fireCursorEnterHandler(bool entered) override;
 
-        void setCursorePosition(const Vector2di &value) override;
-        void setCursorVisibility(bool isVisible) override;
+    protected:
+        std::vector<KeyboardEventHandler> _keyboardHandlers;
+        std::vector<CursorMoveEventHandler> _cursorMoveHandlers;
+        std::vector<MouseButtonEventHandler> _mouseButtonHandlers;
+        std::vector<ScrollEventHandler> _scrollHandlers;
+        std::vector<CharEventHandler> _charHandlers;
+        std::vector<CursorEnterEventHandler> _cursorEnterHandlers;
 
     private:
-        static void _keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
-        static void _cursorPosCallback(GLFWwindow *window, double xpos, double ypos);
-        static void _mouseButtonCallback(GLFWwindow *window, int button, int action, int mods);
-        static void _scrollCallback(GLFWwindow *window, double xoffset, double yoffset);
-        static void _charCallback(GLFWwindow *window, unsigned int codepoint);
-        static void _cursorEnterCallback(GLFWwindow *window, int entered);
-
         template <class T>
         static void removeEventHandler(std::vector<T> &handlers, const T &handler)
         {
@@ -65,14 +62,7 @@ namespace TEngine::Components::Events::Services
 
             assert((handlersSize - 1) == handlers.size() && "Handler was not found");
         }
-
-        std::vector<KeyboardEventHandler> _keyboardHandlers;
-        std::vector<CursorMoveEventHandler> _cursorMoveHandlers;
-        std::vector<MouseButtonEventHandler> _mouseButtonHandlers;
-        std::vector<ScrollEventHandler> _scrollHandlers;
-        std::vector<CharEventHandler> _charHandlers;
-        std::vector<CursorEnterEventHandler> _cursorEnterHandlers;
     };
 }
 
-#endif // TENGINE_EVENT_SERVICE_H
+#endif // TENGINE_EVENT_SERVICE_BASE_H

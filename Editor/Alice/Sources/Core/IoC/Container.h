@@ -12,23 +12,23 @@ namespace Alice::Core::IoC
     {
     public:
         template <class T>
-        void registerType(std::function<std::shared_ptr<T>(Container *)> factory)
+        void registerType(std::function<T*(Container *)> factory)
         {
             _factories[std::type_index(typeid(T))] = [factory](Container *container)
             {
-                return std::static_pointer_cast<void>(factory(container));
+                return static_cast<void*>(factory(container));
             };
         }
 
         template <class T>
-        std::shared_ptr<T> resolve()
+        T* resolve()
         {
             auto factory = _factories[std::type_index(typeid(T))];
-            return std::static_pointer_cast<T>(factory(this));
+            return static_cast<T*>(factory(this));
         }
 
     private:
-        std::unordered_map<std::type_index, std::function<std::shared_ptr<void>(Container *)>> _factories;
+        std::unordered_map<std::type_index, std::function<void*(Container *)>> _factories;
     };
 }
 

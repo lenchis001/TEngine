@@ -25,12 +25,10 @@ namespace Alice::MainWindow
     class MainWindowView : public wxFrame, public IMainWindowView
     {
     public:
-        MainWindowView(std::shared_ptr<MainWindow::IMainWindowPresenter> presenter);
+        MainWindowView(std::shared_ptr<MainWindow::IMainWindowPresenter> presenter, IMainMenuView* mainMenuView);
 
     private:
         std::shared_ptr<IGraphicContext> _graphicContext;
-
-        std::shared_ptr<IMainMenuView> _mainMenuView;
 
         wxDECLARE_EVENT_TABLE();
     };

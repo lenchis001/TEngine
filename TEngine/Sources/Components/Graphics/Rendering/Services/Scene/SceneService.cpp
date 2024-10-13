@@ -1,6 +1,4 @@
-#include "stdexcept"
-
-#include "GLFW/glfw3.h"
+#include <stdexcept>
 
 #include "SceneService.h"
 
@@ -161,8 +159,5 @@ void SceneService::setActiveCamera(std::shared_ptr<ICameraStrategy> camera)
 
 Vector2di SceneService::_getWindowSize() const
 {
-	int width, height;
-	glfwGetWindowSize(glfwGetCurrentContext(), &width, &height);
-
-	return Vector2di(width, height);
+	return Vector2di(100, 200);
 }

@@ -3,6 +3,10 @@
 
 #include <memory>
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 #include "Configs/TEngineExport.h"
 
 #include "Components/Graphics/IGraphicsService.h"
@@ -29,7 +33,11 @@ namespace TEngine
         virtual ~IEngine() = default;
     };
 
-    TENGINE_API std::shared_ptr<IEngine> createEngine();
+    TENGINE_API std::shared_ptr<IEngine> createEngine(
+        #ifdef _WIN32
+        HWND parent = nullptr
+        #endif
+    );
 }
 
 #endif // IENGINE_H

@@ -4,7 +4,7 @@
 
 #include "Engine.h"
 
-#include "Components/Graphics/GraphicsService.h"
+#include "Components/Graphics/GlfwGraphicsService.h"
 #include "Components/Graphics/Rendering/Services/Scene/SceneService.h"
 #include "Components/Graphics/MeshLoading/Services/MeshLoadingService.h"
 #include "Components/Graphics/Rendering/Services/Scene/Shaders/ShadersService.h"
@@ -18,8 +18,12 @@
 #include "Components/Graphics/CameraTracking/ListenerCameraTrackingStrategy.h"
 #include "Components/Audio/Services/Readers/VorbisOggReader.h"
 #include "Components/Audio/Services/AudioService.h"
+#include "Components/Events/Services/GlfwEventService.h"
 
-#include "Components/Events/Services/EventService.h"
+#ifdef _WIN32
+#include "Components/Graphics/Win32GraphicService.h"
+#include "Components/Events/Services/Win32EventService.h"
+#endif // _WIN32
 
 using namespace TEngine;
 using namespace TEngine::Components::Graphics::Services;
@@ -38,9 +42,24 @@ using namespace TEngine::Components::Audio::Services;
 
 using namespace TEngine::Components::Events::Services;
 
-std::shared_ptr<IEngine> TEngine::createEngine()
+std::shared_ptr<IEngine> TEngine::createEngine(
+#ifdef _WIN32
+    HWND parent
+#endif
+)
 {
-    auto eventsService = std::make_shared<EventService>();
+    std::shared_ptr<IEventService> eventsService;
+
+    if (parent)
+    {
+#ifdef _WIN32
+        eventsService = std::make_shared<Win32EventService>();
+#endif // _WIN32
+    }
+    else
+    {
+        eventsService = std::make_shared<GlfwEventService>();
+    }
 
     auto vorbisOggReader = std::make_shared<VorbisOggReader>();
     auto audioService = std::make_shared<AudioService>(vorbisOggReader);
@@ -55,14 +74,23 @@ std::shared_ptr<IEngine> TEngine::createEngine()
     auto lightServices = std::make_shared<LightService>();
     auto physicsService = std::make_shared<PhysicsService>();
 
-    auto buildinCameraTrackingStrategies = std::vector<std::shared_ptr<ICameraTrackingStrategy>> {
-        std::make_shared<ListenerCameraTrackingStrategy>(audioService)
-    };
+    auto buildinCameraTrackingStrategies = std::vector<std::shared_ptr<ICameraTrackingStrategy>>{
+        std::make_shared<ListenerCameraTrackingStrategy>(audioService)};
     auto sceneService = std::make_shared<SceneService>(eventsService, shadersService, bufferCacheService, texturesService, meshService, lightServices, physicsService, buildinCameraTrackingStrategies);
 
     auto guiService = std::make_shared<GuiService>(eventsService, texturesService);
 
-    auto graphicsService = std::make_shared<GraphicsService>(sceneService, guiService, meshLoadingService, texturesService);
+    std::shared_ptr<IGraphicsService> graphicsService;
+    if (parent)
+    {
+#ifdef _WIN32
+        graphicsService = std::make_shared<Win32GraphicService>(sceneService, guiService, meshLoadingService, texturesService, parent);
+#endif // _WIN32
+    }
+    else
+    {
+        graphicsService = std::make_shared<GlfwGraphicsService>(sceneService, guiService, meshLoadingService, texturesService);
+    }
 
     return std::make_shared<Engine>(graphicsService, eventsService, audioService);
 }

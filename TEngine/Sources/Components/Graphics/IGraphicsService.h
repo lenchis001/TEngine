@@ -29,15 +29,13 @@ namespace TEngine::Components::Graphics::Services
 
         virtual void render() = 0;
 
+        virtual void resize(int width, int height) = 0;
+
         virtual std::shared_ptr<Rendering::Services::Scene::ISceneService> getSceneService() = 0;
 
         virtual std::shared_ptr<Rendering::Services::Gui::IGuiService> getGuiService() = 0;
 
         virtual ~IGraphicsService() = default;
-
-        #ifdef _WIN32
-        virtual HWND getWindowHandler() = 0;
-        #endif
     };
 }
 

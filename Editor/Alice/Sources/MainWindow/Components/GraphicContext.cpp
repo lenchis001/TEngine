@@ -2,55 +2,25 @@
 
 using namespace Alice::MainWindow::Components;
 
-#ifdef _WIN32
-void closeWindow(HWND windowHandler)
-{
-    PostMessage(windowHandler, WM_CLOSE, 0, 0);
-}
-
-void resizeByParent(HWND child, HWND parent)
-{
-    RECT parentRect;
-    GetClientRect(parent, &parentRect);
-    SetWindowPos(child, nullptr, 0, 0, parentRect.right - parentRect.left, parentRect.bottom - parentRect.top, SWP_NOZORDER | SWP_NOACTIVATE | SWP_FRAMECHANGED);
-}
-
-// This function cannot be a part of GraphicContext because of a conflict with the wxWidgets library
-// (wxWidgets has a class level "SetParent" function with the same name)
-void setWin32Parent(HWND child, HWND parent)
-{
-    // Remove window borders
-    LONG style = GetWindowLong(child, GWL_STYLE);
-    style &= ~(WS_OVERLAPPEDWINDOW); // Remove all borders and title bar
-    SetWindowLong(child, GWL_STYLE, style);
-
-    // Set the parent window
-    SetParent(child, parent);
-
-    // Adjust the size of the GLFW window to match the parent window
-    resizeByParent(child, parent);
-}
-#endif // _WIN32
+using namespace TEngine::Components::Graphics::Rendering::Models::Meshes;
+using namespace TEngine::Components::Graphics::Models;
+using namespace TEngine::Components::Graphics::Rendering::Models::Physics;
 
 GraphicContext::GraphicContext(wxWindow *parent)
-    : IGraphicContext(parent)
+    : IGraphicContext(parent), _isShutdownRequested(false)
 {
-    _engine = TEngine::createEngine();
-
-    SetBackgroundColour(wxColour(128, 0, 0));
+        SetBackgroundColour(wxColour(128, 0, 0));
 }
 
 GraphicContext::~GraphicContext()
 {
     if (_renderThread.joinable())
     {
-        addFunction([this]()
-                    {
+        addFunction([this]() {
 #ifdef _WIN32
-                        auto windowHandler = _engine->getGraphicsService()->getWindowHandler();
-                        closeWindow(windowHandler);
+        _isShutdownRequested = true;
 #endif // _WIN32
-                    });
+        });
 
         _renderThread.join();
     }
@@ -58,38 +28,77 @@ GraphicContext::~GraphicContext()
 
 void GraphicContext::OnResize(wxSizeEvent &event)
 {
-    if (!_renderThread.joinable())
+        if (!_renderThread.joinable())
     {
         _renderThread = std::thread(std::bind(&GraphicContext::_initializeEngine, this));
     }
 
     addFunction([this]()
                 {
-#ifdef _WIN32
-                    auto windowHandler = _engine->getGraphicsService()->getWindowHandler();
-                    resizeByParent(windowHandler, (HWND)GetHWND());
-#endif // _WIN32
-                });
+    auto graphicsService = _engine->getGraphicsService();
+    auto size = GetSize();
+
+    graphicsService->resize(size.GetWidth(), size.GetHeight()); });
 }
 
 void GraphicContext::_initializeEngine()
 {
-    auto creationParameters = TEngine::Models::createEngineParameters();
-    _engine->initialize(creationParameters);
-
-#ifdef _WIN32
-    auto windowHandler = _engine->getGraphicsService()->getWindowHandler();
-
-    setWin32Parent(windowHandler, (HWND)GetHWND());
-    ShowWindow(windowHandler, SW_SHOW);
+    #ifdef _WIN32
+    _engine = TEngine::createEngine((HWND)GetHWND());
 #endif // _WIN32
 
+    
+    auto creationParameters = TEngine::Models::createEngineParameters();
+        _engine->initialize(creationParameters);
+    
+    
     auto graphicsService = _engine->getGraphicsService();
 
     graphicsService->getGuiService()->addWindow();
+    
+    graphicsService->getSceneService()->setActiveCamera(TEngine::Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes::BASE);
 
-    while (!graphicsService->isShutdownRequested())
+        for (int i = 1; i < 32; i++)
     {
+        for (int j = 1; j < 32; j++)
+        {
+            auto cube = graphicsService->getSceneService()->addMesh("./DemoResources/test plane/plane.obj");
+            cube->setPosition(Vector3df(2.0f * i, 0.0f, 2.0f * j));
+        }
+
+        auto cube3 = graphicsService->getSceneService()->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp", nullptr, PhysicsFlags::DYNAMIC);
+        cube3->setPosition(Vector3df(2.0f * i, 4.f * i, i * 2.0f));
+
+        auto cube = graphicsService->getSceneService()->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp", nullptr, PhysicsFlags::STATIC);
+        cube->setPosition(Vector3df(-3.0f * i, 0.0f, 0.0f));
+
+        auto cube2 = graphicsService->getSceneService()->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp", nullptr, PhysicsFlags::DYNAMIC);
+        cube2->setPosition(Vector3df(-3.0f * i, 4.f * i, 0.0f));
+
+        auto testCube = graphicsService->getSceneService()->addMesh("./DemoResources/test cube/cube.obj");
+        testCube->setPosition(Vector3df(0.0f, 0.0f, 3.0f * i));
+
+        auto sofa = graphicsService->getSceneService()->addMesh("./DemoResources/sofa.obj");
+        sofa->setPosition(Vector3df(3.0f * i + 5.0f, 0.0f, 0.0f));
+    }
+
+        while (!_isShutdownRequested)
+    {
+        static auto lastTime = std::chrono::high_resolution_clock::now();
+        static int frameCount = 0;
+
+        frameCount++;
+        auto currentTime = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> elapsed = currentTime - lastTime;
+
+        if (elapsed.count() >= 1.0)
+        {
+            double fps = frameCount / elapsed.count();
+            
+            frameCount = 0;
+            lastTime = currentTime;
+        }
+
         this->executeFunctions();
 
         graphicsService->render();

@@ -20,12 +20,12 @@ Engine::~Engine()
 
 void Engine::initialize(std::shared_ptr<IEngineParameters> parameters)
 {
-    _graphicsService->initialize(parameters->getGraphicsParameters());
+        _graphicsService->initialize(parameters->getGraphicsParameters());
 
-    _eventService->initialize();
+        _eventService->initialize();
 
-    _audioService->initialize();
-}
+        _audioService->initialize();
+    }
 
 void Engine::deinitialize()
 {

@@ -13,6 +13,7 @@ GuiService::GuiService(std::shared_ptr<IEventService> eventService, std::shared_
 
 GuiService::~GuiService()
 {
+    return;
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
@@ -27,6 +28,7 @@ GuiService::~GuiService()
 
 void GuiService::initialize()
 {
+    return;
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
@@ -49,6 +51,7 @@ void GuiService::initialize()
 
 void GuiService::render()
 {
+    return;
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
@@ -64,6 +67,7 @@ void GuiService::render()
 
 std::shared_ptr<IWindowRenderingStrategy> GuiService::addWindow()
 {
+    return nullptr;
     auto window = std::make_shared<WindowRenderingStrategy>();
 
     _controls.push_back(window);
@@ -73,6 +77,7 @@ std::shared_ptr<IWindowRenderingStrategy> GuiService::addWindow()
 
 std::shared_ptr<IImageRenderingStrategy> GuiService::addImage(const std::string &path)
 {
+    return nullptr;
     auto image = std::make_shared<ImageRenderingStrategy>(_texturesService, path);
 
     return image;
@@ -80,6 +85,7 @@ std::shared_ptr<IImageRenderingStrategy> GuiService::addImage(const std::string 
 
 std::shared_ptr<IInputRenderingStrategy> GuiService::addInput()
 {
+    return nullptr;
     auto input = std::make_shared<InputRenderingStrategy>();
 
     return input;
@@ -87,6 +93,7 @@ std::shared_ptr<IInputRenderingStrategy> GuiService::addInput()
 
 bool GuiService::_onCursorMove(float xpos, float ypos)
 {
+    return false;
     ImGui_ImplGlfw_CursorPosCallback(glfwGetCurrentContext(), xpos, ypos);
 
     return false;
@@ -94,6 +101,7 @@ bool GuiService::_onCursorMove(float xpos, float ypos)
 
 bool GuiService::_onMouseButtonClick(int button, int action, int mods)
 {
+    return false;
     ImGui_ImplGlfw_MouseButtonCallback(glfwGetCurrentContext(), button, action, mods);
 
     return false;
@@ -101,6 +109,7 @@ bool GuiService::_onMouseButtonClick(int button, int action, int mods)
 
 bool GuiService::_onScroll(float xoffset, float yoffset)
 {
+    return false;
     ImGui_ImplGlfw_ScrollCallback(glfwGetCurrentContext(), xoffset, yoffset);
 
     return false;
@@ -108,6 +117,7 @@ bool GuiService::_onScroll(float xoffset, float yoffset)
 
 bool GuiService::_onKey(int key, int scancode, int action, int mods)
 {
+    return false;
     ImGui_ImplGlfw_KeyCallback(glfwGetCurrentContext(), key, scancode, action, mods);
 
     return false;
@@ -115,6 +125,7 @@ bool GuiService::_onKey(int key, int scancode, int action, int mods)
 
 bool GuiService::_onChar(unsigned int codepoint)
 {
+    return false;
     ImGui_ImplGlfw_CharCallback(glfwGetCurrentContext(), codepoint);
 
     return false;
@@ -122,6 +133,7 @@ bool GuiService::_onChar(unsigned int codepoint)
 
 bool GuiService::_onCursorEnter(bool entered)
 {
+    return false;
     ImGui_ImplGlfw_CursorEnterCallback(glfwGetCurrentContext(), entered);
 
     return false;

@@ -1,11 +1,6 @@
 #include "GL/glew.h"
 
-#include "GraphicsService.h"
-
-#define GLFW_EXPOSE_NATIVE_WIN32
-#define GLFW_EXPOSE_NATIVE_WGL
-#define GLFW_NATIVE_INCLUDE_NONE
-#include "GLFW/glfw3native.h"
+#include "GlfwGraphicsService.h"
 
 #include "Components/Graphics/CameraTracking/ListenerCameraTrackingStrategy.h"
 
@@ -13,78 +8,52 @@ using namespace TEngine::Components::Graphics::Services;
 
 using namespace TEngine::Components::Graphics::CameraTracking;
 
-GraphicsService::GraphicsService(
+GlfwGraphicsService::GlfwGraphicsService(
 	std::shared_ptr<ISceneService> sceneService,
 	std::shared_ptr<IGuiService> guiService,
 	std::shared_ptr<IMeshLoadingService> meshLoadingService,
 	std::shared_ptr<ITexturesService> texturesService)
-	: _sceneService(sceneService),
-	  _guiService(guiService),
-	  _meshLoadingService(meshLoadingService),
-	  _texturesService(texturesService)
+	: GraphicsServiceBase(sceneService, guiService, meshLoadingService, texturesService)
 {
 }
 
-GraphicsService::~GraphicsService()
+GlfwGraphicsService::~GlfwGraphicsService()
 {
 	glfwSetWindowSizeCallback(_window, nullptr);
 	glfwTerminate();
 }
 
-void GraphicsService::initialize(std::shared_ptr<IGraphicsParameters> parameters)
+void GlfwGraphicsService::initialize(std::shared_ptr<IGraphicsParameters> parameters)
 {
 	_initializeGlfw(parameters);
 	
-	_meshLoadingService->initialize();
-	_texturesService->initialize();
-	_sceneService->initialize();
-	_guiService->initialize();
+	GlfwGraphicsService::initialize(parameters);
 }
 
-void GraphicsService::deinitialize()
+void GlfwGraphicsService::deinitialize()
 {
-	_sceneService->deinitialize();
+	GraphicsServiceBase::deinitialize();
 }
 
-bool GraphicsService::isShutdownRequested() const
+bool GlfwGraphicsService::isShutdownRequested() const
 {
 	return glfwWindowShouldClose(_window) != 0;
 }
 
-double GraphicsService::getTime() const
+double GlfwGraphicsService::getTime() const
 {
 	return glfwGetTime();
 }
 
-std::shared_ptr<ISceneService> GraphicsService::getSceneService()
+void GlfwGraphicsService::render()
 {
-	return _sceneService;
-}
-
-std::shared_ptr<IGuiService> GraphicsService::getGuiService()
-{
-	return _guiService;
-}
-
-#ifdef _WIN32
-HWND GraphicsService::getWindowHandler()
-{
-	return glfwGetWin32Window(_window);
-}
-#endif
-
-void GraphicsService::render()
-{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	_sceneService->render(getTime());
-	_guiService->render();
+	GraphicsServiceBase::render();
 
 	glfwSwapBuffers(_window);
 	glfwPollEvents();
 }
 
-void GraphicsService::_initializeGlfw(std::shared_ptr<IGraphicsParameters> parameters)
+void GlfwGraphicsService::_initializeGlfw(std::shared_ptr<IGraphicsParameters> parameters)
 {
 	// Initialize GLFW
 	if (!glfwInit())
@@ -115,14 +84,14 @@ void GraphicsService::_initializeGlfw(std::shared_ptr<IGraphicsParameters> param
 	}
 
 	setContext(this);
-	glfwSetWindowSizeCallback(_window, &GraphicsService::_onWindowResized);
+	glfwSetWindowSizeCallback(_window, &GlfwGraphicsService::_onWindowResized);
 	glfwSwapInterval(parameters->getIsVerticalSyncEnabled());
 
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 	glEnable(GL_DEPTH_TEST);
 }
 
-void GraphicsService::_onWindowResized(GLFWwindow *window, int width, int height)
+void GlfwGraphicsService::_onWindowResized(GLFWwindow *window, int width, int height)
 {
 	#if (defined(_WIN32) || defined(_WIN64))
 	glViewport(0, 0, width, height);

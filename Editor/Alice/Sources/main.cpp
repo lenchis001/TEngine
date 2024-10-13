@@ -4,15 +4,14 @@
 #include "MainWindow/MainWindowPresenter.h"
 #include "MainWindow/MainWindowView.h"
 
+#include "MainWindow/Children/MainMenu/MainMenuView.h"
+
 using namespace Alice::MainWindow;
 
 class MyApp : public wxApp
 {
 public:
     virtual bool OnInit() wxOVERRIDE;
-
-private:
-    std::shared_ptr<MainWindowView> _view;
 };
 
 wxIMPLEMENT_APP(MyApp);
@@ -24,20 +23,23 @@ bool MyApp::OnInit()
 
     auto container = std::make_shared<Alice::Core::IoC::Container>();
 
+    container->registerType<MainMenuView>([&](Alice::Core::IoC::Container *container)
+                                          { return new MainMenuView(); });
+
     container->registerType<MainWindowPresenter>([&](Alice::Core::IoC::Container *container)
-                                                 { return std::make_shared<MainWindowPresenter>(); });
+                                                 { return new MainWindowPresenter(); });
 
     container->registerType<MainWindowView>([&](Alice::Core::IoC::Container *container)
                                             {
-        auto presenter = container->resolve<MainWindowPresenter>();
+        auto presenter = std::shared_ptr<MainWindowPresenter>(container->resolve<MainWindowPresenter>());
+        auto mainMenuView = container->resolve<MainMenuView>();
 
-        auto view = std::make_shared<MainWindowView>(presenter);
+        auto view = new MainWindowView(presenter, mainMenuView);
         presenter->injectView(view);
 
         return view; });
 
-    _view = container->resolve<MainWindowView>();
-    _view->Show(true);
+    container->resolve<MainWindowView>()->Show(true);
 
     return true;
 }

@@ -27,6 +27,7 @@ namespace Alice::MainWindow::Components
         std::thread _renderThread;
 
         std::shared_ptr<IEngine> _engine;
+        bool _isShutdownRequested;
 
         wxDECLARE_EVENT_TABLE();
     };
