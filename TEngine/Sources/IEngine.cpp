@@ -23,10 +23,12 @@
 #ifdef _WIN32
 #include "Components/Graphics/Win32GraphicService.h"
 #include "Components/Events/Services/Win32EventService.h"
-#endif // _WIN32
+#elif __APPLE__
+#include "Components/Graphics/CocoaGraphicsService.h"
+#endif
 
 using namespace TEngine;
-using namespace TEngine::Components::Graphics::Services;
+using namespace TEngine::Components::Graphics;
 using namespace TEngine::Components::Graphics::Rendering::Services;
 using namespace TEngine::Components::Graphics::MeshLoading::Services;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::Shaders;
@@ -45,6 +47,8 @@ using namespace TEngine::Components::Events::Services;
 std::shared_ptr<IEngine> TEngine::createEngine(
 #ifdef _WIN32
     HWND parent
+#elif __APPLE__
+    void *parent
 #endif
 )
 {
@@ -85,7 +89,9 @@ std::shared_ptr<IEngine> TEngine::createEngine(
     {
 #ifdef _WIN32
         graphicsService = std::make_shared<Win32GraphicService>(sceneService, guiService, meshLoadingService, texturesService, parent);
-#endif // _WIN32
+#elif __APPLE__
+        graphicsService = std::make_shared<CocoaGraphicsService>(sceneService, guiService, meshLoadingService, texturesService, parent);
+#endif
     }
     else
     {

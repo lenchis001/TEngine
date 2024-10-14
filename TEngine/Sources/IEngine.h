@@ -20,7 +20,7 @@ namespace TEngine
     class IEngine
     {
     public:
-        virtual std::shared_ptr<TEngine::Components::Graphics::Services::IGraphicsService> getGraphicsService() = 0;
+        virtual std::shared_ptr<TEngine::Components::Graphics::IGraphicsService> getGraphicsService() = 0;
 
         virtual std::shared_ptr<TEngine::Components::Events::Services::IEventService> getEventService() = 0;
 
@@ -36,6 +36,8 @@ namespace TEngine
     TENGINE_API std::shared_ptr<IEngine> createEngine(
         #ifdef _WIN32
         HWND parent = nullptr
+        #elif __APPLE__
+        void *parent = nullptr
         #endif
     );
 }

@@ -9,7 +9,7 @@
 
 using namespace TEngine::Mixins;
 
-namespace TEngine::Components::Graphics::Services
+namespace TEngine::Components::Graphics
 {
     class GlfwGraphicsService : public GraphicsServiceBase, public ContextAwareMixin<GlfwGraphicsService>
     {

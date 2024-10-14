@@ -9,7 +9,7 @@
 
 typedef BOOL (WINAPI *PFNWGLSWAPINTERVALEXTPROC)(int interval);
 
-namespace TEngine::Components::Graphics::Services
+namespace TEngine::Components::Graphics
 {
     class Win32GraphicService : public GraphicsServiceBase
     {

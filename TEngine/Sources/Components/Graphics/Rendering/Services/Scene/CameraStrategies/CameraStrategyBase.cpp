@@ -19,6 +19,8 @@ CameraStrategyBase::CameraStrategyBase(
       _position(position),
       _target(target)
 {
+    setWindowSize(windowSize);
+
     _recalculateProjection();
     _recalculateView();
     _recalculateVp();

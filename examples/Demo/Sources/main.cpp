@@ -29,7 +29,7 @@ int main()
         auto sceneService = graphicsService->getSceneService();
         auto guiService = graphicsService->getGuiService();
 
-        sceneService->setActiveCamera(TEngine::Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes::FPS);
+        sceneService->setActiveCamera(TEngine::Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes::BASE);
 
         auto solid = sceneService->addSolidbox(Vector3df(15.0f, 1.0f, 15.0f));
         solid->setPosition(Vector3df(0.0f, -5.0f, 0.0f));

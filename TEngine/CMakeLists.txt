@@ -1,6 +1,7 @@
 file(GLOB_RECURSE tengine_sources_files
     "Sources/*.cpp"
     "Sources/*.c"
+    "Sources/*.mm"
 )
 
 add_library(TEngine SHARED ${tengine_sources_files})

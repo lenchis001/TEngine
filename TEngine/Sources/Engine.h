@@ -6,7 +6,7 @@
 #include "GLFW/glfw3.h"
 
 using namespace TEngine::Models;
-using namespace TEngine::Components::Graphics::Services;
+using namespace TEngine::Components::Graphics;
 using namespace TEngine::Components::Events::Services;
 using namespace TEngine::Components::Audio::Services;
 

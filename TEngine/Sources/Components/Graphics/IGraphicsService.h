@@ -14,7 +14,7 @@
 #include "Rendering/Services/Scene/ISceneService.h"
 #include "Rendering/Services/Gui/IGuiService.h"
 
-namespace TEngine::Components::Graphics::Services
+namespace TEngine::Components::Graphics
 {
     class IGraphicsService
     {

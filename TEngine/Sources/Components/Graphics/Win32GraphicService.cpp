@@ -4,7 +4,7 @@
 
 #include "Win32GraphicService.h"
 
-using namespace TEngine::Components::Graphics::Services;
+using namespace TEngine::Components::Graphics;
 
 Win32GraphicService::Win32GraphicService(
     std::shared_ptr<ISceneService> sceneService,

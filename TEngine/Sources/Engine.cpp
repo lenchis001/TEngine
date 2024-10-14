@@ -22,7 +22,7 @@ void Engine::initialize(std::shared_ptr<IEngineParameters> parameters)
 {
         _graphicsService->initialize(parameters->getGraphicsParameters());
 
-        _eventService->initialize();
+        //_eventService->initialize();
 
         _audioService->initialize();
     }

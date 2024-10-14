@@ -40,7 +40,6 @@ FpsCameraStrategy::FpsCameraStrategy(
     _eventService->registerCursorMoveHandler(std::bind(&FpsCameraStrategy::_onMouseMoved, this, std::placeholders::_1, std::placeholders::_2));
     _eventService->registerKeyHandler(std::bind(&FpsCameraStrategy::_onKeyPressed, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
 
-    setWindowSize(Vector2di(1280, 720));
     _eventService->setCursorVisibility(false);
 }
 

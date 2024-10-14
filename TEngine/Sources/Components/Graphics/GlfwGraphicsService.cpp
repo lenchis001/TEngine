@@ -4,7 +4,7 @@
 
 #include "Components/Graphics/CameraTracking/ListenerCameraTrackingStrategy.h"
 
-using namespace TEngine::Components::Graphics::Services;
+using namespace TEngine::Components::Graphics;
 
 using namespace TEngine::Components::Graphics::CameraTracking;
 
@@ -27,7 +27,7 @@ void GlfwGraphicsService::initialize(std::shared_ptr<IGraphicsParameters> parame
 {
 	_initializeGlfw(parameters);
 	
-	GlfwGraphicsService::initialize(parameters);
+	GraphicsServiceBase::initialize(parameters);
 }
 
 void GlfwGraphicsService::deinitialize()
@@ -67,8 +67,6 @@ void GlfwGraphicsService::_initializeGlfw(std::shared_ptr<IGraphicsParameters> p
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make macOS happy; should not be needed
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-
 	_window = glfwCreateWindow(parameters->getWidth(), parameters->getHeight(), parameters->getTitle().c_str(), NULL, NULL);
 	if (_window == NULL)
 	{
@@ -93,16 +91,7 @@ void GlfwGraphicsService::_initializeGlfw(std::shared_ptr<IGraphicsParameters> p
 
 void GlfwGraphicsService::_onWindowResized(GLFWwindow *window, int width, int height)
 {
-	#if (defined(_WIN32) || defined(_WIN64))
-	glViewport(0, 0, width, height);
-#endif
-
 	auto that = getContext();
-	auto sceneService = that->getSceneService();
-	auto activeCamera = sceneService->getActiveCamera();
-
-	if (activeCamera)
-	{
-		activeCamera->setWindowSize(Vector2di(width, height));
-	}
+	
+	that->resize(width * 2, height * 2);
 }

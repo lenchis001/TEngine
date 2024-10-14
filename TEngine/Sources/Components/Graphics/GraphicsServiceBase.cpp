@@ -4,7 +4,7 @@
 
 #include "Components/Graphics/CameraTracking/ListenerCameraTrackingStrategy.h"
 
-using namespace TEngine::Components::Graphics::Services;
+using namespace TEngine::Components::Graphics;
 
 using namespace TEngine::Components::Graphics::CameraTracking;
 
@@ -60,6 +60,7 @@ void GraphicsServiceBase::render()
 
 void GraphicsServiceBase::resize(int width, int height)
 {	
+	std::cout << "Resizing to " << width << "x" << height << std::endl;
 	glViewport(0, 0, width, height);
 	
 	auto sceneService = this->getSceneService();

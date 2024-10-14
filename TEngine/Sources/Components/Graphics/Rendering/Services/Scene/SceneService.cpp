@@ -159,5 +159,5 @@ void SceneService::setActiveCamera(std::shared_ptr<ICameraStrategy> camera)
 
 Vector2di SceneService::_getWindowSize() const
 {
-	return Vector2di(100, 200);
+	return Vector2di(1280, 720);
 }

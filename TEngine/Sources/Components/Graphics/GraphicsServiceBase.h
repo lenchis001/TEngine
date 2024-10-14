@@ -20,7 +20,7 @@ using namespace TEngine::Components::Graphics::Rendering::Services::Textures;
 using namespace TEngine::Components::Graphics::Rendering::Services;
 using namespace TEngine::Components::Graphics::Rendering::Services::Gui;
 
-namespace TEngine::Components::Graphics::Services
+namespace TEngine::Components::Graphics
 {
     class GraphicsServiceBase : public IGraphicsService
     {
