@@ -1,4 +1,3 @@
-
 #ifdef __APPLE__
 
 #include "GraphicsServiceBase.h"

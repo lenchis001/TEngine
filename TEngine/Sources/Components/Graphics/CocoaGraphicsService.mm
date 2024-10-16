@@ -1,3 +1,5 @@
+#ifdef __APPLE__
+
 #include "GL/glew.h"
 
 #include <chrono>
@@ -106,3 +108,5 @@ void CocoaGraphicsService::resize(int width, int height)
 
     [static_cast<NSOpenGLContext*>(_openGlContext) update];
 }
+
+#endif // __APPLE__
