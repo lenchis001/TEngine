@@ -77,6 +77,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene
 
         void setActiveCamera(std::shared_ptr<ICameraStrategy> camera) override;
 
+        std::shared_ptr<IRenderingStrategy> getRoot() override;
+
     private:
 
         Vector2di _getWindowSize() const;

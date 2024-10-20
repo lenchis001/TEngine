@@ -45,6 +45,11 @@ std::vector<float> SolidboxRenderingStrategy::getVertices() const
     };
 }
 
+std::type_index SolidboxRenderingStrategy::getType() const
+{
+    return typeid(SolidboxRenderingStrategy);
+}
+
 void SolidboxRenderingStrategy::_onAttachedToParent(std::shared_ptr<IRenderingStrategy> parent)
 {
     if (!_isVisualAttached)

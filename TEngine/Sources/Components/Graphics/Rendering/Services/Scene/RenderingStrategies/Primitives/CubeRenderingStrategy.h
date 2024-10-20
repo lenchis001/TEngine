@@ -34,6 +34,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
 
         std::vector<float> getVertices() const override;
 
+        std::type_index getType() const override;
     private:
         void _prepareVertexVbo();
         void _prepareTexture(std::string texturePath);

@@ -98,6 +98,21 @@ std::vector<float> PhysicsRenderingDecorator::getVertices() const
     return _strategy->getVertices();
 }
 
+std::type_index PhysicsRenderingDecorator::getType() const
+{
+    return typeid(PhysicsRenderingDecorator);
+}
+
+PhysicsFlags PhysicsRenderingDecorator::getPhysicsFlags() const
+{
+    return _physicsFlags;
+}
+
+std::shared_ptr<IRenderingStrategy> PhysicsRenderingDecorator::getInternalStrategy()
+{
+    return _strategy;
+}
+
 const Matrix4x4f &PhysicsRenderingDecorator::getModelMatrix() const
 {
     return _strategy->getModelMatrix();
@@ -119,6 +134,8 @@ void PhysicsRenderingDecorator::_onAttachedToParent(std::shared_ptr<IRenderingSt
         break;
     case PhysicsFlags::DYNAMIC:
         _physicsService->addBox(_strategy, 1.f);
+        break;
+    default:
         break;
     }
 }

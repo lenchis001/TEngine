@@ -20,6 +20,12 @@
 #include "Components/Audio/Services/AudioService.h"
 #include "Components/Events/Services/GlfwEventService.h"
 
+#include "Components/State/Serialization/SerializationService.h"
+#include "Components/Graphics/Rendering/Services/Scene/State/Serialization/PhysicsRenderingDecoratorSerializer.h"
+#include "Components/Graphics/Rendering/Services/Scene/State/Serialization/Meshes/MeshRenderingStrategySerializer.h"
+#include "Components/Graphics/Rendering/Services/Scene/State/Serialization/RenderingStrategyBaseSerializer.h"
+#include "Components/Graphics/State/Serialization/Vector3dSerializer.h"
+
 #ifdef _WIN32
 #include "Components/Graphics/Win32GraphicService.h"
 #include "Components/Events/Services/Win32EventService.h"
@@ -43,6 +49,11 @@ using namespace TEngine::Components::Audio::Services::Readers;
 using namespace TEngine::Components::Audio::Services;
 
 using namespace TEngine::Components::Events::Services;
+
+using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization;
+using namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies::Meshes;
+using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization::Meshes;
+using namespace TEngine::Components::Graphics::State::Serialization;
 
 std::shared_ptr<IEngine> TEngine::createEngine(
 #ifdef _WIN32
@@ -98,5 +109,16 @@ std::shared_ptr<IEngine> TEngine::createEngine(
         graphicsService = std::make_shared<GlfwGraphicsService>(sceneService, guiService, meshLoadingService, texturesService);
     }
 
-    return std::make_shared<Engine>(graphicsService, eventsService, audioService);
+    auto serializers = std::map<std::type_index, std::shared_ptr<Serializers::ISerializer>>();
+
+    serializers[std::type_index(typeid(PhysicsRenderingDecorator))] = std::make_shared<PhysicsRenderingDecoratorSerializer>();
+    serializers[std::type_index(typeid(MeshRenderingStrategy))] = 
+    std::static_pointer_cast<Serializers::SerializerBase<MeshRenderingStrategy>>(std::make_shared<MeshRenderingStrategySerializer>());
+    serializers[std::type_index(typeid(RenderingStrategyBase))] = std::make_shared<RenderingStrategyBaseSerializer>();
+    serializers[std::type_index(typeid(Vector3df))] = std::make_shared<Vector3dSerializer<float>>();
+    serializers[std::type_index(typeid(Vector3dd))] = std::make_shared<Vector3dSerializer<double>>();
+
+    auto serializationService = std::make_shared<SerializationService>(serializers);
+
+    return std::make_shared<Engine>(graphicsService, eventsService, audioService, serializationService);
 }

@@ -80,9 +80,6 @@ if(NOT glew_POPULATED)
     add_subdirectory(${glew_SOURCE_DIR} ${glew_BINARY_DIR})
 endif()
 
-# # Set GLEW as an external project
-# set_target_properties(glew PROPERTIES FOLDER external)
-
 # Add GLEW includes
 target_include_directories(TEngine PRIVATE ${glew_SOURCE_DIR}/include)
 
@@ -172,7 +169,7 @@ target_link_libraries(TEngine PRIVATE vorbis vorbisfile)
 # --------------------- Add boost library ---------------------
 target_link_libraries(
   TEngine
-  PRIVATE Boost::filesystem)
+  PRIVATE Boost::filesystem Boost::json)
 
   # --------------------- Add ImGui library ---------------------
 

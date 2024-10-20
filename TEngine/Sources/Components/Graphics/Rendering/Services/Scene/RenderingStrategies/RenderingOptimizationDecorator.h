@@ -49,6 +49,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
         
         std::vector<float> getVertices() const override;
 
+        std::type_index getType() const override;
+
     protected:
         const Graphics::Models::Matrix4x4f &getModelMatrix() const override;
 

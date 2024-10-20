@@ -64,6 +64,16 @@ void CubeRenderingStrategy::render(std::shared_ptr<ICameraStrategy> activeCamera
     glBindVertexArray(0);
 }
 
+std::vector<float> CubeRenderingStrategy::getVertices() const
+{
+    return _vertices;
+}
+
+std::type_index CubeRenderingStrategy::getType() const
+{
+    return typeid(CubeRenderingStrategy);
+}
+
 void CubeRenderingStrategy::_prepareVertexVbo()
 {
     RETURN_IF_VBO_EXISTS(VERTEX_VBO_NAME);
@@ -163,11 +173,6 @@ void CubeRenderingStrategy::_prepareShader()
 
     _matrixShaderId = glGetUniformLocation(_shaderProgram, "MVP");
     _textureSamplerShaderId = glGetUniformLocation(_shaderProgram, "textureSampler");
-}
-
-std::vector<float> CubeRenderingStrategy::getVertices() const
-{
-    return _vertices;
 }
 
 std::vector<float> CubeRenderingStrategy::_vertices = {

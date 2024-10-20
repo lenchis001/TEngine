@@ -55,6 +55,12 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
 
         std::vector<float> getVertices() const override;
 
+        std::type_index getType() const override;
+
+        PhysicsFlags getPhysicsFlags() const;
+
+        std::shared_ptr<IRenderingStrategy> getInternalStrategy();
+
     protected:
         const Matrix4x4f &getModelMatrix() const override;
 

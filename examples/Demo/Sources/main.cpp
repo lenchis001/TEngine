@@ -3,6 +3,7 @@
 #include "iostream"
 #include "memory"
 #include "vector"
+#include "fstream"
 
 #include "Components/Graphics/Models/Vector3d.h"
 
@@ -42,7 +43,7 @@ int main()
                 auto cube = sceneService->addMesh("./DemoResources/test plane/plane.obj");
                 cube->setPosition(Vector3df(2.0f * i, 0.0f, 2.0f * j));
             }
-            
+
             auto cube3 = sceneService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp", nullptr, PhysicsFlags::DYNAMIC);
             cube3->setPosition(Vector3df(2.0f * i, 4.f * i, i * 2.0f));
 
@@ -59,6 +60,19 @@ int main()
             sofa->setPosition(Vector3df(3.0f * i + 5.0f, 0.0f, 0.0f));
         }
 
+        {
+            auto serializationService = engine->getSerializationService();
+
+            auto s = serializationService->serialize(sceneService->getRoot());
+
+            std::ofstream logFile("./log.txt", std::ios_base::app);
+            if (logFile.is_open())
+            {
+                logFile << s << std::endl;
+                logFile.close();
+            }
+        }
+
         int framesCounter = 0;
         double previousCheckTime = graphicsService->getTime();
 
@@ -68,16 +82,16 @@ int main()
         source->play();
         source->setPosition(0.0f, 0.0f, 0.0f);
 
-        // auto window1 = guiService->addWindow();
-        // window1->setSize(Vector2di(100, 100));
-        
-        // auto image = guiService->addImage("./DemoResources/texture2.bmp");
-        // image->setSize(Vector2di(400, 100));
-        // window1->addChild(image);
+        auto window1 = guiService->addWindow();
+        window1->setSize(Vector2di(100, 100));
 
-        // auto input1 = guiService->addInput();
-        // input1->setSize(Vector2di(400, 100));
-        // window1->addChild(input1);
+        auto image = guiService->addImage("./DemoResources/texture2.bmp");
+        image->setSize(Vector2di(400, 100));
+        window1->addChild(image);
+
+        auto input1 = guiService->addInput();
+        input1->setSize(Vector2di(400, 100));
+        window1->addChild(input1);
 
         while (true)
         {

@@ -23,8 +23,6 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
         void removeChild(std::shared_ptr<IRenderingStrategy> child) override;
         void removeAllChildren() override;
 
-        std::vector<float> getVertices() const override;
-
         void setPosition(const Vector3df &position) override;
         void setRotation(const Vector3df &rotation) override;
         void setScale(const Vector3df &scale) override;
@@ -41,6 +39,10 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
         Vector3df getAbsoluteScale() const override;
 
         void render(std::shared_ptr<ICameraStrategy> activeCameraStrategy) override;
+
+        std::vector<float> getVertices() const override;
+
+        std::type_index getType() const override;
 
     protected:
         const Matrix4x4f &getModelMatrix() const override;

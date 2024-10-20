@@ -133,6 +133,16 @@ void RenderingStrategyBase::render(std::shared_ptr<ICameraStrategy> activeCamera
     }
 }
 
+std::vector<float> RenderingStrategyBase::getVertices() const
+{
+    throw std::runtime_error("Not allowed");
+}
+
+std::type_index RenderingStrategyBase::getType() const
+{
+    return typeid(RenderingStrategyBase);
+}
+
 void RenderingStrategyBase::_updateTranslationMatrix()
 {
     _translationMatrix = Matrix4x4f(
@@ -186,11 +196,6 @@ void RenderingStrategyBase::_updateScaleMatrix()
         0.0f, 0.0f, 0.0f, 1.0f);
 
     _updateModelMatrix(_parentMatrix, true);
-}
-
-std::vector<float> RenderingStrategyBase::getVertices() const
-{
-    throw std::runtime_error("Not allowed");
 }
 
 const Matrix4x4f &RenderingStrategyBase::getModelMatrix() const

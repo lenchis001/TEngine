@@ -27,6 +27,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
 
         std::vector<float> getVertices() const override;
 
+        std::type_index getType() const override;
+
     protected:
         void _onAttachedToParent(std::shared_ptr<IRenderingStrategy> parent) override;
 

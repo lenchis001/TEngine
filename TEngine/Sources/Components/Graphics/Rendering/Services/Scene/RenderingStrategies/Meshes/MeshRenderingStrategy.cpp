@@ -71,3 +71,8 @@ std::vector<float> MeshRenderingStrategy::getVertices() const
 
     return allVertices;
 }
+
+std::type_index MeshRenderingStrategy::getType() const
+{
+    return std::type_index(typeid(MeshRenderingStrategy));
+}

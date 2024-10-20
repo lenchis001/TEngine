@@ -4,6 +4,8 @@
 #include <memory>
 #include <vector>
 
+#include "Mixins/TypeInfoAware.h"
+
 #include "Components/Graphics/Models/Vector3d.h"
 #include "Components/Graphics/Models/Matrix4x4.h"
 #include "Components/Graphics/Rendering/Services/Scene/CameraStrategies/ICameraStrategy.h"
@@ -15,7 +17,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
     class RenderingOptimizationDecorator;
     class PhysicsRenderingDecorator;
 
-    class IRenderingStrategy
+    class IRenderingStrategy : public Mixins::TypeInfoAware
     {
     public:
         virtual void render(std::shared_ptr<Graphics::Rendering::Services::Scene::CameraStrategies::ICameraStrategy> activeCameraStrategy) = 0;

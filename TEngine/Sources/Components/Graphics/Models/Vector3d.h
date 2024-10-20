@@ -1,7 +1,9 @@
 #ifndef TENGINE_VECTOR3D_H
 #define TENGINE_VECTOR3D_H
 
-#include "math.h"
+#include <math.h>
+
+#include "Mixins/TypeInfoAware.h"
 
 namespace TEngine::Components::Graphics::Models
 {
@@ -10,7 +12,7 @@ namespace TEngine::Components::Graphics::Models
     #define __Vector3dz _data[2]
 
     template <class T>
-    class Vector3d
+    class Vector3d : public Mixins::TypeInfoAware
     {
     public:
         Vector3d(T x, T y, T z) {
@@ -110,6 +112,11 @@ namespace TEngine::Components::Graphics::Models
             T dy = __Vector3dy - other.__Vector3dy;
             T dz = __Vector3dz - other.__Vector3dz;
             return sqrt(dx * dx + dy * dy + dz * dz);
+        }
+
+        std::type_index getType() const override
+        {
+            return typeid(Vector3d<T>);
         }
 
     private:

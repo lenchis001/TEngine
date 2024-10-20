@@ -105,6 +105,11 @@ std::vector<float> RenderingOptimizationDecorator::getVertices() const
     return _strategy->getVertices();
 }
 
+std::type_index RenderingOptimizationDecorator::getType() const
+{
+    return typeid(RenderingOptimizationDecorator);
+}
+
 const Matrix4x4f &RenderingOptimizationDecorator::getModelMatrix() const
 {
     return _strategy->getModelMatrix();

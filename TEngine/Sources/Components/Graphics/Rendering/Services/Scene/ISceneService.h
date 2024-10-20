@@ -45,6 +45,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene
         setActiveCamera(Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes cameraType) = 0;
 
         virtual void setActiveCamera(std::shared_ptr<CameraStrategies::ICameraStrategy> camera) = 0;
+
+        virtual std::shared_ptr<RenderingStrategies::IRenderingStrategy> getRoot() = 0;
     };
 }
 
