@@ -10,9 +10,11 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Seri
 {
     class MeshRenderingStrategySerializer : public RenderingStrategyBaseSerializer, public virtual SerializerBase<MeshRenderingStrategy>
     {
+        public:
+            MeshRenderingStrategySerializer();
         protected:
             boost::json::value _serialize(
-                std::shared_ptr<MeshRenderingStrategy> value,
+                MeshRenderingStrategy& value,
                 serializeMember serializeMember) override;
     };
 }

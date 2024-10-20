@@ -1,6 +1,8 @@
 #ifndef TENGINE_RENDERINGSTRATEGYBASESERIALIZER_H
 #define TENGINE_RENDERINGSTRATEGYBASESERIALIZER_H
 
+#include <string>
+
 #include "Components/State/Serialization/Serializers/SerializerBase.h"
 
 #include "Components/Graphics/Rendering/Services/Scene/RenderingStrategies/RenderingStrategyBase.h"
@@ -13,8 +15,14 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Seri
 {
     class RenderingStrategyBaseSerializer : public virtual SerializerBase<RenderingStrategyBase>
     {
+    public:
+        RenderingStrategyBaseSerializer();
     protected:
-        boost::json::value _serialize(std::shared_ptr<RenderingStrategyBase> value, serializeMember serializeMember) override;
+        boost::json::value _serialize(RenderingStrategyBase& value, serializeMember serializeMember) override;
+
+        void setType(const std::string &type);
+    private:
+        std::string _type;
     };
 }
 

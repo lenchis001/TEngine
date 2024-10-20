@@ -11,14 +11,14 @@ SerializationService::SerializationService(std::map<std::type_index, std::shared
 
 std::string SerializationService::serialize(std::shared_ptr<Mixins::TypeInfoAware> value)
 {
-    auto valueObject = _serialize(value);
+    auto valueObject = _serialize(*value);
 
     return boost::json::serialize(valueObject);
 }
 
-boost::json::value SerializationService::_serialize(std::shared_ptr<TypeInfoAware> value)
+boost::json::value SerializationService::_serialize(TypeInfoAware& value)
 {
-    auto typeIndex = value->getType();
+    auto typeIndex = value.getType();
 
     auto typeName = typeIndex.name();
 

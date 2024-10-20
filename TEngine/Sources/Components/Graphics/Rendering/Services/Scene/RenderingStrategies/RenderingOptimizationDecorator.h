@@ -51,6 +51,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
 
         std::type_index getType() const override;
 
+        std::shared_ptr<IRenderingStrategy> getInternalStrategy();
+
     protected:
         const Graphics::Models::Matrix4x4f &getModelMatrix() const override;
 

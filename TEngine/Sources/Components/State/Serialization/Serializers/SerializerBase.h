@@ -11,15 +11,15 @@ namespace TEngine::Components::State::Serialization::Serializers
     class SerializerBase : public ISerializer
     {
     public:
-        virtual boost::json::value serialize(std::shared_ptr<TypeInfoAware> value, serializeMember serializeMember)
+        virtual boost::json::value serialize(TypeInfoAware& value, serializeMember serializeMember)
         {
-            auto castedValue = std::static_pointer_cast<T>(value);
+            auto castedValue = static_cast<T*>(&value);
 
-            return _serialize(castedValue, serializeMember);
+            return _serialize(*castedValue, serializeMember);
         }
 
     protected:
-        virtual boost::json::value _serialize(std::shared_ptr<T> value, serializeMember serializeMember) = 0;
+        virtual boost::json::value _serialize(T& value, serializeMember serializeMember) = 0;
     };
 }
 

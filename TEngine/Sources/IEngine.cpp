@@ -22,7 +22,10 @@
 
 #include "Components/State/Serialization/SerializationService.h"
 #include "Components/Graphics/Rendering/Services/Scene/State/Serialization/PhysicsRenderingDecoratorSerializer.h"
+#include "Components/Graphics/Rendering/Services/Scene/State/Serialization/RenderingOptimizationDecoratorSerializer.h"
 #include "Components/Graphics/Rendering/Services/Scene/State/Serialization/Meshes/MeshRenderingStrategySerializer.h"
+#include "Components/Graphics/Rendering/Services/Scene/State/Serialization/Solid/SolidboxRenderingStrategySerializer.h"
+#include "Components/Graphics/Rendering/Services/Scene/State/Serialization/Primitives/CubeRenderingStrategySerializer.h"
 #include "Components/Graphics/Rendering/Services/Scene/State/Serialization/RenderingStrategyBaseSerializer.h"
 #include "Components/Graphics/State/Serialization/Vector3dSerializer.h"
 
@@ -53,6 +56,10 @@ using namespace TEngine::Components::Events::Services;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies::Meshes;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization::Meshes;
+using namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies::Solid;
+using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization::Solid;
+using namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies::Primitives;
+using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization::Primitives;
 using namespace TEngine::Components::Graphics::State::Serialization;
 
 std::shared_ptr<IEngine> TEngine::createEngine(
@@ -112,8 +119,13 @@ std::shared_ptr<IEngine> TEngine::createEngine(
     auto serializers = std::map<std::type_index, std::shared_ptr<Serializers::ISerializer>>();
 
     serializers[std::type_index(typeid(PhysicsRenderingDecorator))] = std::make_shared<PhysicsRenderingDecoratorSerializer>();
+    serializers[std::type_index(typeid(RenderingOptimizationDecorator))] = std::make_shared<RenderingOptimizationDecoratorSerializer>();
     serializers[std::type_index(typeid(MeshRenderingStrategy))] = 
-    std::static_pointer_cast<Serializers::SerializerBase<MeshRenderingStrategy>>(std::make_shared<MeshRenderingStrategySerializer>());
+        std::static_pointer_cast<Serializers::SerializerBase<MeshRenderingStrategy>>(std::make_shared<MeshRenderingStrategySerializer>());
+    serializers[std::type_index(typeid(SolidboxRenderingStrategy))] = 
+        std::static_pointer_cast<Serializers::SerializerBase<SolidboxRenderingStrategy>>(std::make_shared<SolidboxRenderingStrategySerializer>());
+    serializers[std::type_index(typeid(CubeRenderingStrategy))] = 
+        std::static_pointer_cast<Serializers::SerializerBase<CubeRenderingStrategy>>(std::make_shared<CubeRenderingStrategySerializer>());
     serializers[std::type_index(typeid(RenderingStrategyBase))] = std::make_shared<RenderingStrategyBaseSerializer>();
     serializers[std::type_index(typeid(Vector3df))] = std::make_shared<Vector3dSerializer<float>>();
     serializers[std::type_index(typeid(Vector3dd))] = std::make_shared<Vector3dSerializer<double>>();

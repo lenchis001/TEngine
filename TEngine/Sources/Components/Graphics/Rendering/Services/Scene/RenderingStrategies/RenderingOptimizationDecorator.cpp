@@ -110,6 +110,11 @@ std::type_index RenderingOptimizationDecorator::getType() const
     return typeid(RenderingOptimizationDecorator);
 }
 
+std::shared_ptr<IRenderingStrategy> RenderingOptimizationDecorator::getInternalStrategy()
+{
+    return _strategy;
+}
+
 const Matrix4x4f &RenderingOptimizationDecorator::getModelMatrix() const
 {
     return _strategy->getModelMatrix();

@@ -79,7 +79,7 @@ std::shared_ptr<IRenderingStrategy> SceneService::addPrimitive(
 		strategy = std::make_shared<PhysicsRenderingDecorator>(_physicsService, strategy, physicsFlags);
 	}
 
-	auto decoratedCubeRenderingStrategy = strategy;// std::make_shared<RenderingOptimizationDecorator>(strategy);
+	auto decoratedCubeRenderingStrategy = std::make_shared<RenderingOptimizationDecorator>(strategy);
 	(parent ? parent : _root)->addChild(decoratedCubeRenderingStrategy);
 
 	return decoratedCubeRenderingStrategy;
@@ -97,7 +97,7 @@ std::shared_ptr<IRenderingStrategy> SceneService::addMesh(
 		strategy = std::make_shared<PhysicsRenderingDecorator>(_physicsService, strategy, physicsFlags);
 	}
 
-	auto decoratedMeshRenderingStrategy = strategy;// std::make_shared<RenderingOptimizationDecorator>(strategy);
+	auto decoratedMeshRenderingStrategy = std::make_shared<RenderingOptimizationDecorator>(strategy);
 	(parent ? parent : _root)->addChild(decoratedMeshRenderingStrategy);
 
 	return decoratedMeshRenderingStrategy;
@@ -116,7 +116,7 @@ std::shared_ptr<IRenderingStrategy> SceneService::addSolidbox(
 
 	strategy = std::make_shared<PhysicsRenderingDecorator>(_physicsService, strategy, PhysicsFlags::STATIC);
 
-	auto decoratedSolidboxRenderingStrategy = strategy;// std::make_shared<RenderingOptimizationDecorator>(strategy);
+	auto decoratedSolidboxRenderingStrategy = std::make_shared<RenderingOptimizationDecorator>(strategy);
 	(parent ? parent : _root)->addChild(decoratedSolidboxRenderingStrategy);
 
 	return decoratedSolidboxRenderingStrategy;

@@ -3,16 +3,16 @@
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization;
 
 boost::json::value PhysicsRenderingDecoratorSerializer::_serialize(
-    std::shared_ptr<PhysicsRenderingDecorator> value,
+    PhysicsRenderingDecorator& value,
     serializeMember serializeMember)
 {
     boost::json::object result;
     
-    auto physicsFlags = value->getPhysicsFlags();
+    auto physicsFlags = value.getPhysicsFlags();
     result["physicsFlags"] = (int)physicsFlags;
 
-    auto internalStrategy = value->getInternalStrategy();
-    auto internalSerialized = serializeMember(internalStrategy);
+    auto internalStrategy = value.getInternalStrategy();
+    auto internalSerialized = serializeMember(*internalStrategy);
 
     for (auto& [key, value] : internalSerialized.as_object())
     {

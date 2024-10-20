@@ -60,19 +60,6 @@ int main()
             sofa->setPosition(Vector3df(3.0f * i + 5.0f, 0.0f, 0.0f));
         }
 
-        {
-            auto serializationService = engine->getSerializationService();
-
-            auto s = serializationService->serialize(sceneService->getRoot());
-
-            std::ofstream logFile("./log.txt", std::ios_base::app);
-            if (logFile.is_open())
-            {
-                logFile << s << std::endl;
-                logFile.close();
-            }
-        }
-
         int framesCounter = 0;
         double previousCheckTime = graphicsService->getTime();
 

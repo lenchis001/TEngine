@@ -11,6 +11,6 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Seri
     class PhysicsRenderingDecoratorSerializer : public SerializerBase<PhysicsRenderingDecorator>
     {
         protected:
-            boost::json::value _serialize(std::shared_ptr<PhysicsRenderingDecorator> value, serializeMember serializeMember) override;
+            boost::json::value _serialize(PhysicsRenderingDecorator& value, serializeMember serializeMember) override;
     };
 }

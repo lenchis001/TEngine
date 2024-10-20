@@ -21,7 +21,7 @@ namespace TEngine::Components::State::Serialization
 
         std::string serialize(std::shared_ptr<TypeInfoAware> value) override;
     private:
-        boost::json::value _serialize(std::shared_ptr<TypeInfoAware> value);
+        boost::json::value _serialize(TypeInfoAware& value);
 
         std::map<std::type_index, std::shared_ptr<ISerializer>> _serializers;
     };
