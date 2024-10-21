@@ -10,12 +10,12 @@
 
 namespace TEngine::Components::State::Serialization::Serializers
 {
-    typedef std::function<boost::json::value(Mixins::TypeInfoAware&)> serializeMember;
+    typedef std::function<boost::json::object(Mixins::TypeInfoAware&)> serializeMember;
 
     class ISerializer
     {
     public:
-        virtual boost::json::value serialize(Mixins::TypeInfoAware& value, serializeMember serializeMember) = 0;
+        virtual boost::json::object serialize(Mixins::TypeInfoAware& value, serializeMember serializeMember) = 0;
         virtual ~ISerializer() = default;
     };
 }

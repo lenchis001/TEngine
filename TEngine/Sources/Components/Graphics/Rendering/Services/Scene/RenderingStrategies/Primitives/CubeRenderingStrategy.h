@@ -35,9 +35,11 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
         std::vector<float> getVertices() const override;
 
         std::type_index getType() const override;
+
+        const std::string& getTexturePath() const;
     private:
         void _prepareVertexVbo();
-        void _prepareTexture(std::string texturePath);
+        void _prepareTexture();
         void _prepareUvVbo();
         void _prepareVao();
         void _prepareShader();
@@ -47,6 +49,8 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
         std::shared_ptr<ITexturesService> _texturesService;
 
         GLuint _shaderProgram, _matrixShaderId, _textureId, _textureSamplerShaderId, _vao;
+
+        std::string _texturePath;
 
         static std::vector<float> _vertices;
     };

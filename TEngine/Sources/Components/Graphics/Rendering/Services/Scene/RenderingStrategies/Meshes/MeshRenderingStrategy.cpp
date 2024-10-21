@@ -10,9 +10,10 @@ MeshRenderingStrategy::MeshRenderingStrategy(
     const std::string &path)
     : RenderingStrategyBase(),
       _meshService(meshService),
-      _lightServices(lightServices)
+      _lightServices(lightServices),
+      _path(path)
 {
-    _renderableMesh = _meshService->take(path);
+    _renderableMesh = _meshService->take(_path);
 }
 
 MeshRenderingStrategy::~MeshRenderingStrategy()
@@ -75,4 +76,9 @@ std::vector<float> MeshRenderingStrategy::getVertices() const
 std::type_index MeshRenderingStrategy::getType() const
 {
     return std::type_index(typeid(MeshRenderingStrategy));
+}
+
+const std::string &MeshRenderingStrategy::getPath() const
+{
+    return _path;
 }

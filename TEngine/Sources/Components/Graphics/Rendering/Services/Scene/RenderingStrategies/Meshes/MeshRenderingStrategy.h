@@ -28,10 +28,14 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
 
         std::type_index getType() const override;
 
+        const std::string &getPath() const;
+
     private:
         std::shared_ptr<IRenderableMesh> _renderableMesh;
         std::shared_ptr<IMeshService> _meshService;
         std::shared_ptr<ILightServices> _lightServices;
+
+        const std::string _path;
     };
 }
 

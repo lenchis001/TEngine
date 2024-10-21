@@ -13,7 +13,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Seri
     public:
         CubeRenderingStrategySerializer();
     protected:
-        boost::json::value _serialize(
+        boost::json::object _serialize(
             CubeRenderingStrategy& value,
             serializeMember serializeMember) override;
     };

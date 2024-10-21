@@ -16,7 +16,7 @@ std::string SerializationService::serialize(std::shared_ptr<Mixins::TypeInfoAwar
     return boost::json::serialize(valueObject);
 }
 
-boost::json::value SerializationService::_serialize(TypeInfoAware& value)
+boost::json::object SerializationService::_serialize(TypeInfoAware& value)
 {
     auto typeIndex = value.getType();
 

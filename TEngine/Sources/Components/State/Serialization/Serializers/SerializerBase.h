@@ -11,7 +11,7 @@ namespace TEngine::Components::State::Serialization::Serializers
     class SerializerBase : public ISerializer
     {
     public:
-        virtual boost::json::value serialize(TypeInfoAware& value, serializeMember serializeMember)
+        virtual boost::json::object serialize(TypeInfoAware& value, serializeMember serializeMember)
         {
             auto castedValue = static_cast<T*>(&value);
 
@@ -19,7 +19,7 @@ namespace TEngine::Components::State::Serialization::Serializers
         }
 
     protected:
-        virtual boost::json::value _serialize(T& value, serializeMember serializeMember) = 0;
+        virtual boost::json::object _serialize(T& value, serializeMember serializeMember) = 0;
     };
 }
 

@@ -60,7 +60,6 @@ void GraphicsServiceBase::render()
 
 void GraphicsServiceBase::resize(int width, int height)
 {	
-	std::cout << "Resizing to " << width << "x" << height << std::endl;
 	glViewport(0, 0, width, height);
 	
 	auto sceneService = this->getSceneService();

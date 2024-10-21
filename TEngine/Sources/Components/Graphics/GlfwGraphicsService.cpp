@@ -93,5 +93,5 @@ void GlfwGraphicsService::_onWindowResized(GLFWwindow *window, int width, int he
 {
 	auto that = getContext();
 	
-	that->resize(width * 2, height * 2);
+	that->resize(width, height);
 }

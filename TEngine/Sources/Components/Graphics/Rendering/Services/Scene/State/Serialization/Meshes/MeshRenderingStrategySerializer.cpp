@@ -7,11 +7,13 @@ MeshRenderingStrategySerializer::MeshRenderingStrategySerializer()
     setType("mesh");
 }
 
-boost::json::value MeshRenderingStrategySerializer::_serialize(
+boost::json::object MeshRenderingStrategySerializer::_serialize(
     MeshRenderingStrategy& value,
     serializeMember serializeMember)
 {
     auto baseObject = RenderingStrategyBaseSerializer::_serialize(value, serializeMember);
+
+    baseObject["path"] = value.getPath();
 
     return baseObject;
 }

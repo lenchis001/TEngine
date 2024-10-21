@@ -13,7 +13,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Seri
         public:
             MeshRenderingStrategySerializer();
         protected:
-            boost::json::value _serialize(
+            boost::json::object _serialize(
                 MeshRenderingStrategy& value,
                 serializeMember serializeMember) override;
     };

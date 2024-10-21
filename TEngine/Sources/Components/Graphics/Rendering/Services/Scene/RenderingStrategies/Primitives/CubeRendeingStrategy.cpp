@@ -21,12 +21,13 @@ CubeRenderingStrategy::CubeRenderingStrategy(
     : RenderingStrategyBase(),
       _shadersService(shadersService),
       _bufferCacheService(bufferCacheService),
-      _texturesService(texturesService)
+      _texturesService(texturesService),
+      _texturePath(texturePath)
 {
     _prepareVertexVbo();
     _prepareUvVbo();
     _prepareVao();
-    _prepareTexture(texturePath);
+    _prepareTexture();
 
     _prepareShader();
 }
@@ -74,6 +75,11 @@ std::type_index CubeRenderingStrategy::getType() const
     return typeid(CubeRenderingStrategy);
 }
 
+const std::string& CubeRenderingStrategy::getTexturePath() const
+{
+    return _texturePath;
+}
+
 void CubeRenderingStrategy::_prepareVertexVbo()
 {
     RETURN_IF_VBO_EXISTS(VERTEX_VBO_NAME);
@@ -87,9 +93,9 @@ void CubeRenderingStrategy::_prepareVertexVbo()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void CubeRenderingStrategy::_prepareTexture(std::string texturePath)
+void CubeRenderingStrategy::_prepareTexture()
 {
-    _textureId = _texturesService->take(texturePath);
+    _textureId = _texturesService->take(_texturePath);
 }
 
 void CubeRenderingStrategy::_prepareUvVbo()

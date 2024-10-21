@@ -7,11 +7,13 @@ CubeRenderingStrategySerializer::CubeRenderingStrategySerializer()
     setType("cube");
 }
 
-boost::json::value CubeRenderingStrategySerializer::_serialize(
+boost::json::object CubeRenderingStrategySerializer::_serialize(
     CubeRenderingStrategy& value,
     serializeMember serializeMember)
 {
     auto result = RenderingStrategyBaseSerializer::_serialize(value, serializeMember);
+
+    result["texturePath"] = value.getTexturePath();
 
     return result;
 }

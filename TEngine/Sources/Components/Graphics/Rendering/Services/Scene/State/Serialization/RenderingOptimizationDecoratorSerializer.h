@@ -11,6 +11,6 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Seri
     class RenderingOptimizationDecoratorSerializer : public SerializerBase<RenderingOptimizationDecorator>
     {
         protected:
-            boost::json::value _serialize(RenderingOptimizationDecorator& value, serializeMember serializeMember) override;
+            boost::json::object _serialize(RenderingOptimizationDecorator& value, serializeMember serializeMember) override;
     };
 }

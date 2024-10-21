@@ -18,7 +18,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Seri
     public:
         RenderingStrategyBaseSerializer();
     protected:
-        boost::json::value _serialize(RenderingStrategyBase& value, serializeMember serializeMember) override;
+        boost::json::object _serialize(RenderingStrategyBase& value, serializeMember serializeMember) override;
 
         void setType(const std::string &type);
     private:

@@ -2,7 +2,7 @@
 
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization;
 
-boost::json::value PhysicsRenderingDecoratorSerializer::_serialize(
+boost::json::object PhysicsRenderingDecoratorSerializer::_serialize(
     PhysicsRenderingDecorator& value,
     serializeMember serializeMember)
 {
@@ -14,7 +14,7 @@ boost::json::value PhysicsRenderingDecoratorSerializer::_serialize(
     auto internalStrategy = value.getInternalStrategy();
     auto internalSerialized = serializeMember(*internalStrategy);
 
-    for (auto& [key, value] : internalSerialized.as_object())
+    for (auto& [key, value] : internalSerialized)
     {
         result[key] = value;
     }

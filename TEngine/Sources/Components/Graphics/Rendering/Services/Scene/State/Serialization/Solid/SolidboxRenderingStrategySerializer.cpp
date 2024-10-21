@@ -7,7 +7,7 @@ SolidboxRenderingStrategySerializer::SolidboxRenderingStrategySerializer()
     setType("solidbox");
 }
 
-boost::json::value SolidboxRenderingStrategySerializer::_serialize(
+boost::json::object SolidboxRenderingStrategySerializer::_serialize(
     SolidboxRenderingStrategy& value,
     serializeMember serializeMember)
 {

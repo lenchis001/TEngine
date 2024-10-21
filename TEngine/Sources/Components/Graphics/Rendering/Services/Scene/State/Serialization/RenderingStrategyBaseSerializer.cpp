@@ -7,7 +7,7 @@ RenderingStrategyBaseSerializer::RenderingStrategyBaseSerializer()
     setType("base");
 }
 
-boost::json::value RenderingStrategyBaseSerializer::_serialize(RenderingStrategyBase& value, serializeMember serializeMember)
+boost::json::object RenderingStrategyBaseSerializer::_serialize(RenderingStrategyBase& value, serializeMember serializeMember)
 {
     boost::json::object obj;
 
