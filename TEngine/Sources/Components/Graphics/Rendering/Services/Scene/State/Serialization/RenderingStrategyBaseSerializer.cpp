@@ -11,12 +11,12 @@ boost::json::object RenderingStrategyBaseSerializer::_serialize(RenderingStrateg
 {
     boost::json::object obj;
 
-    auto position = value.getPosition();
-    obj["position"] = serializeMember(position);
-    auto rotation = value.getRotation();
-    obj["rotation"] = serializeMember(rotation);
-    auto scale = value.getScale();
-    obj["scale"] = serializeMember(scale);
+    const auto& position = value.getPosition();
+    obj["position"] = _serializeVecror3d(position);
+    const auto& rotation = value.getRotation();
+    obj["rotation"] = _serializeVecror3d(rotation);
+    const auto& scale = value.getScale();
+    obj["scale"] = _serializeVecror3d(scale);
 
     obj["type"] = _type;
 

@@ -27,7 +27,6 @@
 #include "Components/Graphics/Rendering/Services/Scene/State/Serialization/Solid/SolidboxRenderingStrategySerializer.h"
 #include "Components/Graphics/Rendering/Services/Scene/State/Serialization/Primitives/CubeRenderingStrategySerializer.h"
 #include "Components/Graphics/Rendering/Services/Scene/State/Serialization/RenderingStrategyBaseSerializer.h"
-#include "Components/Graphics/State/Serialization/Vector3dSerializer.h"
 
 #ifdef _WIN32
 #include "Components/Graphics/Win32GraphicService.h"
@@ -60,7 +59,6 @@ using namespace TEngine::Components::Graphics::Rendering::Services::Scene::Rende
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization::Solid;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies::Primitives;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization::Primitives;
-using namespace TEngine::Components::Graphics::State::Serialization;
 
 std::shared_ptr<IEngine> TEngine::createEngine(
 #ifdef _WIN32
@@ -127,8 +125,6 @@ std::shared_ptr<IEngine> TEngine::createEngine(
     serializers[std::type_index(typeid(CubeRenderingStrategy))] = 
         std::static_pointer_cast<Serializers::SerializerBase<CubeRenderingStrategy>>(std::make_shared<CubeRenderingStrategySerializer>());
     serializers[std::type_index(typeid(RenderingStrategyBase))] = std::make_shared<RenderingStrategyBaseSerializer>();
-    serializers[std::type_index(typeid(Vector3df))] = std::make_shared<Vector3dSerializer<float>>();
-    serializers[std::type_index(typeid(Vector3dd))] = std::make_shared<Vector3dSerializer<double>>();
 
     auto serializationService = std::make_shared<SerializationService>(serializers);
 

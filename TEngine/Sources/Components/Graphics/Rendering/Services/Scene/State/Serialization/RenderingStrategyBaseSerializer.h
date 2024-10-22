@@ -17,10 +17,22 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Seri
     {
     public:
         RenderingStrategyBaseSerializer();
+
     protected:
-        boost::json::object _serialize(RenderingStrategyBase& value, serializeMember serializeMember) override;
+        boost::json::object _serialize(RenderingStrategyBase &value, serializeMember serializeMember) override;
 
         void setType(const std::string &type);
+
+        template <class T>
+        boost::json::object _serializeVecror3d(const T &value)
+        {
+            boost::json::object obj;
+            obj["x"] = value.getX();
+            obj["y"] = value.getY();
+            obj["z"] = value.getZ();
+            return obj;
+        }
+
     private:
         std::string _type;
     };
