@@ -6,6 +6,7 @@
 
 #include "Deserializers/IDeserializer.h"
 
+using namespace TEngine::Mixins;
 using namespace TEngine::Components::State::Deserialization::Deserializers;
 
 namespace TEngine::Components::State::Deserialization
@@ -15,7 +16,9 @@ namespace TEngine::Components::State::Deserialization
     public:
         DeserializationService(std::map<std::string, std::shared_ptr<IDeserializer>> serializers);
 
-        void deserialize(const std::string& data) override;
+        void deserialize(const std::string& data, std::shared_ptr<TypeInfoAware> root = nullptr) override;
+
+        void deserializeFromFile(const std::string& path, std::shared_ptr<TypeInfoAware> root = nullptr) override;
 
     private:
         void _deserialize(const boost::json::value& data);

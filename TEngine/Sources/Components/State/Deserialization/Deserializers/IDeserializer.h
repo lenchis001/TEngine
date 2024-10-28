@@ -10,7 +10,7 @@
 
 namespace TEngine::Components::State::Deserialization::Deserializers
 {
-    typedef std::function<void(const boost::json::value &)> deserializeMember;
+    typedef std::function<void(const boost::json::value &, std::shared_ptr<TypeInfoAware>)> deserializeMember;
 
     class IDeserializer
     {

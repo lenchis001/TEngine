@@ -8,11 +8,13 @@ Engine::Engine(
     std::shared_ptr<IGraphicsService> graphicsService,
     std::shared_ptr<IEventService> eventService,
     std::shared_ptr<IAudioService> audioService,
-    std::shared_ptr<ISerializationService> serializationService)
+    std::shared_ptr<ISerializationService> serializationService,
+    std::shared_ptr<IDeserializationService> deserializationService)
     : _graphicsService(graphicsService),
       _eventService(eventService),
       _audioService(audioService),
-      _serializationService(serializationService)
+      _serializationService(serializationService),
+      _deserializationService(deserializationService)
 {
 }
 
@@ -52,4 +54,9 @@ std::shared_ptr<IAudioService> Engine::getAudioService()
 std::shared_ptr<ISerializationService> Engine::getSerializationService()
 {
     return _serializationService;
+}
+
+std::shared_ptr<IDeserializationService> Engine::getDeserializationService()
+{
+    return _deserializationService;
 }

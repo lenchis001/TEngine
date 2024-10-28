@@ -60,6 +60,16 @@ int main()
             sofa->setPosition(Vector3df(3.0f * i + 5.0f, 0.0f, 0.0f));
         }
 
+        {
+            auto serializationService = engine->getSerializationService();
+            serializationService->serializeToFile(sceneService->getRoot(), "./scene.json");
+
+            sceneService->getRoot()->removeAllChildren();
+
+            auto deserializationService = engine->getDeserializationService();
+            deserializationService->deserializeFromFile("./scene.json");
+        }
+
         int framesCounter = 0;
         double previousCheckTime = graphicsService->getTime();
 

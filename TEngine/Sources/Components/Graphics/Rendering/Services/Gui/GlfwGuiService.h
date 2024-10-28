@@ -1,5 +1,5 @@
-#ifndef TENGINE_GUISERVICE_H
-#define TENGINE_GUISERVICE_H
+#ifndef TENGINE_GLFW_GUISERVICE_H
+#define TENGINE_GLFW_GUISERVICE_H
 
 #include "IGuiService.h"
 
@@ -19,11 +19,11 @@ using namespace TEngine::Components::Events::Services;
 
 namespace TEngine::Components::Graphics::Rendering::Services::Gui
 {
-    class GuiService : public IGuiService
+    class GlfwGuiService : public IGuiService
     {
     public:
-        GuiService(std::shared_ptr<IEventService> eventService, std::shared_ptr<ITexturesService> texturesService);
-        ~GuiService();
+        GlfwGuiService(std::shared_ptr<IEventService> eventService, std::shared_ptr<ITexturesService> texturesService);
+        ~GlfwGuiService();
 
         void initialize() override;
 
@@ -50,4 +50,4 @@ namespace TEngine::Components::Graphics::Rendering::Services::Gui
     };
 }
 
-#endif // TENGINE_GUISERVICE_H
+#endif // TENGINE_GLFW_GUISERVICE_H

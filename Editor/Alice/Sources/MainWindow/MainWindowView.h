@@ -28,8 +28,8 @@ namespace Alice::MainWindow
 
     private:
         void _createMainMenu();
-        void _createMainArea();
-        void _createWorkArea();
+        void _createMainArea(wxSizer* windowSizer);
+        void _createWorkArea(wxSizer* windowSizer);
 
         // Main menu
         Children::MainMenu::IMainMenuView* _mainMenu;
@@ -41,8 +41,6 @@ namespace Alice::MainWindow
         std::shared_ptr<wxPanel> _workArea;
         std::shared_ptr<Components::IGraphicContext> _graphicContext;
         std::shared_ptr<Components::Tree::ISceneTree> _sceneTree;
-
-        std::shared_ptr<Children::MainMenu::IMainMenuView> _mainMenuView;
 
         wxDECLARE_EVENT_TABLE();
     };

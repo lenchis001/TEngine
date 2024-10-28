@@ -20,6 +20,8 @@ namespace TEngine::Components::State::Serialization
         SerializationService(std::map<std::type_index, std::shared_ptr<ISerializer>> serializers);
 
         std::string serialize(std::shared_ptr<TypeInfoAware> value) override;
+
+        void serializeToFile(std::shared_ptr<Mixins::TypeInfoAware> value, const std::string& path) override;
     private:
         boost::json::object _serialize(TypeInfoAware& value);
 

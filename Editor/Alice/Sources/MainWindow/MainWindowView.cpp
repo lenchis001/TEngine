@@ -16,29 +16,28 @@ MainWindowView::MainWindowView(std::shared_ptr<MainWindow::IMainWindowPresenter>
     : wxFrame(nullptr, wxID_ANY, "Alice Editor")
 {
     _createMainMenu();
-    _createWorkArea();
-    _createMainArea();
+
+    auto sizer = new wxBoxSizer(wxVERTICAL);
+
+    _createMainArea(sizer);
+    _createWorkArea(sizer);
+    
+    this->SetSizer(sizer);
 }
 
 void MainWindowView::_createMainMenu()
 {
-    _mainMenuView = std::make_shared<MainMenuView>();
-    SetMenuBar(_mainMenuView.get());
+    _mainMenu = new MainMenuView();
+    SetMenuBar(_mainMenu);
 }
 
-void MainWindowView::_createMainArea()
+void MainWindowView::_createMainArea(wxSizer* windowSizer)
 {
     _toolBar = std::make_shared<ToolBar>(this);
-
-    auto sizer = new wxBoxSizer(wxVERTICAL);
-
-    sizer->Add(_toolBar.get(), 0, wxEXPAND);
-    sizer->Add(_workArea.get(), 1, wxEXPAND | wxTOP | wxBOTTOM, 10);
-
-    this->SetSizer(sizer);
+    windowSizer->Add(_toolBar.get(), 0, wxEXPAND);
 }
 
-void MainWindowView::_createWorkArea()
+void MainWindowView::_createWorkArea(wxSizer* windowSizer)
 {
     _workArea = std::make_shared<wxPanel>(this, wxID_ANY);
     auto sizer = new wxBoxSizer(wxHORIZONTAL);
@@ -52,6 +51,8 @@ void MainWindowView::_createWorkArea()
     sizer->Add(_sceneTree.get(), 1, wxEXPAND | wxTOP | wxBOTTOM, 10);
 
     _workArea->SetSizer(sizer);
+    
+    windowSizer->Add(_workArea.get(), 1, wxEXPAND | wxTOP | wxBOTTOM, 10);
 }
 
 wxBEGIN_EVENT_TABLE(MainWindowView, wxFrame)

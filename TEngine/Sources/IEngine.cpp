@@ -14,7 +14,8 @@
 #include "Components/Graphics/Rendering/Services/Scene/Meshes/MeshService.h"
 #include "Components/Graphics/Rendering/Services/Scene/Lights/LightService.h"
 #include "Components/Graphics/Rendering/Services/Scene/Physics/PhysicsService.h"
-#include "Components/Graphics/Rendering/Services/Gui/GuiService.h"
+#include "Components/Graphics/Rendering/Services/Gui/GlfwGuiService.h"
+#include "Components/Graphics/Rendering/Services/Gui/Win32GuiService.h"
 #include "Components/Graphics/CameraTracking/ListenerCameraTrackingStrategy.h"
 #include "Components/Audio/Services/Readers/VorbisOggReader.h"
 #include "Components/Audio/Services/AudioService.h"
@@ -27,6 +28,7 @@
 #include "Components/Graphics/Rendering/Services/Scene/State/Serialization/Solid/SolidboxRenderingStrategySerializer.h"
 #include "Components/Graphics/Rendering/Services/Scene/State/Serialization/Primitives/CubeRenderingStrategySerializer.h"
 #include "Components/Graphics/Rendering/Services/Scene/State/Serialization/RenderingStrategyBaseSerializer.h"
+#include "Components/State/Deserialization/DeserializationService.h"
 
 #ifdef _WIN32
 #include "Components/Graphics/Win32GraphicService.h"
@@ -59,6 +61,8 @@ using namespace TEngine::Components::Graphics::Rendering::Services::Scene::Rende
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization::Solid;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies::Primitives;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization::Primitives;
+
+using namespace TEngine::Components::State::Deserialization;
 
 std::shared_ptr<IEngine> TEngine::createEngine(
 #ifdef _WIN32
@@ -98,12 +102,12 @@ std::shared_ptr<IEngine> TEngine::createEngine(
         std::make_shared<ListenerCameraTrackingStrategy>(audioService)};
     auto sceneService = std::make_shared<SceneService>(eventsService, shadersService, bufferCacheService, texturesService, meshService, lightServices, physicsService, buildinCameraTrackingStrategies);
 
-    auto guiService = std::make_shared<GuiService>(eventsService, texturesService);
-
+    std::shared_ptr<IGuiService> guiService;
     std::shared_ptr<IGraphicsService> graphicsService;
     if (parent)
     {
 #ifdef _WIN32
+        guiService = std::make_shared<Win32GuiService>();
         graphicsService = std::make_shared<Win32GraphicService>(sceneService, guiService, meshLoadingService, texturesService, parent);
 #elif __APPLE__
         graphicsService = std::make_shared<CocoaGraphicsService>(sceneService, guiService, meshLoadingService, texturesService, parent);
@@ -111,6 +115,7 @@ std::shared_ptr<IEngine> TEngine::createEngine(
     }
     else
     {
+        guiService = std::make_shared<GlfwGuiService>(eventsService, texturesService);
         graphicsService = std::make_shared<GlfwGraphicsService>(sceneService, guiService, meshLoadingService, texturesService);
     }
 
@@ -128,5 +133,9 @@ std::shared_ptr<IEngine> TEngine::createEngine(
 
     auto serializationService = std::make_shared<SerializationService>(serializers);
 
-    return std::make_shared<Engine>(graphicsService, eventsService, audioService, serializationService);
+    auto deserializers = std::map<std::string, std::shared_ptr<Deserializers::IDeserializer>>();
+
+    auto deserializationService = std::make_shared<DeserializationService>(deserializers);
+
+    return std::make_shared<Engine>(graphicsService, eventsService, audioService, serializationService, deserializationService);
 }

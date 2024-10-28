@@ -13,6 +13,8 @@ namespace TEngine::Components::State::Serialization
     public:
         virtual std::string serialize(std::shared_ptr<Mixins::TypeInfoAware> value) = 0;
 
+        virtual void serializeToFile(std::shared_ptr<Mixins::TypeInfoAware> value, const std::string& path) = 0;
+
         virtual ~ISerializationService() = default;
     };
 }
