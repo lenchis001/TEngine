@@ -2,16 +2,15 @@
 
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization::Meshes;
 
-MeshRenderingStrategySerializer::MeshRenderingStrategySerializer()
+MeshRenderingStrategySerializer::MeshRenderingStrategySerializer() : SerializerMixin("mesh")
 {
-    setType("mesh");
 }
 
 boost::json::object MeshRenderingStrategySerializer::_serialize(
-    MeshRenderingStrategy& value,
+    MeshRenderingStrategy &value,
     serializeMember serializeMember)
 {
-    auto baseObject = RenderingStrategyBaseSerializer::_serialize(value, serializeMember);
+    auto baseObject = SerializerMixin::_serializeBase(value, serializeMember);
 
     baseObject["path"] = value.getPath();
 

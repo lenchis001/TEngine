@@ -32,8 +32,6 @@ boost::json::object SerializationService::_serialize(TypeInfoAware& value)
 {
     auto typeIndex = value.getType();
 
-    auto typeName = typeIndex.name();
-
     auto serializer = _serializers[typeIndex];
     return serializer->serialize(value, std::bind(&SerializationService::_serialize, this, std::placeholders::_1));
 }

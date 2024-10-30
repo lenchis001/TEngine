@@ -2,16 +2,15 @@
 
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization::Primitives;
 
-CubeRenderingStrategySerializer::CubeRenderingStrategySerializer()
+CubeRenderingStrategySerializer::CubeRenderingStrategySerializer() : SerializerMixin("cube")
 {
-    setType("cube");
 }
 
 boost::json::object CubeRenderingStrategySerializer::_serialize(
-    CubeRenderingStrategy& value,
+    CubeRenderingStrategy &value,
     serializeMember serializeMember)
 {
-    auto result = RenderingStrategyBaseSerializer::_serialize(value, serializeMember);
+    auto result = SerializerMixin::_serializeBase(value, serializeMember);
 
     result["texturePath"] = value.getTexturePath();
 

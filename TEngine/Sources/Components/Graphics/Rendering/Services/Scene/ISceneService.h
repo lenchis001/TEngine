@@ -31,12 +31,14 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene
             Rendering::Models::Physics::PhysicsFlags physics = Rendering::Models::Physics::PhysicsFlags::NONE) = 0;
 
         virtual std::shared_ptr<RenderingStrategies::IRenderingStrategy> addMesh(
-            std::string meshPath,
+            std::string path,
             std::shared_ptr<RenderingStrategies::IRenderingStrategy> parent = nullptr,
             Rendering::Models::Physics::PhysicsFlags physics = Rendering::Models::Physics::PhysicsFlags::NONE) = 0;
 
         virtual std::shared_ptr<RenderingStrategies::IRenderingStrategy> addSolidbox(
-            Graphics::Models::Vector3df size,
+            std::shared_ptr<RenderingStrategies::IRenderingStrategy> parent = nullptr) = 0;
+
+        virtual std::shared_ptr<RenderingStrategies::IRenderingStrategy> addEmpty(
             std::shared_ptr<RenderingStrategies::IRenderingStrategy> parent = nullptr) = 0;
 
         virtual std::shared_ptr<CameraStrategies::ICameraStrategy> getActiveCamera() = 0;

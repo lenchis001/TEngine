@@ -1,4 +1,7 @@
-#include "Components/Graphics/Rendering/Services/Scene/State/Serialization/RenderingStrategyBaseSerializer.h"
+#ifndef TENGINE_SOLIDRENDERINGSTRATEGY_H
+#define TENGINE_SOLIDRENDERINGSTRATEGY_H
+
+#include "Components/Graphics/Rendering/Services/Scene/State/Serialization/SerializerMixin.h"
 
 #include "Components/Graphics/Rendering/Services/Scene/RenderingStrategies/Solid/SolidboxRenderingStrategy.h"
 
@@ -8,7 +11,7 @@ using namespace TEngine::Components::Graphics::Rendering::Services::Scene::Rende
 
 namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization::Solid
 {
-    class SolidboxRenderingStrategySerializer : public RenderingStrategyBaseSerializer, public virtual SerializerBase<SolidboxRenderingStrategy>
+    class SolidboxRenderingStrategySerializer : public SerializerMixin, public SerializerBase<SolidboxRenderingStrategy>
     {
     public:
         SolidboxRenderingStrategySerializer();
@@ -18,3 +21,5 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Seri
             serializeMember serializeMember) override;
     };
 }
+
+#endif // TENGINE_SOLIDRENDERINGSTRATEGY_H

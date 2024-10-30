@@ -72,6 +72,9 @@ FetchContent_Declare(
 
 FetchContent_GetProperties(wxwidgets)
 
+unset (wxUSE_STL CACHE)
+set(wxUSE_STL ON CACHE BOOL " " FORCE)
+
 if(NOT wxwidgets_POPULATED)
     FetchContent_Populate(wxwidgets)
     add_subdirectory(${wxwidgets_SOURCE_DIR} ${wxwidgets_BINARY_DIR})

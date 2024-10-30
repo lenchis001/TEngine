@@ -32,9 +32,10 @@ int main()
 
         sceneService->setActiveCamera(TEngine::Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes::BASE);
 
-        auto solid = sceneService->addSolidbox(Vector3df(15.0f, 1.0f, 15.0f));
+        auto solid = sceneService->addSolidbox();
         solid->setPosition(Vector3df(0.0f, -5.0f, 0.0f));
         solid->setRotation(Vector3df(.0f, .0f, .5f));
+        solid->setScale(Vector3df(15.0f, 1.0f, 15.0f));
 
         for (int i = 1; i < 32; i++)
         {
@@ -58,16 +59,6 @@ int main()
 
             auto sofa = sceneService->addMesh("./DemoResources/sofa.obj");
             sofa->setPosition(Vector3df(3.0f * i + 5.0f, 0.0f, 0.0f));
-        }
-
-        {
-            auto serializationService = engine->getSerializationService();
-            serializationService->serializeToFile(sceneService->getRoot(), "./scene.json");
-
-            sceneService->getRoot()->removeAllChildren();
-
-            auto deserializationService = engine->getDeserializationService();
-            deserializationService->deserializeFromFile("./scene.json");
         }
 
         int framesCounter = 0;

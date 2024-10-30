@@ -133,16 +133,6 @@ void RenderingStrategyBase::render(std::shared_ptr<ICameraStrategy> activeCamera
     }
 }
 
-std::vector<float> RenderingStrategyBase::getVertices() const
-{
-    throw std::runtime_error("Not allowed");
-}
-
-std::type_index RenderingStrategyBase::getType() const
-{
-    return typeid(RenderingStrategyBase);
-}
-
 void RenderingStrategyBase::_updateTranslationMatrix()
 {
     _translationMatrix = Matrix4x4f(

@@ -21,7 +21,7 @@ namespace TEngine::Components::State::Deserialization
         void deserializeFromFile(const std::string& path, std::shared_ptr<TypeInfoAware> root = nullptr) override;
 
     private:
-        void _deserialize(const boost::json::value& data);
+        void _deserialize(const boost::json::value& data, std::shared_ptr<TypeInfoAware> root);
 
         std::map<std::string, std::shared_ptr<IDeserializer>> _deserializers;
     };

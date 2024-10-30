@@ -1,4 +1,4 @@
-#include "Components/Graphics/Rendering/Services/Scene/State/Serialization/RenderingStrategyBaseSerializer.h"
+#include "Components/Graphics/Rendering/Services/Scene/State/Serialization/SerializerMixin.h"
 
 #include "Components/Graphics/Rendering/Services/Scene/RenderingStrategies/Primitives/CubeRenderingStrategy.h"
 
@@ -8,7 +8,7 @@ using namespace TEngine::Components::Graphics::Rendering::Services::Scene::Rende
 
 namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization::Primitives
 {
-    class CubeRenderingStrategySerializer : public RenderingStrategyBaseSerializer, public virtual SerializerBase<CubeRenderingStrategy>
+    class CubeRenderingStrategySerializer : public SerializerMixin, public SerializerBase<CubeRenderingStrategy>
     {
     public:
         CubeRenderingStrategySerializer();

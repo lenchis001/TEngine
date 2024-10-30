@@ -40,10 +40,6 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
 
         void render(std::shared_ptr<ICameraStrategy> activeCameraStrategy) override;
 
-        std::vector<float> getVertices() const override;
-
-        std::type_index getType() const override;
-
     protected:
         const Matrix4x4f &getModelMatrix() const override;
 

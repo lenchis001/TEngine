@@ -2,16 +2,15 @@
 
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization::Solid;
 
-SolidboxRenderingStrategySerializer::SolidboxRenderingStrategySerializer()
+SolidboxRenderingStrategySerializer::SolidboxRenderingStrategySerializer(): SerializerMixin("solidbox")
 {
-    setType("solidbox");
 }
 
 boost::json::object SolidboxRenderingStrategySerializer::_serialize(
     SolidboxRenderingStrategy& value,
     serializeMember serializeMember)
 {
-    auto result = RenderingStrategyBaseSerializer::_serialize(value, serializeMember);
+    auto result = SerializerMixin::_serializeBase(value, serializeMember);
 
     return result;
 }

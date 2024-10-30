@@ -1,4 +1,4 @@
-#include "Components/Graphics/Rendering/Services/Scene/State/Serialization/RenderingStrategyBaseSerializer.h"
+#include "Components/Graphics/Rendering/Services/Scene/State/Serialization/SerializerMixin.h"
 
 #include "Components/Graphics/Rendering/Services/Scene/RenderingStrategies/Meshes/MeshRenderingStrategy.h"
 
@@ -8,7 +8,7 @@ using namespace TEngine::Components::Graphics::Rendering::Services::Scene::Rende
 
 namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization::Meshes
 {
-    class MeshRenderingStrategySerializer : public RenderingStrategyBaseSerializer, public virtual SerializerBase<MeshRenderingStrategy>
+    class MeshRenderingStrategySerializer : public SerializerMixin, public SerializerBase<MeshRenderingStrategy>
     {
         public:
             MeshRenderingStrategySerializer();

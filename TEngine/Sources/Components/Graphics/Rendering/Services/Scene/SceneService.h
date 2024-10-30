@@ -61,12 +61,14 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene
             PhysicsFlags physicsFlags = PhysicsFlags::NONE) override;
 
         std::shared_ptr<IRenderingStrategy> addMesh(
-            std::string meshPath,
+            std::string path,
             std::shared_ptr<IRenderingStrategy> parent = nullptr,
             PhysicsFlags physicsFlags = PhysicsFlags::NONE) override;
 
         std::shared_ptr<IRenderingStrategy> addSolidbox(
-            Vector3df size,
+            std::shared_ptr<IRenderingStrategy> parent = nullptr) override;
+
+        std::shared_ptr<IRenderingStrategy> addEmpty(
             std::shared_ptr<IRenderingStrategy> parent = nullptr) override;
 
         void render(double time) override;

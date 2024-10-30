@@ -1,25 +1,28 @@
 #ifndef TENGINE_DESERIALIZERS_DESERIALIZERBASE_H
 #define TENGINE_DESERIALIZERS_DESERIALIZERBASE_H
 
-#include "ISerializer.h"
+#include "IDeserializer.h"
 
 using namespace TEngine::Mixins;
 
-namespace TEngine::Components::State::Serialization::Serializers
+namespace TEngine::Components::State::Deserialization::Deserializers
 {
     template <class T>
-    class DeserializerBase : public ISerializer
+    class DeserializerBase : public IDeserializer
     {
     public:
-        virtual boost::json::object serialize(TypeInfoAware& value, deserializeMember serializeMember)
+        void deserialize(
+            const boost::json::value &value,
+            deserializeMember deserializeMember,
+            std::shared_ptr<Mixins::TypeInfoAware> root) override
         {
-            auto castedValue = static_cast<T*>(&value);
+            auto castedRoot = std::static_pointer_cast<T>(root);
 
-            return _deserialize(*castedValue, serializeMember);
+            return _deserialize(value, deserializeMember, castedRoot);
         }
 
     protected:
-        virtual boost::json::object _deserialize(T& value, serializeMember serializeMember) = 0;
+        virtual void _deserialize(const boost::json::value& value, deserializeMember serializeMember, std::shared_ptr<T> root) = 0;
     };
 }
 

@@ -27,8 +27,12 @@
 #include "Components/Graphics/Rendering/Services/Scene/State/Serialization/Meshes/MeshRenderingStrategySerializer.h"
 #include "Components/Graphics/Rendering/Services/Scene/State/Serialization/Solid/SolidboxRenderingStrategySerializer.h"
 #include "Components/Graphics/Rendering/Services/Scene/State/Serialization/Primitives/CubeRenderingStrategySerializer.h"
-#include "Components/Graphics/Rendering/Services/Scene/State/Serialization/RenderingStrategyBaseSerializer.h"
+#include "Components/Graphics/Rendering/Services/Scene/State/Serialization/Empty/EmptyRenderingStrategySerializer.h"
 #include "Components/State/Deserialization/DeserializationService.h"
+#include "Components/Graphics/Rendering/Services/Scene/State/Deserialization/Empty/EmptyRenderingStrategyDeserializer.h"
+#include "Components/Graphics/Rendering/Services/Scene/State/Deserialization/Solid/SolidboxRenderingStrategyDeserializer.h"
+#include "Components/Graphics/Rendering/Services/Scene/State/Deserialization/Primitives/CubeRenderingStrategyDeserializer.h"
+#include "Components/Graphics/Rendering/Services/Scene/State/Deserialization/Meshes/MeshRenderingStrategyDeserializer.h"
 
 #ifdef _WIN32
 #include "Components/Graphics/Win32GraphicService.h"
@@ -61,8 +65,13 @@ using namespace TEngine::Components::Graphics::Rendering::Services::Scene::Rende
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization::Solid;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies::Primitives;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization::Primitives;
+using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization::Empty;
 
-using namespace TEngine::Components::State::Deserialization;
+using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Deserialization;
+using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Deserialization::Empty;
+using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Deserialization::Solid;
+using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Deserialization::Primitives;
+using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Deserialization::Meshes;
 
 std::shared_ptr<IEngine> TEngine::createEngine(
 #ifdef _WIN32
@@ -129,11 +138,15 @@ std::shared_ptr<IEngine> TEngine::createEngine(
         std::static_pointer_cast<Serializers::SerializerBase<SolidboxRenderingStrategy>>(std::make_shared<SolidboxRenderingStrategySerializer>());
     serializers[std::type_index(typeid(CubeRenderingStrategy))] = 
         std::static_pointer_cast<Serializers::SerializerBase<CubeRenderingStrategy>>(std::make_shared<CubeRenderingStrategySerializer>());
-    serializers[std::type_index(typeid(RenderingStrategyBase))] = std::make_shared<RenderingStrategyBaseSerializer>();
+    serializers[std::type_index(typeid(EmptyRenderingStrategy))] = std::make_shared<EmptyRenderingStrategySerializer>();
 
     auto serializationService = std::make_shared<SerializationService>(serializers);
 
     auto deserializers = std::map<std::string, std::shared_ptr<Deserializers::IDeserializer>>();
+    deserializers["empty"] = std::make_shared<EmptyRenderingStrategyDeserializer>(sceneService);
+    deserializers["solidbox"] = std::make_shared<SolidboxRenderingStrategyDeserializer>(sceneService);
+    deserializers["cube"] = std::make_shared<CubeRenderingStrategyDeserializer>(sceneService);
+    deserializers["mesh"] = std::make_shared<MeshRenderingStrategyDeserializer>(sceneService);
 
     auto deserializationService = std::make_shared<DeserializationService>(deserializers);
 

@@ -19,8 +19,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
             std::shared_ptr<IShadersService> shadersService,
             std::shared_ptr<IBuffersService> bufferCacheService,
             std::shared_ptr<ITexturesService> texturesService,
-            std::string texturePath,
-            const Vector3df size);
+            std::string texturePath);
         ~SolidboxRenderingStrategy() override;
 
         void render(std::shared_ptr<ICameraStrategy> activeCameraStrategy) override;
@@ -33,8 +32,6 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingSt
         void _onAttachedToParent(std::shared_ptr<IRenderingStrategy> parent) override;
 
     private:
-        Vector3df _size;
-
         bool _isVisualAttached;
 
         std::shared_ptr<IRenderingStrategy> _visual;

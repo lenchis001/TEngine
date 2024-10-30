@@ -9,7 +9,7 @@ boost::json::object PhysicsRenderingDecoratorSerializer::_serialize(
     boost::json::object result;
     
     auto physicsFlags = value.getPhysicsFlags();
-    result["physicsFlags"] = (int)physicsFlags;
+    result["physicsFlags"] = _toString(physicsFlags);
 
     auto internalStrategy = value.getInternalStrategy();
     auto internalSerialized = serializeMember(*internalStrategy);
@@ -20,4 +20,19 @@ boost::json::object PhysicsRenderingDecoratorSerializer::_serialize(
     }
 
     return result;
+}
+
+std::string PhysicsRenderingDecoratorSerializer::_toString(PhysicsFlags flag)
+{
+    switch (flag)
+    {
+    case PhysicsFlags::DYNAMIC:
+        return "dynamic";
+    case PhysicsFlags::STATIC:
+        return "static";
+    case PhysicsFlags::NONE:
+        return "none";
+    default:
+        throw std::runtime_error("Unknown physics flag");
+    }
 }

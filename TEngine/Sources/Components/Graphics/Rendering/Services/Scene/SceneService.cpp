@@ -10,12 +10,14 @@
 #include "RenderingStrategies/Meshes/MeshRenderingStrategy.h"
 #include "RenderingStrategies/PhysicsRenderingDecorator.h"
 #include "RenderingStrategies/Solid/SolidboxRenderingStrategy.h"
+#include "RenderingStrategies/Empty/EmptyRenderingStrategy.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies::Primitives;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies::Meshes;
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies::Solid;
+using namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies::Empty;
 
 SceneService::SceneService(
 	std::shared_ptr<IEventService> eventService,
@@ -34,7 +36,7 @@ SceneService::SceneService(
 	  _lightServices(lightServices),
 	  _physicsService(physicsService),
 	  _activeCamera(nullptr),
-	  _root(std::make_shared<RenderingStrategyBase>()),
+	  _root(std::make_shared<EmptyRenderingStrategy>()),
 	  _buildinCameraTrackingStrategies(buildinCameraTrackingStrategies)
 {
 }
@@ -86,11 +88,11 @@ std::shared_ptr<IRenderingStrategy> SceneService::addPrimitive(
 }
 
 std::shared_ptr<IRenderingStrategy> SceneService::addMesh(
-	std::string meshPath,
+	std::string path,
 	std::shared_ptr<IRenderingStrategy> parent,
 	PhysicsFlags physicsFlags)
 {
-	std::shared_ptr<IRenderingStrategy> strategy = std::make_shared<MeshRenderingStrategy>(_meshService, _lightServices, meshPath);
+	std::shared_ptr<IRenderingStrategy> strategy = std::make_shared<MeshRenderingStrategy>(_meshService, _lightServices, path);
 
 	if (physicsFlags != PhysicsFlags::NONE)
 	{
@@ -104,15 +106,13 @@ std::shared_ptr<IRenderingStrategy> SceneService::addMesh(
 }
 
 std::shared_ptr<IRenderingStrategy> SceneService::addSolidbox(
-	Vector3df size,
 	std::shared_ptr<IRenderingStrategy> parent)
 {
 	std::shared_ptr<IRenderingStrategy> strategy = std::make_shared<SolidboxRenderingStrategy>(
 		_shadersService,
 		_bufferCacheService,
 		_textureService,
-		"./DemoResources/texture2.bmp",
-		size);
+		"./DemoResources/texture2.bmp");
 
 	strategy = std::make_shared<PhysicsRenderingDecorator>(_physicsService, strategy, PhysicsFlags::STATIC);
 
@@ -120,6 +120,16 @@ std::shared_ptr<IRenderingStrategy> SceneService::addSolidbox(
 	(parent ? parent : _root)->addChild(decoratedSolidboxRenderingStrategy);
 
 	return decoratedSolidboxRenderingStrategy;
+}
+
+std::shared_ptr<IRenderingStrategy> SceneService::addEmpty(
+	std::shared_ptr<IRenderingStrategy> parent)
+{
+	std::shared_ptr<IRenderingStrategy> strategy = std::make_shared<EmptyRenderingStrategy>();
+
+	(parent ? parent : _root)->addChild(strategy);
+
+	return strategy;
 }
 
 std::shared_ptr<ICameraStrategy> SceneService::setActiveCamera(BuildinCameraTypes cameraType)
