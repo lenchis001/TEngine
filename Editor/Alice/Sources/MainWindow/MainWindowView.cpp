@@ -1,19 +1,16 @@
 #include "MainWindowView.h"
 
-#include "Components/GraphicContext.h"
+#include "Components/Graphic/GraphicContext.h"
 #include "Components/Tree/SceneTree.h"
 
 #include "Children/MainMenu/MainMenuView.h"
 #include "Children/ToolBar/ToolBar.h"
 
 using namespace Alice::MainWindow;
-using namespace Alice::MainWindow::Children::MainMenu;
-using namespace Alice::MainWindow::Components;
-using namespace Alice::MainWindow::Components::Tree;
 using namespace Alice::MainWindow::Children::ToolBar;
 
-MainWindowView::MainWindowView(std::shared_ptr<MainWindow::IMainWindowPresenter> presenter)
-    : wxFrame(nullptr, wxID_ANY, "Alice Editor")
+MainWindowView::MainWindowView(std::shared_ptr<MainWindow::IMainWindowPresenter> presenter, IMainMenuView *mainMenu)
+    : wxFrame(nullptr, wxID_ANY, "Alice Editor"), _mainMenu(mainMenu)
 {
     _createMainMenu();
 
@@ -21,23 +18,22 @@ MainWindowView::MainWindowView(std::shared_ptr<MainWindow::IMainWindowPresenter>
 
     _createMainArea(sizer);
     _createWorkArea(sizer);
-    
+
     this->SetSizer(sizer);
 }
 
 void MainWindowView::_createMainMenu()
 {
-    _mainMenu = new MainMenuView();
     SetMenuBar(_mainMenu);
 }
 
-void MainWindowView::_createMainArea(wxSizer* windowSizer)
+void MainWindowView::_createMainArea(wxSizer *windowSizer)
 {
     _toolBar = std::make_shared<ToolBar>(this);
     windowSizer->Add(_toolBar.get(), 0, wxEXPAND);
 }
 
-void MainWindowView::_createWorkArea(wxSizer* windowSizer)
+void MainWindowView::_createWorkArea(wxSizer *windowSizer)
 {
     _workArea = std::make_shared<wxPanel>(this, wxID_ANY);
     auto sizer = new wxBoxSizer(wxHORIZONTAL);
@@ -51,7 +47,7 @@ void MainWindowView::_createWorkArea(wxSizer* windowSizer)
     sizer->Add(_sceneTree.get(), 1, wxEXPAND | wxTOP | wxBOTTOM, 10);
 
     _workArea->SetSizer(sizer);
-    
+
     windowSizer->Add(_workArea.get(), 1, wxEXPAND | wxTOP | wxBOTTOM, 10);
 }
 

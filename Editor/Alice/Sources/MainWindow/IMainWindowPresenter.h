@@ -9,7 +9,8 @@ namespace Alice::MainWindow
 
     class IMainWindowPresenter : public Core::IPresenter<IMainWindowView>
     {
-        
+    public:
+        virtual void injectView(IMainWindowView *view) = 0;
     };
 }
 

@@ -8,7 +8,7 @@ namespace Alice::MainWindow
     class MainWindowPresenter : public IMainWindowPresenter
     {
     public:
-        void injectView(IMainWindowView* view);
+        void injectView(IMainWindowView* view) override;
 
     private:
         IMainWindowView* _view;

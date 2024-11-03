@@ -1,6 +1,6 @@
 #include "GraphicContext.h"
 
-using namespace Alice::MainWindow::Components;
+using namespace Alice::MainWindow::Components::Graphic;
 
 using namespace TEngine::Components::Graphics::Rendering::Models::Meshes;
 using namespace TEngine::Components::Graphics::Models;
@@ -16,8 +16,11 @@ GraphicContext::~GraphicContext()
 {
     if (_renderThread.joinable())
     {
-        addFunction([this]()
-                    { _isShutdownRequested = true; });
+        addFunction(
+            [this]()
+            {
+                _isShutdownRequested = true;
+            });
 
         _renderThread.join();
     }
@@ -32,11 +35,64 @@ void GraphicContext::OnResize(wxSizeEvent &event)
 
     auto size = event.GetSize();
 
-    addFunction([this, size]()
-                {
-    auto graphicsService = _engine->getGraphicsService();
+    addFunction(
+        [this, size]()
+        {
+            auto graphicsService = _engine->getGraphicsService();
 
-    graphicsService->resize(size.GetWidth() , size.GetHeight()); });
+            graphicsService->resize(size.GetWidth(), size.GetHeight());
+        });
+}
+
+void GraphicContext::OnCreateScene(CreateSceneEvent &event)
+{
+    _currentScenePath.clear();
+
+    addFunction(
+        [&]()
+        {
+            auto graphicsService = _engine->getGraphicsService();
+            graphicsService->getSceneService()->getRoot()->removeAllChildren();
+        });
+}
+
+void GraphicContext::OnSaveScene(SaveSceneEvent &event)
+{
+    auto location = _currentScenePath.empty() ? showSaveSceneDialog() : _currentScenePath;
+
+    if (!location.empty())
+    {
+        _currentScenePath = location;
+
+        addFunction(
+            [&, location]()
+            {
+                auto serializationService = _engine->getSerializationService();
+                auto graphicsService = _engine->getGraphicsService();
+
+                auto sceneRoot = graphicsService->getSceneService()->getRoot();
+
+                serializationService->serializeToFile(sceneRoot, location);
+            });
+    }
+}
+
+void GraphicContext::OnSaveSceneAs(SaveSceneAsEvent &event)
+{
+    auto location = event.getPath();
+
+    _currentScenePath = location;
+
+    addFunction(
+        [&, location]()
+        {
+            auto serializationService = _engine->getSerializationService();
+            auto graphicsService = _engine->getGraphicsService();
+
+            auto sceneRoot = graphicsService->getSceneService()->getRoot();
+
+            serializationService->serializeToFile(sceneRoot, location);
+        });
 }
 
 void GraphicContext::_initializeEngine()
@@ -109,4 +165,7 @@ void GraphicContext::_initializeEngine()
 
 wxBEGIN_EVENT_TABLE(GraphicContext, wxPanel)
     EVT_SIZE(GraphicContext::OnResize)
-        wxEND_EVENT_TABLE()
+        EVT_CREATE_SCENE(GraphicContext::OnCreateScene)
+            EVT_SAVE_SCENE(GraphicContext::OnSaveScene)
+                EVT_SAVE_SCENE_AS(GraphicContext::OnSaveSceneAs)
+                    wxEND_EVENT_TABLE()

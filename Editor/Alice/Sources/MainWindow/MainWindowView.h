@@ -13,18 +13,22 @@
 
 #include "IMainWindowPresenter.h"
 
-#include "Components/IGraphicContext.h"
+#include "Components/Graphic/IGraphicContext.h"
 #include "Components/Tree/ISceneTree.h"
 
 #include "Children/MainMenu/IMainMenuView.h"
 #include "Children/ToolBar/IToolBar.h"
+
+using namespace Alice::MainWindow::Components::Graphic;
+using namespace Alice::MainWindow::Components::Tree;
+using namespace Alice::MainWindow::Children::MainMenu;
 
 namespace Alice::MainWindow
 {
     class MainWindowView : public wxFrame, public IMainWindowView
     {
     public:
-        MainWindowView(std::shared_ptr<MainWindow::IMainWindowPresenter> presenter);
+        MainWindowView(std::shared_ptr<MainWindow::IMainWindowPresenter> presenter, IMainMenuView* mainMenu);
 
     private:
         void _createMainMenu();
@@ -39,8 +43,8 @@ namespace Alice::MainWindow
         
         //Work area
         std::shared_ptr<wxPanel> _workArea;
-        std::shared_ptr<Components::IGraphicContext> _graphicContext;
-        std::shared_ptr<Components::Tree::ISceneTree> _sceneTree;
+        std::shared_ptr<IGraphicContext> _graphicContext;
+        std::shared_ptr<ISceneTree> _sceneTree;
 
         wxDECLARE_EVENT_TABLE();
     };

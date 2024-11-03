@@ -10,7 +10,7 @@
 
 #include <IEngine.h>
 
-namespace Alice::MainWindow::Components
+namespace Alice::MainWindow::Components::Graphic
 {
     class IGraphicContext : public wxPanel
     {

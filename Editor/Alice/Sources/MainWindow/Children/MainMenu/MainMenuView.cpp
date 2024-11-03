@@ -2,10 +2,10 @@
 
 using namespace Alice::MainWindow::Children::MainMenu;
 
-MainMenuView::MainMenuView()
+MainMenuView::MainMenuView(std::shared_ptr<IMainMenuPresenter> presenter) : _presenter(presenter)
 {
     // File
-    wxMenu* fileMenu = new wxMenu();
+    wxMenu *fileMenu = new wxMenu();
     fileMenu->Append(wxID_NEW, "New\tCtrl+N");
     fileMenu->Append(wxID_OPEN, "Open\tCtrl+O");
     fileMenu->Append(wxID_SAVE, "Save\tCtrl+S");
@@ -15,7 +15,7 @@ MainMenuView::MainMenuView()
     Append(fileMenu, "&File");
 
     // Edit
-    wxMenu* editMenu = new wxMenu();
+    wxMenu *editMenu = new wxMenu();
     editMenu->Append(wxID_UNDO, "Undo\tCtrl+Z");
     editMenu->Append(wxID_REDO, "Redo\tCtrl+Y");
     editMenu->AppendSeparator();
@@ -25,14 +25,35 @@ MainMenuView::MainMenuView()
     Append(editMenu, "&Edit");
 
     // View
-    wxMenu* viewMenu = new wxMenu();
+    wxMenu *viewMenu = new wxMenu();
     viewMenu->Append(wxID_ZOOM_IN, "Zoom In\tCtrl+Plus");
     viewMenu->Append(wxID_ZOOM_OUT, "Zoom Out\tCtrl+Minus");
     viewMenu->Append(wxID_ZOOM_100, "Zoom 100%\tCtrl+0");
     Append(viewMenu, "&View");
 
     // Help
-    wxMenu* helpMenu = new wxMenu();
+    wxMenu *helpMenu = new wxMenu();
     helpMenu->Append(wxID_ABOUT, "About");
     Append(helpMenu, "&Help");
 }
+
+void MainMenuView::OnQuit(wxCommandEvent &event)
+{
+    _presenter->createScene();
+}
+
+void MainMenuView::OnSave(wxCommandEvent &event)
+{
+    _presenter->saveScene();
+}
+
+void MainMenuView::OnSaveAs(wxCommandEvent &event)
+{
+    _presenter->saveSceneAs();
+}
+
+wxBEGIN_EVENT_TABLE(MainMenuView, wxMenuBar)
+    EVT_MENU(wxID_NEW, MainMenuView::OnQuit)
+        EVT_MENU(wxID_SAVE, MainMenuView::OnSave)
+            EVT_MENU(wxID_SAVEAS, MainMenuView::OnSaveAs)
+                wxEND_EVENT_TABLE()
