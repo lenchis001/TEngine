@@ -4,14 +4,14 @@
 #include "IMainMenuPresenter.h"
 
 #include "Core/EventPropogationMixin.h"
-#include "MainWindow/Components/Graphic/Mixins/SaveSceneDialogMixin.h"
+#include "MainWindow/Components/Graphic/Mixins/SceneFileDialogMixin.h"
 
 using namespace Alice::Core;
 using namespace Alice::MainWindow::Components::Graphic::Mixins;
 
 namespace Alice::MainWindow::Children::MainMenu
 {
-    class MainMenuPresenter : public IMainMenuPresenter, public EventPropogationMixin, public SaveSceneDialogMixin
+    class MainMenuPresenter : public IMainMenuPresenter, public EventPropogationMixin, public SceneFileDialogMixin
     {
     public:
         void createScene() override;
@@ -19,6 +19,8 @@ namespace Alice::MainWindow::Children::MainMenu
         void saveScene() override;
 
         void saveSceneAs() override;
+
+        void openScene() override;
 
         void injectView(IMainMenuView *view) override;
 

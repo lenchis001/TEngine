@@ -9,7 +9,8 @@
 #include "Events/CreateSceneEvent.h"
 #include "Events/SaveSceneEvent.h"
 #include "Events/SaveSceneAsEvent.h"
-#include "Mixins/SaveSceneDialogMixin.h"
+#include "Events/OpenSceneEvent.h"
+#include "Mixins/SceneFileDialogMixin.h"
 
 using namespace TEngine;
 
@@ -19,7 +20,7 @@ using namespace Alice::MainWindow::Components::Graphic::Mixins;
 
 namespace Alice::MainWindow::Components::Graphic
 {
-    class GraphicContext : public FunctionConveyer, public SaveSceneDialogMixin, public IGraphicContext
+    class GraphicContext : public FunctionConveyer, public SceneFileDialogMixin, public IGraphicContext
     {
     public:
         GraphicContext(wxWindow *parent);
@@ -30,6 +31,7 @@ namespace Alice::MainWindow::Components::Graphic
         void OnCreateScene(CreateSceneEvent& event);
         void OnSaveScene(SaveSceneEvent& event);
         void OnSaveSceneAs(SaveSceneAsEvent& event);
+        void OnOpenScene(OpenSceneEvent& event);
 
         void _initializeEngine();
 

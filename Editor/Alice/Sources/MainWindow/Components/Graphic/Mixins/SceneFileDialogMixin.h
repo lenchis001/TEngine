@@ -5,10 +5,12 @@
 
 namespace Alice::MainWindow::Components::Graphic::Mixins
 {
-    class SaveSceneDialogMixin
+    class SceneFileDialogMixin
     {
     protected:
         std::string showSaveSceneDialog();
+
+        std::string showOpenSceneDialog();
     };
 }
 

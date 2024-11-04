@@ -52,8 +52,14 @@ void MainMenuView::OnSaveAs(wxCommandEvent &event)
     _presenter->saveSceneAs();
 }
 
+void MainMenuView::OnOpen(wxCommandEvent &event)
+{
+    _presenter->openScene();
+}
+
 wxBEGIN_EVENT_TABLE(MainMenuView, wxMenuBar)
     EVT_MENU(wxID_NEW, MainMenuView::OnQuit)
         EVT_MENU(wxID_SAVE, MainMenuView::OnSave)
             EVT_MENU(wxID_SAVEAS, MainMenuView::OnSaveAs)
-                wxEND_EVENT_TABLE()
+                EVT_MENU(wxID_OPEN, MainMenuView::OnOpen)
+                    wxEND_EVENT_TABLE()

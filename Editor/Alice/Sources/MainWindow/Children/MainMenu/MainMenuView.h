@@ -21,6 +21,8 @@ namespace Alice::MainWindow::Children::MainMenu
         
         void OnSaveAs(wxCommandEvent& event);
 
+        void OnOpen(wxCommandEvent& event);
+
         std::shared_ptr<IMainMenuPresenter> _presenter;
     };
 }

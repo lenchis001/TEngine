@@ -15,6 +15,10 @@ RenderingStrategyBase::RenderingStrategyBase() : _position(Vector3df(0.0f, 0.0f,
     _updateModelMatrix(_parentMatrix);
 }
 
+RenderingStrategyBase::~RenderingStrategyBase() {
+    removeAllChildren();
+}
+
 const std::vector<std::shared_ptr<IRenderingStrategy>> &RenderingStrategyBase::getChildren() const
 {
     return _children;

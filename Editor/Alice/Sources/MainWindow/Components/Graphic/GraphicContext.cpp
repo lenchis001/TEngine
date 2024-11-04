@@ -65,14 +65,14 @@ void GraphicContext::OnSaveScene(SaveSceneEvent &event)
         _currentScenePath = location;
 
         addFunction(
-            [&, location]()
+            [&]()
             {
                 auto serializationService = _engine->getSerializationService();
                 auto graphicsService = _engine->getGraphicsService();
 
                 auto sceneRoot = graphicsService->getSceneService()->getRoot();
 
-                serializationService->serializeToFile(sceneRoot, location);
+                serializationService->serializeToFile(sceneRoot, _currentScenePath);
             });
     }
 }
@@ -84,14 +84,32 @@ void GraphicContext::OnSaveSceneAs(SaveSceneAsEvent &event)
     _currentScenePath = location;
 
     addFunction(
-        [&, location]()
+        [&]()
         {
             auto serializationService = _engine->getSerializationService();
             auto graphicsService = _engine->getGraphicsService();
 
             auto sceneRoot = graphicsService->getSceneService()->getRoot();
 
-            serializationService->serializeToFile(sceneRoot, location);
+            serializationService->serializeToFile(sceneRoot, _currentScenePath);
+        });
+}
+
+void GraphicContext::OnOpenScene(OpenSceneEvent &event)
+{
+    auto location = event.getPath();
+
+    _currentScenePath = location;
+
+    addFunction(
+        [&]()
+        {
+            auto deserializationService = _engine->getDeserializationService();
+            auto graphicsService = _engine->getGraphicsService();
+
+            auto sceneRoot = graphicsService->getSceneService()->getRoot();
+
+            deserializationService->deserializeFromFile(_currentScenePath, sceneRoot);
         });
 }
 
@@ -110,49 +128,35 @@ void GraphicContext::_initializeEngine()
 
     graphicsService->getGuiService()->addWindow();
 
-    graphicsService->getSceneService()->setActiveCamera(TEngine::Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes::BASE);
+    auto sceneService = graphicsService->getSceneService();
+    sceneService->setActiveCamera(TEngine::Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes::BASE);
 
     for (int i = 1; i < 32; i++)
     {
         for (int j = 1; j < 32; j++)
         {
-            auto cube = graphicsService->getSceneService()->addMesh("./DemoResources/test plane/plane.obj");
+            auto cube = sceneService->addMesh("./DemoResources/test plane/plane.obj");
             cube->setPosition(Vector3df(2.0f * i, 0.0f, 2.0f * j));
         }
 
-        auto cube3 = graphicsService->getSceneService()->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp", nullptr, PhysicsFlags::DYNAMIC);
+        auto cube3 = sceneService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp", nullptr, PhysicsFlags::DYNAMIC);
         cube3->setPosition(Vector3df(2.0f * i, 4.f * i, i * 2.0f));
 
-        auto cube = graphicsService->getSceneService()->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp", nullptr, PhysicsFlags::STATIC);
+        auto cube = sceneService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp", nullptr, PhysicsFlags::STATIC);
         cube->setPosition(Vector3df(-3.0f * i, 0.0f, 0.0f));
 
-        auto cube2 = graphicsService->getSceneService()->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp", nullptr, PhysicsFlags::DYNAMIC);
+        auto cube2 = sceneService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp", nullptr, PhysicsFlags::DYNAMIC);
         cube2->setPosition(Vector3df(-3.0f * i, 4.f * i, 0.0f));
 
-        auto testCube = graphicsService->getSceneService()->addMesh("./DemoResources/test cube/cube.obj");
+        auto testCube = sceneService->addMesh("./DemoResources/test cube/cube.obj");
         testCube->setPosition(Vector3df(0.0f, 0.0f, 3.0f * i));
 
-        auto sofa = graphicsService->getSceneService()->addMesh("./DemoResources/sofa.obj");
+        auto sofa = sceneService->addMesh("./DemoResources/sofa.obj");
         sofa->setPosition(Vector3df(3.0f * i + 5.0f, 0.0f, 0.0f));
     }
 
     while (!_isShutdownRequested)
     {
-        static auto lastTime = std::chrono::high_resolution_clock::now();
-        static int frameCount = 0;
-
-        frameCount++;
-        auto currentTime = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> elapsed = currentTime - lastTime;
-
-        if (elapsed.count() >= 1.0)
-        {
-            double fps = frameCount / elapsed.count();
-
-            frameCount = 0;
-            lastTime = currentTime;
-        }
-
         this->executeFunctions();
 
         graphicsService->render();
@@ -160,6 +164,7 @@ void GraphicContext::_initializeEngine()
 
     _engine->deinitialize();
 
+    sceneService = nullptr;
     _engine = nullptr;
 }
 
@@ -168,4 +173,5 @@ wxBEGIN_EVENT_TABLE(GraphicContext, wxPanel)
         EVT_CREATE_SCENE(GraphicContext::OnCreateScene)
             EVT_SAVE_SCENE(GraphicContext::OnSaveScene)
                 EVT_SAVE_SCENE_AS(GraphicContext::OnSaveSceneAs)
-                    wxEND_EVENT_TABLE()
+                    EVT_OPEN_SCENE(GraphicContext::OnOpenScene)
+                        wxEND_EVENT_TABLE()

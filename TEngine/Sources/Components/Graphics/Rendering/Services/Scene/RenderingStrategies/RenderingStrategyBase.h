@@ -13,10 +13,11 @@ using namespace TEngine::Components::Graphics::Rendering::Services::Scene::Camer
 
 namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies
 {
-    class RenderingStrategyBase : public std::enable_shared_from_this<RenderingStrategyBase>, public IRenderingStrategy
+    class RenderingStrategyBase : public std::enable_shared_from_this<IRenderingStrategy>, public IRenderingStrategy
     {
     public:
         RenderingStrategyBase();
+        ~RenderingStrategyBase();
 
         const std::vector<std::shared_ptr<IRenderingStrategy>> &getChildren() const override;
         void addChild(std::shared_ptr<IRenderingStrategy> child) override;

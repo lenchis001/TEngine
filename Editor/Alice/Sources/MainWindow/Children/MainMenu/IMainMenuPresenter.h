@@ -17,6 +17,8 @@ namespace Alice::MainWindow::Children::MainMenu
         virtual void saveScene() = 0;
         
         virtual void saveSceneAs() = 0;
+
+        virtual void openScene() = 0;
     };
 }
 
