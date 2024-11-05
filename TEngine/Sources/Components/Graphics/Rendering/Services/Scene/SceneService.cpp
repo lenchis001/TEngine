@@ -4,6 +4,7 @@
 
 #include "CameraStrategies/CameraStrategyBase.h"
 #include "CameraStrategies/FpsCameraStrategy.h"
+#include "CameraStrategies/ViewerCameraStrategy.h"
 #include "RenderingStrategies/Primitives/CubeRenderingStrategy.h"
 #include "RenderingStrategies/RenderingStrategyBase.h"
 #include "RenderingStrategies/RenderingOptimizationDecorator.h"
@@ -143,6 +144,9 @@ std::shared_ptr<ICameraStrategy> SceneService::setActiveCamera(BuildinCameraType
 		break;
 	case BuildinCameraTypes::FPS:
 		setActiveCamera(std::make_shared<FpsCameraStrategy>(_eventService, 45.0f, windowSize, 0.1f, 100.f, Vector3df(4, 3, 3)));
+		break;
+	case BuildinCameraTypes::VIEWER:
+		setActiveCamera(std::make_shared<ViewerCameraStrategy>(_eventService, 45.0f, windowSize, 0.1f, 100.f, Vector3df(4, 3, 3)));
 		break;
 	default:
 		_activeCamera = nullptr;

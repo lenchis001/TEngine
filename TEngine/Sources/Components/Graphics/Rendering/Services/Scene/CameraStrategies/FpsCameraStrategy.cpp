@@ -1,10 +1,12 @@
 #define _USE_MATH_DEFINES
-#include "cmath"
+#include <cmath>
 
 #include "FpsCameraStrategy.h"
 
 #include <algorithm>
 #include <functional>
+
+#include "Components/Events/Models/KeyStates.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::CameraStrategies;
 
@@ -89,37 +91,35 @@ bool FpsCameraStrategy::_onMouseMoved(float x, float y)
     return true;
 }
 
-#define GLFW_RELEASE 0
-
 bool FpsCameraStrategy::_onKeyPressed(int key, int scancode, int action, int mods)
 {
     if (key == (int)KeyboardKeys::KEY_W)
     {
-        _isMovingForward = action != GLFW_RELEASE;
+        _isMovingForward = action != (int)KeyStates::RELEASE;
     }
     else if (key == (int)KeyboardKeys::KEY_S)
     {
-        _isMovingBackward = action != GLFW_RELEASE;
+        _isMovingBackward = action != (int)KeyStates::RELEASE;
     }
     else if (key == (int)KeyboardKeys::KEY_A)
     {
-        _isMovingLeft = action != GLFW_RELEASE;
+        _isMovingLeft = action != (int)KeyStates::RELEASE;
     }
     else if (key == (int)KeyboardKeys::KEY_D)
     {
-        _isMovingRight = action != GLFW_RELEASE;
+        _isMovingRight = action != (int)KeyStates::RELEASE;
     }
     else if (key == (int)KeyboardKeys::KEY_Q)
     {
-        _isMovingUp = action != GLFW_RELEASE;
+        _isMovingUp = action != (int)KeyStates::RELEASE;
     }
     else if (key == (int)KeyboardKeys::KEY_E)
     {
-        _isMovingDown = action != GLFW_RELEASE;
+        _isMovingDown = action != (int)KeyStates::RELEASE;
     }
     else if (key == (int)KeyboardKeys::KEY_LEFT_SHIFT)
     {
-        _isBoostActivated = action != GLFW_RELEASE;
+        _isBoostActivated = action != (int)KeyStates::RELEASE;
     }
 
     return true;

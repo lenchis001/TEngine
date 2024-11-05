@@ -1,5 +1,8 @@
-#include "memory"
-#include "vector"
+#ifndef TENGINE_FPS_CAMERA_STRATEGY_H
+#define TENGINE_FPS_CAMERA_STRATEGY_H
+
+#include <memory>
+#include <vector>
 
 #include "Components/Graphics/Models/Vector3d.h"
 
@@ -29,23 +32,30 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::CameraStrat
 
         void setWindowSize(const Vector2di &value) override;
 
+    protected:
+        virtual bool _onMouseMoved(float x, float y);
+
+        float _phi, _theta;
+        bool _isRorated;
+
+        std::shared_ptr<IEventService> _eventService;
+
     private:
         bool _onKeyPressed(int key, int scancode, int action, int mods);
-        bool _onMouseMoved(float x, float y);
 
         void _recalculateState(double time);
         void _recalculateTarget();
 
         float _speed;
-        float _phi, _theta, _radius;
-        bool _isMovingForward, _isMovingBackward, _isMovingLeft, _isMovingRight, _isMovingUp, _isMovingDown, _isBoostActivated, _isRorated;
+        float _radius;
+        bool _isMovingForward, _isMovingBackward, _isMovingLeft, _isMovingRight, _isMovingUp, _isMovingDown, _isBoostActivated;
         Vector3df _position, _target;
         Vector2di _windowCenter;
         double _lastTime;
-
-        std::shared_ptr<IEventService> _eventService;
 
         std::vector<KeyboardEventHandler> _keyboardEventHandlers;
     };
 
 }
+
+#endif // TENGINE_FPS_CAMERA_STRATEGY_H
