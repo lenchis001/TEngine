@@ -3,6 +3,8 @@
 
 #include "FpsCameraStrategy.h"
 
+using namespace TEngine::Components::Events::Models;
+
 namespace TEngine::Components::Graphics::Rendering::Services::Scene::CameraStrategies
 {
     class ViewerCameraStrategy : public FpsCameraStrategy
@@ -17,10 +19,10 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::CameraStrat
         ~ViewerCameraStrategy();
 
     protected:
-        bool _onMouseMoved(float x, float y) override;
+        bool _onMouseMoved(int x, int y) override;
 
     private:
-        bool _onMouseButton(int button, int action, int mods);
+        bool _onMouseButton(MouseButtons button, KeyStates action, int mods);
 
         float _previousX, _previousY;
         bool _isRotationAllowed;

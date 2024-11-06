@@ -16,6 +16,7 @@
 using namespace TEngine::Components::Graphics::Rendering::Services::Gui::ControlRenderingStrategies;
 using namespace TEngine::Components::Graphics::Rendering::Services::Textures;
 using namespace TEngine::Components::Events::Services;
+using namespace TEngine::Components::Events::Models;
 
 namespace TEngine::Components::Graphics::Rendering::Services::Gui
 {
@@ -36,10 +37,10 @@ namespace TEngine::Components::Graphics::Rendering::Services::Gui
         std::shared_ptr<IInputRenderingStrategy> addInput() override;
 
     private:
-        bool _onCursorMove(float xpos, float ypos);
-        bool _onMouseButtonClick(int button, int action, int mods);
+        bool _onCursorMove(int xpos, int ypos);
+        bool _onMouseButtonClick(MouseButtons button, KeyStates action, int mods);
         bool _onScroll(float xoffset, float yoffset);
-        bool _onKey(int key, int scancode, int action, int mods);
+        bool _onKey(KeyboardKeys key, int scancode, KeyStates action, int mods);
         bool _onChar(unsigned int codepoint);
         bool _onCursorEnter(bool entered);
 

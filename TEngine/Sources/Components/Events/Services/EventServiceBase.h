@@ -20,15 +20,15 @@ namespace TEngine::Components::Events::Services
 
         void registerKeyHandler(const KeyboardEventHandler &handler) override;
         void unregisterKeyHandler(const KeyboardEventHandler &handler) override;
-        void fireKeyHandler(int key, int scancode, int action, int mods) override;
+        void fireKeyHandler(KeyboardKeys key, int scancode, KeyStates action, int mods) override;
 
         void registerCursorMoveHandler(const CursorMoveEventHandler &handler) override;
         void unregisterCursorMoveHandler(const CursorMoveEventHandler &handler) override;
-        void fireCursorMoveHandler(float xpos, float ypos) override;
+        void fireCursorMoveHandler(int xpos, int ypos) override;
 
         void registerMouseButtonHandler(const MouseButtonEventHandler &handler) override;
         void unregisterMouseButtonHandler(const MouseButtonEventHandler &handler) override;
-        void fireMouseButtonHandler(int button, int action, int mods) override;
+        void fireMouseButtonHandler(MouseButtons button, KeyStates action, int mods) override;
 
         void registerScrollHandler(const ScrollEventHandler &handler) override;
         void unregisterScrollHandler(const ScrollEventHandler &handler) override;

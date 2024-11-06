@@ -23,7 +23,7 @@ void EventServiceBase::unregisterKeyHandler(const KeyboardEventHandler &handler)
     removeEventHandler(_keyboardHandlers, handler);
 }
 
-void EventServiceBase::fireKeyHandler(int key, int scancode, int action, int mods)
+void EventServiceBase::fireKeyHandler(KeyboardKeys key, int scancode, KeyStates action, int mods)
 {
     for (auto &handler : this->_keyboardHandlers)
     {
@@ -44,7 +44,7 @@ void EventServiceBase::unregisterCursorMoveHandler(const CursorMoveEventHandler 
     removeEventHandler(_cursorMoveHandlers, handler);
 }
 
-void EventServiceBase::fireCursorMoveHandler(float xpos, float ypos)
+void EventServiceBase::fireCursorMoveHandler(int xpos, int ypos)
 {
     for (auto &handler : this->_cursorMoveHandlers)
     {
@@ -65,7 +65,7 @@ void EventServiceBase::unregisterMouseButtonHandler(const MouseButtonEventHandle
     removeEventHandler(_mouseButtonHandlers, handler);
 }
 
-void EventServiceBase::fireMouseButtonHandler(int button, int action, int mods)
+void EventServiceBase::fireMouseButtonHandler(MouseButtons button, KeyStates action, int mods)
 {
     for (auto &handler : this->_mouseButtonHandlers)
     {

@@ -5,6 +5,7 @@ using namespace Alice::MainWindow::Components::Graphic;
 using namespace TEngine::Components::Graphics::Rendering::Models::Meshes;
 using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Graphics::Rendering::Models::Physics;
+using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
 
 GraphicContext::GraphicContext(wxWindow *parent)
     : IGraphicContext(parent), _isShutdownRequested(false)
@@ -113,6 +114,36 @@ void GraphicContext::OnOpenScene(OpenSceneEvent &event)
         });
 }
 
+void GraphicContext::OnMouseMove(wxMouseEvent &event)
+{
+    auto position = event.GetPosition();
+
+    addFunction(
+        [&, position]()
+        {
+            auto eventService = _engine->getEventService();
+
+            eventService->fireCursorMoveHandler(position.x, position.y);
+        });
+}
+
+void GraphicContext::OnMouseButton(wxMouseEvent &event)
+{
+    auto targetButton = event.GetButton();
+    auto isPressed = event.ButtonIsDown(static_cast<wxMouseButton>(targetButton));
+
+    auto tengineButton = _toTEngineMouseButton(targetButton);
+    auto tengineAction = isPressed ? KeyStates::PRESS : KeyStates::RELEASE;
+
+    addFunction(
+        [&, tengineButton, tengineAction]()
+        {
+            auto eventService = _engine->getEventService();
+
+            eventService->fireMouseButtonHandler(tengineButton, tengineAction, 0);
+        });
+}
+
 void GraphicContext::_initializeEngine()
 {
 #ifdef _WIN32
@@ -127,7 +158,7 @@ void GraphicContext::_initializeEngine()
     auto graphicsService = _engine->getGraphicsService();
 
     auto sceneService = graphicsService->getSceneService();
-    sceneService->setActiveCamera(TEngine::Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes::BASE);
+    sceneService->setActiveCamera(BuildinCameraTypes::VIEWER);
 
     while (!_isShutdownRequested)
     {
@@ -142,10 +173,28 @@ void GraphicContext::_initializeEngine()
     _engine = nullptr;
 }
 
+MouseButtons GraphicContext::_toTEngineMouseButton(int wxButtonId)
+{
+    switch (wxButtonId)
+    {
+    case wxMOUSE_BTN_LEFT:
+        return MouseButtons::BUTTON_LEFT;
+    default:
+        return MouseButtons::BUTTON_UNKNOWN;
+    }
+}
+
 wxBEGIN_EVENT_TABLE(GraphicContext, wxPanel)
     EVT_SIZE(GraphicContext::OnResize)
         EVT_CREATE_SCENE(GraphicContext::OnCreateScene)
             EVT_SAVE_SCENE(GraphicContext::OnSaveScene)
                 EVT_SAVE_SCENE_AS(GraphicContext::OnSaveSceneAs)
                     EVT_OPEN_SCENE(GraphicContext::OnOpenScene)
-                        wxEND_EVENT_TABLE()
+                        EVT_MOTION(GraphicContext::OnMouseMove)
+                            EVT_LEFT_DOWN(GraphicContext::OnMouseButton)
+                                EVT_LEFT_UP(GraphicContext::OnMouseButton)
+                                    EVT_RIGHT_DOWN(GraphicContext::OnMouseButton)
+                                        EVT_RIGHT_UP(GraphicContext::OnMouseButton)
+                                            EVT_MIDDLE_DOWN(GraphicContext::OnMouseButton)
+                                                EVT_MIDDLE_UP(GraphicContext::OnMouseButton)
+                                                    wxEND_EVENT_TABLE()

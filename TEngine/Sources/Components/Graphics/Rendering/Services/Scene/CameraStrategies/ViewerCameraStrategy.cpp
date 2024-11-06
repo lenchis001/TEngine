@@ -2,11 +2,6 @@
 
 #include <functional>
 
-#include "Components/Events/Models/KeyStates.h"
-#include "Components/Events/Models/MouseButtons.h"
-
-using namespace TEngine::Components::Events::Models;
-
 using namespace TEngine::Components::Graphics::Rendering::Services::Scene::CameraStrategies;
 
 ViewerCameraStrategy::ViewerCameraStrategy(
@@ -34,7 +29,7 @@ ViewerCameraStrategy::~ViewerCameraStrategy() {
     _eventService->unregisterMouseButtonHandler(std::bind(&ViewerCameraStrategy::_onMouseButton, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 }
 
-bool ViewerCameraStrategy::_onMouseMoved(float x, float y)
+bool ViewerCameraStrategy::_onMouseMoved(int x, int y)
 {
     if (_previousX > 0 && _isRotationAllowed)
     {
@@ -63,11 +58,11 @@ bool ViewerCameraStrategy::_onMouseMoved(float x, float y)
     return true;
 }
 
-bool ViewerCameraStrategy::_onMouseButton(int button, int action, int mods)
+bool ViewerCameraStrategy::_onMouseButton(MouseButtons button, KeyStates action, int mods)
 {
-    if (button == (int)MouseButtons::BUTTON_LEFT)
+    if (button == MouseButtons::BUTTON_LEFT)
     {
-        _isRotationAllowed = action == (int)KeyStates::PRESS;
+        _isRotationAllowed = action == KeyStates::PRESS;
     }
 
     return true;

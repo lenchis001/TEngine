@@ -85,17 +85,16 @@ std::shared_ptr<IInputRenderingStrategy> GlfwGuiService::addInput()
     return input;
 }
 
-bool GlfwGuiService::_onCursorMove(float xpos, float ypos)
+bool GlfwGuiService::_onCursorMove(int xpos, int ypos)
 {
-    return false;
     ImGui_ImplGlfw_CursorPosCallback(glfwGetCurrentContext(), xpos, ypos);
 
     return false;
 }
 
-bool GlfwGuiService::_onMouseButtonClick(int button, int action, int mods)
+bool GlfwGuiService::_onMouseButtonClick(MouseButtons button, KeyStates action, int mods)
 {
-    ImGui_ImplGlfw_MouseButtonCallback(glfwGetCurrentContext(), button, action, mods);
+    ImGui_ImplGlfw_MouseButtonCallback(glfwGetCurrentContext(), static_cast<int>(button), static_cast<int>(action), mods);
 
     return false;
 }
@@ -107,9 +106,9 @@ bool GlfwGuiService::_onScroll(float xoffset, float yoffset)
     return false;
 }
 
-bool GlfwGuiService::_onKey(int key, int scancode, int action, int mods)
+bool GlfwGuiService::_onKey(KeyboardKeys key, int scancode, KeyStates action, int mods)
 {
-    ImGui_ImplGlfw_KeyCallback(glfwGetCurrentContext(), key, scancode, action, mods);
+    ImGui_ImplGlfw_KeyCallback(glfwGetCurrentContext(), static_cast<int>(key), scancode, static_cast<int>(action), mods);
 
     return false;
 }

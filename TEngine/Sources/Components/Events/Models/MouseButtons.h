@@ -13,6 +13,7 @@ namespace TEngine::Components::Events::Models
         BUTTON_6 = 5,
         BUTTON_7 = 6,
         BUTTON_8 = 7,
+        BUTTON_UNKNOWN = -1,
         BUTTON_LEFT = BUTTON_1,
         BUTTON_RIGHT = BUTTON_2,
         BUTTON_MIDDLE = BUTTON_3

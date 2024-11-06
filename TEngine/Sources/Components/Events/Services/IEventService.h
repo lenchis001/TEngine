@@ -6,16 +6,18 @@
 #include "Components/Graphics/Models/Vector2d.h"
 
 #include "Components/Events/Models/KeyboardKeys.h"
-
-typedef std::function<bool(int, int, int, int)> KeyboardEventHandler;
-typedef std::function<bool(float, float)> CursorMoveEventHandler;
-typedef std::function<bool(int, int, int)> MouseButtonEventHandler;
-typedef std::function<bool(float, float)> ScrollEventHandler;
-typedef std::function<bool(unsigned int)> CharEventHandler;
-typedef std::function<bool(bool)> CursorEnterEventHandler;
+#include "Components/Events/Models/KeyStates.h"
+#include "Components/Events/Models/MouseButtons.h"
 
 namespace TEngine::Components::Events::Services
 {
+    typedef std::function<bool(Models::KeyboardKeys, int, Models::KeyStates, int)> KeyboardEventHandler;
+    typedef std::function<bool(int, int)> CursorMoveEventHandler;
+    typedef std::function<bool(Models::MouseButtons, Models::KeyStates, int)> MouseButtonEventHandler;
+    typedef std::function<bool(float, float)> ScrollEventHandler;
+    typedef std::function<bool(unsigned int)> CharEventHandler;
+    typedef std::function<bool(bool)> CursorEnterEventHandler;
+
     class IEventService
     {
     public:
@@ -25,15 +27,15 @@ namespace TEngine::Components::Events::Services
 
         virtual void registerKeyHandler(const KeyboardEventHandler &handler) = 0;
         virtual void unregisterKeyHandler(const KeyboardEventHandler &handler) = 0;
-        virtual void fireKeyHandler(int key, int scancode, int action, int mods) = 0;
+        virtual void fireKeyHandler(Models::KeyboardKeys key, int scancode, Models::KeyStates action, int mods) = 0;
 
         virtual void registerCursorMoveHandler(const CursorMoveEventHandler &handler) = 0;
         virtual void unregisterCursorMoveHandler(const CursorMoveEventHandler &handler) = 0;
-        virtual void fireCursorMoveHandler(float xpos, float ypos) = 0;
+        virtual void fireCursorMoveHandler(int xpos, int ypos) = 0;
 
         virtual void registerMouseButtonHandler(const MouseButtonEventHandler &handler) = 0;
         virtual void unregisterMouseButtonHandler(const MouseButtonEventHandler &handler) = 0;
-        virtual void fireMouseButtonHandler(int button, int action, int mods) = 0;
+        virtual void fireMouseButtonHandler(Models::MouseButtons button, Models::KeyStates action, int mods) = 0;
 
         virtual void registerScrollHandler(const ScrollEventHandler &handler) = 0;
         virtual void unregisterScrollHandler(const ScrollEventHandler &handler) = 0;
@@ -47,7 +49,7 @@ namespace TEngine::Components::Events::Services
         virtual void unregisterCursorEnterHandler(const CursorEnterEventHandler &handler) = 0;
         virtual void fireCursorEnterHandler(bool entered) = 0;
 
-        virtual void setCursorePosition(const Graphics::Models::Vector2di& value) = 0;
+        virtual void setCursorePosition(const Graphics::Models::Vector2di &value) = 0;
         virtual void setCursorVisibility(bool isVisible) = 0;
     };
 }

@@ -37,7 +37,7 @@ void GlfwEventService::_keyCallback(GLFWwindow *window, int key, int scancode, i
 {
     auto that = getContext();
 
-    that->fireKeyHandler(key, scancode, action, mods);
+    that->fireKeyHandler(static_cast<KeyboardKeys>(key), scancode, static_cast<KeyStates>(action), mods);
 }
 
 void GlfwEventService::_cursorPosCallback(GLFWwindow *window, double xpos, double ypos)
@@ -51,7 +51,7 @@ void GlfwEventService::_mouseButtonCallback(GLFWwindow *window, int button, int 
 {
     auto that = getContext();
 
-    that->fireMouseButtonHandler(button, action, mods);
+    that->fireMouseButtonHandler(static_cast<MouseButtons>(button), static_cast<KeyStates>(action), mods);
 }
 
 void GlfwEventService::_scrollCallback(GLFWwindow *window, double xoffset, double yoffset)

@@ -12,6 +12,7 @@
 
 using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Events::Services;
+using namespace TEngine::Components::Events::Models;
 
 namespace TEngine::Components::Graphics::Rendering::Services::Scene::CameraStrategies
 {
@@ -33,7 +34,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::CameraStrat
         void setWindowSize(const Vector2di &value) override;
 
     protected:
-        virtual bool _onMouseMoved(float x, float y);
+        virtual bool _onMouseMoved(int x, int y);
 
         float _phi, _theta;
         bool _isRorated;
@@ -41,7 +42,7 @@ namespace TEngine::Components::Graphics::Rendering::Services::Scene::CameraStrat
         std::shared_ptr<IEventService> _eventService;
 
     private:
-        bool _onKeyPressed(int key, int scancode, int action, int mods);
+        bool _onKeyPressed(KeyboardKeys key, int scancode, KeyStates action, int mods);
 
         void _recalculateState(double time);
         void _recalculateTarget();

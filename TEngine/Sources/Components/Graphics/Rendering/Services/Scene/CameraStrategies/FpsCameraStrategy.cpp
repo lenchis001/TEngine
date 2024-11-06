@@ -66,7 +66,7 @@ void FpsCameraStrategy::setWindowSize(const Vector2di &value)
     _eventService->setCursorePosition(_windowCenter);
 }
 
-bool FpsCameraStrategy::_onMouseMoved(float x, float y)
+bool FpsCameraStrategy::_onMouseMoved(int x, int y)
 {
     auto xDelta = x - _windowCenter.getX();
     auto yDelta = y - _windowCenter.getY();
@@ -91,35 +91,35 @@ bool FpsCameraStrategy::_onMouseMoved(float x, float y)
     return true;
 }
 
-bool FpsCameraStrategy::_onKeyPressed(int key, int scancode, int action, int mods)
+bool FpsCameraStrategy::_onKeyPressed(KeyboardKeys key, int scancode, KeyStates action, int mods)
 {
-    if (key == (int)KeyboardKeys::KEY_W)
+    if (key == KeyboardKeys::KEY_W)
     {
-        _isMovingForward = action != (int)KeyStates::RELEASE;
+        _isMovingForward = action != KeyStates::RELEASE;
     }
-    else if (key == (int)KeyboardKeys::KEY_S)
+    else if (key == KeyboardKeys::KEY_S)
     {
-        _isMovingBackward = action != (int)KeyStates::RELEASE;
+        _isMovingBackward = action != KeyStates::RELEASE;
     }
-    else if (key == (int)KeyboardKeys::KEY_A)
+    else if (key == KeyboardKeys::KEY_A)
     {
-        _isMovingLeft = action != (int)KeyStates::RELEASE;
+        _isMovingLeft = action != KeyStates::RELEASE;
     }
-    else if (key == (int)KeyboardKeys::KEY_D)
+    else if (key == KeyboardKeys::KEY_D)
     {
-        _isMovingRight = action != (int)KeyStates::RELEASE;
+        _isMovingRight = action != KeyStates::RELEASE;
     }
-    else if (key == (int)KeyboardKeys::KEY_Q)
+    else if (key == KeyboardKeys::KEY_Q)
     {
-        _isMovingUp = action != (int)KeyStates::RELEASE;
+        _isMovingUp = action != KeyStates::RELEASE;
     }
-    else if (key == (int)KeyboardKeys::KEY_E)
+    else if (key == KeyboardKeys::KEY_E)
     {
-        _isMovingDown = action != (int)KeyStates::RELEASE;
+        _isMovingDown = action != KeyStates::RELEASE;
     }
-    else if (key == (int)KeyboardKeys::KEY_LEFT_SHIFT)
+    else if (key == KeyboardKeys::KEY_LEFT_SHIFT)
     {
-        _isBoostActivated = action != (int)KeyStates::RELEASE;
+        _isBoostActivated = action != KeyStates::RELEASE;
     }
 
     return true;

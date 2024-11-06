@@ -13,6 +13,7 @@
 #include "Mixins/SceneFileDialogMixin.h"
 
 using namespace TEngine;
+using namespace TEngine::Components::Events::Models;
 
 using namespace Alice::Core::Thread;
 using namespace Alice::MainWindow::Components::Graphic::Events;
@@ -33,7 +34,12 @@ namespace Alice::MainWindow::Components::Graphic
         void OnSaveSceneAs(SaveSceneAsEvent& event);
         void OnOpenScene(OpenSceneEvent& event);
 
+        void OnMouseMove(wxMouseEvent& event);
+        void OnMouseButton(wxMouseEvent& event);
+
         void _initializeEngine();
+
+        static MouseButtons _toTEngineMouseButton(int wxButtonId);
 
         std::thread _renderThread;
 
