@@ -36,10 +36,12 @@ namespace Alice::MainWindow::Components::Graphic
 
         void OnMouseMove(wxMouseEvent& event);
         void OnMouseButton(wxMouseEvent& event);
+        void OnKey(wxKeyEvent& event);
 
         void _initializeEngine();
 
         static MouseButtons _toTEngineMouseButton(int wxButtonId);
+        static KeyboardKeys _toTEngineKey(int wxKeyCode);
 
         std::thread _renderThread;
 

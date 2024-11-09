@@ -5,34 +5,35 @@
 #include "Engine.h"
 
 #include "Components/Graphics/GlfwGraphicsService.h"
-#include "Components/Graphics/Rendering/Services/Scene/SceneService.h"
+#include "Components/Graphics/Rendering/Scene/SceneService.h"
 #include "Components/Graphics/MeshLoading/Services/MeshLoadingService.h"
-#include "Components/Graphics/Rendering/Services/Scene/Shaders/ShadersService.h"
+#include "Components/Graphics/Rendering/Scene/Shaders/ShadersService.h"
 #include "Components/Graphics/ImageLoading/Services/ImageLoadingService.h"
-#include "Components/Graphics/Rendering/Services/Scene/Buffers/BuffersService.h"
-#include "Components/Graphics/Rendering/Services/Textures/TexturesService.h"
-#include "Components/Graphics/Rendering/Services/Scene/Meshes/MeshService.h"
-#include "Components/Graphics/Rendering/Services/Scene/Lights/LightService.h"
-#include "Components/Graphics/Rendering/Services/Scene/Physics/PhysicsService.h"
-#include "Components/Graphics/Rendering/Services/Gui/GlfwGuiService.h"
-#include "Components/Graphics/Rendering/Services/Gui/Win32GuiService.h"
+#include "Components/Graphics/Rendering/Scene/Buffers/BuffersService.h"
+#include "Components/Graphics/Rendering/Textures/TexturesService.h"
+#include "Components/Graphics/Rendering/Scene/Meshes/MeshService.h"
+#include "Components/Graphics/Rendering/Scene/Lights/LightService.h"
+#include "Components/Graphics/Rendering/Scene/Physics/PhysicsService.h"
+#include "Components/Graphics/Rendering/Scene/Physics/EmptyPhysicsService.h"
+#include "Components/Graphics/Rendering/Gui/GlfwGuiService.h"
+#include "Components/Graphics/Rendering/Gui/Win32GuiService.h"
 #include "Components/Graphics/CameraTracking/ListenerCameraTrackingStrategy.h"
 #include "Components/Audio/Services/Readers/VorbisOggReader.h"
 #include "Components/Audio/Services/AudioService.h"
 #include "Components/Events/Services/GlfwEventService.h"
 
 #include "Components/State/Serialization/SerializationService.h"
-#include "Components/Graphics/Rendering/Services/Scene/State/Serialization/PhysicsRenderingDecoratorSerializer.h"
-#include "Components/Graphics/Rendering/Services/Scene/State/Serialization/RenderingOptimizationDecoratorSerializer.h"
-#include "Components/Graphics/Rendering/Services/Scene/State/Serialization/Meshes/MeshRenderingStrategySerializer.h"
-#include "Components/Graphics/Rendering/Services/Scene/State/Serialization/Solid/SolidboxRenderingStrategySerializer.h"
-#include "Components/Graphics/Rendering/Services/Scene/State/Serialization/Primitives/CubeRenderingStrategySerializer.h"
-#include "Components/Graphics/Rendering/Services/Scene/State/Serialization/Empty/EmptyRenderingStrategySerializer.h"
+#include "Components/Graphics/Rendering/Scene/State/Serialization/PhysicsRenderingDecoratorSerializer.h"
+#include "Components/Graphics/Rendering/Scene/State/Serialization/RenderingOptimizationDecoratorSerializer.h"
+#include "Components/Graphics/Rendering/Scene/State/Serialization/Meshes/MeshRenderingStrategySerializer.h"
+#include "Components/Graphics/Rendering/Scene/State/Serialization/Solid/SolidboxRenderingStrategySerializer.h"
+#include "Components/Graphics/Rendering/Scene/State/Serialization/Primitives/CubeRenderingStrategySerializer.h"
+#include "Components/Graphics/Rendering/Scene/State/Serialization/Empty/EmptyRenderingStrategySerializer.h"
 #include "Components/State/Deserialization/DeserializationService.h"
-#include "Components/Graphics/Rendering/Services/Scene/State/Deserialization/Empty/EmptyRenderingStrategyDeserializer.h"
-#include "Components/Graphics/Rendering/Services/Scene/State/Deserialization/Solid/SolidboxRenderingStrategyDeserializer.h"
-#include "Components/Graphics/Rendering/Services/Scene/State/Deserialization/Primitives/CubeRenderingStrategyDeserializer.h"
-#include "Components/Graphics/Rendering/Services/Scene/State/Deserialization/Meshes/MeshRenderingStrategyDeserializer.h"
+#include "Components/Graphics/Rendering/Scene/State/Deserialization/Empty/EmptyRenderingStrategyDeserializer.h"
+#include "Components/Graphics/Rendering/Scene/State/Deserialization/Solid/SolidboxRenderingStrategyDeserializer.h"
+#include "Components/Graphics/Rendering/Scene/State/Deserialization/Primitives/CubeRenderingStrategyDeserializer.h"
+#include "Components/Graphics/Rendering/Scene/State/Deserialization/Meshes/MeshRenderingStrategyDeserializer.h"
 
 #ifdef _WIN32
 #include "Components/Graphics/Win32GraphicService.h"
@@ -43,14 +44,14 @@
 
 using namespace TEngine;
 using namespace TEngine::Components::Graphics;
-using namespace TEngine::Components::Graphics::Rendering::Services;
+using namespace TEngine::Components::Graphics::Rendering;
 using namespace TEngine::Components::Graphics::MeshLoading::Services;
-using namespace TEngine::Components::Graphics::Rendering::Services::Scene::Shaders;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Shaders;
 using namespace TEngine::Components::Graphics::ImageLoading::Services;
-using namespace TEngine::Components::Graphics::Rendering::Services::Textures;
-using namespace TEngine::Components::Graphics::Rendering::Services::Scene::Lights;
-using namespace TEngine::Components::Graphics::Rendering::Services::Scene::Physics;
-using namespace TEngine::Components::Graphics::Rendering::Services::Gui;
+using namespace TEngine::Components::Graphics::Rendering::Textures;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Lights;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Physics;
+using namespace TEngine::Components::Graphics::Rendering::Gui;
 using namespace TEngine::Components::Graphics::CameraTracking;
 
 using namespace TEngine::Components::Audio::Services::Readers;
@@ -58,20 +59,20 @@ using namespace TEngine::Components::Audio::Services;
 
 using namespace TEngine::Components::Events::Services;
 
-using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization;
-using namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies::Meshes;
-using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization::Meshes;
-using namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies::Solid;
-using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization::Solid;
-using namespace TEngine::Components::Graphics::Rendering::Services::Scene::RenderingStrategies::Primitives;
-using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization::Primitives;
-using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Serialization::Empty;
+using namespace TEngine::Components::Graphics::Rendering::Scene::State::Serialization;
+using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Meshes;
+using namespace TEngine::Components::Graphics::Rendering::Scene::State::Serialization::Meshes;
+using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Solid;
+using namespace TEngine::Components::Graphics::Rendering::Scene::State::Serialization::Solid;
+using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Primitives;
+using namespace TEngine::Components::Graphics::Rendering::Scene::State::Serialization::Primitives;
+using namespace TEngine::Components::Graphics::Rendering::Scene::State::Serialization::Empty;
 
-using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Deserialization;
-using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Deserialization::Empty;
-using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Deserialization::Solid;
-using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Deserialization::Primitives;
-using namespace TEngine::Components::Graphics::Rendering::Services::Scene::State::Deserialization::Meshes;
+using namespace TEngine::Components::Graphics::Rendering::Scene::State::Deserialization;
+using namespace TEngine::Components::Graphics::Rendering::Scene::State::Deserialization::Empty;
+using namespace TEngine::Components::Graphics::Rendering::Scene::State::Deserialization::Solid;
+using namespace TEngine::Components::Graphics::Rendering::Scene::State::Deserialization::Primitives;
+using namespace TEngine::Components::Graphics::Rendering::Scene::State::Deserialization::Meshes;
 
 std::shared_ptr<IEngine> TEngine::createEngine(
 #ifdef _WIN32
@@ -79,7 +80,8 @@ std::shared_ptr<IEngine> TEngine::createEngine(
 #elif __APPLE__
     void *parent
 #endif
-)
+    ,
+    bool isPhysicsEnabled)
 {
     std::shared_ptr<IEventService> eventsService;
 
@@ -105,7 +107,7 @@ std::shared_ptr<IEngine> TEngine::createEngine(
     auto texturesService = std::make_shared<TexturesService>(imageLoadingService);
     auto meshService = std::make_shared<MeshService>(meshLoadingService, bufferCacheService, shadersService, texturesService);
     auto lightServices = std::make_shared<LightService>();
-    auto physicsService = std::make_shared<PhysicsService>();
+    auto physicsService = isPhysicsEnabled ? std::static_pointer_cast<IPhysicsService>(std::make_shared<PhysicsService>()) : std::static_pointer_cast<IPhysicsService>(std::make_shared<EmptyPhysicsService>());
 
     auto buildinCameraTrackingStrategies = std::vector<std::shared_ptr<ICameraTrackingStrategy>>{
         std::make_shared<ListenerCameraTrackingStrategy>(audioService)};
@@ -132,11 +134,11 @@ std::shared_ptr<IEngine> TEngine::createEngine(
 
     serializers[std::type_index(typeid(PhysicsRenderingDecorator))] = std::make_shared<PhysicsRenderingDecoratorSerializer>();
     serializers[std::type_index(typeid(RenderingOptimizationDecorator))] = std::make_shared<RenderingOptimizationDecoratorSerializer>();
-    serializers[std::type_index(typeid(MeshRenderingStrategy))] = 
+    serializers[std::type_index(typeid(MeshRenderingStrategy))] =
         std::static_pointer_cast<Serializers::SerializerBase<MeshRenderingStrategy>>(std::make_shared<MeshRenderingStrategySerializer>());
-    serializers[std::type_index(typeid(SolidboxRenderingStrategy))] = 
+    serializers[std::type_index(typeid(SolidboxRenderingStrategy))] =
         std::static_pointer_cast<Serializers::SerializerBase<SolidboxRenderingStrategy>>(std::make_shared<SolidboxRenderingStrategySerializer>());
-    serializers[std::type_index(typeid(CubeRenderingStrategy))] = 
+    serializers[std::type_index(typeid(CubeRenderingStrategy))] =
         std::static_pointer_cast<Serializers::SerializerBase<CubeRenderingStrategy>>(std::make_shared<CubeRenderingStrategySerializer>());
     serializers[std::type_index(typeid(EmptyRenderingStrategy))] = std::make_shared<EmptyRenderingStrategySerializer>();
 

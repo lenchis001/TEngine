@@ -7,18 +7,18 @@
 #include "IGraphicsService.h"
 
 #include "MeshLoading/Services/IMeshLoadingService.h"
-#include "Rendering/Services/Textures/ITexturesService.h"
+#include "Rendering/Textures/ITexturesService.h"
 
 using namespace TEngine::Models;
-using namespace TEngine::Components::Graphics::Rendering::Services::Scene;
+using namespace TEngine::Components::Graphics::Rendering::Scene;
 using namespace TEngine::Components::Graphics::MeshLoading::Services;
 using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Graphics::MeshLoading::Models;
 using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
-using namespace TEngine::Components::Graphics::Rendering::Services::Textures;
+using namespace TEngine::Components::Graphics::Rendering::Textures;
 
-using namespace TEngine::Components::Graphics::Rendering::Services;
-using namespace TEngine::Components::Graphics::Rendering::Services::Gui;
+using namespace TEngine::Components::Graphics::Rendering;
+using namespace TEngine::Components::Graphics::Rendering::Gui;
 
 namespace TEngine::Components::Graphics
 {

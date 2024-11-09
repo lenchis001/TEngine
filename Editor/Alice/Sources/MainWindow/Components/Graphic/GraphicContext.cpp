@@ -144,15 +144,36 @@ void GraphicContext::OnMouseButton(wxMouseEvent &event)
         });
 }
 
+void GraphicContext::OnKey(wxKeyEvent &event)
+{
+    auto keyCode = event.GetKeyCode();
+    auto isPressed = event.GetEventType() == wxEVT_KEY_DOWN;
+
+    auto tengineKey = _toTEngineKey(keyCode);
+    auto tengineAction = isPressed ? KeyStates::PRESS : KeyStates::RELEASE;
+
+    addFunction(
+        [&, keyCode, tengineAction]()
+        {
+            auto eventService = _engine->getEventService();
+
+            eventService->fireKeyHandler(tengineKey, 0, tengineAction, 0);
+        });
+}
+
 void GraphicContext::_initializeEngine()
 {
+    _engine = TEngine::createEngine(
 #ifdef _WIN32
-    _engine = TEngine::createEngine((HWND)GetHWND());
+        (HWND)GetHWND()
 #elif __APPLE__
-    _engine = TEngine::createEngine((void *)GetHandle());
+        (void *)GetHandle()
 #endif
+            ,
+        false);
 
     auto creationParameters = TEngine::Models::createEngineParameters();
+
     _engine->initialize(creationParameters);
 
     auto graphicsService = _engine->getGraphicsService();
@@ -179,8 +200,41 @@ MouseButtons GraphicContext::_toTEngineMouseButton(int wxButtonId)
     {
     case wxMOUSE_BTN_LEFT:
         return MouseButtons::BUTTON_LEFT;
+    case wxMOUSE_BTN_RIGHT:
+        return MouseButtons::BUTTON_RIGHT;
+    case wxMOUSE_BTN_MIDDLE:
+        return MouseButtons::BUTTON_MIDDLE;
     default:
         return MouseButtons::BUTTON_UNKNOWN;
+    }
+}
+
+KeyboardKeys GraphicContext::_toTEngineKey(int wxKeyCode)
+{
+    switch (wxKeyCode)
+    {
+    case WXK_RETURN:
+        return KeyboardKeys::KEY_ENTER;
+    case WXK_TAB:
+        return KeyboardKeys::KEY_TAB;
+    case WXK_ESCAPE:
+        return KeyboardKeys::KEY_ESCAPE;
+    case WXK_BACK:
+        return KeyboardKeys::KEY_BACKSPACE;
+    case WXK_DELETE:
+        return KeyboardKeys::KEY_DELETE;
+    case WXK_UP:
+        return KeyboardKeys::KEY_UP;
+    case WXK_DOWN:
+        return KeyboardKeys::KEY_DOWN;
+    case WXK_LEFT:
+        return KeyboardKeys::KEY_LEFT;
+    case WXK_RIGHT:
+        return KeyboardKeys::KEY_RIGHT;
+    case WXK_SHIFT:
+        return KeyboardKeys::KEY_LEFT_SHIFT;
+    default:
+        return static_cast<KeyboardKeys>(wxKeyCode);
     }
 }
 
@@ -197,4 +251,6 @@ wxBEGIN_EVENT_TABLE(GraphicContext, wxPanel)
                                         EVT_RIGHT_UP(GraphicContext::OnMouseButton)
                                             EVT_MIDDLE_DOWN(GraphicContext::OnMouseButton)
                                                 EVT_MIDDLE_UP(GraphicContext::OnMouseButton)
-                                                    wxEND_EVENT_TABLE()
+                                                    EVT_KEY_DOWN(GraphicContext::OnKey)
+                                                        EVT_KEY_UP(GraphicContext::OnKey)
+                                                            wxEND_EVENT_TABLE()

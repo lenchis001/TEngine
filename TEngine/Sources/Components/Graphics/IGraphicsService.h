@@ -4,15 +4,11 @@
 #include <memory>
 #include <string>
 
-#ifdef _WIN32
-#include <windows.h>
-#endif
-
 #include "Models/DataActionResult.h"
 
 #include "Models/IGraphicsParameters.h"
-#include "Rendering/Services/Scene/ISceneService.h"
-#include "Rendering/Services/Gui/IGuiService.h"
+#include "Rendering/Scene/ISceneService.h"
+#include "Rendering/Gui/IGuiService.h"
 
 namespace TEngine::Components::Graphics
 {
@@ -31,9 +27,9 @@ namespace TEngine::Components::Graphics
 
         virtual void resize(int width, int height) = 0;
 
-        virtual std::shared_ptr<Rendering::Services::Scene::ISceneService> getSceneService() = 0;
+        virtual std::shared_ptr<Rendering::Scene::ISceneService> getSceneService() = 0;
 
-        virtual std::shared_ptr<Rendering::Services::Gui::IGuiService> getGuiService() = 0;
+        virtual std::shared_ptr<Rendering::Gui::IGuiService> getGuiService() = 0;
 
         virtual ~IGraphicsService() = default;
     };

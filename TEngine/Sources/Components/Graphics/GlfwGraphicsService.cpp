@@ -68,7 +68,7 @@ void GlfwGraphicsService::_initializeGlfw(std::shared_ptr<IGraphicsParameters> p
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	_window = glfwCreateWindow(parameters->getWidth(), parameters->getHeight(), parameters->getTitle().c_str(), NULL, NULL);
-	if (_window == NULL)
+	if (_window == nullptr)
 	{
 		glfwTerminate();
 		throw std::runtime_error("Failed to open GLFW window");
@@ -84,9 +84,6 @@ void GlfwGraphicsService::_initializeGlfw(std::shared_ptr<IGraphicsParameters> p
 	setContext(this);
 	glfwSetWindowSizeCallback(_window, &GlfwGraphicsService::_onWindowResized);
 	glfwSwapInterval(parameters->getIsVerticalSyncEnabled());
-
-	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
-	glEnable(GL_DEPTH_TEST);
 }
 
 void GlfwGraphicsService::_onWindowResized(GLFWwindow *window, int width, int height)

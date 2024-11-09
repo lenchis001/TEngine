@@ -40,12 +40,13 @@ namespace TEngine
     };
 
     TENGINE_API std::shared_ptr<IEngine> createEngine(
-        #ifdef _WIN32
+#ifdef _WIN32
         HWND parent = nullptr
-        #elif __APPLE__
+#elif __APPLE__
         void *parent = nullptr
-        #endif
-    );
+#endif
+        ,
+        bool isPhysicsEnabled = true);
 }
 
 #endif // IENGINE_H

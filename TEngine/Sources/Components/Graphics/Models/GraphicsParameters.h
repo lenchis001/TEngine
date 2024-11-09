@@ -33,7 +33,6 @@ namespace TEngine::Components::Graphics::Models
         bool getIsVerticalSyncEnabled() const override;
 
         void setIsVerticalSyncEnabled(bool value) override;
-
     private:
         int _width;
         int _height;
