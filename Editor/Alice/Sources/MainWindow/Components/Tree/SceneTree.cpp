@@ -5,12 +5,37 @@ using namespace Alice::MainWindow::Components::Tree;
 SceneTree::SceneTree(wxWindow *parent)
     : ISceneTree(parent)
 {
-    wxTreeItemId root = AddRoot("Scene");
-    wxTreeItemId child1 = AppendItem(root, "Child 1");
-    wxTreeItemId child2 = AppendItem(root, "Child 2");
-    AppendItem(child1, "Child 1.1");
-    AppendItem(child1, "Child 1.2");
-    AppendItem(child2, "Child 2.1");
-    AppendItem(child2, "Child 2.2");
+}
+
+void SceneTree::OnUpdateSceneTree(UpdateSceneTreeEvent &event)
+{
+    DeleteAllItems();
+
+    auto rootItem = event.getItem();
+
+    wxTreeItemId root = AddRoot(rootItem.getName());
+
+    for (auto &item : event.getItem().getChildren())
+    {
+        toTreeItem(item, root);
+    }
+
     Expand(root);
 }
+
+wxTreeItemId SceneTree::toTreeItem(const SceneTreeItem &sceneItem, const wxTreeItemId &root)
+{
+    wxTreeItemId result = AppendItem(root, sceneItem.getName());
+
+    for (auto &childItem : sceneItem.getChildren())
+    {
+        auto child = toTreeItem(childItem, result);
+        AppendItem(child, childItem.getName());
+    }
+
+    return result;
+}
+
+wxBEGIN_EVENT_TABLE(SceneTree, ISceneTree)
+    EVT_UPDATE_SCENE_TREE(SceneTree::OnUpdateSceneTree)
+        wxEND_EVENT_TABLE()

@@ -13,6 +13,8 @@
 
 #include "IMainWindowPresenter.h"
 
+#include "Core/CustomParent/CustomParentBuilder.h"
+
 #include "Components/Graphic/IGraphicContext.h"
 #include "Components/Tree/ISceneTree.h"
 
@@ -22,18 +24,22 @@
 using namespace Alice::MainWindow::Components::Graphic;
 using namespace Alice::MainWindow::Components::Tree;
 using namespace Alice::MainWindow::Children::MainMenu;
+using namespace Alice::Core::CustomParent;
 
 namespace Alice::MainWindow
 {
     class MainWindowView : public wxFrame, public IMainWindowView
     {
     public:
-        MainWindowView(std::shared_ptr<MainWindow::IMainWindowPresenter> presenter, IMainMenuView* mainMenu);
+        MainWindowView(
+            std::shared_ptr<MainWindow::IMainWindowPresenter> presenter,
+            IMainMenuView* mainMenu,
+            std::shared_ptr<CustomParentBuilder<ISceneTree>> sceneTreeBuilder);
 
     private:
         void _createMainMenu();
         void _createMainArea(wxSizer* windowSizer);
-        void _createWorkArea(wxSizer* windowSizer);
+        void _createWorkArea(wxSizer* windowSizer, std::shared_ptr<CustomParentBuilder<ISceneTree>> sceneTreeBuilder);
 
         // Main menu
         Children::MainMenu::IMainMenuView* _mainMenu;

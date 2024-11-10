@@ -39,6 +39,9 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
         Vector3df getAbsoluteRotation() const override;
         Vector3df getAbsoluteScale() const override;
 
+        const std::string &getName() const override;
+        void setName(const std::string &name) override;
+
         void render(std::shared_ptr<ICameraStrategy> activeCameraStrategy) override;
 
     protected:
@@ -69,6 +72,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
         Matrix4x4f _vpMatrix, _mvpMatrix;
 
         std::vector<std::shared_ptr<IRenderingStrategy>> _children;
+
+        std::string _name;
     };
 }
 

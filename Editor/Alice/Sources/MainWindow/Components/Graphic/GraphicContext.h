@@ -11,17 +11,19 @@
 #include "Events/SaveSceneAsEvent.h"
 #include "Events/OpenSceneEvent.h"
 #include "Mixins/SceneFileDialogMixin.h"
+#include "Core/EventPropogationMixin.h"
 
 using namespace TEngine;
 using namespace TEngine::Components::Events::Models;
 
+using namespace Alice::Core;
 using namespace Alice::Core::Thread;
 using namespace Alice::MainWindow::Components::Graphic::Events;
 using namespace Alice::MainWindow::Components::Graphic::Mixins;
 
 namespace Alice::MainWindow::Components::Graphic
 {
-    class GraphicContext : public FunctionConveyer, public SceneFileDialogMixin, public IGraphicContext
+    class GraphicContext : public FunctionConveyer, public SceneFileDialogMixin, public EventPropogationMixin, public IGraphicContext
     {
     public:
         GraphicContext(wxWindow *parent);

@@ -1,11 +1,15 @@
 #include "GraphicContext.h"
 
+#include "Events/SceneTree/UpdateSceneTreeEvent.h"
+
 using namespace Alice::MainWindow::Components::Graphic;
 
 using namespace TEngine::Components::Graphics::Rendering::Models::Meshes;
 using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Graphics::Rendering::Models::Physics;
 using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
+
+using namespace Alice::MainWindow::Components::Graphic::Events::SceneTree;
 
 GraphicContext::GraphicContext(wxWindow *parent)
     : IGraphicContext(parent), _isShutdownRequested(false)
@@ -54,6 +58,10 @@ void GraphicContext::OnCreateScene(CreateSceneEvent &event)
         {
             auto graphicsService = _engine->getGraphicsService();
             graphicsService->getSceneService()->getRoot()->removeAllChildren();
+
+            UpdateSceneTreeEvent event;
+
+            queueEventToChildren(event);
         });
 }
 
@@ -111,6 +119,10 @@ void GraphicContext::OnOpenScene(OpenSceneEvent &event)
             auto sceneRoot = graphicsService->getSceneService()->getRoot();
 
             deserializationService->deserializeFromFile(_currentScenePath, sceneRoot);
+
+            auto event = UpdateSceneTreeEvent::fromRenderingStrategy(sceneRoot);
+
+            queueEventToChildren(event);
         });
 }
 

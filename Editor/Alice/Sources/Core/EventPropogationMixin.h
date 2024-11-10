@@ -13,6 +13,8 @@ namespace Alice::Core
     {
     protected:
         void postEventToChildren(wxEvent &event, wxWindow *parent = nullptr);
+
+        void queueEventToChildren(wxEvent &event, wxWindow *parent = nullptr);
     };
 }
 

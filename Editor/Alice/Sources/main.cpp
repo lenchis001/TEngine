@@ -10,6 +10,7 @@
 #include "MainWindow/MainWindowView.h"
 #include "MainWindow/Children/MainMenu/MainMenuPresenter.h"
 #include "MainWindow/Children/MainMenu/MainMenuView.h"
+#include "MainWindow/Components/Tree/SceneTree.h"
 
 class MyApp : public wxApp
 {
@@ -40,6 +41,16 @@ void registerDependencies(std::shared_ptr<Alice::Core::IoC::Container> container
             return view;
         });
 
+    container->registerType<Alice::Core::CustomParent::CustomParentBuilder<Alice::MainWindow::Components::Tree::ISceneTree>>(
+        [&](Alice::Core::IoC::Container *container)
+        {
+            return new Alice::Core::CustomParent::CustomParentBuilder<Alice::MainWindow::Components::Tree::ISceneTree>(
+                [&](wxWindow *parent)
+                {
+                    return std::make_shared<Alice::MainWindow::Components::Tree::SceneTree>(parent);
+                });
+        });
+
     // Main Window
     container->registerType<Alice::MainWindow::IMainWindowPresenter>(
         [&](Alice::Core::IoC::Container *container)
@@ -55,7 +66,10 @@ void registerDependencies(std::shared_ptr<Alice::Core::IoC::Container> container
 
             auto rawMainMenu = container->resolve<Alice::MainWindow::Children::MainMenu::IMainMenuView>();
 
-            auto view = new Alice::MainWindow::MainWindowView(presenter, rawMainMenu);
+            auto rawSceneTreeBuilder = container->resolve<Alice::Core::CustomParent::CustomParentBuilder<Alice::MainWindow::Components::Tree::ISceneTree>>();
+            auto sceneTreeBuilder = std::shared_ptr<Alice::Core::CustomParent::CustomParentBuilder<Alice::MainWindow::Components::Tree::ISceneTree>>(rawSceneTreeBuilder);
+
+            auto view = new Alice::MainWindow::MainWindowView(presenter, rawMainMenu, sceneTreeBuilder);
             presenter->injectView(view);
 
             return view;

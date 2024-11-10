@@ -51,6 +51,10 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
 
         std::type_index getType() const override;
 
+        const std::string &getName() const override;
+
+        void setName(const std::string &name) override;
+
         std::shared_ptr<IRenderingStrategy> getInternalStrategy();
 
     protected:

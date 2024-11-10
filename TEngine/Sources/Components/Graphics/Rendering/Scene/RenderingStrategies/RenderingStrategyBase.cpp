@@ -137,6 +137,16 @@ void RenderingStrategyBase::render(std::shared_ptr<ICameraStrategy> activeCamera
     }
 }
 
+const std::string &RenderingStrategyBase::getName() const
+{
+    return _name;
+}
+
+void RenderingStrategyBase::setName(const std::string &name)
+{
+    _name = name;
+}
+
 void RenderingStrategyBase::_updateTranslationMatrix()
 {
     _translationMatrix = Matrix4x4f(
