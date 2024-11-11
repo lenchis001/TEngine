@@ -32,7 +32,7 @@ RenderableShape::RenderableShape(
 {
 }
 
-const std::string &RenderableShape::getName() const
+const std::string &RenderableShape::getName()
 {
     return _name;
 }

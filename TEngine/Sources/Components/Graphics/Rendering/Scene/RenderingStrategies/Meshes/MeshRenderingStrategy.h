@@ -30,6 +30,9 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
 
         const std::string &getPath() const;
 
+    protected:
+        std::string _getDefaultName() const override;
+
     private:
         std::shared_ptr<IRenderableMesh> _renderableMesh;
         std::shared_ptr<IMeshService> _meshService;

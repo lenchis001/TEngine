@@ -9,3 +9,7 @@ std::vector<float> EmptyRenderingStrategy::getVertices() const {
 std::type_index EmptyRenderingStrategy::getType() const {
     return typeid(EmptyRenderingStrategy);
 }
+
+std::string EmptyRenderingStrategy::_getDefaultName() const {
+    return "Empty";
+}

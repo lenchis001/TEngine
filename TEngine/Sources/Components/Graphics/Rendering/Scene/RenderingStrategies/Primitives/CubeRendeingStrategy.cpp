@@ -80,6 +80,11 @@ const std::string& CubeRenderingStrategy::getTexturePath() const
     return _texturePath;
 }
 
+std::string CubeRenderingStrategy::_getDefaultName() const
+{
+    return "Cube";
+}
+
 void CubeRenderingStrategy::_prepareVertexVbo()
 {
     RETURN_IF_VBO_EXISTS(VERTEX_VBO_NAME);

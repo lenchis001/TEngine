@@ -24,7 +24,7 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
             GLuint textureId);
         ~RenderableShape() = default;
 
-        const std::string &getName() const override;
+        const std::string &getName() override;
 
         GLuint getVAO() const override;
 

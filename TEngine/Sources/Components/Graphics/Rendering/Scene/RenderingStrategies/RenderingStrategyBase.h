@@ -39,8 +39,10 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
         Vector3df getAbsoluteRotation() const override;
         Vector3df getAbsoluteScale() const override;
 
-        const std::string &getName() const override;
+        const std::string &getName() override;
         void setName(const std::string &name) override;
+
+        int getId() const override;
 
         void render(std::shared_ptr<ICameraStrategy> activeCameraStrategy) override;
 
@@ -55,6 +57,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
         inline const Matrix4x4f &getMvpMatrix() const {
             return _mvpMatrix;
         }
+
+        virtual std::string _getDefaultName() const = 0;
 
     private:
         void _updateTranslationMatrix();
@@ -74,6 +78,10 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
         std::vector<std::shared_ptr<IRenderingStrategy>> _children;
 
         std::string _name;
+
+        int _id;
+
+        static int _idCounter;
     };
 }
 

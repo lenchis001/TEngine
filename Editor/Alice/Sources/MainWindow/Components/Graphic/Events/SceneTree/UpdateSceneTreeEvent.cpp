@@ -39,6 +39,9 @@ namespace Alice::MainWindow::Components::Graphic::Events::SceneTree
             childItems.push_back(toSceneTree(childStrategy));
         }
 
-        return SceneTreeItem(0, renderingStrategy->getName(), childItems);
+        return SceneTreeItem(
+            renderingStrategy->getId(),
+            renderingStrategy->getName(),
+            childItems);
     }
 }

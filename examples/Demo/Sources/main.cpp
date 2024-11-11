@@ -81,6 +81,8 @@ int main()
         input1->setSize(Vector2di(400, 100));
         window1->addChild(input1);
 
+        engine->getSerializationService()->serializeToFile(sceneService->getRoot(), "./scene.json");
+
         while (true)
         {
             auto time = graphicsService->getTime();

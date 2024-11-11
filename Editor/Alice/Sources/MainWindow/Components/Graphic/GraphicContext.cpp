@@ -118,6 +118,8 @@ void GraphicContext::OnOpenScene(OpenSceneEvent &event)
 
             auto sceneRoot = graphicsService->getSceneService()->getRoot();
 
+            sceneRoot->removeAllChildren();
+
             deserializationService->deserializeFromFile(_currentScenePath, sceneRoot);
 
             auto event = UpdateSceneTreeEvent::fromRenderingStrategy(sceneRoot);

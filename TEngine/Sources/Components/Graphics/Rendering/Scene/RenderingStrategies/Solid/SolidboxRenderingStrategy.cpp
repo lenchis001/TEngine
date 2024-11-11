@@ -59,3 +59,8 @@ void SolidboxRenderingStrategy::_onAttachedToParent(std::shared_ptr<IRenderingSt
 
     RenderingStrategyBase::_onAttachedToParent(parent);
 }
+
+std::string SolidboxRenderingStrategy::_getDefaultName() const
+{
+    return "Solidbox";
+}

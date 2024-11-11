@@ -31,6 +31,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
     protected:
         void _onAttachedToParent(std::shared_ptr<IRenderingStrategy> parent) override;
 
+        std::string _getDefaultName() const override;
+
     private:
         bool _isVisualAttached;
 

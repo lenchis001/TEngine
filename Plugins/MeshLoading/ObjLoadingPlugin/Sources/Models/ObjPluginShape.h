@@ -17,7 +17,7 @@ namespace ObjLoadingPlugin::Models
             const std::vector<float> &diffuseColor,
             const std::string &texturePath);
 
-        const std::string &getName() const override;
+        const std::string &getName() override;
 
         const std::vector<float> &getVertices() const override;
 

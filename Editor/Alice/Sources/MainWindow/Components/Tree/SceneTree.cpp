@@ -15,7 +15,7 @@ void SceneTree::OnUpdateSceneTree(UpdateSceneTreeEvent &event)
 
     wxTreeItemId root = AddRoot(rootItem.getName());
 
-    for (auto &item : event.getItem().getChildren())
+    for (auto &item : rootItem.getChildren())
     {
         toTreeItem(item, root);
     }
@@ -25,12 +25,12 @@ void SceneTree::OnUpdateSceneTree(UpdateSceneTreeEvent &event)
 
 wxTreeItemId SceneTree::toTreeItem(const SceneTreeItem &sceneItem, const wxTreeItemId &root)
 {
-    wxTreeItemId result = AppendItem(root, sceneItem.getName());
+    auto currentItemName = sceneItem.getName();
+    wxTreeItemId result = AppendItem(root, currentItemName);
 
     for (auto &childItem : sceneItem.getChildren())
     {
         auto child = toTreeItem(childItem, result);
-        AppendItem(child, childItem.getName());
     }
 
     return result;

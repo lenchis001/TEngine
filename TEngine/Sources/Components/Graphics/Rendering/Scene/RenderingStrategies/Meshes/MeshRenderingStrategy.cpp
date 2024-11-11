@@ -82,3 +82,8 @@ const std::string &MeshRenderingStrategy::getPath() const
 {
     return _path;
 }
+
+std::string MeshRenderingStrategy::_getDefaultName() const
+{
+    return "Mesh";
+}

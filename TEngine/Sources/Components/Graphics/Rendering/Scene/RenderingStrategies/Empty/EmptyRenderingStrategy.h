@@ -11,6 +11,9 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
         std::vector<float> getVertices() const override;
 
         std::type_index getType() const override;
+
+    protected:
+        std::string _getDefaultName() const override;
     };
 }
 

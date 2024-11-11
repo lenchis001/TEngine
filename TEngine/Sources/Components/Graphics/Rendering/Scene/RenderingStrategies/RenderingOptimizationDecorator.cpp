@@ -110,7 +110,7 @@ std::type_index RenderingOptimizationDecorator::getType() const
     return typeid(RenderingOptimizationDecorator);
 }
 
-const std::string &RenderingOptimizationDecorator::getName() const
+const std::string &RenderingOptimizationDecorator::getName()
 {
     return _strategy->getName();
 }
@@ -118,6 +118,11 @@ const std::string &RenderingOptimizationDecorator::getName() const
 void RenderingOptimizationDecorator::setName(const std::string &name)
 {
     _strategy->setName(name);
+}
+
+int RenderingOptimizationDecorator::getId() const
+{
+    return _strategy->getId();
 }
 
 std::shared_ptr<IRenderingStrategy> RenderingOptimizationDecorator::getInternalStrategy()

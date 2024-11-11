@@ -18,7 +18,7 @@ ObjPluginShape::ObjPluginShape(
 {
 }
 
-const std::string &ObjPluginShape::getName() const
+const std::string &ObjPluginShape::getName()
 {
     return _name;
 }

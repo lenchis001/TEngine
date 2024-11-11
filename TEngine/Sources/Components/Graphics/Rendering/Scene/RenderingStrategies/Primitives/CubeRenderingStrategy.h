@@ -36,7 +36,11 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
 
         std::type_index getType() const override;
 
-        const std::string& getTexturePath() const;
+        const std::string &getTexturePath() const;
+
+    protected:
+        std::string _getDefaultName() const override;
+
     private:
         void _prepareVertexVbo();
         void _prepareTexture();

@@ -7,7 +7,8 @@ RenderingStrategyBase::RenderingStrategyBase() : _position(Vector3df(0.0f, 0.0f,
                                                  _scale(Vector3df(1.0f, 1.0f, 1.0f)),
                                                  _parentMatrix(Matrix4x4f(1.0f)),
                                                  _vpMatrix(Matrix4x4f(1.f)),
-                                                 _mvpMatrix(Matrix4x4f(1.f))
+                                                 _mvpMatrix(Matrix4x4f(1.f)),
+                                                 _id(++_idCounter)
 {
     _updateTranslationMatrix();
     _updateRotationMatrix();
@@ -137,14 +138,24 @@ void RenderingStrategyBase::render(std::shared_ptr<ICameraStrategy> activeCamera
     }
 }
 
-const std::string &RenderingStrategyBase::getName() const
+const std::string &RenderingStrategyBase::getName()
 {
+    if(_name.empty())
+    {
+        _name = _getDefaultName() + std::to_string(getId());
+    }
+
     return _name;
 }
 
 void RenderingStrategyBase::setName(const std::string &name)
 {
     _name = name;
+}
+
+int RenderingStrategyBase::getId() const
+{
+    return _id;
 }
 
 void RenderingStrategyBase::_updateTranslationMatrix()
@@ -241,3 +252,6 @@ void RenderingStrategyBase::_updateMvpMatrix()
 {
     _mvpMatrix = _vpMatrix * _modelMatrix;
 }
+
+
+int RenderingStrategyBase::_idCounter = 0;

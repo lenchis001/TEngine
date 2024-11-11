@@ -103,7 +103,7 @@ std::type_index PhysicsRenderingDecorator::getType() const
     return typeid(PhysicsRenderingDecorator);
 }
 
-const std::string &PhysicsRenderingDecorator::getName() const
+const std::string &PhysicsRenderingDecorator::getName()
 {
     return _strategy->getName();
 }
@@ -111,6 +111,11 @@ const std::string &PhysicsRenderingDecorator::getName() const
 void PhysicsRenderingDecorator::setName(const std::string &name)
 {
     _strategy->setName(name);
+}
+
+int PhysicsRenderingDecorator::getId() const
+{
+    return _strategy->getId();
 }
 
 PhysicsFlags PhysicsRenderingDecorator::getPhysicsFlags() const

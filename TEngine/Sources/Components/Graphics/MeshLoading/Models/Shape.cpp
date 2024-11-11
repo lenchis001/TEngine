@@ -18,7 +18,7 @@ Shape::Shape(
 {
 }
 
-const std::string &Shape::getName() const
+const std::string &Shape::getName()
 {
     return _name;
 }
