@@ -11,10 +11,10 @@
 
 namespace Alice::MainWindow::Components::Tree
 {
-    class ISceneTree : public wxTreeCtrl
+    class ISceneTreeView : public wxTreeCtrl
     {
     public:
-        ISceneTree(wxWindow *parent) : wxTreeCtrl(parent) {}
+        ISceneTreeView(wxWindow *parent) : wxTreeCtrl(parent) {}
     };
 }
 

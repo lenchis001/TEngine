@@ -16,7 +16,7 @@
 #include "Core/CustomParent/CustomParentBuilder.h"
 
 #include "Components/Graphic/IGraphicContext.h"
-#include "Components/Tree/ISceneTree.h"
+#include "Components/Tree/ISceneTreeView.h"
 
 #include "Children/MainMenu/IMainMenuView.h"
 #include "Children/ToolBar/IToolBar.h"
@@ -34,12 +34,12 @@ namespace Alice::MainWindow
         MainWindowView(
             std::shared_ptr<MainWindow::IMainWindowPresenter> presenter,
             IMainMenuView* mainMenu,
-            std::shared_ptr<CustomParentBuilder<ISceneTree>> sceneTreeBuilder);
+            std::shared_ptr<CustomParentBuilder<ISceneTreeView>> sceneTreeBuilder);
 
     private:
         void _createMainMenu();
         void _createMainArea(wxSizer* windowSizer);
-        void _createWorkArea(wxSizer* windowSizer, std::shared_ptr<CustomParentBuilder<ISceneTree>> sceneTreeBuilder);
+        void _createWorkArea(wxSizer* windowSizer, std::shared_ptr<CustomParentBuilder<ISceneTreeView>> sceneTreeBuilder);
 
         // Main menu
         Children::MainMenu::IMainMenuView* _mainMenu;
@@ -50,7 +50,7 @@ namespace Alice::MainWindow
         //Work area
         std::shared_ptr<wxPanel> _workArea;
         std::shared_ptr<IGraphicContext> _graphicContext;
-        std::shared_ptr<ISceneTree> _sceneTree;
+        std::shared_ptr<ISceneTreeView> _sceneTree;
 
         wxDECLARE_EVENT_TABLE();
     };

@@ -29,6 +29,11 @@ ViewerCameraStrategy::~ViewerCameraStrategy() {
     _eventService->unregisterMouseButtonHandler(std::bind(&ViewerCameraStrategy::_onMouseButton, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 }
 
+void ViewerCameraStrategy::setWindowSize(const Vector2di &value)
+{
+    CameraStrategyBase::setWindowSize(value);
+}
+
 bool ViewerCameraStrategy::_onMouseMoved(int x, int y)
 {
     if (_previousX > 0 && _isRotationAllowed)

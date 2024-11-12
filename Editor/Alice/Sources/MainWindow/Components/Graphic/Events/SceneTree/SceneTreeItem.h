@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-namespace Alice::MainWindow::Components::Graphic::Events::SceneTree
+namespace Alice::MainWindow::Components::Graphic::Events::SceneTreeView
 {
     class SceneTreeItem
     {

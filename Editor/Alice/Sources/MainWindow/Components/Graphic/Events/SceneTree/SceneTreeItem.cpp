@@ -1,6 +1,6 @@
 #include "SceneTreeItem.h"
 
-using namespace Alice::MainWindow::Components::Graphic::Events::SceneTree;
+using namespace Alice::MainWindow::Components::Graphic::Events::SceneTreeView;
 
 SceneTreeItem::SceneTreeItem(int id, const std::string name, const std::vector<SceneTreeItem> children)
     : _id(id), _name(name), _children(children)

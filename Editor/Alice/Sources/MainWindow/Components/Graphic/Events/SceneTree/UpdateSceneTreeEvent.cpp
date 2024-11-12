@@ -1,6 +1,6 @@
 #include "UpdateSceneTreeEvent.h"
 
-namespace Alice::MainWindow::Components::Graphic::Events::SceneTree
+namespace Alice::MainWindow::Components::Graphic::Events::SceneTreeView
 {
     wxDEFINE_EVENT(UPDATE_SCENE_TREE_EVENT_TYPE, UpdateSceneTreeEvent);
 

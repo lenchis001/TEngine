@@ -16,7 +16,7 @@
 
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies;
 
-namespace Alice::MainWindow::Components::Graphic::Events::SceneTree
+namespace Alice::MainWindow::Components::Graphic::Events::SceneTreeView
 {
     class UpdateSceneTreeEvent : public wxEvent
     {

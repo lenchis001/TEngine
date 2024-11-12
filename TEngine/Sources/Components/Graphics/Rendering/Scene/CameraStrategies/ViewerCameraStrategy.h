@@ -18,6 +18,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::CameraStrategies
                              const Vector3df &position);
         ~ViewerCameraStrategy();
 
+        void setWindowSize(const Vector2di &value) override;
+
     protected:
         bool _onMouseMoved(int x, int y) override;
 

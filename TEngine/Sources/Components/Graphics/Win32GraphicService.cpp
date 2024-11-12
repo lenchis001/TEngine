@@ -82,6 +82,12 @@ void Win32GraphicService::initialize(std::shared_ptr<IGraphicsParameters> parame
     if (parameters->getIsVerticalSyncEnabled())
     {
         auto wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)wglGetProcAddress("wglSwapIntervalEXT");
+
+        if (wglSwapIntervalEXT == nullptr)
+        {
+            throw std::runtime_error("Failed to load wglSwapIntervalEXT");
+        }
+
         // Enable VSync
         auto result = wglSwapIntervalEXT(1);
 
@@ -89,10 +95,6 @@ void Win32GraphicService::initialize(std::shared_ptr<IGraphicsParameters> parame
         {
             throw std::runtime_error("Failed to enable VSync");
         }
-    }
-    else
-    {
-        throw std::runtime_error("Failed to load wglSwapIntervalEXT");
     }
 
     if (glewInit() != GLEW_OK)

@@ -9,7 +9,7 @@ using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Graphics::Rendering::Models::Physics;
 using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
 
-using namespace Alice::MainWindow::Components::Graphic::Events::SceneTree;
+using namespace Alice::MainWindow::Components::Graphic::Events::SceneTreeView;
 
 GraphicContext::GraphicContext(wxWindow *parent)
     : IGraphicContext(parent), _isShutdownRequested(false)
@@ -47,6 +47,8 @@ void GraphicContext::OnResize(wxSizeEvent &event)
 
             graphicsService->resize(size.GetWidth(), size.GetHeight());
         });
+
+    event.Skip();
 }
 
 void GraphicContext::OnCreateScene(CreateSceneEvent &event)

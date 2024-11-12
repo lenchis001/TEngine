@@ -11,7 +11,7 @@ using namespace Alice::MainWindow::Children::ToolBar;
 MainWindowView::MainWindowView(
     std::shared_ptr<MainWindow::IMainWindowPresenter> presenter,
     IMainMenuView *mainMenu,
-    std::shared_ptr<CustomParentBuilder<ISceneTree>> sceneTreeBuilder)
+    std::shared_ptr<CustomParentBuilder<ISceneTreeView>> sceneTreeBuilder)
     : wxFrame(nullptr, wxID_ANY, "Alice Editor"), _mainMenu(mainMenu), _sceneTree(nullptr)
 {
     _createMainMenu();
@@ -35,7 +35,7 @@ void MainWindowView::_createMainArea(wxSizer *windowSizer)
     windowSizer->Add(_toolBar.get(), 0, wxEXPAND);
 }
 
-void MainWindowView::_createWorkArea(wxSizer *windowSizer, std::shared_ptr<CustomParentBuilder<ISceneTree>> sceneTreeBuilder)
+void MainWindowView::_createWorkArea(wxSizer *windowSizer, std::shared_ptr<CustomParentBuilder<ISceneTreeView>> sceneTreeBuilder)
 {
     _workArea = std::make_shared<wxPanel>(this, wxID_ANY);
     auto sizer = new wxBoxSizer(wxHORIZONTAL);
