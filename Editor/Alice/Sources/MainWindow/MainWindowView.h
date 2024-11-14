@@ -16,13 +16,13 @@
 #include "Core/CustomParent/CustomParentBuilder.h"
 
 #include "Components/Graphic/IGraphicContext.h"
-#include "Components/Tree/ISceneTreeView.h"
 
+#include "Children/Scene/Tree/ISceneTreeView.h"
 #include "Children/MainMenu/IMainMenuView.h"
 #include "Children/ToolBar/IToolBar.h"
 
 using namespace Alice::MainWindow::Components::Graphic;
-using namespace Alice::MainWindow::Components::Tree;
+using namespace Alice::MainWindow::Children::Scene::Tree;
 using namespace Alice::MainWindow::Children::MainMenu;
 using namespace Alice::Core::CustomParent;
 

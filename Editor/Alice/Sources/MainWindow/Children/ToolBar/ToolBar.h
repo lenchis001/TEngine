@@ -9,6 +9,8 @@ namespace Alice::MainWindow::Children::ToolBar
     {
     public:
         ToolBar(wxWindow *parent);
+
+        static wxBitmap _createColoredBitmap(const wxString &filePath, const wxSize &size, const wxColour &bgColor);
     };
 }
 

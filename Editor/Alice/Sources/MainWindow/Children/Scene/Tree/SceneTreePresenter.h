@@ -1,6 +1,6 @@
 #include "ISceneTreePresenter.h"
 
-namespace Alice::MainWindow::Components::Tree
+namespace Alice::MainWindow::Children::Scene::Tree
 {
     class SceneTreePresenter : public ISceneTreePresenter
     {

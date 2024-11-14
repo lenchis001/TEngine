@@ -1,6 +1,6 @@
 #include "SceneTreeItemData.h"
 
-using namespace Alice::MainWindow::Components::Tree::Data;
+using namespace Alice::MainWindow::Children::Scene::Tree::Data;
 
 SceneTreeItemData::SceneTreeItemData(int id) : _id(id) {}
 

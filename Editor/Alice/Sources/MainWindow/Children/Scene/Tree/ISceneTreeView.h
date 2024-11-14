@@ -9,7 +9,7 @@
 
 #include "wx/treectrl.h"
 
-namespace Alice::MainWindow::Components::Tree
+namespace Alice::MainWindow::Children::Scene::Tree
 {
     class ISceneTreeView : public wxTreeCtrl
     {

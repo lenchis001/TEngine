@@ -11,7 +11,7 @@
 
 using namespace Alice::MainWindow::Components::Graphic::Events::SceneTreeView;
 
-namespace Alice::MainWindow::Components::Tree
+namespace Alice::MainWindow::Children::Scene::Tree
 {
     class SceneTreeView : public ISceneTreeView
     {

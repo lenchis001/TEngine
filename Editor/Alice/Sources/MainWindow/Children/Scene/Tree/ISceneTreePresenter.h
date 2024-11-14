@@ -5,7 +5,7 @@
 
 #include "ISceneTreeView.h"
 
-namespace Alice::MainWindow::Components::Tree
+namespace Alice::MainWindow::Children::Scene::Tree
 {
     class ISceneTreePresenter : public Core::IPresenter<ISceneTreeView>
     {

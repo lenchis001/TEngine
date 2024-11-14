@@ -2,8 +2,8 @@
 
 #include "Data/SceneTreeItemData.h"
 
-using namespace Alice::MainWindow::Components::Tree;
-using namespace Alice::MainWindow::Components::Tree::Data;
+using namespace Alice::MainWindow::Children::Scene::Tree;
+using namespace Alice::MainWindow::Children::Scene::Tree::Data;
 
 SceneTreeView::SceneTreeView(wxWindow *parent, std::shared_ptr<ISceneTreePresenter> presenter)
     : ISceneTreeView(parent), _presenter(presenter)

@@ -1,6 +1,6 @@
 #include "SceneTreePresenter.h"
 
-using namespace Alice::MainWindow::Components::Tree;
+using namespace Alice::MainWindow::Children::Scene::Tree;
 
 void SceneTreePresenter::injectView(ISceneTreeView *view)
 {
