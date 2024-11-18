@@ -1,6 +1,7 @@
 #include "Components/Graphics/Rendering/Scene/RenderingStrategies/RenderingStrategyBase.h"
 
 #include <memory>
+#include <vector>
 
 #include <GLFW/glfw3.h>
 
@@ -21,12 +22,21 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
                                    std::shared_ptr<IBuffersService> bufferCacheService,
                                    std::shared_ptr<ITexturesService> texturesService);
 
+        ~SkySphereRenderingStrategy();
+
         void setTexture(const std::string &texturePath);
+
+        void setSphere(float radius, int sectorCount, int stackCount);
 
         void render(std::shared_ptr<ICameraStrategy> activeCameraStrategy) override;
 
     private:
-        GLuint _textureId;
+        static std::vector<float> _generateHalfSphereVertices(float radius, int sectorCount, int stackCount);
+
+        void _releaseBuffers();
+
+
+        GLuint _textureId, _vao;
 
         std::shared_ptr<IShadersService> _shadersService;
         std::shared_ptr<IBuffersService> _bufferCacheService;
