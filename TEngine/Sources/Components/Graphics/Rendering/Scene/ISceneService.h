@@ -41,6 +41,9 @@ namespace TEngine::Components::Graphics::Rendering::Scene
         virtual std::shared_ptr<RenderingStrategies::IRenderingStrategy> addEmpty(
             std::shared_ptr<RenderingStrategies::IRenderingStrategy> parent = nullptr) = 0;
 
+        virtual std::shared_ptr<RenderingStrategies::IRenderingStrategy> addSkySphere(
+            std::shared_ptr<RenderingStrategies::IRenderingStrategy> parent = nullptr) = 0;
+
         virtual std::shared_ptr<CameraStrategies::ICameraStrategy> getActiveCamera() = 0;
 
         virtual std::shared_ptr<CameraStrategies::ICameraStrategy>

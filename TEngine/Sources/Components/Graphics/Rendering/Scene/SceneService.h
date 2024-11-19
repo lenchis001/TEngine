@@ -71,6 +71,9 @@ namespace TEngine::Components::Graphics::Rendering::Scene
         std::shared_ptr<IRenderingStrategy> addEmpty(
             std::shared_ptr<IRenderingStrategy> parent = nullptr) override;
 
+        std::shared_ptr<IRenderingStrategy> addSkySphere(
+            std::shared_ptr<IRenderingStrategy> parent = nullptr) override;
+
         void render(double time) override;
 
         std::shared_ptr<ICameraStrategy> getActiveCamera() override;

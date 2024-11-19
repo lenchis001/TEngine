@@ -31,12 +31,65 @@ GLuint TexturesService::take(const std::string &textureFile)
         return _textures[textureFile];
     }
 
-    auto texture = _readTexture(textureFile);
+    auto textureId = _readTexture(textureFile);
 
-    _textures[textureFile] = texture;
+    _textures[textureFile] = textureId;
     _usagesCounter[textureFile] = 1;
 
-    return texture;
+    return textureId;
+}
+
+GLuint TexturesService::takeCubeMap(
+    const std::string &rightTexturePath,
+    const std::string &leftTexturePath,
+    const std::string &topTexturePath,
+    const std::string &bottomTexturePath,
+    const std::string &frontTexturePath,
+    const std::string &backTexturePath)
+{
+    auto texturePath = rightTexturePath + leftTexturePath + topTexturePath + bottomTexturePath + frontTexturePath + backTexturePath;
+
+    if (_textures.find(texturePath) != _textures.end())
+    {
+        _usagesCounter[texturePath]++;
+
+        return _textures[texturePath];
+    }
+
+    GLuint textureId;
+    glGenTextures(1, &textureId);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textureId);
+
+    auto rightImage = _imageLoadingService->load(rightTexturePath);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_RGB, rightImage->getWidth(), rightImage->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, rightImage->getData());
+
+    auto leftImage = _imageLoadingService->load(leftTexturePath);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_RGB, leftImage->getWidth(), leftImage->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, leftImage->getData());
+
+    auto topImage = _imageLoadingService->load(topTexturePath);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_RGB, topImage->getWidth(), topImage->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, topImage->getData());
+
+    auto bottomImage = _imageLoadingService->load(bottomTexturePath);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_RGB, bottomImage->getWidth(), bottomImage->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, bottomImage->getData());
+
+    auto frontImage = _imageLoadingService->load(frontTexturePath);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_RGB, frontImage->getWidth(), frontImage->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, frontImage->getData());
+
+    auto backImage = _imageLoadingService->load(backTexturePath);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_RGB, backImage->getWidth(), backImage->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, backImage->getData());
+
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+    glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+
+    _textures[texturePath] = textureId;
+    _usagesCounter[texturePath] = 1;
+
+    return textureId;
 }
 
 void TexturesService::release(GLuint textureId)

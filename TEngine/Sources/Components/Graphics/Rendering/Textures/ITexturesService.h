@@ -16,6 +16,14 @@ namespace TEngine::Components::Graphics::Rendering::Textures
 
         virtual GLuint take(const std::string &textureFile) = 0;
 
+        virtual GLuint takeCubeMap(
+            const std::string &rightTexturePath,
+            const std::string &leftTexturePath,
+            const std::string &topTexturePath,
+            const std::string &bottomTexturePath,
+            const std::string &frontTexturePath,
+            const std::string &backTexturePath) = 0;
+
         virtual void release(GLuint textureId) = 0;
     };
 }

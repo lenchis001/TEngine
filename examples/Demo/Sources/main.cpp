@@ -10,6 +10,7 @@
 using namespace TEngine::Components::Graphics::Rendering::Models::Meshes;
 using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Graphics::Rendering::Models::Physics;
+using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
 
 int main()
 {
@@ -30,7 +31,7 @@ int main()
         auto sceneService = graphicsService->getSceneService();
         auto guiService = graphicsService->getGuiService();
 
-        sceneService->setActiveCamera(TEngine::Components::Graphics::Rendering::Models::Cameras::BuildinCameraTypes::VIEWER);
+        sceneService->setActiveCamera(BuildinCameraTypes::FPS);
 
         auto solid = sceneService->addSolidbox();
         solid->setPosition(Vector3df(0.0f, -5.0f, 0.0f));
@@ -61,7 +62,8 @@ int main()
             sofa->setPosition(Vector3df(3.0f * i + 5.0f, 0.0f, 0.0f));
         }
 
-        int framesCounter = 0;
+        auto sky = sceneService->addSkySphere();
+
         double previousCheckTime = graphicsService->getTime();
 
         auto audioService = engine->getAudioService();
@@ -70,23 +72,11 @@ int main()
         source->play();
         source->setPosition(0.0f, 0.0f, 0.0f);
 
-        auto window1 = guiService->addWindow();
-        window1->setSize(Vector2di(100, 100));
-
-        auto image = guiService->addImage("./DemoResources/texture2.bmp");
-        image->setSize(Vector2di(400, 100));
-        window1->addChild(image);
-
-        auto input1 = guiService->addInput();
-        input1->setSize(Vector2di(400, 100));
-        window1->addChild(input1);
-
         while (true)
         {
             auto time = graphicsService->getTime();
             if (time - previousCheckTime > 1.0)
             {
-                framesCounter = 0;
                 previousCheckTime = time;
 
                 if (graphicsService->isShutdownRequested())
@@ -96,8 +86,6 @@ int main()
             }
 
             graphicsService->render();
-
-            framesCounter++;
         }
 
         audioService->release(source);

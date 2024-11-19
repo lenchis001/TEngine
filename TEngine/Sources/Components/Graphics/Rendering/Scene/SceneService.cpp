@@ -12,6 +12,7 @@
 #include "RenderingStrategies/PhysicsRenderingDecorator.h"
 #include "RenderingStrategies/Solid/SolidboxRenderingStrategy.h"
 #include "RenderingStrategies/Empty/EmptyRenderingStrategy.h"
+#include "RenderingStrategies/Sky/SkySphereRenderingStrategy.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies;
 using namespace TEngine::Components::Graphics::Rendering::Scene;
@@ -19,6 +20,7 @@ using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrate
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Meshes;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Solid;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Empty;
+using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Sky;
 
 SceneService::SceneService(
 	std::shared_ptr<IEventService> eventService,
@@ -133,6 +135,31 @@ std::shared_ptr<IRenderingStrategy> SceneService::addEmpty(
 	return strategy;
 }
 
+std::shared_ptr<IRenderingStrategy> SceneService::addSkySphere(
+	std::shared_ptr<IRenderingStrategy> parent)
+{
+	std::shared_ptr<SkySphereRenderingStrategy> strategy = std::make_shared<SkySphereRenderingStrategy>(
+		_shadersService,
+		_bufferCacheService,
+		_textureService);
+
+	// todo: remoove after test
+	strategy->setTexture(
+		"./DemoResources/skybox/right.bmp",
+		"./DemoResources/skybox/left.bmp",
+		"./DemoResources/skybox/top.bmp",
+		"./DemoResources/skybox/bottom.bmp",
+		"./DemoResources/skybox/front.bmp",
+		"./DemoResources/skybox/back.bmp");
+	strategy->setCube(20.0f);
+	strategy->setScale(Vector3df(100.0f, 100.0f, 100.0f));
+
+	auto decoratedSkySphereRenderingStrategy = std::make_shared<RenderingOptimizationDecorator>(strategy);
+	(parent ? parent : _root)->addChild(decoratedSkySphereRenderingStrategy);
+
+	return decoratedSkySphereRenderingStrategy;
+}
+
 std::shared_ptr<ICameraStrategy> SceneService::setActiveCamera(BuildinCameraTypes cameraType)
 {
 	auto windowSize = _getWindowSize();
@@ -140,13 +167,13 @@ std::shared_ptr<ICameraStrategy> SceneService::setActiveCamera(BuildinCameraType
 	switch (cameraType)
 	{
 	case BuildinCameraTypes::BASE:
-		setActiveCamera(std::make_shared<CameraStrategyBase>(45.0f, windowSize, 0.1f, 100.f, Vector3df(4, 3, 3), Vector3df(0, 0, 0)));
+		setActiveCamera(std::make_shared<CameraStrategyBase>(45.0f, windowSize, 0.1f, 200.f, Vector3df(4, 3, 3), Vector3df(0, 0, 0)));
 		break;
 	case BuildinCameraTypes::FPS:
-		setActiveCamera(std::make_shared<FpsCameraStrategy>(_eventService, 45.0f, windowSize, 0.1f, 100.f, Vector3df(4, 3, 3)));
+		setActiveCamera(std::make_shared<FpsCameraStrategy>(_eventService, 45.0f, windowSize, 0.1f, 200.f, Vector3df(4, 3, 3)));
 		break;
 	case BuildinCameraTypes::VIEWER:
-		setActiveCamera(std::make_shared<ViewerCameraStrategy>(_eventService, 45.0f, windowSize, 0.1f, 100.f, Vector3df(4, 3, 3)));
+		setActiveCamera(std::make_shared<ViewerCameraStrategy>(_eventService, 45.0f, windowSize, 0.1f, 200.f, Vector3df(4, 3, 3)));
 		break;
 	default:
 		_activeCamera = nullptr;

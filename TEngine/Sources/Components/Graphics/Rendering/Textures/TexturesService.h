@@ -23,6 +23,14 @@ namespace TEngine::Components::Graphics::Rendering::Textures
 
         GLuint take(const std::string &textureFile) override;
 
+        GLuint takeCubeMap(
+            const std::string &rightTexturePath,
+            const std::string &leftTexturePath,
+            const std::string &topTexturePath,
+            const std::string &bottomTexturePath,
+            const std::string &frontTexturePath,
+            const std::string &backTexturePath) override;
+
         void release(GLuint textureId) override;
 
     private:
