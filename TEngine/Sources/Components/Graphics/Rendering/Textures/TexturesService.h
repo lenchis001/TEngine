@@ -36,6 +36,8 @@ namespace TEngine::Components::Graphics::Rendering::Textures
     private:
         GLuint _readTexture(const std::string& textureFile);
 
+        void _loadCubeMapSide(GLenum side, const std::string& texturePath);
+
         std::shared_ptr<IImageLoadingService> _imageLoadingService;
 
         std::unordered_map<std::string, std::size_t> _usagesCounter;

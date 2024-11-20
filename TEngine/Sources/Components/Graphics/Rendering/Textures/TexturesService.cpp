@@ -60,23 +60,12 @@ GLuint TexturesService::takeCubeMap(
     glGenTextures(1, &textureId);
     glBindTexture(GL_TEXTURE_CUBE_MAP, textureId);
 
-    auto rightImage = _imageLoadingService->load(rightTexturePath);
-    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, GL_RGB, rightImage->getWidth(), rightImage->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, rightImage->getData());
-
-    auto leftImage = _imageLoadingService->load(leftTexturePath);
-    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, GL_RGB, leftImage->getWidth(), leftImage->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, leftImage->getData());
-
-    auto topImage = _imageLoadingService->load(topTexturePath);
-    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, GL_RGB, topImage->getWidth(), topImage->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, topImage->getData());
-
-    auto bottomImage = _imageLoadingService->load(bottomTexturePath);
-    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, GL_RGB, bottomImage->getWidth(), bottomImage->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, bottomImage->getData());
-
-    auto frontImage = _imageLoadingService->load(frontTexturePath);
-    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, GL_RGB, frontImage->getWidth(), frontImage->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, frontImage->getData());
-
-    auto backImage = _imageLoadingService->load(backTexturePath);
-    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, GL_RGB, backImage->getWidth(), backImage->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, backImage->getData());
+    _loadCubeMapSide(GL_TEXTURE_CUBE_MAP_POSITIVE_X, rightTexturePath);
+    _loadCubeMapSide(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, leftTexturePath);
+    _loadCubeMapSide(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, topTexturePath);
+    _loadCubeMapSide(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, bottomTexturePath);
+    _loadCubeMapSide(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, frontTexturePath);
+    _loadCubeMapSide(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, backTexturePath);
 
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -94,7 +83,7 @@ GLuint TexturesService::takeCubeMap(
 
 void TexturesService::release(GLuint textureId)
 {
-    for (auto& texture : _textures)
+    for (auto &texture : _textures)
     {
         if (texture.second == textureId)
         {
@@ -115,7 +104,7 @@ void TexturesService::release(GLuint textureId)
     assert(false && "Texture not found!");
 }
 
-GLuint TexturesService::_readTexture(const std::string& textureFile)
+GLuint TexturesService::_readTexture(const std::string &textureFile)
 {
     auto image = _imageLoadingService->load(textureFile);
 
@@ -132,4 +121,11 @@ GLuint TexturesService::_readTexture(const std::string& textureFile)
     glBindTexture(GL_TEXTURE_2D, 0);
 
     return texture;
+}
+
+void TexturesService::_loadCubeMapSide(GLenum side, const std::string &texturePath)
+{
+    auto image = _imageLoadingService->load(texturePath);
+
+    glTexImage2D(side, 0, GL_RGB, image->getWidth(), image->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, image->getData());
 }
