@@ -46,9 +46,6 @@ int main()
                 cube->setPosition(Vector3df(2.0f * i, 0.0f, 2.0f * j));
             }
 
-            auto cube3 = sceneService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp", nullptr, PhysicsFlags::DYNAMIC);
-            cube3->setPosition(Vector3df(2.0f * i, 4.f * i, i * 2.0f));
-
             auto cube = sceneService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp", nullptr, PhysicsFlags::STATIC);
             cube->setPosition(Vector3df(-3.0f * i, 0.0f, 0.0f));
 
@@ -65,6 +62,7 @@ int main()
         auto sky = sceneService->addSkySphere();
 
         double previousCheckTime = graphicsService->getTime();
+        int fpsCounter = 0;
 
         auto audioService = engine->getAudioService();
         auto source = audioService->take("./DemoResources/birds.ogg");
@@ -75,8 +73,13 @@ int main()
         while (true)
         {
             auto time = graphicsService->getTime();
-            if (time - previousCheckTime > 1.0)
+            auto diff = time - previousCheckTime;
+            fpsCounter++;
+            if (diff >= 1.0)
             {
+                std::cout << "FPS: " << fpsCounter << std::endl;
+
+                fpsCounter = 0;
                 previousCheckTime = time;
 
                 if (graphicsService->isShutdownRequested())

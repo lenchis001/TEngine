@@ -10,6 +10,9 @@ target_compile_definitions(TEngine PRIVATE TENGINE_EXPORTS TENGINE_IMAGE_LOADING
 if(APPLE)
 target_compile_definitions(TEngine PRIVATE GL_SILENCE_DEPRECATION)
 endif()
+if(DEBUG)
+    target_compile_definitions(TEngine PRIVATE TENGINE_DEBUG)
+endif()
 target_include_directories(TEngine PUBLIC "Sources")
 
 # Copy Resources directory to the output directory

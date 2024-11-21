@@ -7,7 +7,7 @@ using namespace TEngine::Components::Graphics::Rendering::Scene::CameraStrategie
 
 CameraStrategyBase::CameraStrategyBase(
     float fov,
-    const Vector2di& windowSize,
+    const Vector2di &windowSize,
     float zNear,
     float zFar,
     const Models::Vector3df &position,
@@ -99,7 +99,7 @@ void CameraStrategyBase::_recalculateProjection()
     float tanHalfFov = tan(_fov / 2.f);
     float nearmfar = _zFar - _zNear;
 
-    _projectionMatrix = Matrix4x4f(
+    _projectionMatrix.setState(
         (1.f / (_aspectRatio * tanHalfFov)), .0f, .0f, .0f,
         .0f, (1.f / tanHalfFov), .0f, .0f,
         .0f, .0f, -(_zFar + _zNear) / nearmfar, -(2.f * _zFar * _zNear) / nearmfar,
@@ -121,7 +121,7 @@ void CameraStrategyBase::_recalculateView()
     auto fPositionDot = f.dot(_position);
 
     // Create the view matrix
-    _viewMatrix = Matrix4x4f(
+    _viewMatrix.setState(
         s.getX(), s.getY(), s.getZ(), sPositionDot,
         u.getX(), u.getY(), u.getZ(), uPositionDot,
         negativeF.getX(), negativeF.getY(), negativeF.getZ(), fPositionDot,

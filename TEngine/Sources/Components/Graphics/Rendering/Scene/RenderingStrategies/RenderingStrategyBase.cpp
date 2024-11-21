@@ -8,6 +8,9 @@ RenderingStrategyBase::RenderingStrategyBase() : _position(Vector3df(0.0f, 0.0f,
                                                  _parentMatrix(Matrix4x4f(1.0f)),
                                                  _vpMatrix(Matrix4x4f(1.f)),
                                                  _mvpMatrix(Matrix4x4f(1.f)),
+                                                 _translationMatrix(Matrix4x4f(1.f)),
+                                                 _rotationMatrix(Matrix4x4f(1.f)),
+                                                 _scaleMatrix(Matrix4x4f(1.f)),
                                                  _id(++_idCounter)
 {
     _updateTranslationMatrix();
@@ -16,7 +19,8 @@ RenderingStrategyBase::RenderingStrategyBase() : _position(Vector3df(0.0f, 0.0f,
     _updateModelMatrix(_parentMatrix);
 }
 
-RenderingStrategyBase::~RenderingStrategyBase() {
+RenderingStrategyBase::~RenderingStrategyBase()
+{
     removeAllChildren();
 }
 
@@ -140,7 +144,7 @@ void RenderingStrategyBase::render(std::shared_ptr<ICameraStrategy> activeCamera
 
 const std::string &RenderingStrategyBase::getName()
 {
-    if(_name.empty())
+    if (_name.empty())
     {
         _name = _getDefaultName() + std::to_string(getId());
     }
@@ -160,55 +164,21 @@ int RenderingStrategyBase::getId() const
 
 void RenderingStrategyBase::_updateTranslationMatrix()
 {
-    _translationMatrix = Matrix4x4f(
-        1.0f, 0.0f, 0.0f, _position.getX(),
-        0.0f, 1.0f, 0.0f, _position.getY(),
-        0.0f, 0.0f, 1.0f, _position.getZ(),
-        0.0f, 0.0f, 0.0f, 1.0f);
+    _translationMatrix.setTranslation(_position);
 
     _updateModelMatrix(_parentMatrix, true);
 }
 
 void RenderingStrategyBase::_updateRotationMatrix()
 {
-    float pitch = _rotation.getX();
-    float yaw = _rotation.getY();
-    float roll = _rotation.getZ();
-
-    // Rotation matrix around the X-axis (pitch)
-    Matrix4x4f rotationX(
-        1.0f, 0.0f, 0.0f, 0.0f,
-        0.0f, cos(pitch), -sin(pitch), 0.0f,
-        0.0f, sin(pitch), cos(pitch), 0.0f,
-        0.0f, 0.0f, 0.0f, 1.0f);
-
-    // Rotation matrix around the Y-axis (yaw)
-    Matrix4x4f rotationY(
-        cos(yaw), 0.0f, sin(yaw), 0.0f,
-        0.0f, 1.0f, 0.0f, 0.0f,
-        -sin(yaw), 0.0f, cos(yaw), 0.0f,
-        0.0f, 0.0f, 0.0f, 1.0f);
-
-    // Rotation matrix around the Z-axis (roll)
-    Matrix4x4f rotationZ(
-        cos(roll), -sin(roll), 0.0f, 0.0f,
-        sin(roll), cos(roll), 0.0f, 0.0f,
-        0.0f, 0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 0.0f, 1.0f);
-
-    // Combine the rotation matrices
-    _rotationMatrix = rotationZ * rotationY * rotationX;
+    _rotationMatrix.setRotation(_rotation);
 
     _updateModelMatrix(_parentMatrix, true);
 }
 
 void RenderingStrategyBase::_updateScaleMatrix()
 {
-    _scaleMatrix = Matrix4x4f(
-        _scale.getX(), 0.0f, 0.0f, 0.0f,
-        0.0f, _scale.getY(), 0.0f, 0.0f,
-        0.0f, 0.0f, _scale.getZ(), 0.0f,
-        0.0f, 0.0f, 0.0f, 1.0f);
+    _scaleMatrix.setScale(_scale);
 
     _updateModelMatrix(_parentMatrix, true);
 }
@@ -223,7 +193,7 @@ void RenderingStrategyBase::_updateModelMatrix(const Matrix4x4f &parentMatrix, b
     if (isPrsUpdated || _parentMatrix != parentMatrix)
     {
         _parentMatrix = parentMatrix;
-        _modelMatrix = _parentMatrix * _translationMatrix * _rotationMatrix * _scaleMatrix;
+        _modelMatrix.setMultiplyingResult(_parentMatrix, _translationMatrix, _rotationMatrix, _scaleMatrix);
 
         _updateMvpMatrix();
 
@@ -250,8 +220,7 @@ void RenderingStrategyBase::_onDetachedFromParent()
 
 void RenderingStrategyBase::_updateMvpMatrix()
 {
-    _mvpMatrix = _vpMatrix * _modelMatrix;
+    _mvpMatrix.setMultiplyingResult(_vpMatrix, _modelMatrix);
 }
-
 
 int RenderingStrategyBase::_idCounter = 0;
