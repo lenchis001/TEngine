@@ -8,12 +8,15 @@
 
 #include "Components/Graphics/Models/Vector3d.h"
 
+#include "Components/Graphics/Rendering/Scene/RenderingMixins/RenderingOptimizationMixin.h"
+
 using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Graphics::Rendering::Scene::CameraStrategies;
+using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingMixins;
 
 namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
 {
-    class RenderingStrategyBase : public std::enable_shared_from_this<IRenderingStrategy>, public IRenderingStrategy
+    class RenderingStrategyBase : public RenderingOptimizationMixin, public std::enable_shared_from_this<IRenderingStrategy>, public virtual IRenderingStrategy
     {
     public:
         RenderingStrategyBase();
@@ -44,7 +47,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
 
         int getId() const override;
 
-        void render(std::shared_ptr<ICameraStrategy> activeCameraStrategy) override;
+        void render(std::shared_ptr<ICameraStrategy> activeCameraStrategy) final;
 
     protected:
         const Matrix4x4f &getModelMatrix() const override;
@@ -59,6 +62,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
         }
 
         virtual std::string _getDefaultName() const = 0;
+
+        virtual void _renderSafe(std::shared_ptr<ICameraStrategy> activeCameraStrategy) = 0;
 
     private:
         void _updateTranslationMatrix();

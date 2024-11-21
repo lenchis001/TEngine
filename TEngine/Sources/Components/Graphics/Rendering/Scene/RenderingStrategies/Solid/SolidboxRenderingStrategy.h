@@ -22,8 +22,6 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
             std::string texturePath);
         ~SolidboxRenderingStrategy() override;
 
-        void render(std::shared_ptr<ICameraStrategy> activeCameraStrategy) override;
-
         std::vector<float> getVertices() const override;
 
         std::type_index getType() const override;
@@ -32,6 +30,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
         void _onAttachedToParent(std::shared_ptr<IRenderingStrategy> parent) override;
 
         std::string _getDefaultName() const override;
+
+        void _renderSafe(std::shared_ptr<ICameraStrategy> activeCameraStrategy) override;
 
     private:
         bool _isVisualAttached;

@@ -34,8 +34,6 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
 
         void setCube(float size);
 
-        void render(std::shared_ptr<ICameraStrategy> activeCameraStrategy) override;
-
         std::type_index getType() const override;
 
         std::vector<float> getVertices() const override;
@@ -43,6 +41,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
     protected:
         std::string _getDefaultName() const override;
 
+        void _renderSafe(std::shared_ptr<ICameraStrategy> activeCameraStrategy) override;
     private:
         static std::vector<float> _generateCubeVertices(float size);
 

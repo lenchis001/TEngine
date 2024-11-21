@@ -44,27 +44,6 @@ CubeRenderingStrategy::~CubeRenderingStrategy()
     RELEASE_VBO(UV_VBO_NAME);
 }
 
-void CubeRenderingStrategy::render(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
-{
-    RenderingStrategyBase::render(activeCameraStrategy);
-
-    glBindVertexArray(_vao);
-
-    glUseProgram(_shaderProgram);
-
-    glUniformMatrix4fv(_matrixShaderId, 1, GL_FALSE, getMvpMatrix().getInternalData());
-    glUniform1i(_textureSamplerShaderId, 0);
-
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, _textureId);
-
-    glDrawArrays(GL_TRIANGLES, 0, 6 /*sides*/ * 2 /*triangles in every one*/ * 3 /*verteces in every one*/);
-
-    glUseProgram(0);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glBindVertexArray(0);
-}
-
 std::vector<float> CubeRenderingStrategy::getVertices() const
 {
     return _vertices;
@@ -83,6 +62,25 @@ const std::string& CubeRenderingStrategy::getTexturePath() const
 std::string CubeRenderingStrategy::_getDefaultName() const
 {
     return "Cube";
+}
+
+void CubeRenderingStrategy::_renderSafe(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
+{
+    glBindVertexArray(_vao);
+
+    glUseProgram(_shaderProgram);
+
+    glUniformMatrix4fv(_matrixShaderId, 1, GL_FALSE, getMvpMatrix().getInternalData());
+    glUniform1i(_textureSamplerShaderId, 0);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, _textureId);
+
+    glDrawArrays(GL_TRIANGLES, 0, 6 /*sides*/ * 2 /*triangles in every one*/ * 3 /*verteces in every one*/);
+
+    glUseProgram(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindVertexArray(0);
 }
 
 void CubeRenderingStrategy::_prepareVertexVbo()

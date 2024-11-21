@@ -14,7 +14,6 @@
 namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
 {
     class RenderingStrategyBase;
-    class RenderingOptimizationDecorator;
     class PhysicsRenderingDecorator;
 
     class IRenderingStrategy : public Mixins::TypeInfoAware
@@ -52,7 +51,6 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
         virtual ~IRenderingStrategy() = default;
 
         friend RenderingStrategyBase;
-        friend RenderingOptimizationDecorator;
         friend PhysicsRenderingDecorator;
 
     protected:

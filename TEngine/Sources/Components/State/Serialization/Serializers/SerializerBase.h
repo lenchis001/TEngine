@@ -13,7 +13,7 @@ namespace TEngine::Components::State::Serialization::Serializers
     public:
         virtual boost::json::object serialize(TypeInfoAware& value, serializeMember serializeMember)
         {
-            auto castedValue = static_cast<T*>(&value);
+            auto castedValue = dynamic_cast<T*>(&value);
 
             return _serialize(*castedValue, serializeMember);
         }

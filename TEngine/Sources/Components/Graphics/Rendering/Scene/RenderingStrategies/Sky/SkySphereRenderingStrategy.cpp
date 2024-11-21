@@ -83,10 +83,23 @@ void SkySphereRenderingStrategy::setCube(float size)
     glBindVertexArray(0);
 }
 
-void SkySphereRenderingStrategy::render(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
+std::type_index SkySphereRenderingStrategy::getType() const
 {
-    RenderingStrategyBase::render(activeCameraStrategy);
+    return typeid(SkySphereRenderingStrategy);
+}
 
+std::vector<float> SkySphereRenderingStrategy::getVertices() const
+{
+    return std::vector<float>();
+}
+
+std::string SkySphereRenderingStrategy::_getDefaultName() const
+{
+    return "SkySphere";
+}
+
+void SkySphereRenderingStrategy::_renderSafe(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
+{
     glBindVertexArray(_vao);
 
     glUseProgram(_shaderProgram);
@@ -109,21 +122,6 @@ void SkySphereRenderingStrategy::render(std::shared_ptr<ICameraStrategy> activeC
     glUseProgram(0);
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
     glBindVertexArray(0);
-}
-
-std::type_index SkySphereRenderingStrategy::getType() const
-{
-    return typeid(SkySphereRenderingStrategy);
-}
-
-std::vector<float> SkySphereRenderingStrategy::getVertices() const
-{
-    return std::vector<float>();
-}
-
-std::string SkySphereRenderingStrategy::_getDefaultName() const
-{
-    return "SkySphere";
 }
 
 std::vector<float> SkySphereRenderingStrategy::_generateCubeVertices(float size)

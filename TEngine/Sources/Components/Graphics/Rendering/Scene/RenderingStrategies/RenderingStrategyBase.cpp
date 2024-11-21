@@ -136,6 +136,12 @@ void RenderingStrategyBase::render(std::shared_ptr<ICameraStrategy> activeCamera
         _updateMvpMatrix();
     }
 
+    if (_isRenderingSkipAllowed(activeCameraStrategy)) {
+        return;
+    }
+
+    _renderSafe(activeCameraStrategy);
+
     for (const auto child : _children)
     {
         child->render(activeCameraStrategy);

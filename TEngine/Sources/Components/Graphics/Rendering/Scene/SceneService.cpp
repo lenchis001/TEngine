@@ -7,7 +7,6 @@
 #include "CameraStrategies/ViewerCameraStrategy.h"
 #include "RenderingStrategies/Primitives/CubeRenderingStrategy.h"
 #include "RenderingStrategies/RenderingStrategyBase.h"
-#include "RenderingStrategies/RenderingOptimizationDecorator.h"
 #include "RenderingStrategies/Meshes/MeshRenderingStrategy.h"
 #include "RenderingStrategies/PhysicsRenderingDecorator.h"
 #include "RenderingStrategies/Solid/SolidboxRenderingStrategy.h"
@@ -84,10 +83,9 @@ std::shared_ptr<IRenderingStrategy> SceneService::addPrimitive(
 		strategy = std::make_shared<PhysicsRenderingDecorator>(_physicsService, strategy, physicsFlags);
 	}
 
-	auto decoratedCubeRenderingStrategy = std::make_shared<RenderingOptimizationDecorator>(strategy);
-	(parent ? parent : _root)->addChild(decoratedCubeRenderingStrategy);
+	(parent ? parent : _root)->addChild(strategy);
 
-	return decoratedCubeRenderingStrategy;
+	return strategy;
 }
 
 std::shared_ptr<IRenderingStrategy> SceneService::addMesh(
@@ -102,10 +100,9 @@ std::shared_ptr<IRenderingStrategy> SceneService::addMesh(
 		strategy = std::make_shared<PhysicsRenderingDecorator>(_physicsService, strategy, physicsFlags);
 	}
 
-	auto decoratedMeshRenderingStrategy = std::make_shared<RenderingOptimizationDecorator>(strategy);
-	(parent ? parent : _root)->addChild(decoratedMeshRenderingStrategy);
+	(parent ? parent : _root)->addChild(strategy);
 
-	return decoratedMeshRenderingStrategy;
+	return strategy;
 }
 
 std::shared_ptr<IRenderingStrategy> SceneService::addSolidbox(
@@ -119,10 +116,9 @@ std::shared_ptr<IRenderingStrategy> SceneService::addSolidbox(
 
 	strategy = std::make_shared<PhysicsRenderingDecorator>(_physicsService, strategy, PhysicsFlags::STATIC);
 
-	auto decoratedSolidboxRenderingStrategy = std::make_shared<RenderingOptimizationDecorator>(strategy);
-	(parent ? parent : _root)->addChild(decoratedSolidboxRenderingStrategy);
+	(parent ? parent : _root)->addChild(strategy);
 
-	return decoratedSolidboxRenderingStrategy;
+	return strategy;
 }
 
 std::shared_ptr<IRenderingStrategy> SceneService::addEmpty(
@@ -154,10 +150,9 @@ std::shared_ptr<IRenderingStrategy> SceneService::addSkySphere(
 	strategy->setCube(20.0f);
 	strategy->setScale(Vector3df(100.0f, 100.0f, 100.0f));
 
-	auto decoratedSkySphereRenderingStrategy = std::make_shared<RenderingOptimizationDecorator>(strategy);
-	(parent ? parent : _root)->addChild(decoratedSkySphereRenderingStrategy);
+	(parent ? parent : _root)->addChild(strategy);
 
-	return decoratedSkySphereRenderingStrategy;
+	return strategy;
 }
 
 std::shared_ptr<ICameraStrategy> SceneService::setActiveCamera(BuildinCameraTypes cameraType)

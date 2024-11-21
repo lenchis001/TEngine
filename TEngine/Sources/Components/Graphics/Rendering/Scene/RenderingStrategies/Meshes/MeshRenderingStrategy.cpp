@@ -21,10 +21,35 @@ MeshRenderingStrategy::~MeshRenderingStrategy()
     _meshService->release(_renderableMesh);
 }
 
-void MeshRenderingStrategy::render(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
+std::vector<float> MeshRenderingStrategy::getVertices() const
 {
-    RenderingStrategyBase::render(activeCameraStrategy);
+    std::vector<float> allVertices;
 
+    for (const auto &shape : _renderableMesh->getShapes())
+    {
+        allVertices.insert(allVertices.end(), shape->getVertices().begin(), shape->getVertices().end());
+    }
+
+    return allVertices;
+}
+
+std::type_index MeshRenderingStrategy::getType() const
+{
+    return std::type_index(typeid(MeshRenderingStrategy));
+}
+
+const std::string &MeshRenderingStrategy::getPath() const
+{
+    return _path;
+}
+
+std::string MeshRenderingStrategy::_getDefaultName() const
+{
+    return "Mesh";
+}
+
+void MeshRenderingStrategy::_renderSafe(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
+{
     const auto &viewMatrix = activeCameraStrategy->getViewMatrix();
 
     for (auto &shape : _renderableMesh->getShapes())
@@ -59,31 +84,4 @@ void MeshRenderingStrategy::render(std::shared_ptr<ICameraStrategy> activeCamera
         glBindTexture(GL_TEXTURE_2D, 0);
         glBindVertexArray(0);
     }
-}
-
-std::vector<float> MeshRenderingStrategy::getVertices() const
-{
-    std::vector<float> allVertices;
-
-    for (const auto &shape : _renderableMesh->getShapes())
-    {
-        allVertices.insert(allVertices.end(), shape->getVertices().begin(), shape->getVertices().end());
-    }
-
-    return allVertices;
-}
-
-std::type_index MeshRenderingStrategy::getType() const
-{
-    return std::type_index(typeid(MeshRenderingStrategy));
-}
-
-const std::string &MeshRenderingStrategy::getPath() const
-{
-    return _path;
-}
-
-std::string MeshRenderingStrategy::_getDefaultName() const
-{
-    return "Mesh";
 }

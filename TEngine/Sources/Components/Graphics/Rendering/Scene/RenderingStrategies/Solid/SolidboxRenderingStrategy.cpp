@@ -21,11 +21,6 @@ SolidboxRenderingStrategy::~SolidboxRenderingStrategy()
 {
 }
 
-void SolidboxRenderingStrategy::render(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
-{
-    RenderingStrategyBase::render(activeCameraStrategy);
-}
-
 std::vector<float> SolidboxRenderingStrategy::getVertices() const
 {
     auto& size = _visual->getScale();
@@ -63,4 +58,8 @@ void SolidboxRenderingStrategy::_onAttachedToParent(std::shared_ptr<IRenderingSt
 std::string SolidboxRenderingStrategy::_getDefaultName() const
 {
     return "Solidbox";
+}
+
+void SolidboxRenderingStrategy::_renderSafe(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
+{
 }

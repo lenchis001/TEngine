@@ -14,6 +14,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
 
     protected:
         std::string _getDefaultName() const override;
+
+        void _renderSafe(std::shared_ptr<ICameraStrategy> activeCameraStrategy) override;
     };
 }
 

@@ -24,7 +24,6 @@
 
 #include "Components/State/Serialization/SerializationService.h"
 #include "Components/Graphics/Rendering/Scene/State/Serialization/PhysicsRenderingDecoratorSerializer.h"
-#include "Components/Graphics/Rendering/Scene/State/Serialization/RenderingOptimizationDecoratorSerializer.h"
 #include "Components/Graphics/Rendering/Scene/State/Serialization/Meshes/MeshRenderingStrategySerializer.h"
 #include "Components/Graphics/Rendering/Scene/State/Serialization/Solid/SolidboxRenderingStrategySerializer.h"
 #include "Components/Graphics/Rendering/Scene/State/Serialization/Primitives/CubeRenderingStrategySerializer.h"
@@ -133,7 +132,6 @@ std::shared_ptr<IEngine> TEngine::createEngine(
     auto serializers = std::map<std::type_index, std::shared_ptr<Serializers::ISerializer>>();
 
     serializers[std::type_index(typeid(PhysicsRenderingDecorator))] = std::make_shared<PhysicsRenderingDecoratorSerializer>();
-    serializers[std::type_index(typeid(RenderingOptimizationDecorator))] = std::make_shared<RenderingOptimizationDecoratorSerializer>();
     serializers[std::type_index(typeid(MeshRenderingStrategy))] =
         std::static_pointer_cast<Serializers::SerializerBase<MeshRenderingStrategy>>(std::make_shared<MeshRenderingStrategySerializer>());
     serializers[std::type_index(typeid(SolidboxRenderingStrategy))] =
