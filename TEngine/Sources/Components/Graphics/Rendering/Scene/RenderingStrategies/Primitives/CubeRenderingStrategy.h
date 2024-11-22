@@ -10,6 +10,11 @@
 #include "Components/Graphics/ImageLoading/Models/Image.h"
 #include "Components/Graphics/Rendering/Scene/Buffers/IBuffersService.h"
 #include "Components/Graphics/Rendering/Textures/ITexturesService.h"
+#include "Components/Graphics/Rendering/Scene/Physics/IPhysicsService.h"
+
+#include "Components/Graphics/Rendering/Scene/RenderingMixins/PhysicsRenderingStrategyBase.h"
+
+#include "ICubeRenderingStrategy.h"
 
 using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Shaders;
@@ -17,16 +22,18 @@ using namespace TEngine::Components::Graphics::ImageLoading::Models;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Buffers;
 using namespace TEngine::Components::Graphics::Rendering::Textures;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies;
+using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingMixins;
 
 namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Primitives
 {
-    class CubeRenderingStrategy : public RenderingStrategyBase
+    class CubeRenderingStrategy : public PhysicsRenderingStrategyBase, public ICubeRenderingStrategy
     {
     public:
         CubeRenderingStrategy(
             std::shared_ptr<IShadersService> shadersService,
             std::shared_ptr<IBuffersService> bufferCacheService,
             std::shared_ptr<ITexturesService> texturesService,
+            std::shared_ptr<IPhysicsService> physicsService,
             std::string texturePath);
         ~CubeRenderingStrategy() override;
 
@@ -34,12 +41,20 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
 
         std::type_index getType() const override;
 
+        void setPosition(const Vector3df &position) override;
+
+        void setRotation(const Vector3df &rotation) override;
+
         const std::string &getTexturePath() const;
 
     protected:
         std::string _getDefaultName() const override;
 
         void _renderSafe(std::shared_ptr<ICameraStrategy> activeCameraStrategy) override;
+
+        void _onAttachedToParent(std::shared_ptr<IRenderingStrategy> parent) override;
+
+        void _onDetachedFromParent() override;
 
     private:
         void _prepareVertexVbo();

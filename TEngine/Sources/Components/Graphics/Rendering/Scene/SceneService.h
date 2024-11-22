@@ -34,6 +34,8 @@ using namespace TEngine::Components::Graphics::Rendering::Scene::Lights;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Physics;
 using namespace TEngine::Components::Graphics::Rendering::Scene::CameraStrategies::Tracking;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies;
+using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Meshes;
+using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Primitives;
 
 namespace TEngine::Components::Graphics::Rendering::Scene
 {
@@ -54,13 +56,12 @@ namespace TEngine::Components::Graphics::Rendering::Scene
 
         void deinitialize() override;
 
-        std::shared_ptr<IRenderingStrategy> addPrimitive(
-            PrimitiveTypes type,
+        std::shared_ptr<ICubeRenderingStrategy> addCube(
             std::string texturePath,
             std::shared_ptr<IRenderingStrategy> parent = nullptr,
             PhysicsFlags physicsFlags = PhysicsFlags::NONE) override;
 
-        std::shared_ptr<IRenderingStrategy> addMesh(
+        std::shared_ptr<IMeshRenderingStrategy> addMesh(
             std::string path,
             std::shared_ptr<IRenderingStrategy> parent = nullptr,
             PhysicsFlags physicsFlags = PhysicsFlags::NONE) override;

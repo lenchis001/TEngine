@@ -1,7 +1,6 @@
 #include "MeshRenderingStrategyDeserializer.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Scene::State::Deserialization::Meshes;
-using namespace TEngine::Components::Graphics::Rendering::Models::Meshes;
 
 MeshRenderingStrategyDeserializer::MeshRenderingStrategyDeserializer(std::shared_ptr<ISceneService> sceneService) : DeserializerMixin(sceneService)
 {

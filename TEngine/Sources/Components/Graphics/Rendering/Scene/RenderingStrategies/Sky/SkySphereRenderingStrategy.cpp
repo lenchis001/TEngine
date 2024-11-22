@@ -88,11 +88,6 @@ std::type_index SkySphereRenderingStrategy::getType() const
     return typeid(SkySphereRenderingStrategy);
 }
 
-std::vector<float> SkySphereRenderingStrategy::getVertices() const
-{
-    return std::vector<float>();
-}
-
 std::string SkySphereRenderingStrategy::_getDefaultName() const
 {
     return "SkySphere";

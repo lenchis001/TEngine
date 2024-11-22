@@ -7,8 +7,9 @@ using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrate
 MeshRenderingStrategy::MeshRenderingStrategy(
     std::shared_ptr<IMeshService> meshService,
     std::shared_ptr<ILightServices> lightServices,
+    std::shared_ptr<IPhysicsService> physicsService,
     const std::string &path)
-    : RenderingStrategyBase(),
+    : PhysicsRenderingStrategyBase(physicsService),
       _meshService(meshService),
       _lightServices(lightServices),
       _path(path)
@@ -36,6 +37,16 @@ std::vector<float> MeshRenderingStrategy::getVertices() const
 std::type_index MeshRenderingStrategy::getType() const
 {
     return std::type_index(typeid(MeshRenderingStrategy));
+}
+
+void MeshRenderingStrategy::setPosition(const Vector3df &position)
+{
+    PhysicsRenderingStrategyBase::setPosition(position);
+}
+
+void MeshRenderingStrategy::setRotation(const Vector3df &rotation)
+{
+    PhysicsRenderingStrategyBase::setRotation(rotation);
 }
 
 const std::string &MeshRenderingStrategy::getPath() const
@@ -84,4 +95,14 @@ void MeshRenderingStrategy::_renderSafe(std::shared_ptr<ICameraStrategy> activeC
         glBindTexture(GL_TEXTURE_2D, 0);
         glBindVertexArray(0);
     }
+}
+
+void MeshRenderingStrategy::_onAttachedToParent(std::shared_ptr<IRenderingStrategy> parent)
+{
+    PhysicsRenderingStrategyBase::_onAttachedToParent(parent);
+}
+
+void MeshRenderingStrategy::_onDetachedFromParent()
+{
+    PhysicsRenderingStrategyBase::_onDetachedFromParent();
 }

@@ -8,7 +8,8 @@
 #include "Components/Graphics/Rendering/Models/Cameras/BuildinCameraTypes.h"
 #include "Components/Graphics/Rendering/Scene/CameraStrategies/ICameraStrategy.h"
 #include "Components/Graphics/Rendering/Scene/RenderingStrategies/IRenderingStrategy.h"
-#include "Components/Graphics/Rendering/Models/Meshes/PrimitiveTypes.h"
+#include "Components/Graphics/Rendering/Scene/RenderingStrategies/Meshes/IMeshRenderingStrategy.h"
+#include "Components/Graphics/Rendering/Scene/RenderingStrategies/Primitives/ICubeRenderingStrategy.h"
 #include "Components/Graphics/Rendering/Models/Physics/PhysicsFlags.h"
 
 namespace TEngine::Components::Graphics::Rendering::Scene
@@ -24,13 +25,12 @@ namespace TEngine::Components::Graphics::Rendering::Scene
 
         virtual void render(double time) = 0;
 
-        virtual std::shared_ptr<RenderingStrategies::IRenderingStrategy> addPrimitive(
-            Components::Graphics::Rendering::Models::Meshes::PrimitiveTypes type,
+        virtual std::shared_ptr<RenderingStrategies::Primitives::ICubeRenderingStrategy> addCube(
             std::string texturePath,
             std::shared_ptr<RenderingStrategies::IRenderingStrategy> parent = nullptr,
             Rendering::Models::Physics::PhysicsFlags physics = Rendering::Models::Physics::PhysicsFlags::NONE) = 0;
 
-        virtual std::shared_ptr<RenderingStrategies::IRenderingStrategy> addMesh(
+        virtual std::shared_ptr<RenderingStrategies::Meshes::IMeshRenderingStrategy> addMesh(
             std::string path,
             std::shared_ptr<RenderingStrategies::IRenderingStrategy> parent = nullptr,
             Rendering::Models::Physics::PhysicsFlags physics = Rendering::Models::Physics::PhysicsFlags::NONE) = 0;

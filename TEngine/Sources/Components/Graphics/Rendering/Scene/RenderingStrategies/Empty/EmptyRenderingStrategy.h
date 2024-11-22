@@ -8,8 +8,6 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
     class EmptyRenderingStrategy : public RenderingStrategyBase
     {
     public:
-        std::vector<float> getVertices() const override;
-
         std::type_index getType() const override;
 
     protected:

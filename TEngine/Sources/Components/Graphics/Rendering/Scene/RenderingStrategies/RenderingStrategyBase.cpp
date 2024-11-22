@@ -136,7 +136,8 @@ void RenderingStrategyBase::render(std::shared_ptr<ICameraStrategy> activeCamera
         _updateMvpMatrix();
     }
 
-    if (_isRenderingSkipAllowed(activeCameraStrategy)) {
+    if (_isRenderingSkipAllowed(activeCameraStrategy))
+    {
         return;
     }
 

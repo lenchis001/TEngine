@@ -10,38 +10,38 @@ SolidboxRenderingStrategy::SolidboxRenderingStrategy(
     std::shared_ptr<IShadersService> shadersService,
     std::shared_ptr<IBuffersService> bufferCacheService,
     std::shared_ptr<ITexturesService> texturesService,
+    std::shared_ptr<IPhysicsService> physicsService,
     std::string texturePath)
     : RenderingStrategyBase(),
       _isVisualAttached(false)
 {
-    _visual = std::make_shared<CubeRenderingStrategy>(shadersService, bufferCacheService, texturesService, texturePath);
+    _visual = std::make_shared<CubeRenderingStrategy>(shadersService, bufferCacheService, texturesService, physicsService, texturePath);
 }
 
 SolidboxRenderingStrategy::~SolidboxRenderingStrategy()
 {
 }
 
-std::vector<float> SolidboxRenderingStrategy::getVertices() const
-{
-    auto& size = _visual->getScale();
-
-
-    return {
-        // bottom corner
-        -size.getX(),
-        -size.getY(),
-        -size.getZ(),
-        // top corner
-        size.getX(),
-        size.getY(),
-        size.getZ(),
-    };
-}
-
 std::type_index SolidboxRenderingStrategy::getType() const
 {
     return typeid(SolidboxRenderingStrategy);
 }
+
+// std::vector<float> SolidboxRenderingStrategy::getVertices() const
+// {
+//     auto &size = _visual->getScale();
+
+//     return {
+//         // bottom corner
+//         -size.getX(),
+//         -size.getY(),
+//         -size.getZ(),
+//         // top corner
+//         size.getX(),
+//         size.getY(),
+//         size.getZ(),
+//     };
+// }
 
 void SolidboxRenderingStrategy::_onAttachedToParent(std::shared_ptr<IRenderingStrategy> parent)
 {

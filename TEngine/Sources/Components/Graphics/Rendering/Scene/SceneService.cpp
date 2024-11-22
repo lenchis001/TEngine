@@ -8,7 +8,6 @@
 #include "RenderingStrategies/Primitives/CubeRenderingStrategy.h"
 #include "RenderingStrategies/RenderingStrategyBase.h"
 #include "RenderingStrategies/Meshes/MeshRenderingStrategy.h"
-#include "RenderingStrategies/PhysicsRenderingDecorator.h"
 #include "RenderingStrategies/Solid/SolidboxRenderingStrategy.h"
 #include "RenderingStrategies/Empty/EmptyRenderingStrategy.h"
 #include "RenderingStrategies/Sky/SkySphereRenderingStrategy.h"
@@ -16,7 +15,6 @@
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies;
 using namespace TEngine::Components::Graphics::Rendering::Scene;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Primitives;
-using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Meshes;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Solid;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Empty;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Sky;
@@ -66,39 +64,37 @@ void SceneService::render(double time)
 	}
 }
 
-std::shared_ptr<IRenderingStrategy> SceneService::addPrimitive(
-	PrimitiveTypes type,
+std::shared_ptr<ICubeRenderingStrategy> SceneService::addCube(
 	std::string texturePath,
 	std::shared_ptr<IRenderingStrategy> parent,
 	PhysicsFlags physicsFlags)
 {
-	std::shared_ptr<IRenderingStrategy> strategy = std::make_shared<CubeRenderingStrategy>(
+	std::shared_ptr<ICubeRenderingStrategy> strategy = std::make_shared<CubeRenderingStrategy>(
 		_shadersService,
 		_bufferCacheService,
 		_textureService,
+		_physicsService,
 		texturePath);
 
-	if (physicsFlags != PhysicsFlags::NONE)
-	{
-		strategy = std::make_shared<PhysicsRenderingDecorator>(_physicsService, strategy, physicsFlags);
-	}
+	strategy->setPhysicsFlags(physicsFlags);
 
 	(parent ? parent : _root)->addChild(strategy);
 
 	return strategy;
 }
 
-std::shared_ptr<IRenderingStrategy> SceneService::addMesh(
+std::shared_ptr<IMeshRenderingStrategy> SceneService::addMesh(
 	std::string path,
 	std::shared_ptr<IRenderingStrategy> parent,
 	PhysicsFlags physicsFlags)
 {
-	std::shared_ptr<IRenderingStrategy> strategy = std::make_shared<MeshRenderingStrategy>(_meshService, _lightServices, path);
+	std::shared_ptr<IMeshRenderingStrategy> strategy = std::make_shared<MeshRenderingStrategy>(
+		_meshService,
+		_lightServices,
+		_physicsService,
+		path);
 
-	if (physicsFlags != PhysicsFlags::NONE)
-	{
-		strategy = std::make_shared<PhysicsRenderingDecorator>(_physicsService, strategy, physicsFlags);
-	}
+	strategy->setPhysicsFlags(physicsFlags);
 
 	(parent ? parent : _root)->addChild(strategy);
 
@@ -112,9 +108,10 @@ std::shared_ptr<IRenderingStrategy> SceneService::addSolidbox(
 		_shadersService,
 		_bufferCacheService,
 		_textureService,
+		_physicsService,
 		"./DemoResources/texture2.bmp");
 
-	strategy = std::make_shared<PhysicsRenderingDecorator>(_physicsService, strategy, PhysicsFlags::STATIC);
+	// strategy = std::make_shared<PhysicsRenderingStrategyBase>(_physicsService, strategy, PhysicsFlags::STATIC);
 
 	(parent ? parent : _root)->addChild(strategy);
 

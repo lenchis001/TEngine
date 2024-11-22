@@ -64,6 +64,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
         virtual std::string _getDefaultName() const = 0;
 
         virtual void _renderSafe(std::shared_ptr<ICameraStrategy> activeCameraStrategy) = 0;
+        
+        Matrix4x4f _parentMatrix;
 
     private:
         void _updateTranslationMatrix();
@@ -77,7 +79,6 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
 
         Matrix4x4f _translationMatrix, _rotationMatrix, _scaleMatrix;
         Matrix4x4f _modelMatrix;
-        Matrix4x4f _parentMatrix;
         Matrix4x4f _vpMatrix, _mvpMatrix;
 
         std::vector<std::shared_ptr<IRenderingStrategy>> _children;

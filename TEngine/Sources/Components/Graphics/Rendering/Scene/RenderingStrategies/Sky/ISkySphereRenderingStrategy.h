@@ -1,10 +1,10 @@
 #ifndef TENGINE_ISKYSPHERERENDERINGSTRATEGY_H
 #define TENGINE_ISKYSPHERERENDERINGSTRATEGY_H
 
-#include "Components/Graphics/Rendering/Scene/RenderingStrategies/IRenderingStrategy.h"
-
 #include <memory>
 #include <vector>
+
+#include "Components/Graphics/Rendering/Scene/RenderingStrategies/IRenderingStrategy.h"
 
 namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Sky
 {

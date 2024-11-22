@@ -14,7 +14,6 @@
 namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
 {
     class RenderingStrategyBase;
-    class PhysicsRenderingDecorator;
 
     class IRenderingStrategy : public Mixins::TypeInfoAware
     {
@@ -40,8 +39,6 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
         virtual void addChild(std::shared_ptr<IRenderingStrategy> child) = 0;
         virtual void removeChild(std::shared_ptr<IRenderingStrategy> child) = 0;
         virtual void removeAllChildren() = 0;
-        
-        virtual std::vector<float> getVertices() const = 0;
 
         virtual const std::string &getName() = 0;
         virtual void setName(const std::string &name) = 0;
@@ -51,7 +48,6 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
         virtual ~IRenderingStrategy() = default;
 
         friend RenderingStrategyBase;
-        friend PhysicsRenderingDecorator;
 
     protected:
         virtual const Graphics::Models::Matrix4x4f &getModelMatrix() const = 0;

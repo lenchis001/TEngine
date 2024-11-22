@@ -1,24 +1,30 @@
 #ifndef TENGINE_MESHRENDERINGSTRATEGY_H
 #define TENGINE_MESHRENDERINGSTRATEGY_H
 
-#include "Components/Graphics/Rendering/Scene/RenderingStrategies/RenderingStrategyBase.h"
+#include "IMeshRenderingStrategy.h"
+
+#include "Components/Graphics/Rendering/Scene/RenderingMixins/PhysicsRenderingStrategyBase.h"
 
 #include "Components/Graphics/Rendering/Models/Meshes/IRenderableMesh.h"
 #include "Components/Graphics/Rendering/Scene/Meshes/IMeshService.h"
 #include "Components/Graphics/Rendering/Scene/Lights/ILightServices.h"
+#include "Components/Graphics/Rendering/Scene/Physics/IPhysicsService.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Models::Meshes;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Meshes;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Lights;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Physics;
+using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingMixins;
 
 namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Meshes
 {
-    class MeshRenderingStrategy : public RenderingStrategyBase
+    class MeshRenderingStrategy : public PhysicsRenderingStrategyBase, public IMeshRenderingStrategy
     {
     public:
         MeshRenderingStrategy(
             std::shared_ptr<IMeshService> meshService,
             std::shared_ptr<ILightServices> lightServices,
+            std::shared_ptr<IPhysicsService> physicsService,
             const std::string &path);
         ~MeshRenderingStrategy();
 
@@ -26,12 +32,20 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
 
         std::type_index getType() const override;
 
+        void setPosition(const Vector3df &position) override;
+
+        void setRotation(const Vector3df &rotation) override;
+
         const std::string &getPath() const;
 
     protected:
         std::string _getDefaultName() const override;
 
         void _renderSafe(std::shared_ptr<ICameraStrategy> activeCameraStrategy) override;
+
+        void _onAttachedToParent(std::shared_ptr<IRenderingStrategy> parent) override;
+
+        void _onDetachedFromParent() override;
 
     private:
         std::shared_ptr<IRenderableMesh> _renderableMesh;

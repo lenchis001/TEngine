@@ -17,8 +17,9 @@ CubeRenderingStrategy::CubeRenderingStrategy(
     std::shared_ptr<IShadersService> shadersService,
     std::shared_ptr<IBuffersService> bufferCacheService,
     std::shared_ptr<ITexturesService> texturesService,
+    std::shared_ptr<IPhysicsService> physicsService,
     std::string texturePath)
-    : RenderingStrategyBase(),
+    : PhysicsRenderingStrategyBase(physicsService),
       _shadersService(shadersService),
       _bufferCacheService(bufferCacheService),
       _texturesService(texturesService),
@@ -54,7 +55,17 @@ std::type_index CubeRenderingStrategy::getType() const
     return typeid(CubeRenderingStrategy);
 }
 
-const std::string& CubeRenderingStrategy::getTexturePath() const
+void CubeRenderingStrategy::setPosition(const Vector3df &position)
+{
+    PhysicsRenderingStrategyBase::setPosition(position);
+}
+
+void CubeRenderingStrategy::setRotation(const Vector3df &rotation)
+{
+    PhysicsRenderingStrategyBase::setRotation(rotation);
+}
+
+const std::string &CubeRenderingStrategy::getTexturePath() const
 {
     return _texturePath;
 }
@@ -81,6 +92,16 @@ void CubeRenderingStrategy::_renderSafe(std::shared_ptr<ICameraStrategy> activeC
     glUseProgram(0);
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);
+}
+
+void CubeRenderingStrategy::_onAttachedToParent(std::shared_ptr<IRenderingStrategy> parent)
+{
+    PhysicsRenderingStrategyBase::_onAttachedToParent(parent);
+}
+
+void CubeRenderingStrategy::_onDetachedFromParent()
+{
+    PhysicsRenderingStrategyBase::_onDetachedFromParent();
 }
 
 void CubeRenderingStrategy::_prepareVertexVbo()

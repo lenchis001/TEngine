@@ -4,7 +4,6 @@
 
 using namespace Alice::MainWindow::Components::Graphic;
 
-using namespace TEngine::Components::Graphics::Rendering::Models::Meshes;
 using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Graphics::Rendering::Models::Physics;
 using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;

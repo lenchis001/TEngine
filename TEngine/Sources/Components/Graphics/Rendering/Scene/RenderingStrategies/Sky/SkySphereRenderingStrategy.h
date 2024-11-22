@@ -3,6 +3,7 @@
 
 #include <GLFW/glfw3.h>
 
+#include "ISkySphereRenderingStrategy.h"
 #include "Components/Graphics/Rendering/Scene/RenderingStrategies/RenderingStrategyBase.h"
 
 #include "Components/Graphics/Rendering/Scene/Shaders/IShadersService.h"
@@ -15,7 +16,7 @@ using namespace TEngine::Components::Graphics::Rendering::Textures;
 
 namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Sky
 {
-    class SkySphereRenderingStrategy : public RenderingStrategyBase
+    class SkySphereRenderingStrategy : public RenderingStrategyBase, public ISkySphereRenderingStrategy
     {
     public:
         SkySphereRenderingStrategy(std::shared_ptr<IShadersService> shadersService,
@@ -36,12 +37,11 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
 
         std::type_index getType() const override;
 
-        std::vector<float> getVertices() const override;
-
     protected:
         std::string _getDefaultName() const override;
 
         void _renderSafe(std::shared_ptr<ICameraStrategy> activeCameraStrategy) override;
+
     private:
         static std::vector<float> _generateCubeVertices(float size);
 

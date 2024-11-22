@@ -7,7 +7,6 @@
 
 #include "Components/Graphics/Models/Vector3d.h"
 
-using namespace TEngine::Components::Graphics::Rendering::Models::Meshes;
 using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Graphics::Rendering::Models::Physics;
 using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
@@ -46,10 +45,10 @@ int main()
                 cube->setPosition(Vector3df(2.0f * i, 0.0f, 2.0f * j));
             }
 
-            auto cube = sceneService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp", nullptr, PhysicsFlags::STATIC);
+            auto cube = sceneService->addCube("./DemoResources/texture2.bmp", nullptr, PhysicsFlags::STATIC);
             cube->setPosition(Vector3df(-3.0f * i, 0.0f, 0.0f));
 
-            auto cube2 = sceneService->addPrimitive(PrimitiveTypes::Cube, "./DemoResources/texture2.bmp", nullptr, PhysicsFlags::DYNAMIC);
+            auto cube2 = sceneService->addCube("./DemoResources/texture2.bmp", nullptr, PhysicsFlags::DYNAMIC);
             cube2->setPosition(Vector3df(-3.0f * i, 4.f * i, 0.0f));
 
             auto testCube = sceneService->addMesh("./DemoResources/test cube/cube.obj");

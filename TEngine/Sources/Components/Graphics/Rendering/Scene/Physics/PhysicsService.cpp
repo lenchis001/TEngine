@@ -1,5 +1,7 @@
 #include "PhysicsService.h"
 
+#include <cassert>
+
 using namespace TEngine::Components::Graphics::Rendering::Scene::Physics;
 
 PhysicsService::PhysicsService() : _lastTime(0.0)
@@ -46,10 +48,14 @@ void PhysicsService::update(double time)
     _syncRenderingState();
 }
 
-int counter = 0;
+bool PhysicsService::isAttached(
+    std::shared_ptr<IPhysicsRenderingAware> renderingStrategy)
+{
+    return _objects.find(renderingStrategy) != _objects.end();
+}
 
 void PhysicsService::addBox(
-    std::shared_ptr<IRenderingStrategy> renderingStrategy,
+    std::shared_ptr<IPhysicsRenderingAware> renderingStrategy,
     float mass)
 {
     assert(_objects.find(renderingStrategy) == _objects.end() && "Object already exists");
@@ -70,7 +76,6 @@ void PhysicsService::addBox(
     btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, groundShape, localInertia);
     btRigidBody *body = new btRigidBody(rbInfo);
 
-    counter++;
     _objects[renderingStrategy] = body;
 
     // add the body to the dynamics world
@@ -78,7 +83,7 @@ void PhysicsService::addBox(
 }
 
 void PhysicsService::removeBox(
-    std::shared_ptr<IRenderingStrategy> renderingStrategy)
+    std::shared_ptr<IPhysicsRenderingAware> renderingStrategy)
 {
     auto object = _objects.find(renderingStrategy);
 
@@ -99,7 +104,7 @@ void PhysicsService::removeBox(
 }
 
 void PhysicsService::setPosition(
-    const std::shared_ptr<IRenderingStrategy> renderingStrategy,
+    const std::shared_ptr<IPhysicsRenderingAware> renderingStrategy,
     const Vector3df &position)
 {
     auto object = _objects.find(renderingStrategy);
@@ -122,7 +127,7 @@ void PhysicsService::setPosition(
 }
 
 void PhysicsService::setRotation(
-    const std::shared_ptr<IRenderingStrategy> renderingStrategy,
+    const std::shared_ptr<IPhysicsRenderingAware> renderingStrategy,
     const Vector3df &rotation)
 {
     auto object = _objects.find(renderingStrategy);
@@ -155,11 +160,11 @@ void PhysicsService::_syncRenderingState()
         object.second->getMotionState()->getWorldTransform(transform);
 
         auto position = transform.getOrigin();
-        object.first->setAbsolutePosition(Vector3df(position.getX(), position.getY(), position.getZ()));
+        object.first->setDirectAbsolutePosition(Vector3df(position.getX(), position.getY(), position.getZ()));
 
         btScalar x, y, z;
         transform.getRotation().getEulerZYX(z, y, x);
-        object.first->setAbsoluteRotation(Vector3df(x, y, z) / 2);
+        object.first->setDirectAbsoluteRotation(Vector3df(x, y, z) / 2);
     }
 }
 
