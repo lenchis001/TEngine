@@ -3,6 +3,7 @@
 #include <cassert>
 
 using namespace TEngine::Components::Graphics::Rendering::Scene::Physics;
+using namespace TEngine::Components::Graphics::Rendering::Models::Physics;
 
 PhysicsService::PhysicsService() : _lastTime(0.0)
 {
@@ -124,6 +125,11 @@ void PhysicsService::setPosition(
     {
         assert(false && "Object not found");
     }
+
+    if (renderingStrategy->getPhysicsFlags() == PhysicsFlags::STATIC)
+    {
+        _syncObjectState(*object, true, false);
+    }
 }
 
 void PhysicsService::setRotation(
@@ -138,7 +144,7 @@ void PhysicsService::setRotation(
         object->second->getMotionState()->getWorldTransform(transform);
 
         // We need to multiply by 2 because bullet physics uses twice more rotation than we do
-        auto btRotation = rotation * 2;
+        auto btRotation = rotation;
 
         transform.setRotation(btQuaternion(btRotation.getY(), btRotation.getX(), btRotation.getZ()));
 
@@ -150,21 +156,43 @@ void PhysicsService::setRotation(
     {
         assert(false && "Object not found");
     }
+
+    if (renderingStrategy->getPhysicsFlags() == PhysicsFlags::STATIC)
+    {
+        _syncObjectState(*object, false, true);
+    }
 }
 
 void PhysicsService::_syncRenderingState()
 {
     for (auto &object : _objects)
     {
-        btTransform transform;
-        object.second->getMotionState()->getWorldTransform(transform);
+        if (object.first->getPhysicsFlags() == PhysicsFlags::DYNAMIC && object.second->isActive())
+        {
+            _syncObjectState(object);
+        }
+    }
+}
 
+void PhysicsService::_syncObjectState(
+    std::pair<const std::shared_ptr<IPhysicsRenderingAware>, btRigidBody *> &object,
+    bool syncPosition,
+    bool syncRotation)
+{
+    btTransform transform;
+    object.second->getMotionState()->getWorldTransform(transform);
+
+    if (syncPosition)
+    {
         auto position = transform.getOrigin();
         object.first->setDirectAbsolutePosition(Vector3df(position.getX(), position.getY(), position.getZ()));
+    }
 
+    if (syncRotation)
+    {
         btScalar x, y, z;
         transform.getRotation().getEulerZYX(z, y, x);
-        object.first->setDirectAbsoluteRotation(Vector3df(x, y, z) / 2);
+        object.first->setDirectAbsoluteRotation(Vector3df(x, y, z) * -1.f);
     }
 }
 

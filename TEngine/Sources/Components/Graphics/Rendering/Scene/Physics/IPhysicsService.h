@@ -38,6 +38,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene::Physics
             const std::shared_ptr<RenderingMixins::IPhysicsRenderingAware> renderingStrategy,
             const Graphics::Models::Vector3df &rotation
             ) = 0;
+
     };
 }
 

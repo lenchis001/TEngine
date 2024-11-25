@@ -26,6 +26,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingMixins
 
         void setRotation(const Vector3df &rotation) override;
 
+        void setScale(const Vector3df &scale) override;
+
         void setPhysicsFlags(PhysicsFlags physicsFlags) override;
 
         PhysicsFlags getPhysicsFlags() const override;
@@ -36,9 +38,13 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingMixins
 
         bool _isPhysicsEnabled() const;
 
+        std::vector<float> getVertices() const final;
+
         void setDirectAbsolutePosition(const Vector3df &position) final;
 
         void setDirectAbsoluteRotation(const Vector3df &rotation) final;
+
+        virtual std::vector<float> _getVertices() const = 0;
 
     private:
         void _attachToPhysics();

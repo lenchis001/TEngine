@@ -109,11 +109,11 @@ bool FpsCameraStrategy::_onKeyPressed(KeyboardKeys key, int scancode, KeyStates 
     {
         _isMovingRight = action != KeyStates::RELEASE;
     }
-    else if (key == KeyboardKeys::KEY_Q)
+    else if (key == KeyboardKeys::KEY_E)
     {
         _isMovingUp = action != KeyStates::RELEASE;
     }
-    else if (key == KeyboardKeys::KEY_E)
+    else if (key == KeyboardKeys::KEY_Q)
     {
         _isMovingDown = action != KeyStates::RELEASE;
     }

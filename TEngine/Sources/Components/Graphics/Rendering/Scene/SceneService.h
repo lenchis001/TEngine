@@ -36,6 +36,7 @@ using namespace TEngine::Components::Graphics::Rendering::Scene::CameraStrategie
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Meshes;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Primitives;
+using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Solid;
 
 namespace TEngine::Components::Graphics::Rendering::Scene
 {
@@ -66,7 +67,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene
             std::shared_ptr<IRenderingStrategy> parent = nullptr,
             PhysicsFlags physicsFlags = PhysicsFlags::NONE) override;
 
-        std::shared_ptr<IRenderingStrategy> addSolidbox(
+        std::shared_ptr<ISolidboxRenderingStrategy> addSolidbox(
             std::shared_ptr<IRenderingStrategy> parent = nullptr) override;
 
         std::shared_ptr<IRenderingStrategy> addEmpty(

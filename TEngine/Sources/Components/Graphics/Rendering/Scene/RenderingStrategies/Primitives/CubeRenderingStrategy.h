@@ -37,8 +37,6 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
             std::string texturePath);
         ~CubeRenderingStrategy() override;
 
-        std::vector<float> getVertices() const override;
-
         std::type_index getType() const override;
 
         void setPosition(const Vector3df &position) override;
@@ -51,6 +49,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
         std::string _getDefaultName() const override;
 
         void _renderSafe(std::shared_ptr<ICameraStrategy> activeCameraStrategy) override;
+
+        std::vector<float> _getVertices() const override;
 
         void _onAttachedToParent(std::shared_ptr<IRenderingStrategy> parent) override;
 

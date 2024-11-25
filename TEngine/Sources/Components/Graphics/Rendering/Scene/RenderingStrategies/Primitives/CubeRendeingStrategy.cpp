@@ -45,11 +45,6 @@ CubeRenderingStrategy::~CubeRenderingStrategy()
     RELEASE_VBO(UV_VBO_NAME);
 }
 
-std::vector<float> CubeRenderingStrategy::getVertices() const
-{
-    return _vertices;
-}
-
 std::type_index CubeRenderingStrategy::getType() const
 {
     return typeid(CubeRenderingStrategy);
@@ -92,6 +87,11 @@ void CubeRenderingStrategy::_renderSafe(std::shared_ptr<ICameraStrategy> activeC
     glUseProgram(0);
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);
+}
+
+std::vector<float> CubeRenderingStrategy::_getVertices() const
+{
+    return _vertices;
 }
 
 void CubeRenderingStrategy::_onAttachedToParent(std::shared_ptr<IRenderingStrategy> parent)
@@ -193,8 +193,6 @@ void CubeRenderingStrategy::_prepareVao()
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
-
-    // let's keep vao on hand, since we need it at least 60 times per second
 }
 
 void CubeRenderingStrategy::_prepareShader()

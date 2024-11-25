@@ -44,6 +44,10 @@ namespace TEngine::Components::Graphics::Rendering::Scene::Physics
 
     private:
         void _syncRenderingState();
+        void _syncObjectState(
+            std::pair<const std::shared_ptr<IPhysicsRenderingAware>, btRigidBody *> &object,
+            bool syncPosition = true,
+            bool syncRotation = true);
 
         static Vector3df _getSize(const std::vector<float> &vertices);
 

@@ -22,18 +22,6 @@ MeshRenderingStrategy::~MeshRenderingStrategy()
     _meshService->release(_renderableMesh);
 }
 
-std::vector<float> MeshRenderingStrategy::getVertices() const
-{
-    std::vector<float> allVertices;
-
-    for (const auto &shape : _renderableMesh->getShapes())
-    {
-        allVertices.insert(allVertices.end(), shape->getVertices().begin(), shape->getVertices().end());
-    }
-
-    return allVertices;
-}
-
 std::type_index MeshRenderingStrategy::getType() const
 {
     return std::type_index(typeid(MeshRenderingStrategy));
@@ -95,6 +83,18 @@ void MeshRenderingStrategy::_renderSafe(std::shared_ptr<ICameraStrategy> activeC
         glBindTexture(GL_TEXTURE_2D, 0);
         glBindVertexArray(0);
     }
+}
+
+std::vector<float> MeshRenderingStrategy::_getVertices() const
+{
+    std::vector<float> allVertices;
+
+    for (const auto &shape : _renderableMesh->getShapes())
+    {
+        allVertices.insert(allVertices.end(), shape->getVertices().begin(), shape->getVertices().end());
+    }
+
+    return allVertices;
 }
 
 void MeshRenderingStrategy::_onAttachedToParent(std::shared_ptr<IRenderingStrategy> parent)

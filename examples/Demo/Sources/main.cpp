@@ -33,11 +33,12 @@ int main()
         sceneService->setActiveCamera(BuildinCameraTypes::FPS);
 
         auto solid = sceneService->addSolidbox();
-        solid->setPosition(Vector3df(0.0f, -5.0f, 0.0f));
-        solid->setRotation(Vector3df(.0f, .0f, .5f));
-        solid->setScale(Vector3df(15.0f, 1.0f, 15.0f));
+        solid->setPosition(Vector3df(5.0f, -10.0f, 0.0f));
+        solid->setRotation(Vector3df(.0f, .0f, .1f));
+        solid->setScale(Vector3df(35.0f, 1.0f, 15.0f));
+        solid->setIsVisualizationEnabled(true);
 
-        for (int i = 1; i < 32; i++)
+        for (int i = 1; i < 10; i++)
         {
             for (int j = 1; j < 32; j++)
             {
@@ -45,17 +46,20 @@ int main()
                 cube->setPosition(Vector3df(2.0f * i, 0.0f, 2.0f * j));
             }
 
-            auto cube = sceneService->addCube("./DemoResources/texture2.bmp", nullptr, PhysicsFlags::STATIC);
-            cube->setPosition(Vector3df(-3.0f * i, 0.0f, 0.0f));
+            if (i > 5)
+            {
+                auto cube = sceneService->addCube("./DemoResources/texture2.bmp", nullptr, PhysicsFlags::STATIC);
+                cube->setPosition(Vector3df(i, 0.0f, 0.0f));
+            }
 
             auto cube2 = sceneService->addCube("./DemoResources/texture2.bmp", nullptr, PhysicsFlags::DYNAMIC);
-            cube2->setPosition(Vector3df(-3.0f * i, 4.f * i, 0.0f));
+            cube2->setPosition(Vector3df(i, 2.f * i, 0.0f));
 
             auto testCube = sceneService->addMesh("./DemoResources/test cube/cube.obj");
             testCube->setPosition(Vector3df(0.0f, 0.0f, 3.0f * i));
 
             auto sofa = sceneService->addMesh("./DemoResources/sofa.obj");
-            sofa->setPosition(Vector3df(3.0f * i + 5.0f, 0.0f, 0.0f));
+            sofa->setPosition(Vector3df(0.f, 0.f, -3.0f * i - 5.0f));
         }
 
         auto sky = sceneService->addSkySphere();

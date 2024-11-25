@@ -190,7 +190,7 @@ namespace TEngine::Components::Graphics::Models
             T y = atan2(-_m31, sqrt(_m32 * _m32 + _m33 * _m33));
             T z = atan2(_m21, _m11);
 
-            return Vector3d<T>(x, y, z);
+            return Vector3d<T>(x, y, z) * static_cast<T>(-1);
         }
 
         Vector3d<T> getScale() const
@@ -249,9 +249,68 @@ namespace TEngine::Components::Graphics::Models
 
         inline void setMultiplyingResult(const Matrix4x4<T> &m1, const Matrix4x4<T> &m2, const Matrix4x4<T> &m3, const Matrix4x4<T> &m4)
         {
-            setMultiplyingResult(m1, m2);
-            setMultiplyingResult(*this, m3);
-            setMultiplyingResult(*this, m4);
+            // m1 * m2
+            auto m1m2m11 = m1._m11 * m2._m11 + m1._m12 * m2._m21 + m1._m13 * m2._m31 + m1._m14 * m2._m41;
+            auto m1m2m12 = m1._m11 * m2._m12 + m1._m12 * m2._m22 + m1._m13 * m2._m32 + m1._m14 * m2._m42;
+            auto m1m2m13 = m1._m11 * m2._m13 + m1._m12 * m2._m23 + m1._m13 * m2._m33 + m1._m14 * m2._m43;
+            auto m1m2m14 = m1._m11 * m2._m14 + m1._m12 * m2._m24 + m1._m13 * m2._m34 + m1._m14 * m2._m44;
+
+            auto m1m2m21 = m1._m21 * m2._m11 + m1._m22 * m2._m21 + m1._m23 * m2._m31 + m1._m24 * m2._m41;
+            auto m1m2m22 = m1._m21 * m2._m12 + m1._m22 * m2._m22 + m1._m23 * m2._m32 + m1._m24 * m2._m42;
+            auto m1m2m23 = m1._m21 * m2._m13 + m1._m22 * m2._m23 + m1._m23 * m2._m33 + m1._m24 * m2._m43;
+            auto m1m2m24 = m1._m21 * m2._m14 + m1._m22 * m2._m24 + m1._m23 * m2._m34 + m1._m24 * m2._m44;
+
+            auto m1m2m31 = m1._m31 * m2._m11 + m1._m32 * m2._m21 + m1._m33 * m2._m31 + m1._m34 * m2._m41;
+            auto m1m2m32 = m1._m31 * m2._m12 + m1._m32 * m2._m22 + m1._m33 * m2._m32 + m1._m34 * m2._m42;
+            auto m1m2m33 = m1._m31 * m2._m13 + m1._m32 * m2._m23 + m1._m33 * m2._m33 + m1._m34 * m2._m43;
+            auto m1m2m34 = m1._m31 * m2._m14 + m1._m32 * m2._m24 + m1._m33 * m2._m34 + m1._m34 * m2._m44;
+
+            auto m1m2m41 = m1._m41 * m2._m11 + m1._m42 * m2._m21 + m1._m43 * m2._m31 + m1._m44 * m2._m41;
+            auto m1m2m42 = m1._m41 * m2._m12 + m1._m42 * m2._m22 + m1._m43 * m2._m32 + m1._m44 * m2._m42;
+            auto m1m2m43 = m1._m41 * m2._m13 + m1._m42 * m2._m23 + m1._m43 * m2._m33 + m1._m44 * m2._m43;
+            auto m1m2m44 = m1._m41 * m2._m14 + m1._m42 * m2._m24 + m1._m43 * m2._m34 + m1._m44 * m2._m44;
+
+            // m3 * m4
+            auto m3m4m11 = m3._m11 * m4._m11 + m3._m12 * m4._m21 + m3._m13 * m4._m31 + m3._m14 * m4._m41;
+            auto m3m4m12 = m3._m11 * m4._m12 + m3._m12 * m4._m22 + m3._m13 * m4._m32 + m3._m14 * m4._m42;
+            auto m3m4m13 = m3._m11 * m4._m13 + m3._m12 * m4._m23 + m3._m13 * m4._m33 + m3._m14 * m4._m43;
+            auto m3m4m14 = m3._m11 * m4._m14 + m3._m12 * m4._m24 + m3._m13 * m4._m34 + m3._m14 * m4._m44;
+
+            auto m3m4m21 = m3._m21 * m4._m11 + m3._m22 * m4._m21 + m3._m23 * m4._m31 + m3._m24 * m4._m41;
+            auto m3m4m22 = m3._m21 * m4._m12 + m3._m22 * m4._m22 + m3._m23 * m4._m32 + m3._m24 * m4._m42;
+            auto m3m4m23 = m3._m21 * m4._m13 + m3._m22 * m4._m23 + m3._m23 * m4._m33 + m3._m24 * m4._m43;
+            auto m3m4m24 = m3._m21 * m4._m14 + m3._m22 * m4._m24 + m3._m23 * m4._m34 + m3._m24 * m4._m44;
+
+            auto m3m4m31 = m3._m31 * m4._m11 + m3._m32 * m4._m21 + m3._m33 * m4._m31 + m3._m34 * m4._m41;
+            auto m3m4m32 = m3._m31 * m4._m12 + m3._m32 * m4._m22 + m3._m33 * m4._m32 + m3._m34 * m4._m42;
+            auto m3m4m33 = m3._m31 * m4._m13 + m3._m32 * m4._m23 + m3._m33 * m4._m33 + m3._m34 * m4._m43;
+            auto m3m4m34 = m3._m31 * m4._m14 + m3._m32 * m4._m24 + m3._m33 * m4._m34 + m3._m34 * m4._m44;
+
+            auto m3m4m41 = m3._m41 * m4._m11 + m3._m42 * m4._m21 + m3._m43 * m4._m31 + m3._m44 * m4._m41;
+            auto m3m4m42 = m3._m41 * m4._m12 + m3._m42 * m4._m22 + m3._m43 * m4._m32 + m3._m44 * m4._m42;
+            auto m3m4m43 = m3._m41 * m4._m13 + m3._m42 * m4._m23 + m3._m43 * m4._m33 + m3._m44 * m4._m43;
+            auto m3m4m44 = m3._m41 * m4._m14 + m3._m42 * m4._m24 + m3._m43 * m4._m34 + m3._m44 * m4._m44;
+
+            // m1m2 * m3m4
+            _m11 = m1m2m11 * m3m4m11 + m1m2m12 * m3m4m21 + m1m2m13 * m3m4m31 + m1m2m14 * m3m4m41;
+            _m12 = m1m2m11 * m3m4m12 + m1m2m12 * m3m4m22 + m1m2m13 * m3m4m32 + m1m2m14 * m3m4m42;
+            _m13 = m1m2m11 * m3m4m13 + m1m2m12 * m3m4m23 + m1m2m13 * m3m4m33 + m1m2m14 * m3m4m43;
+            _m14 = m1m2m11 * m3m4m14 + m1m2m12 * m3m4m24 + m1m2m13 * m3m4m34 + m1m2m14 * m3m4m44;
+
+            _m21 = m1m2m21 * m3m4m11 + m1m2m22 * m3m4m21 + m1m2m23 * m3m4m31 + m1m2m24 * m3m4m41;
+            _m22 = m1m2m21 * m3m4m12 + m1m2m22 * m3m4m22 + m1m2m23 * m3m4m32 + m1m2m24 * m3m4m42;
+            _m23 = m1m2m21 * m3m4m13 + m1m2m22 * m3m4m23 + m1m2m23 * m3m4m33 + m1m2m24 * m3m4m43;
+            _m24 = m1m2m21 * m3m4m14 + m1m2m22 * m3m4m24 + m1m2m23 * m3m4m34 + m1m2m24 * m3m4m44;
+
+            _m31 = m1m2m31 * m3m4m11 + m1m2m32 * m3m4m21 + m1m2m33 * m3m4m31 + m1m2m34 * m3m4m41;
+            _m32 = m1m2m31 * m3m4m12 + m1m2m32 * m3m4m22 + m1m2m33 * m3m4m32 + m1m2m34 * m3m4m42;
+            _m33 = m1m2m31 * m3m4m13 + m1m2m32 * m3m4m23 + m1m2m33 * m3m4m33 + m1m2m34 * m3m4m43;
+            _m34 = m1m2m31 * m3m4m14 + m1m2m32 * m3m4m24 + m1m2m33 * m3m4m34 + m1m2m34 * m3m4m44;
+
+            _m41 = m1m2m41 * m3m4m11 + m1m2m42 * m3m4m21 + m1m2m43 * m3m4m31 + m1m2m44 * m3m4m41;
+            _m42 = m1m2m41 * m3m4m12 + m1m2m42 * m3m4m22 + m1m2m43 * m3m4m32 + m1m2m44 * m3m4m42;
+            _m43 = m1m2m41 * m3m4m13 + m1m2m42 * m3m4m23 + m1m2m43 * m3m4m33 + m1m2m44 * m3m4m43;
+            _m44 = m1m2m41 * m3m4m14 + m1m2m42 * m3m4m24 + m1m2m43 * m3m4m34 + m1m2m44 * m3m4m44;
         }
 
         void setScale(const Vector3d<T> &scale)

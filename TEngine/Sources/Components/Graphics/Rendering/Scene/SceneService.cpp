@@ -101,19 +101,17 @@ std::shared_ptr<IMeshRenderingStrategy> SceneService::addMesh(
 	return strategy;
 }
 
-std::shared_ptr<IRenderingStrategy> SceneService::addSolidbox(
+std::shared_ptr<ISolidboxRenderingStrategy> SceneService::addSolidbox(
 	std::shared_ptr<IRenderingStrategy> parent)
 {
-	std::shared_ptr<IRenderingStrategy> strategy = std::make_shared<SolidboxRenderingStrategy>(
+	std::shared_ptr<ISolidboxRenderingStrategy> strategy = std::make_shared<SolidboxRenderingStrategy>(
 		_shadersService,
 		_bufferCacheService,
-		_textureService,
-		_physicsService,
-		"./DemoResources/texture2.bmp");
-
-	// strategy = std::make_shared<PhysicsRenderingStrategyBase>(_physicsService, strategy, PhysicsFlags::STATIC);
+		_physicsService);
 
 	(parent ? parent : _root)->addChild(strategy);
+	
+	strategy->setPhysicsFlags(PhysicsFlags::STATIC);
 
 	return strategy;
 }

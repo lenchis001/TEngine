@@ -13,7 +13,9 @@ void PhysicsRenderingStrategyBase::setPosition(const Vector3df &position)
 {
     if (_isPhysicsEnabled())
     {
-        _physicsService->setPosition(_getSharedPhysicsRenderingAware(), getAbsolutePosition());
+        auto newAbsolutePosition = _parentMatrix.getPosition() + position;
+
+        _physicsService->setPosition(_getSharedPhysicsRenderingAware(), newAbsolutePosition);
     }
     else
     {
@@ -25,11 +27,25 @@ void PhysicsRenderingStrategyBase::setRotation(const Vector3df &rotation)
 {
     if (_isPhysicsEnabled())
     {
-        _physicsService->setRotation(_getSharedPhysicsRenderingAware(), getAbsoluteRotation());
+        auto newAbsoluteRotation = _parentMatrix.getRotation() + rotation;
+
+        _physicsService->setRotation(_getSharedPhysicsRenderingAware(), newAbsoluteRotation);
     }
     else
     {
         RenderingStrategyBase::setRotation(rotation);
+    }
+}
+
+void PhysicsRenderingStrategyBase::setScale(const Vector3df &scale)
+{
+    RenderingStrategyBase::setScale(scale);
+
+    if (_isPhysicsEnabled() && _physicsService->isAttached(_getSharedPhysicsRenderingAware()))
+    {
+        _physicsService->removeBox(_getSharedPhysicsRenderingAware());
+
+        _attachToPhysics();
     }
 }
 
@@ -64,9 +80,11 @@ void PhysicsRenderingStrategyBase::_onDetachedFromParent()
 
 void PhysicsRenderingStrategyBase::setPhysicsFlags(PhysicsFlags physicsFlags)
 {
-    if (_physicsService->isAttached(_getSharedPhysicsRenderingAware()))
+    auto sharedThisPhysicsRenderingAware = _getSharedPhysicsRenderingAware();
+
+    if (_physicsService->isAttached(sharedThisPhysicsRenderingAware))
     {
-        _physicsService->removeBox(_getSharedPhysicsRenderingAware());
+        _physicsService->removeBox(sharedThisPhysicsRenderingAware);
     }
 
     _physicsFlags = physicsFlags;
@@ -95,6 +113,12 @@ void PhysicsRenderingStrategyBase::_attachToPhysics()
     default:
         break;
     }
+
+    if (_isPhysicsEnabled())
+    {
+        _physicsService->setPosition(_getSharedPhysicsRenderingAware(), getAbsolutePosition());
+        _physicsService->setRotation(_getSharedPhysicsRenderingAware(), getAbsoluteRotation());
+    }
 }
 
 std::shared_ptr<IPhysicsRenderingAware> PhysicsRenderingStrategyBase::_getSharedPhysicsRenderingAware()
@@ -102,6 +126,21 @@ std::shared_ptr<IPhysicsRenderingAware> PhysicsRenderingStrategyBase::_getShared
     auto renderingStrategy = shared_from_this();
 
     return std::dynamic_pointer_cast<IPhysicsRenderingAware>(renderingStrategy);
+}
+
+std::vector<float> PhysicsRenderingStrategyBase::getVertices() const
+{
+    auto modelVertices = _getVertices();
+    auto scale = getScale();
+
+    for (size_t i = 0; i < modelVertices.size(); i += 3)
+    {
+        modelVertices[i] *= scale.getX();
+        modelVertices[i + 1] *= scale.getY();
+        modelVertices[i + 2] *= scale.getZ();
+    }
+
+    return modelVertices;
 }
 
 void PhysicsRenderingStrategyBase::setDirectAbsolutePosition(const Vector3df &position)

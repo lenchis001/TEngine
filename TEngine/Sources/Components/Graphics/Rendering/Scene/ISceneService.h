@@ -10,6 +10,7 @@
 #include "Components/Graphics/Rendering/Scene/RenderingStrategies/IRenderingStrategy.h"
 #include "Components/Graphics/Rendering/Scene/RenderingStrategies/Meshes/IMeshRenderingStrategy.h"
 #include "Components/Graphics/Rendering/Scene/RenderingStrategies/Primitives/ICubeRenderingStrategy.h"
+#include "Components/Graphics/Rendering/Scene/RenderingStrategies/Solid/ISolidboxRenderingStrategy.h"
 #include "Components/Graphics/Rendering/Models/Physics/PhysicsFlags.h"
 
 namespace TEngine::Components::Graphics::Rendering::Scene
@@ -35,7 +36,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene
             std::shared_ptr<RenderingStrategies::IRenderingStrategy> parent = nullptr,
             Rendering::Models::Physics::PhysicsFlags physics = Rendering::Models::Physics::PhysicsFlags::NONE) = 0;
 
-        virtual std::shared_ptr<RenderingStrategies::IRenderingStrategy> addSolidbox(
+        virtual std::shared_ptr<RenderingStrategies::Solid::ISolidboxRenderingStrategy> addSolidbox(
             std::shared_ptr<RenderingStrategies::IRenderingStrategy> parent = nullptr) = 0;
 
         virtual std::shared_ptr<RenderingStrategies::IRenderingStrategy> addEmpty(

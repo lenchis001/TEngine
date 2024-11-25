@@ -33,6 +33,9 @@ void GraphicsServiceBase::initialize(std::shared_ptr<IGraphicsParameters> parame
 
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 	glEnable(GL_DEPTH_TEST);
+
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 }
 
 void GraphicsServiceBase::deinitialize()
@@ -59,9 +62,9 @@ void GraphicsServiceBase::render()
 }
 
 void GraphicsServiceBase::resize(int width, int height)
-{	
+{
 	glViewport(0, 0, width, height);
-	
+
 	auto sceneService = this->getSceneService();
 	auto activeCamera = sceneService->getActiveCamera();
 
