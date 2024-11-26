@@ -107,9 +107,7 @@ void GraphicContext::OnSaveSceneAs(SaveSceneAsEvent &event)
 
 void GraphicContext::OnOpenScene(OpenSceneEvent &event)
 {
-    auto location = event.getPath();
-
-    _currentScenePath = location;
+    _currentScenePath = event.getPath();
 
     addFunction(
         [&]()
@@ -124,7 +122,24 @@ void GraphicContext::OnOpenScene(OpenSceneEvent &event)
             deserializationService->deserializeFromFile(_currentScenePath, sceneRoot);
 
             auto event = UpdateSceneTreeEvent::fromRenderingStrategy(sceneRoot);
+            queueEventToChildren(event);
+        });
+}
 
+void GraphicContext::OnAddMesh(AddMeshEvent &event)
+{
+    auto meshPath = event.getPath();
+
+    addFunction(
+        [&, meshPath]()
+        {
+            auto graphicsService = _engine->getGraphicsService();
+            auto sceneService = graphicsService->getSceneService();
+
+            sceneService->addMesh(meshPath);
+
+            auto sceneRoot = graphicsService->getSceneService()->getRoot();
+            auto event = UpdateSceneTreeEvent::fromRenderingStrategy(sceneRoot);
             queueEventToChildren(event);
         });
 }
@@ -193,8 +208,7 @@ void GraphicContext::_initializeEngine()
 
     auto graphicsService = _engine->getGraphicsService();
 
-    auto sceneService = graphicsService->getSceneService();
-    sceneService->setActiveCamera(BuildinCameraTypes::VIEWER);
+    graphicsService->getSceneService()->setActiveCamera(BuildinCameraTypes::VIEWER);
 
     while (!_isShutdownRequested)
     {
@@ -205,7 +219,6 @@ void GraphicContext::_initializeEngine()
 
     _engine->deinitialize();
 
-    sceneService = nullptr;
     _engine = nullptr;
 }
 
@@ -260,12 +273,13 @@ wxBEGIN_EVENT_TABLE(GraphicContext, wxPanel)
                 EVT_SAVE_SCENE_AS(GraphicContext::OnSaveSceneAs)
                     EVT_OPEN_SCENE(GraphicContext::OnOpenScene)
                         EVT_MOTION(GraphicContext::OnMouseMove)
-                            EVT_LEFT_DOWN(GraphicContext::OnMouseButton)
-                                EVT_LEFT_UP(GraphicContext::OnMouseButton)
-                                    EVT_RIGHT_DOWN(GraphicContext::OnMouseButton)
-                                        EVT_RIGHT_UP(GraphicContext::OnMouseButton)
-                                            EVT_MIDDLE_DOWN(GraphicContext::OnMouseButton)
-                                                EVT_MIDDLE_UP(GraphicContext::OnMouseButton)
-                                                    EVT_KEY_DOWN(GraphicContext::OnKey)
-                                                        EVT_KEY_UP(GraphicContext::OnKey)
-                                                            wxEND_EVENT_TABLE()
+                            EVT_ADD_MESH(GraphicContext::OnAddMesh)
+                                EVT_LEFT_DOWN(GraphicContext::OnMouseButton)
+                                    EVT_LEFT_UP(GraphicContext::OnMouseButton)
+                                        EVT_RIGHT_DOWN(GraphicContext::OnMouseButton)
+                                            EVT_RIGHT_UP(GraphicContext::OnMouseButton)
+                                                EVT_MIDDLE_DOWN(GraphicContext::OnMouseButton)
+                                                    EVT_MIDDLE_UP(GraphicContext::OnMouseButton)
+                                                        EVT_KEY_DOWN(GraphicContext::OnKey)
+                                                            EVT_KEY_UP(GraphicContext::OnKey)
+                                                                wxEND_EVENT_TABLE()

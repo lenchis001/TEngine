@@ -23,6 +23,8 @@ namespace Alice::MainWindow::Children::MainMenu
 
         void OnOpen(wxCommandEvent& event);
 
+        void OnAddMesh(wxCommandEvent& event);
+
         std::shared_ptr<IMainMenuPresenter> _presenter;
     };
 }

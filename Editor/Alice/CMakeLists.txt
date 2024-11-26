@@ -21,6 +21,15 @@ target_include_directories(Alice PRIVATE "../../TEngine/Sources")
 # Link the TEngine library to the executable
 target_link_libraries(Alice PRIVATE TEngine)
 
+# Add custom command to compile the manifest file into a resource file
+if (MINGW)
+    execute_process(
+        COMMAND ${CMAKE_RC_COMPILER} -i ${CMAKE_SOURCE_DIR}/Editor/Alice/Sources/resources.rc -o ${CMAKE_BINARY_DIR}/resources.o)
+
+    # Link the resource file with the executable
+    target_sources(Alice PRIVATE ${CMAKE_BINARY_DIR}/resources.o)
+endif()
+
 # Copy alice resources directory to the output directory
 add_custom_command(TARGET Alice POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory

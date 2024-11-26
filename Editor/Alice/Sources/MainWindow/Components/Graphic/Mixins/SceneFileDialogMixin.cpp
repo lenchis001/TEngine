@@ -13,5 +13,5 @@ std::string SceneFileDialogMixin::showSaveSceneDialog() {
 }
 
 std::string SceneFileDialogMixin::showOpenSceneDialog() {
-    return wxFileSelector("Choose TEngine scene file to open...", wxEmptyString, wxEmptyString, "TEngine Scene (*.tscene)|*.tscene");
+    return wxFileSelector("Choose TEngine scene file to open...", wxEmptyString, wxEmptyString, wxEmptyString, "TEngine Scene (*.tscene)|*.tscene");
 }

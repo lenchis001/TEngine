@@ -1,6 +1,8 @@
 #ifndef ALICE_IMAINMENUPRESENTER_H
 #define ALICE_IMAINMENUPRESENTER_H
 
+#include <string>
+
 #include "Core/IPresenter.h"
 
 #include "IMainMenuView.h"
@@ -19,6 +21,8 @@ namespace Alice::MainWindow::Children::MainMenu
         virtual void saveSceneAs() = 0;
 
         virtual void openScene() = 0;
+
+        virtual void addMesh() = 0;
     };
 }
 

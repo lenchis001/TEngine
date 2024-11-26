@@ -4,6 +4,8 @@
 #include "wx/wx.h"
 #endif
 
+#include <wx/sysopt.h>
+
 #include "Core/IoC/Container.h"
 
 #include "MainWindow/MainWindowPresenter.h"
@@ -94,6 +96,8 @@ bool MyApp::OnInit()
 {
     if (!wxApp::OnInit())
         return false;
+
+    wxImage::AddHandler(new wxPNGHandler);
 
     auto container = std::make_shared<Alice::Core::IoC::Container>();
 

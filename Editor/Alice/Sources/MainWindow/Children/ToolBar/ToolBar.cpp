@@ -4,15 +4,19 @@
 
 using namespace Alice::MainWindow::Children::ToolBar;
 
+#define TOOL_SIZE 32
+
 ToolBar::ToolBar(wxWindow *parent) : IToolBar(parent)
 {
     SetMargins(4, 4);
 
-    wxColour bgColor = *wxWHITE;
+    auto bgColor = wxColour(0xF5, 0xF5, 0xF5);
 
-    AddTool(wxID_ANY, "Select", _createColoredBitmap("./AliceResources/Controls/Select.svg", wxSize(32, 32), bgColor), wxNullBitmap, wxITEM_CHECK);
-    AddTool(wxID_ANY, "Move", _createColoredBitmap("./AliceResources/Controls/Move.svg", wxSize(32, 32), bgColor), wxNullBitmap, wxITEM_CHECK);
-    AddTool(wxID_ANY, "Rotate", _createColoredBitmap("./AliceResources/Controls/Rotate.svg", wxSize(32, 32), bgColor), wxNullBitmap, wxITEM_CHECK);
+    SetBackgroundColour(bgColor);
+
+    AddTool(wxID_ANY, "Select", _createColoredBitmap("./AliceResources/Controls/Select.svg", wxSize(TOOL_SIZE, TOOL_SIZE), bgColor));
+    AddTool(wxID_ANY, "Move", _createColoredBitmap("./AliceResources/Controls/Move.svg", wxSize(TOOL_SIZE, TOOL_SIZE), bgColor));
+    AddTool(wxID_ANY, "Rotate", _createColoredBitmap("./AliceResources/Controls/Rotate.svg", wxSize(TOOL_SIZE, TOOL_SIZE), bgColor));
 
     Realize();
 }

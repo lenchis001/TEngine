@@ -21,6 +21,8 @@ MainWindowView::MainWindowView(
     _createMainArea(sizer);
     _createWorkArea(sizer, sceneTreeBuilder);
 
+
+
     this->SetSizer(sizer);
 }
 
