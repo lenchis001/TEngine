@@ -49,7 +49,7 @@ FetchContent_Declare(
   EXCLUDE_FROM_ALL
 )
 
-set(BOOST_INCLUDE_LIBRARIES filesystem json)
+set(BOOST_INCLUDE_LIBRARIES filesystem json asio)
 FetchContent_GetProperties(Boost)
 
 if(NOT Boost_POPULATED)

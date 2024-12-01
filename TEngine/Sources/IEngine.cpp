@@ -40,6 +40,8 @@
 #include "Components/Graphics/CocoaGraphicsService.h"
 #endif
 
+#include "Components/Network/Http/NetworkService.h"
+
 using namespace TEngine;
 using namespace TEngine::Components::Graphics;
 using namespace TEngine::Components::Graphics::Rendering;
@@ -71,6 +73,8 @@ using namespace TEngine::Components::Graphics::Rendering::Scene::State::Deserial
 using namespace TEngine::Components::Graphics::Rendering::Scene::State::Deserialization::Solid;
 using namespace TEngine::Components::Graphics::Rendering::Scene::State::Deserialization::Primitives;
 using namespace TEngine::Components::Graphics::Rendering::Scene::State::Deserialization::Meshes;
+
+using namespace TEngine::Components::Network::Http;
 
 std::shared_ptr<IEngine> TEngine::createEngine(
 #ifdef _WIN32
@@ -148,5 +152,13 @@ std::shared_ptr<IEngine> TEngine::createEngine(
 
     auto deserializationService = std::make_shared<DeserializationService>(deserializers);
 
-    return std::make_shared<Engine>(graphicsService, eventsService, audioService, serializationService, deserializationService);
+    auto networkService = std::make_shared<NetworkService>();
+
+    return std::make_shared<Engine>(
+        graphicsService,
+        eventsService,
+        audioService,
+        serializationService,
+        deserializationService,
+        networkService);
 }

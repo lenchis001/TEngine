@@ -172,7 +172,7 @@ target_link_libraries(TEngine PRIVATE vorbis vorbisfile)
 # --------------------- Add boost library ---------------------
 target_link_libraries(
   TEngine
-  PRIVATE Boost::filesystem Boost::json)
+  PRIVATE Boost::filesystem Boost::json Boost::asio)
 
   # --------------------- Add ImGui library ---------------------
 
