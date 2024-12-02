@@ -4,11 +4,13 @@
 #include <string>
 #include <map>
 
+#include "Configs/TEngineExport.h"
+
 #include "Methods.h"
 
 namespace TEngine::Components::Network::Http::Models
 {
-    class Request
+    class TENGINE_API Request
     {
     public:
         Request(const std::string &url, const std::string &data, Methods method, std::map<std::string, std::string> headers);

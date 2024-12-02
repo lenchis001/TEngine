@@ -73,9 +73,12 @@ std::shared_ptr<ICubeRenderingStrategy> SceneService::addCube(
 		_shadersService,
 		_bufferCacheService,
 		_textureService,
-		_physicsService,
-		texturePath);
+		_physicsService);
 
+	if (!texturePath.empty())
+	{
+		strategy->setTexture(texturePath);
+	}
 	strategy->setPhysicsFlags(physicsFlags);
 
 	(parent ? parent : _root)->addChild(strategy);
@@ -110,7 +113,7 @@ std::shared_ptr<ISolidboxRenderingStrategy> SceneService::addSolidbox(
 		_physicsService);
 
 	(parent ? parent : _root)->addChild(strategy);
-	
+
 	strategy->setPhysicsFlags(PhysicsFlags::STATIC);
 
 	return strategy;

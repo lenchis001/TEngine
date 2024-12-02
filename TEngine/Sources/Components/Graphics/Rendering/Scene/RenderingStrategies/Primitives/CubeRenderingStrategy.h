@@ -33,8 +33,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
             std::shared_ptr<IShadersService> shadersService,
             std::shared_ptr<IBuffersService> bufferCacheService,
             std::shared_ptr<ITexturesService> texturesService,
-            std::shared_ptr<IPhysicsService> physicsService,
-            std::string texturePath);
+            std::shared_ptr<IPhysicsService> physicsService);
         ~CubeRenderingStrategy() override;
 
         std::type_index getType() const override;
@@ -43,7 +42,9 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
 
         void setRotation(const Vector3df &rotation) override;
 
-        const std::string &getTexturePath() const;
+        const std::string &getTexture() const override;
+
+        void setTexture(const std::string &texturePath) override;
 
     protected:
         std::string _getDefaultName() const override;
@@ -58,7 +59,6 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
 
     private:
         void _prepareVertexVbo();
-        void _prepareTexture();
         void _prepareUvVbo();
         void _prepareVao();
         void _prepareShader();

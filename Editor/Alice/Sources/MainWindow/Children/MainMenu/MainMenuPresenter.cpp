@@ -11,6 +11,7 @@
 #include "MainWindow/Components/Graphic/Events/SaveSceneAsEvent.h"
 #include "MainWindow/Components/Graphic/Events/OpenSceneEvent.h"
 #include "MainWindow/Components/Graphic/Events/Adding/AddMeshEvent.h"
+#include "MainWindow/Components/Graphic/Events/Adding/AddCubeEvent.h"
 
 using namespace Alice::MainWindow::Children::MainMenu;
 using namespace Alice::MainWindow::Components::Graphic::Events;
@@ -63,6 +64,13 @@ void MainMenuPresenter::addMesh()
 
         postEventToChildren(event);
     }
+}
+
+void MainMenuPresenter::addCube()
+{
+    AddCubeEvent event;
+
+    postEventToChildren(event);
 }
 
 void MainMenuPresenter::injectView(IMainMenuView *view)

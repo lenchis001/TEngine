@@ -30,7 +30,7 @@ GraphicContext::~GraphicContext()
     }
 }
 
-void GraphicContext::OnResize(wxSizeEvent &event)
+void GraphicContext::_onResize(wxSizeEvent &event)
 {
     if (!_renderThread.joinable())
     {
@@ -50,7 +50,7 @@ void GraphicContext::OnResize(wxSizeEvent &event)
     event.Skip();
 }
 
-void GraphicContext::OnCreateScene(CreateSceneEvent &event)
+void GraphicContext::_onCreateScene(CreateSceneEvent &event)
 {
     _currentScenePath.clear();
 
@@ -66,7 +66,7 @@ void GraphicContext::OnCreateScene(CreateSceneEvent &event)
         });
 }
 
-void GraphicContext::OnSaveScene(SaveSceneEvent &event)
+void GraphicContext::_onSaveScene(SaveSceneEvent &event)
 {
     auto location = _currentScenePath.empty() ? showSaveSceneDialog() : _currentScenePath;
 
@@ -87,7 +87,7 @@ void GraphicContext::OnSaveScene(SaveSceneEvent &event)
     }
 }
 
-void GraphicContext::OnSaveSceneAs(SaveSceneAsEvent &event)
+void GraphicContext::_onSaveSceneAs(SaveSceneAsEvent &event)
 {
     auto location = event.getPath();
 
@@ -105,7 +105,7 @@ void GraphicContext::OnSaveSceneAs(SaveSceneAsEvent &event)
         });
 }
 
-void GraphicContext::OnOpenScene(OpenSceneEvent &event)
+void GraphicContext::_onOpenScene(OpenSceneEvent &event)
 {
     _currentScenePath = event.getPath();
 
@@ -126,7 +126,7 @@ void GraphicContext::OnOpenScene(OpenSceneEvent &event)
         });
 }
 
-void GraphicContext::OnAddMesh(AddMeshEvent &event)
+void GraphicContext::_onAddMesh(AddMeshEvent &event)
 {
     auto meshPath = event.getPath();
 
@@ -144,7 +144,23 @@ void GraphicContext::OnAddMesh(AddMeshEvent &event)
         });
 }
 
-void GraphicContext::OnMouseMove(wxMouseEvent &event)
+void GraphicContext::_onAddCube(AddCubeEvent &event)
+{
+    addFunction(
+        [&]()
+        {
+            auto graphicsService = _engine->getGraphicsService();
+            auto sceneService = graphicsService->getSceneService();
+
+            auto cube = sceneService->addCube();
+
+            auto sceneRoot = graphicsService->getSceneService()->getRoot();
+            auto event = UpdateSceneTreeEvent::fromRenderingStrategy(sceneRoot);
+            queueEventToChildren(event);
+        });
+}
+
+void GraphicContext::_onMouseMove(wxMouseEvent &event)
 {
     auto position = event.GetPosition();
 
@@ -157,7 +173,7 @@ void GraphicContext::OnMouseMove(wxMouseEvent &event)
         });
 }
 
-void GraphicContext::OnMouseButton(wxMouseEvent &event)
+void GraphicContext::_onMouseButton(wxMouseEvent &event)
 {
     auto targetButton = event.GetButton();
     auto isPressed = event.ButtonIsDown(static_cast<wxMouseButton>(targetButton));
@@ -174,7 +190,7 @@ void GraphicContext::OnMouseButton(wxMouseEvent &event)
         });
 }
 
-void GraphicContext::OnKey(wxKeyEvent &event)
+void GraphicContext::_onKey(wxKeyEvent &event)
 {
     auto keyCode = event.GetKeyCode();
     auto isPressed = event.GetEventType() == wxEVT_KEY_DOWN;
@@ -267,19 +283,20 @@ KeyboardKeys GraphicContext::_toTEngineKey(int wxKeyCode)
 }
 
 wxBEGIN_EVENT_TABLE(GraphicContext, wxPanel)
-    EVT_SIZE(GraphicContext::OnResize)
-        EVT_CREATE_SCENE(GraphicContext::OnCreateScene)
-            EVT_SAVE_SCENE(GraphicContext::OnSaveScene)
-                EVT_SAVE_SCENE_AS(GraphicContext::OnSaveSceneAs)
-                    EVT_OPEN_SCENE(GraphicContext::OnOpenScene)
-                        EVT_MOTION(GraphicContext::OnMouseMove)
-                            EVT_ADD_MESH(GraphicContext::OnAddMesh)
-                                EVT_LEFT_DOWN(GraphicContext::OnMouseButton)
-                                    EVT_LEFT_UP(GraphicContext::OnMouseButton)
-                                        EVT_RIGHT_DOWN(GraphicContext::OnMouseButton)
-                                            EVT_RIGHT_UP(GraphicContext::OnMouseButton)
-                                                EVT_MIDDLE_DOWN(GraphicContext::OnMouseButton)
-                                                    EVT_MIDDLE_UP(GraphicContext::OnMouseButton)
-                                                        EVT_KEY_DOWN(GraphicContext::OnKey)
-                                                            EVT_KEY_UP(GraphicContext::OnKey)
-                                                                wxEND_EVENT_TABLE()
+    EVT_SIZE(GraphicContext::_onResize)
+        EVT_CREATE_SCENE(GraphicContext::_onCreateScene)
+            EVT_SAVE_SCENE(GraphicContext::_onSaveScene)
+                EVT_SAVE_SCENE_AS(GraphicContext::_onSaveSceneAs)
+                    EVT_OPEN_SCENE(GraphicContext::_onOpenScene)
+                        EVT_MOTION(GraphicContext::_onMouseMove)
+                            EVT_ADD_MESH(GraphicContext::_onAddMesh)
+                                EVT_ADD_CUBE(GraphicContext::_onAddCube)
+                                    EVT_LEFT_DOWN(GraphicContext::_onMouseButton)
+                                        EVT_LEFT_UP(GraphicContext::_onMouseButton)
+                                            EVT_RIGHT_DOWN(GraphicContext::_onMouseButton)
+                                                EVT_RIGHT_UP(GraphicContext::_onMouseButton)
+                                                    EVT_MIDDLE_DOWN(GraphicContext::_onMouseButton)
+                                                        EVT_MIDDLE_UP(GraphicContext::_onMouseButton)
+                                                            EVT_KEY_DOWN(GraphicContext::_onKey)
+                                                                EVT_KEY_UP(GraphicContext::_onKey)
+                                                                    wxEND_EVENT_TABLE()

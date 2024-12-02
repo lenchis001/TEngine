@@ -8,7 +8,7 @@ namespace TEngine::Components::Network::Http::Models
         GET,
         POST,
         PUT,
-        DELETE,
+        DEL
     };
 }
 

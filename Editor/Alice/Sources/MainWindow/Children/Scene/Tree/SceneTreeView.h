@@ -19,8 +19,8 @@ namespace Alice::MainWindow::Children::Scene::Tree
         SceneTreeView(wxWindow *parent, std::shared_ptr<ISceneTreePresenter> presenter);
 
     private:
-        void OnUpdateSceneTree(UpdateSceneTreeEvent &event);
-        void OnSelectionChanged(wxTreeEvent &event);
+        void _onUpdateSceneTree(UpdateSceneTreeEvent &event);
+        void _onSelectionChanged(wxTreeEvent &event);
 
         wxTreeItemId toTreeItem(const SceneTreeItem &sceneItem, const wxTreeItemId &root);
 

@@ -24,6 +24,8 @@ namespace Alice::MainWindow::Children::MainMenu
 
         void addMesh() override;
 
+        void addCube() override;
+
         void injectView(IMainMenuView *view) override;
 
     private:

@@ -2,8 +2,8 @@
 
 #include <stdexcept>
 #include <iostream>
-
-#include <boost/asio.hpp>
+#include <sstream>
+#include <curl/curl.h>
 
 using namespace TEngine::Components::Network::Http;
 
@@ -11,71 +11,83 @@ Response NetworkService::send(const Request &request)
 {
     try
     {
-        std::string url = request.getUrl();
-        if (url.find("http://") != 0 && url.find("https://") != 0)
+        CURL *curl;
+        CURLcode res;
+        curl = curl_easy_init();
+        if (!curl)
         {
-            throw std::invalid_argument("Invalid URL: " + url);
+            throw std::runtime_error("Failed to initialize CURL");
         }
 
-        boost::asio::io_context io_context;
-        boost::asio::ip::tcp::resolver resolver(io_context);
-        boost::asio::ip::tcp::resolver::results_type endpoints = resolver.resolve(url, "http");
+        std::string url = request.getUrl();
+        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 
-        boost::asio::ip::tcp::socket socket(io_context);
-        boost::asio::connect(socket, endpoints);
-
-        auto method = request.getMethod();
-        std::string req = getMethodString(method);
-        req += request.getUrl() + " HTTP/1.1\r\n";
+        struct curl_slist *headers = nullptr;
         for (const auto &header : request.getHeaders())
         {
-            req += header.first + ": " + header.second + "\r\n";
+            headers = curl_slist_append(headers, (header.first + ": " + header.second).c_str());
         }
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
-        if (method == Methods::POST || method == Methods::PUT)
+        if (request.getMethod() == Methods::POST || request.getMethod() == Methods::PUT)
         {
-            req += "Content-Type: application/json\r\n";
-        }
-        req += "\r\n" + request.getData();
-
-        boost::asio::write(socket, boost::asio::buffer(req));
-
-        boost::asio::streambuf response;
-        boost::asio::read_until(socket, response, "\r\n");
-
-        std::istream response_stream(&response);
-        std::string http_version;
-        response_stream >> http_version;
-        unsigned int status_code;
-        response_stream >> status_code;
-        std::string status_message;
-        std::getline(response_stream, status_message);
-
-        std::map<std::string, std::string> headers;
-        std::string header;
-        while (std::getline(response_stream, header) && header != "\r")
-        {
-            auto colon_pos = header.find(": ");
-            if (colon_pos != std::string::npos)
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, request.getData().c_str());
+            if (request.getMethod() == Methods::POST)
             {
-                headers[header.substr(0, colon_pos)] = header.substr(colon_pos + 2);
+                curl_easy_setopt(curl, CURLOPT_POST, 1L);
+            }
+            else
+            {
+                curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PUT");
             }
         }
-
-        std::string body;
-        if (response.size() > 0)
+        else if (request.getMethod() == Methods::DEL)
         {
-            std::ostringstream ss;
-            ss << &response;
-            body = ss.str();
+            curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "DELETE");
         }
 
-        return Response(status_code, body, headers);
+        std::ostringstream response_stream;
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, +[](void *contents, size_t size, size_t nmemb, void *userp) -> size_t {
+            ((std::ostringstream *)userp)->write((char *)contents, size * nmemb);
+            return size * nmemb;
+        });
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_stream);
+
+        std::map<std::string, std::string> response_headers;
+        curl_easy_setopt(curl, CURLOPT_HEADERFUNCTION, +[](void *contents, size_t size, size_t nmemb, void *userp) -> size_t {
+            std::string header((char *)contents, size * nmemb);
+            auto colon_pos = header.find(':');
+            if (colon_pos != std::string::npos)
+            {
+                std::string key = header.substr(0, colon_pos);
+                std::string value = header.substr(colon_pos + 1);
+                value.erase(0, value.find_first_not_of(" \t\r\n"));
+                value.erase(value.find_last_not_of(" \t\r\n") + 1);
+                ((std::map<std::string, std::string> *)userp)->emplace(key, value);
+            }
+            return size * nmemb;
+        });
+        curl_easy_setopt(curl, CURLOPT_HEADERDATA, &response_headers);
+
+        res = curl_easy_perform(curl);
+        if (res != CURLE_OK)
+        {
+            curl_easy_cleanup(curl);
+            throw std::runtime_error("CURL request failed: " + std::string(curl_easy_strerror(res)));
+        }
+
+        long response_code;
+        curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
+
+        curl_slist_free_all(headers);
+        curl_easy_cleanup(curl);
+
+        return Response(response_code, response_stream.str(), response_headers);
     }
     catch (std::exception &e)
     {
         std::cerr << "Exception: " << e.what() << "\n";
-        return Response(500, "Internal Server Error", {});
+        return Response(-1, e.what(), {});
     }
 }
 
@@ -89,7 +101,7 @@ std::string NetworkService::getMethodString(Methods method)
         return "POST";
     case Methods::PUT:
         return "PUT";
-    case Methods::DELETE:
+    case Methods::DEL:
         return "DELETE";
     default:
         throw std::invalid_argument("Invalid method");

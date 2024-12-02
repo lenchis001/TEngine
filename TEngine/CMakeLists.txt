@@ -172,7 +172,7 @@ target_link_libraries(TEngine PRIVATE vorbis vorbisfile)
 # --------------------- Add boost library ---------------------
 target_link_libraries(
   TEngine
-  PRIVATE Boost::filesystem Boost::json Boost::asio)
+  PRIVATE Boost::filesystem Boost::json)
 
   # --------------------- Add ImGui library ---------------------
 
@@ -233,3 +233,31 @@ target_include_directories(TEngine PRIVATE ${bullet_SOURCE_DIR}/src)
 
 # Add bullet library
 target_link_libraries(TEngine PRIVATE BulletDynamics BulletCollision LinearMath)
+
+# --------------------- Add CURL library -------------------------------
+include(FetchContent)
+
+FetchContent_Declare(
+    curl
+    GIT_REPOSITORY https://github.com/curl/curl.git
+    GIT_TAG        curl-8_11_0
+    GIT_SHALLOW    TRUE
+)
+
+FetchContent_GetProperties(curl)
+
+if(NOT curl_POPULATED)
+    FetchContent_Populate(curl)
+endif()
+
+target_include_directories(TEngine PRIVATE ${curl_SOURCE_DIR}/include ${curl_SOURCE_DIR}/lib)
+file(GLOB_RECURSE curl_sources_files
+    ${curl_SOURCE_DIR}/lib/*.c
+)
+target_sources(TEngine PRIVATE ${curl_sources_files})
+
+add_definitions(-DBUILDING_LIBCURL)
+
+if (WIN32)
+    target_link_libraries(TEngine PRIVATE ws2_32 wldap32)
+endif()

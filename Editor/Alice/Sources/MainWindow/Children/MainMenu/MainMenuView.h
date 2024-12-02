@@ -15,15 +15,17 @@ namespace Alice::MainWindow::Children::MainMenu
     private:
         wxDECLARE_EVENT_TABLE();
 
-        void OnQuit(wxCommandEvent& event);
+        void _onQuit(wxCommandEvent& event);
 
-        void OnSave(wxCommandEvent& event);
+        void _onSave(wxCommandEvent& event);
         
-        void OnSaveAs(wxCommandEvent& event);
+        void _onSaveAs(wxCommandEvent& event);
 
-        void OnOpen(wxCommandEvent& event);
+        void _onOpen(wxCommandEvent& event);
 
-        void OnAddMesh(wxCommandEvent& event);
+        void _onAddMesh(wxCommandEvent& event);
+
+        void _onAddCube(wxCommandEvent& event);
 
         std::shared_ptr<IMainMenuPresenter> _presenter;
     };

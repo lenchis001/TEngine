@@ -27,7 +27,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene
         virtual void render(double time) = 0;
 
         virtual std::shared_ptr<RenderingStrategies::Primitives::ICubeRenderingStrategy> addCube(
-            std::string texturePath,
+            std::string texturePath = "",
             std::shared_ptr<RenderingStrategies::IRenderingStrategy> parent = nullptr,
             Rendering::Models::Physics::PhysicsFlags physics = Rendering::Models::Physics::PhysicsFlags::NONE) = 0;
 

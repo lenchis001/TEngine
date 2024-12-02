@@ -3,6 +3,7 @@
 using namespace Alice::MainWindow::Children::MainMenu;
 
 #define ADD_MESH_ID wxID_HIGHEST + 1
+#define ADD_CUBE ADD_MESH_ID + 1
 
 MainMenuView::MainMenuView(std::shared_ptr<IMainMenuPresenter> presenter) : _presenter(presenter)
 {
@@ -30,9 +31,7 @@ MainMenuView::MainMenuView(std::shared_ptr<IMainMenuPresenter> presenter) : _pre
     // Add to scene
     wxMenu *addToSceneMenu = new wxMenu();
     addToSceneMenu->Append(ADD_MESH_ID, "Add mesh\tCtrl+Shift+M");
-    addToSceneMenu->Append(wxID_ANY, "Add camera\tCtrl+Shift+C");
-    addToSceneMenu->Append(wxID_ANY, "Add light\tCtrl+Shift+L");
-    addToSceneMenu->Append(wxID_ANY, "Add cube\tCtrl+Shift+B");
+    addToSceneMenu->Append(ADD_CUBE, "Add cube\tCtrl+Shift+B");
     addToSceneMenu->Append(wxID_ANY, "Add solidbox\tCtrl+Shift+S");
     addToSceneMenu->Append(wxID_ANY, "Add skybox\tCtrl+Shift+K");
 
@@ -54,35 +53,41 @@ MainMenuView::MainMenuView(std::shared_ptr<IMainMenuPresenter> presenter) : _pre
     Append(helpMenu, "&Help");
 }
 
-void MainMenuView::OnQuit(wxCommandEvent &event)
+void MainMenuView::_onQuit(wxCommandEvent &event)
 {
     _presenter->createScene();
 }
 
-void MainMenuView::OnSave(wxCommandEvent &event)
+void MainMenuView::_onSave(wxCommandEvent &event)
 {
     _presenter->saveScene();
 }
 
-void MainMenuView::OnSaveAs(wxCommandEvent &event)
+void MainMenuView::_onSaveAs(wxCommandEvent &event)
 {
     _presenter->saveSceneAs();
 }
 
-void MainMenuView::OnOpen(wxCommandEvent &event)
+void MainMenuView::_onOpen(wxCommandEvent &event)
 {
     _presenter->openScene();
 }
 
-void MainMenuView::OnAddMesh(wxCommandEvent &event)
+void MainMenuView::_onAddMesh(wxCommandEvent &event)
 {
     _presenter->addMesh();
 }
 
+void MainMenuView::_onAddCube(wxCommandEvent &event)
+{
+    _presenter->addCube();
+}
+
 wxBEGIN_EVENT_TABLE(MainMenuView, wxMenuBar)
-    EVT_MENU(wxID_NEW, MainMenuView::OnQuit)
-        EVT_MENU(wxID_SAVE, MainMenuView::OnSave)
-            EVT_MENU(wxID_SAVEAS, MainMenuView::OnSaveAs)
-                EVT_MENU(wxID_OPEN, MainMenuView::OnOpen)
-                    EVT_MENU(ADD_MESH_ID, MainMenuView::OnAddMesh)
-                        wxEND_EVENT_TABLE()
+    EVT_MENU(wxID_NEW, MainMenuView::_onQuit)
+        EVT_MENU(wxID_SAVE, MainMenuView::_onSave)
+            EVT_MENU(wxID_SAVEAS, MainMenuView::_onSaveAs)
+                EVT_MENU(wxID_OPEN, MainMenuView::_onOpen)
+                    EVT_MENU(ADD_MESH_ID, MainMenuView::_onAddMesh)
+                        EVT_MENU(ADD_CUBE, MainMenuView::_onAddCube)
+                            wxEND_EVENT_TABLE()

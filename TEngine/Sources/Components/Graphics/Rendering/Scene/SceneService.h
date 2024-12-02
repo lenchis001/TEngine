@@ -58,7 +58,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene
         void deinitialize() override;
 
         std::shared_ptr<ICubeRenderingStrategy> addCube(
-            std::string texturePath,
+            std::string texturePath = "",
             std::shared_ptr<IRenderingStrategy> parent = nullptr,
             PhysicsFlags physicsFlags = PhysicsFlags::NONE) override;
 

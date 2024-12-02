@@ -23,6 +23,8 @@ namespace Alice::MainWindow::Children::MainMenu
         virtual void openScene() = 0;
 
         virtual void addMesh() = 0;
+
+        virtual void addCube() = 0;
     };
 }
 

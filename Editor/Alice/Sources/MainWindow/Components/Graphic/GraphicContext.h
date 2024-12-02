@@ -11,6 +11,7 @@
 #include "Events/SaveSceneAsEvent.h"
 #include "Events/OpenSceneEvent.h"
 #include "Events/Adding/AddMeshEvent.h"
+#include "Events/Adding/AddCubeEvent.h"
 #include "Mixins/SceneFileDialogMixin.h"
 #include "Core/EventPropogationMixin.h"
 
@@ -32,17 +33,18 @@ namespace Alice::MainWindow::Components::Graphic
         ~GraphicContext();
 
     private:
-        void OnResize(wxSizeEvent &event);
-        void OnCreateScene(CreateSceneEvent& event);
-        void OnSaveScene(SaveSceneEvent& event);
-        void OnSaveSceneAs(SaveSceneAsEvent& event);
-        void OnOpenScene(OpenSceneEvent& event);
+        void _onResize(wxSizeEvent &event);
+        void _onCreateScene(CreateSceneEvent& event);
+        void _onSaveScene(SaveSceneEvent& event);
+        void _onSaveSceneAs(SaveSceneAsEvent& event);
+        void _onOpenScene(OpenSceneEvent& event);
 
-        void OnAddMesh(AddMeshEvent& event);
+        void _onAddMesh(AddMeshEvent& event);
+        void _onAddCube(AddCubeEvent& event);
 
-        void OnMouseMove(wxMouseEvent& event);
-        void OnMouseButton(wxMouseEvent& event);
-        void OnKey(wxKeyEvent& event);
+        void _onMouseMove(wxMouseEvent& event);
+        void _onMouseButton(wxMouseEvent& event);
+        void _onKey(wxKeyEvent& event);
 
         void _initializeEngine();
 

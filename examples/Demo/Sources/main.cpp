@@ -50,19 +50,6 @@ void setupScene(std::shared_ptr<ISceneService> sceneService)
     auto sky = sceneService->addSkySphere();
 }
 
-void sendTestRequest(std::shared_ptr<INetworkService> networkService)
-{
-    auto request = TEngine::Components::Network::Http::Models::Request(
-        "http://www.example.com",
-        "",
-        TEngine::Components::Network::Http::Models::Methods::GET,
-        {});
-    auto response = networkService->send(request);
-
-    std::cout << "Status: " << response.getStatus() << std::endl;
-    std::cout << "Body: " << response.getBody() << std::endl;
-}
-
 int main()
 {
     auto engine = TEngine::createEngine();
@@ -80,9 +67,6 @@ int main()
     auto graphicsService = engine->getGraphicsService();
     auto sceneService = graphicsService->getSceneService();
     setupScene(sceneService);
-
-    auto networkService = engine->getNetworkService();
-    sendTestRequest(networkService);
 
     double previousCheckTime = graphicsService->getTime();
     int fpsCounter = 0;

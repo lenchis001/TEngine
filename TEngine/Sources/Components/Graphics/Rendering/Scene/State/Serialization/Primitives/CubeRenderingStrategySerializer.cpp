@@ -12,7 +12,7 @@ boost::json::object CubeRenderingStrategySerializer::_serialize(
 {
     auto result = SerializerMixin::_serializeBase(value, serializeMember);
 
-    result["texturePath"] = value.getTexturePath();
+    result["texturePath"] = value.getTexture();
 
     return result;
 }

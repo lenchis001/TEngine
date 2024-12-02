@@ -10,7 +10,7 @@ SceneTreeView::SceneTreeView(wxWindow *parent, std::shared_ptr<ISceneTreePresent
 {
 }
 
-void SceneTreeView::OnUpdateSceneTree(UpdateSceneTreeEvent &event)
+void SceneTreeView::_onUpdateSceneTree(UpdateSceneTreeEvent &event)
 {
     DeleteAllItems();
 
@@ -26,7 +26,7 @@ void SceneTreeView::OnUpdateSceneTree(UpdateSceneTreeEvent &event)
     Expand(root);
 }
 
-void SceneTreeView::OnSelectionChanged(wxTreeEvent &event)
+void SceneTreeView::_onSelectionChanged(wxTreeEvent &event)
 {
     auto item = dynamic_cast<SceneTreeItemData *>(GetItemData(event.GetItem()));
 
@@ -52,6 +52,6 @@ wxTreeItemId SceneTreeView::toTreeItem(const SceneTreeItem &sceneItem, const wxT
 }
 
 wxBEGIN_EVENT_TABLE(SceneTreeView, ISceneTreeView)
-    EVT_UPDATE_SCENE_TREE(SceneTreeView::OnUpdateSceneTree)
-        EVT_TREE_SEL_CHANGED(wxID_ANY, SceneTreeView::OnSelectionChanged)
+    EVT_UPDATE_SCENE_TREE(SceneTreeView::_onUpdateSceneTree)
+        EVT_TREE_SEL_CHANGED(wxID_ANY, SceneTreeView::_onSelectionChanged)
             wxEND_EVENT_TABLE()

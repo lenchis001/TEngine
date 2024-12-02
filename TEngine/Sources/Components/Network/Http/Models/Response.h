@@ -4,9 +4,11 @@
 #include <string>
 #include <map>
 
+#include "Configs/TEngineExport.h"
+
 namespace TEngine::Components::Network::Http::Models
 {
-    class Response
+    class TENGINE_API Response
     {
     public:
         Response(int status, std::string body, std::map<std::string, std::string> headers);

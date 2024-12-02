@@ -17,25 +17,25 @@ CubeRenderingStrategy::CubeRenderingStrategy(
     std::shared_ptr<IShadersService> shadersService,
     std::shared_ptr<IBuffersService> bufferCacheService,
     std::shared_ptr<ITexturesService> texturesService,
-    std::shared_ptr<IPhysicsService> physicsService,
-    std::string texturePath)
+    std::shared_ptr<IPhysicsService> physicsService)
     : PhysicsRenderingStrategyBase(physicsService),
       _shadersService(shadersService),
       _bufferCacheService(bufferCacheService),
       _texturesService(texturesService),
-      _texturePath(texturePath)
+      _textureId(0)
 {
     _prepareVertexVbo();
     _prepareUvVbo();
     _prepareVao();
-    _prepareTexture();
 
     _prepareShader();
 }
 
 CubeRenderingStrategy::~CubeRenderingStrategy()
 {
-    _texturesService->release(_textureId);
+    if (_textureId) {
+        _texturesService->release(_textureId);
+    }
 
     _shadersService->release(_shaderProgram);
 
@@ -60,9 +60,19 @@ void CubeRenderingStrategy::setRotation(const Vector3df &rotation)
     PhysicsRenderingStrategyBase::setRotation(rotation);
 }
 
-const std::string &CubeRenderingStrategy::getTexturePath() const
+const std::string &CubeRenderingStrategy::getTexture() const
 {
     return _texturePath;
+}
+
+void CubeRenderingStrategy::setTexture(const std::string &texturePath)
+{
+    _texturesService->release(_textureId);
+    _textureId = 0;
+
+    _texturePath = texturePath;
+
+    _textureId = _texturesService->take(_texturePath);
 }
 
 std::string CubeRenderingStrategy::_getDefaultName() const
@@ -72,21 +82,24 @@ std::string CubeRenderingStrategy::_getDefaultName() const
 
 void CubeRenderingStrategy::_renderSafe(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
 {
-    glBindVertexArray(_vao);
+    if (_textureId)
+    {
+        glBindVertexArray(_vao);
 
-    glUseProgram(_shaderProgram);
+        glUseProgram(_shaderProgram);
 
-    glUniformMatrix4fv(_matrixShaderId, 1, GL_FALSE, getMvpMatrix().getInternalData());
-    glUniform1i(_textureSamplerShaderId, 0);
+        glUniformMatrix4fv(_matrixShaderId, 1, GL_FALSE, getMvpMatrix().getInternalData());
+        glUniform1i(_textureSamplerShaderId, 0);
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, _textureId);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, _textureId);
 
-    glDrawArrays(GL_TRIANGLES, 0, 6 /*sides*/ * 2 /*triangles in every one*/ * 3 /*verteces in every one*/);
+        glDrawArrays(GL_TRIANGLES, 0, 6 /*sides*/ * 2 /*triangles in every one*/ * 3 /*verteces in every one*/);
 
-    glUseProgram(0);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glBindVertexArray(0);
+        glUseProgram(0);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glBindVertexArray(0);
+    }
 }
 
 std::vector<float> CubeRenderingStrategy::_getVertices() const
@@ -115,11 +128,6 @@ void CubeRenderingStrategy::_prepareVertexVbo()
     glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(float), _vertices.data(), GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
-void CubeRenderingStrategy::_prepareTexture()
-{
-    _textureId = _texturesService->take(_texturePath);
 }
 
 void CubeRenderingStrategy::_prepareUvVbo()
