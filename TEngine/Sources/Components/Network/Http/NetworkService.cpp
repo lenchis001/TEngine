@@ -90,20 +90,3 @@ Response NetworkService::send(const Request &request)
         return Response(-1, e.what(), {});
     }
 }
-
-std::string NetworkService::getMethodString(Methods method)
-{
-    switch (method)
-    {
-    case Methods::GET:
-        return "GET";
-    case Methods::POST:
-        return "POST";
-    case Methods::PUT:
-        return "PUT";
-    case Methods::DEL:
-        return "DELETE";
-    default:
-        throw std::invalid_argument("Invalid method");
-    }
-}

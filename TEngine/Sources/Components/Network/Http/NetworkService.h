@@ -8,8 +8,5 @@ namespace TEngine::Components::Network::Http
     {
     public:
         Response send(const Request &request) override;
-
-    private:
-        static std::string getMethodString(Methods method);
     };
 }

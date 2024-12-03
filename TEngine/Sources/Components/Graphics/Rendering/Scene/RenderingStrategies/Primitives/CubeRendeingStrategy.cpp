@@ -33,7 +33,8 @@ CubeRenderingStrategy::CubeRenderingStrategy(
 
 CubeRenderingStrategy::~CubeRenderingStrategy()
 {
-    if (_textureId) {
+    if (_textureId)
+    {
         _texturesService->release(_textureId);
     }
 
@@ -67,8 +68,11 @@ const std::string &CubeRenderingStrategy::getTexture() const
 
 void CubeRenderingStrategy::setTexture(const std::string &texturePath)
 {
-    _texturesService->release(_textureId);
-    _textureId = 0;
+    if (_textureId)
+    {
+        _texturesService->release(_textureId);
+        _textureId = 0;
+    }
 
     _texturePath = texturePath;
 
