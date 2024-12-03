@@ -246,18 +246,18 @@ FetchContent_Declare(
 
 FetchContent_GetProperties(curl)
 
+set(BUILD_CURL_EXE OFF CACHE BOOL " " FORCE)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL " " FORCE)
+set(BUILD_STATIC_LIBS ON CACHE BOOL " " FORCE)
+set(CURL_DISABLE_INSTALL ON CACHE BOOL " " FORCE)
+
 if(NOT curl_POPULATED)
     FetchContent_Populate(curl)
+    add_subdirectory(${curl_SOURCE_DIR} ${curl_BINARY_DIR})
 endif()
 
-target_include_directories(TEngine PRIVATE ${curl_SOURCE_DIR}/include ${curl_SOURCE_DIR}/lib)
-file(GLOB_RECURSE curl_sources_files
-    ${curl_SOURCE_DIR}/lib/*.c
-)
-target_sources(TEngine PRIVATE ${curl_sources_files})
+# Add ogg includes
+target_include_directories(TEngine PRIVATE ${curl_SOURCE_DIR}/include)
 
-add_definitions(-DBUILDING_LIBCURL)
-
-if (WIN32)
-    target_link_libraries(TEngine PRIVATE ws2_32 wldap32)
-endif()
+# Add ogg library
+target_link_libraries(TEngine PRIVATE ${LIBCURL_OUTPUT_NAME})
