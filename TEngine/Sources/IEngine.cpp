@@ -41,6 +41,7 @@
 #endif
 
 #include "Components/Network/Http/NetworkService.h"
+#include "Components/Network/WebSocket/WebSocketFactory.h"
 
 using namespace TEngine;
 using namespace TEngine::Components::Graphics;
@@ -153,6 +154,7 @@ std::shared_ptr<IEngine> TEngine::createEngine(
     auto deserializationService = std::make_shared<DeserializationService>(deserializers);
 
     auto networkService = std::make_shared<NetworkService>();
+    auto webSocketFactory = std::make_shared<WebSocketFactory>();
 
     return std::make_shared<Engine>(
         graphicsService,
@@ -160,5 +162,6 @@ std::shared_ptr<IEngine> TEngine::createEngine(
         audioService,
         serializationService,
         deserializationService,
-        networkService);
+        networkService,
+        webSocketFactory);
 }

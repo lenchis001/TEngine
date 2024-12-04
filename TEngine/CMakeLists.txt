@@ -172,7 +172,7 @@ target_link_libraries(TEngine PRIVATE vorbis vorbisfile)
 # --------------------- Add boost library ---------------------
 target_link_libraries(
   TEngine
-  PRIVATE Boost::filesystem Boost::json)
+  PRIVATE Boost::filesystem Boost::json Boost::asio Boost::thread)
 
   # --------------------- Add ImGui library ---------------------
 
@@ -251,6 +251,9 @@ set(BUILD_SHARED_LIBS OFF CACHE BOOL " " FORCE)
 set(BUILD_STATIC_LIBS ON CACHE BOOL " " FORCE)
 set(CURL_DISABLE_INSTALL ON CACHE BOOL " " FORCE)
 set(USE_LIBIDN2 OFF CACHE BOOL " " FORCE)
+set(BUILD_EXAMPLES OFF CACHE BOOL " " FORCE)
+set(BUILD_TESTING OFF CACHE BOOL " " FORCE)
+set(HAVE_MANUAL_TOOLS OFF CACHE BOOL " " FORCE)
 
 if(NOT curl_POPULATED)
     FetchContent_Populate(curl)
@@ -262,3 +265,25 @@ target_include_directories(TEngine PRIVATE ${curl_SOURCE_DIR}/include)
 
 # Add ogg library
 target_link_libraries(TEngine PRIVATE ${LIBCURL_OUTPUT_NAME})
+
+# --------------------- Add websocketpp library ---------------------
+include(FetchContent)
+
+FetchContent_Declare(
+    websocketpp
+    GIT_REPOSITORY https://github.com/zaphoyd/websocketpp.git
+    GIT_TAG        0.8.2
+    GIT_SHALLOW    TRUE
+)
+
+FetchContent_GetProperties(websocketpp)
+
+set(BUILD_TESTS OFF CACHE BOOL " " FORCE)
+set(BUILD_EXAMPLES OFF CACHE BOOL " " FORCE)
+
+if(NOT websocketpp_POPULATED)
+    FetchContent_Populate(websocketpp)
+endif()
+
+# Add websocketpp includes
+target_include_directories(TEngine PRIVATE ${websocketpp_SOURCE_DIR})

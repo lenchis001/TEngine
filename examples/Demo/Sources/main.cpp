@@ -1,9 +1,10 @@
 #include "IEngine.h"
 
-#include "iostream"
-#include "memory"
-#include "vector"
-#include "fstream"
+#include <iostream>
+#include <memory>
+#include <vector>
+#include <fstream>
+#include <thread>
 
 #include "Components/Graphics/Models/Vector3d.h"
 
@@ -12,6 +13,8 @@ using namespace TEngine::Components::Graphics::Rendering::Models::Physics;
 using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
 using namespace TEngine::Components::Graphics::Rendering::Scene;
 using namespace TEngine::Components::Network::Http;
+using namespace TEngine::Components::Network::WebSocket;
+using namespace TEngine::Components::Network::WebSocket::Client;
 
 void setupScene(std::shared_ptr<ISceneService> sceneService)
 {
@@ -50,6 +53,33 @@ void setupScene(std::shared_ptr<ISceneService> sceneService)
     auto sky = sceneService->addSkySphere();
 }
 
+void sendTestRequest(std::shared_ptr<INetworkService> networkService)
+{
+    auto request = TEngine::Components::Network::Http::Models::Request(
+        "http://www.example.com",
+        "",
+        TEngine::Components::Network::Http::Models::Methods::GET,
+        {});
+    auto response = networkService->send(request);
+
+    std::cout << "Status: " << response.getStatus() << std::endl;
+    std::cout << "Body: " << response.getBody() << std::endl;
+}
+
+void testWs(std::shared_ptr<IWebSocketFactory> webSocketFactory)
+{
+    auto client = webSocketFactory->createClient();
+    client->connect("ws://localhost:8080", {}).wait();
+    client->setOnMessageCallback([](const std::string &message) {
+        std::cout << "Message: " << message << std::endl;
+    });
+    client->send("Hello");
+
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+
+    client->close();
+}
+
 int main()
 {
     auto engine = TEngine::createEngine();
@@ -67,6 +97,12 @@ int main()
     auto graphicsService = engine->getGraphicsService();
     auto sceneService = graphicsService->getSceneService();
     setupScene(sceneService);
+
+    auto networkService = engine->getNetworkService();
+    sendTestRequest(networkService);
+
+    auto webSocketFactory = engine->getWebSocketFactory();
+    testWs(webSocketFactory);
 
     double previousCheckTime = graphicsService->getTime();
     int fpsCounter = 0;

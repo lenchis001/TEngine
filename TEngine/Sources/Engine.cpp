@@ -10,13 +10,15 @@ Engine::Engine(
     std::shared_ptr<IAudioService> audioService,
     std::shared_ptr<ISerializationService> serializationService,
     std::shared_ptr<IDeserializationService> deserializationService,
-    std::shared_ptr<INetworkService> networkService)
+    std::shared_ptr<INetworkService> networkService,
+    std::shared_ptr<IWebSocketFactory> webSocketFactory)
     : _graphicsService(graphicsService),
       _eventService(eventService),
       _audioService(audioService),
       _serializationService(serializationService),
       _deserializationService(deserializationService),
-      _networkService(networkService)
+      _networkService(networkService),
+      _webSocketFactory(webSocketFactory)
 {
 }
 
@@ -66,4 +68,9 @@ std::shared_ptr<IDeserializationService> Engine::getDeserializationService()
 std::shared_ptr<INetworkService> Engine::getNetworkService()
 {
     return _networkService;
+}
+
+std::shared_ptr<IWebSocketFactory> Engine::getWebSocketFactory()
+{
+    return _webSocketFactory;
 }
