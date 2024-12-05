@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-#include "imgui.h"
+// #include "imgui.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Gui::ControlRenderingStrategies;
 
@@ -33,33 +33,33 @@ void WindowRenderingStrategy::setFullscreen(bool fullscreen)
 
 void WindowRenderingStrategy::render()
 {
-    static int counter = 0;
+    // static int counter = 0;
 
-    if (!_isSizeSet)
-    {
-        ImGui::SetNextWindowSize(ImVec2(_size.getX(), _size.getY()));
-        _isSizeSet = true;
-    }
+    // if (!_isSizeSet)
+    // {
+    //     ImGui::SetNextWindowSize(ImVec2(_size.getX(), _size.getY()));
+    //     _isSizeSet = true;
+    // }
 
-    if (!_isPositionSet)
-    {
-        ImGui::SetNextWindowPos(ImVec2(_position.getX(), _position.getY()));
-        _isPositionSet = true;
-    }
+    // if (!_isPositionSet)
+    // {
+    //     ImGui::SetNextWindowPos(ImVec2(_position.getX(), _position.getY()));
+    //     _isPositionSet = true;
+    // }
 
-    ImGuiWindowFlags flags = _resizable ? ImGuiWindowFlags_None : ImGuiWindowFlags_NoResize;
+    // ImGuiWindowFlags flags = _resizable ? ImGuiWindowFlags_None : ImGuiWindowFlags_NoResize;
 
-    if (_fullscreen)
-    {
-        ImGui::SetNextWindowPos(ImVec2(0, 0));
-        ImGui::SetNextWindowSize(ImVec2(ImGui::GetIO().DisplaySize.x, ImGui::GetIO().DisplaySize.y));
+    // if (_fullscreen)
+    // {
+    //     ImGui::SetNextWindowPos(ImVec2(0, 0));
+    //     ImGui::SetNextWindowSize(ImVec2(ImGui::GetIO().DisplaySize.x, ImGui::GetIO().DisplaySize.y));
 
-        flags |= ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
-    }
+    //     flags |= ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+    // }
 
-    ImGui::Begin(_title.c_str(), nullptr, flags);
+    // ImGui::Begin(_title.c_str(), nullptr, flags);
 
-    ControlStrategyBase::render();
+    // ControlStrategyBase::render();
 
-    ImGui::End();
+    // ImGui::End();
 }

@@ -41,6 +41,8 @@ if(NOT glfw_POPULATED)
     set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
     set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
     set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+    set(GLFW_BUILD_INSTALL OFF CACHE BOOL " " FORCE)
+    set(GLFW_INSTALL OFF CACHE BOOL " " FORCE)
 
     add_subdirectory(${glfw_SOURCE_DIR} ${glfw_BINARY_DIR})
 endif()
@@ -174,33 +176,32 @@ target_link_libraries(
   TEngine
   PRIVATE Boost::filesystem Boost::json Boost::asio Boost::thread)
 
-  # --------------------- Add ImGui library ---------------------
+  # --------------------- Add nanogui library -----------------
 
 # Download and configure ImGui
 include(FetchContent)
 
 FetchContent_Declare(
-    imgui
-    GIT_REPOSITORY https://github.com/ocornut/imgui.git
-    GIT_TAG        v1.91.2
+    nanogui
+    GIT_REPOSITORY git@github.com:wjakob/nanogui.git
     GIT_SHALLOW    TRUE
+    GIT_SUBMODULES_RECURSE ON
 )
 
-FetchContent_GetProperties(imgui)
+FetchContent_GetProperties(nanogui)
 
-if(NOT imgui_POPULATED)
-    FetchContent_Populate(imgui)
+set(NANOGUI_BUILD_EXAMPLE OFF CACHE BOOL " " FORCE)
+set(NANOGUI_BUILD_SHARED OFF CACHE BOOL " " FORCE)
+set(NANOGUI_BUILD_PYTHON OFF CACHE BOOL " " FORCE)
+set(NANOGUI_USE_GLAD OFF CACHE BOOL " " FORCE)
+set(NANOGUI_INSTALL OFF CACHE BOOL " " FORCE)
+
+if(NOT nanogui_POPULATED)
+    FetchContent_Populate(nanogui)
+    add_subdirectory(${nanogui_SOURCE_DIR} ${nanogui_BINARY_DIR})
 endif()
 
-target_include_directories(TEngine PRIVATE ${imgui_SOURCE_DIR} ${imgui_SOURCE_DIR}/backends)
-target_sources(TEngine PRIVATE 
-    ${imgui_SOURCE_DIR}/imgui.cpp
-    ${imgui_SOURCE_DIR}/imgui_draw.cpp
-    ${imgui_SOURCE_DIR}/imgui_widgets.cpp
-    ${imgui_SOURCE_DIR}/imgui_tables.cpp
-    ${imgui_SOURCE_DIR}/imgui_demo.cpp
-    ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
-    ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp)
+target_include_directories(TEngine PRIVATE ${nanogui_SOURCE_DIR}/include ${NANOGUI_EXTRA_INCS})
 
 # --------------------- Add bullet physics library ---------------------
 

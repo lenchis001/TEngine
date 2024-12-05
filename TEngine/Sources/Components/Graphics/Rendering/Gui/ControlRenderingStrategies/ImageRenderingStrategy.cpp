@@ -1,6 +1,6 @@
 #include "ImageRenderingStrategy.h"
 
-#include "imgui.h"
+//#include "imgui.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Gui::ControlRenderingStrategies;
 
@@ -17,11 +17,11 @@ ImageRenderingStrategy::~ImageRenderingStrategy()
 
 void ImageRenderingStrategy::render()
 {
-    if (!_isPositionSet){
-        ImGui::SetCursorPos(ImVec2(_position.getX(), _position.getY()));
+    // if (!_isPositionSet){
+    //     ImGui::SetCursorPos(ImVec2(_position.getX(), _position.getY()));
 
-        _isPositionSet = true;
-    }
+    //     _isPositionSet = true;
+    // }
 
-    ImGui::Image(reinterpret_cast<void*>(_textureId), ImVec2(_size.getX(), _size.getY()));
+    // ImGui::Image(reinterpret_cast<void*>(_textureId), ImVec2(_size.getX(), _size.getY()));
 }

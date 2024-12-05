@@ -1,6 +1,6 @@
 #include "InputRenderingStrategy.h"
 
-#include "imgui.h"
+// #include "imgui.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Gui::ControlRenderingStrategies;
 
@@ -20,5 +20,5 @@ const std::string& InputRenderingStrategy::getText() const
 
 void InputRenderingStrategy::render()
 {
-    ImGui::InputText("##input", _text, 256);
+    // ImGui::InputText("##input", _text, 256);
 }
