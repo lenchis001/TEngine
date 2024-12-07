@@ -55,29 +55,29 @@ void setupScene(std::shared_ptr<ISceneService> sceneService)
 
 void sendTestRequest(std::shared_ptr<INetworkService> networkService)
 {
-    auto request = TEngine::Components::Network::Http::Models::Request(
-        "http://www.example.com",
-        "",
-        TEngine::Components::Network::Http::Models::Methods::GET,
-        {});
-    auto response = networkService->send(request);
+    // auto request = TEngine::Components::Network::Http::Models::Request(
+    //     "http://www.example.com",
+    //     "",
+    //     TEngine::Components::Network::Http::Models::Methods::GET,
+    //     {});
+    // auto response = networkService->send(request);
 
-    std::cout << "Status: " << response.getStatus() << std::endl;
-    std::cout << "Body: " << response.getBody() << std::endl;
+    // std::cout << "Status: " << response.getStatus() << std::endl;
+    // std::cout << "Body: " << response.getBody() << std::endl;
 }
 
 void testWs(std::shared_ptr<IWebSocketFactory> webSocketFactory)
 {
-    auto client = webSocketFactory->createClient();
-    client->connect("ws://localhost:8080", {}).wait();
-    client->setOnMessageCallback([](const std::string &message) {
-        std::cout << "Message: " << message << std::endl;
-    });
-    client->send("Hello");
+    // auto client = webSocketFactory->createClient();
+    // client->connect("ws://localhost:8080", {}).wait();
+    // client->setOnMessageCallback([](const std::string &message) {
+    //     std::cout << "Message: " << message << std::endl;
+    // });
+    // client->send("Hello");
 
-    std::this_thread::sleep_for(std::chrono::seconds(3));
+    // std::this_thread::sleep_for(std::chrono::seconds(3));
 
-    client->close();
+    // client->close();
 }
 
 int main()

@@ -17,6 +17,8 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
         
         virtual GLuint getVAO() const = 0;
 
+        virtual GLuint getIndexBuffer() const = 0;
+
         virtual GLuint getProgram() const = 0;
 
         virtual GLuint getMvpMatrixShaderId() const = 0;

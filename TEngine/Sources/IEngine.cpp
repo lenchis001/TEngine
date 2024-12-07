@@ -32,6 +32,7 @@
 #include "Components/Graphics/Rendering/Scene/State/Deserialization/Solid/SolidboxRenderingStrategyDeserializer.h"
 #include "Components/Graphics/Rendering/Scene/State/Deserialization/Primitives/CubeRenderingStrategyDeserializer.h"
 #include "Components/Graphics/Rendering/Scene/State/Deserialization/Meshes/MeshRenderingStrategyDeserializer.h"
+#include "Components/Graphics/Indexing/IndexingService.h"
 
 #ifdef _WIN32
 #include "Components/Graphics/Win32GraphicService.h"
@@ -75,6 +76,8 @@ using namespace TEngine::Components::Graphics::Rendering::Scene::State::Deserial
 using namespace TEngine::Components::Graphics::Rendering::Scene::State::Deserialization::Primitives;
 using namespace TEngine::Components::Graphics::Rendering::Scene::State::Deserialization::Meshes;
 
+using namespace TEngine::Components::Graphics::Indexing;
+
 using namespace TEngine::Components::Network::Http;
 
 std::shared_ptr<IEngine> TEngine::createEngine(
@@ -108,7 +111,8 @@ std::shared_ptr<IEngine> TEngine::createEngine(
     auto shadersService = std::make_shared<ShadersService>();
     auto bufferCacheService = std::make_shared<BuffersService>();
     auto texturesService = std::make_shared<TexturesService>(imageLoadingService);
-    auto meshService = std::make_shared<MeshService>(meshLoadingService, bufferCacheService, shadersService, texturesService);
+    auto indexingService = std::make_shared<IndexingService>();
+    auto meshService = std::make_shared<MeshService>(meshLoadingService, bufferCacheService, shadersService, texturesService, indexingService);
     auto lightServices = std::make_shared<LightService>();
     auto physicsService = isPhysicsEnabled ? std::static_pointer_cast<IPhysicsService>(std::make_shared<PhysicsService>()) : std::static_pointer_cast<IPhysicsService>(std::make_shared<EmptyPhysicsService>());
 

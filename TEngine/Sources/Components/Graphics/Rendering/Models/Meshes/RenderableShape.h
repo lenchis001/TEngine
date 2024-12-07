@@ -11,6 +11,7 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
         RenderableShape(
             std::string name,
             GLuint vao,
+            GLuint indexBuffer,
             const std::vector<float> vertices,
             GLuint program,
             GLuint mvpMatrixShaderId,
@@ -26,35 +27,64 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
 
         const std::string &getName() override;
 
-        GLuint getVAO() const override;
+        inline GLuint getVAO() const override {
+            return _vao;
+        }
 
-        GLuint getProgram() const override;
+        inline GLuint getIndexBuffer() const override {
+            return _indexBuffer;
+        }
 
-        GLuint getMvpMatrixShaderId() const override;
+        inline GLuint getProgram() const override {
+            return _program;
+        }
 
-        GLuint getModelMatrixShaderId() const override;
+        inline GLuint getMvpMatrixShaderId() const override {
+            return _mvpMatrixShaderId;
+        }
 
-        GLuint getViewMatrixShaderId() const override;
+        inline GLuint getModelMatrixShaderId() const override {
+            return _modelMatrixShaderId;
+        }
 
-        GLuint getLightPosShaderId() const override;
+        inline GLuint getViewMatrixShaderId() const override {
+            return _viewMatrixShaderId;
+        }
 
-        GLuint getLightColorShaderId() const override;
+        inline GLuint getLightPosShaderId() const override {
+            return _lightPosShaderId;
+        }
 
-        GLuint getLightPowerShaderId() const override;
+        inline GLuint getLightColorShaderId() const override {
+            return _lightColorShaderId;
+        }
 
-        GLuint getShapeColorShaderId() const override;
+        inline GLuint getLightPowerShaderId() const override {
+            return _lightPowerShaderId;
+        }
 
-        const std::vector<float> &getDiffuseColor() const override;
+        inline GLuint getShapeColorShaderId() const override {
+            return _shapeColorShaderId;
+        }
 
-        const std::vector<float>& getVertices() const override;
+        inline const std::vector<float> &getDiffuseColor() const override {
+            return _diffuseColor;
+        }
 
-        GLuint getTextureId() const override;
+        inline const std::vector<float>& getVertices() const override {
+            return _vertices;
+        }
 
-        bool isTextured() const override;
+        inline GLuint getTextureId() const override {
+            return _textureId;
+        }
+
+        inline bool isTextured() const override;
 
     private:
         std::string _name;
         GLuint _vao;
+        GLuint _indexBuffer;
         GLuint _program;
         GLuint _mvpMatrixShaderId;
         GLuint _modelMatrixShaderId;

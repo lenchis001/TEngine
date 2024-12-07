@@ -176,33 +176,6 @@ target_link_libraries(
   TEngine
   PRIVATE Boost::filesystem Boost::json Boost::asio Boost::thread)
 
-  # --------------------- Add nanogui library -----------------
-
-# Download and configure ImGui
-include(FetchContent)
-
-FetchContent_Declare(
-    nanogui
-    GIT_REPOSITORY git@github.com:wjakob/nanogui.git
-    GIT_SHALLOW    TRUE
-    GIT_SUBMODULES_RECURSE ON
-)
-
-FetchContent_GetProperties(nanogui)
-
-set(NANOGUI_BUILD_EXAMPLE OFF CACHE BOOL " " FORCE)
-set(NANOGUI_BUILD_SHARED OFF CACHE BOOL " " FORCE)
-set(NANOGUI_BUILD_PYTHON OFF CACHE BOOL " " FORCE)
-set(NANOGUI_USE_GLAD OFF CACHE BOOL " " FORCE)
-set(NANOGUI_INSTALL OFF CACHE BOOL " " FORCE)
-
-if(NOT nanogui_POPULATED)
-    FetchContent_Populate(nanogui)
-    add_subdirectory(${nanogui_SOURCE_DIR} ${nanogui_BINARY_DIR})
-endif()
-
-target_include_directories(TEngine PRIVATE ${nanogui_SOURCE_DIR}/include ${NANOGUI_EXTRA_INCS})
-
 # --------------------- Add bullet physics library ---------------------
 
 # Download and configure bullet

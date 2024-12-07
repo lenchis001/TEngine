@@ -5,6 +5,7 @@ using namespace TEngine::Components::Graphics::Rendering::Models::Meshes;
 RenderableShape::RenderableShape(
     std::string name,
     GLuint vao,
+    GLuint indexBuffer,
     const std::vector<float> vertices,
     GLuint program,
     GLuint mvpMatrixShaderId,
@@ -18,6 +19,7 @@ RenderableShape::RenderableShape(
     GLuint textureId)
     : _name(name),
       _vao(vao),
+      _indexBuffer(indexBuffer),
       _vertices(vertices),
       _program(program),
       _mvpMatrixShaderId(mvpMatrixShaderId),
@@ -35,66 +37,6 @@ RenderableShape::RenderableShape(
 const std::string &RenderableShape::getName()
 {
     return _name;
-}
-
-GLuint RenderableShape::getVAO() const
-{
-    return _vao;
-}
-
-GLuint RenderableShape::getProgram() const
-{
-    return _program;
-}
-
-GLuint RenderableShape::getMvpMatrixShaderId() const
-{
-    return _mvpMatrixShaderId;
-}
-
-GLuint RenderableShape::getModelMatrixShaderId() const
-{
-    return _modelMatrixShaderId;
-}
-
-GLuint RenderableShape::getViewMatrixShaderId() const
-{
-    return _viewMatrixShaderId;
-}
-
-GLuint RenderableShape::getLightPosShaderId() const
-{
-    return _lightPosShaderId;
-}
-
-GLuint RenderableShape::getLightColorShaderId() const
-{
-    return _lightColorShaderId;
-}
-
-GLuint RenderableShape::getLightPowerShaderId() const
-{
-    return _lightPowerShaderId;
-}
-
-GLuint RenderableShape::getShapeColorShaderId() const
-{
-    return _shapeColorShaderId;
-}
-
-const std::vector<float> &RenderableShape::getDiffuseColor() const
-{
-    return _diffuseColor;
-}
-
-GLuint RenderableShape::getTextureId() const
-{
-    return _textureId;
-}
-
-const std::vector<float> &RenderableShape::getVertices() const
-{
-    return _vertices;
 }
 
 bool RenderableShape::isTextured() const

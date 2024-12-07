@@ -8,9 +8,7 @@ using namespace TEngine::Components::Graphics::Rendering::Gui;
 
 GlfwGuiService::GlfwGuiService(std::shared_ptr<IEventService> eventService, std::shared_ptr<ITexturesService> texturesService)
     : _eventService(eventService), 
-    _texturesService(texturesService),
-    _screen(new Screen()),
-    _gui(new FormHelper(_screen))
+    _texturesService(texturesService)
 {
 
 }
@@ -31,51 +29,16 @@ GlfwGuiService::~GlfwGuiService()
 
 void GlfwGuiService::initialize()
 {
-    screen->initialize(glfwGetCurrentContext(), true);
-
     _eventService->registerCursorMoveHandler(std::bind(&GlfwGuiService::_onCursorMove, this, std::placeholders::_1, std::placeholders::_2));
     _eventService->registerMouseButtonHandler(std::bind(&GlfwGuiService::_onMouseButtonClick, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
     _eventService->registerScrollHandler(std::bind(&GlfwGuiService::_onScroll, this, std::placeholders::_1, std::placeholders::_2));
     _eventService->registerKeyHandler(std::bind(&GlfwGuiService::_onKey, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4));
     _eventService->registerCharHandler(std::bind(&GlfwGuiService::_onChar, this, std::placeholders::_1));
     _eventService->registerCursorEnterHandler(std::bind(&GlfwGuiService::_onCursorEnter, this, std::placeholders::_1));
-
-
-    ref<Window> nanoguiWindow = gui->addWindow(Eigen::Vector2i(10, 10), "Form helper example");
-    gui->addGroup("Basic types");
-    gui->addVariable("bool", bvar)->setTooltip("Test tooltip.");
-    gui->addVariable("string", strval);
-
-    gui->addGroup("Validating fields");
-    gui->addVariable("int", ivar)->setSpinnable(true);
-    gui->addVariable("float", fvar)->setTooltip("Test.");
-    gui->addVariable("double", dvar)->setSpinnable(true);
-
-    gui->addGroup("Complex types");
-    gui->addVariable("Enumeration", enumval, enabled)->setItems({ "Item 1", "Item 2", "Item 3" });
-    gui->addVariable("Color", colval)
-       ->setFinalCallback([](const Color &c) {
-             std::cout << "ColorPicker Final Callback: ["
-                       << c.r() << ", "
-                       << c.g() << ", "
-                       << c.b() << ", "
-                       << c.w() << "]" << std::endl;
-         });
-
-    gui->addGroup("Other widgets");
-    gui->addButton("A button", []() { std::cout << "Button pressed." << std::endl; })->setTooltip("Testing a much longer tooltip, that will wrap around to new lines multiple times.");;
-
-    screen->setVisible(true);
-    screen->performLayout();
-    nanoguiWindow->center();
 }
 
 void GlfwGuiService::render()
 {
-        // Draw nanogui
-        screen->drawContents();
-        screen->drawWidgets();
-
     // for (auto &control : _controls)
     // {
     //     control->render();

@@ -6,12 +6,8 @@
 #include <memory>
 #include <vector>
 
-#include "nanogui/nanogui.h"
-
 #include "Components/Events/Services/IEventService.h"
 #include "Components/Graphics/Rendering/Textures/ITexturesService.h"
-
-using namespace nanogui;
 
 using namespace TEngine::Components::Graphics::Rendering::Gui::ControlRenderingStrategies;
 using namespace TEngine::Components::Graphics::Rendering::Textures;
@@ -48,9 +44,6 @@ namespace TEngine::Components::Graphics::Rendering::Gui
         std::shared_ptr<ITexturesService> _texturesService;
 
         std::vector<std::shared_ptr<IControlRenderingStrategy>> _controls;
-
-        Screen* _screen;
-        FormHelper* _gui;
     };
 }
 

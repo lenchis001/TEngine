@@ -1,6 +1,7 @@
 #include "GL/glew.h"
 
-#include "cassert"
+#include <cassert>
+#include <iostream>
 
 #include "MeshService.h"
 
@@ -17,16 +18,19 @@ using namespace TEngine::Components::Graphics::Rendering::Scene::Meshes;
 #define toVertexName(name) name + "Vertices"
 #define toNormalName(name) name + "Normals"
 #define toUvName(name) name + "UVs"
+#define toIndexName(name) name + "Indexes"
 
 MeshService::MeshService(
     std::shared_ptr<IMeshLoadingService> meshLoadingService,
     std::shared_ptr<IBuffersService> buffersService,
     std::shared_ptr<IShadersService> shadersService,
-    std::shared_ptr<ITexturesService> texturesService)
+    std::shared_ptr<ITexturesService> texturesService,
+    std::shared_ptr<IIndexingService> indexingService)
     : _meshLoadingService(meshLoadingService),
       _buffersService(buffersService),
       _shadersService(shadersService),
-      _texturesService(texturesService)
+      _texturesService(texturesService),
+      _indexingService(indexingService)
 {
 }
 
@@ -74,12 +78,13 @@ void MeshService::release(std::shared_ptr<IRenderableMesh> renderableMesh)
         {
             _buffersService->releaseVbo(toVertexName(shape->getName()));
             _buffersService->releaseVbo(toNormalName(shape->getName()));
-            if(shape->isTextured())
+            if (shape->isTextured())
                 _buffersService->releaseVbo(toUvName(shape->getName()));
             _buffersService->releaseVao(shape->getName());
+            _buffersService->releaseVbo(toIndexName(shape->getName()));
             _shadersService->release(shape->getProgram());
 
-            if(shape->getTextureId() != 0)
+            if (shape->getTextureId() != 0)
                 _texturesService->release(shape->getTextureId());
         }
     }
@@ -87,6 +92,12 @@ void MeshService::release(std::shared_ptr<IRenderableMesh> renderableMesh)
 
 std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_ptr<IShape> shape, const std::string &path)
 {
+    std::vector<float> indexedVertexes = shape->getVertices();
+    std::vector<float> indexedUvs = shape->getUVs();
+    std::vector<float> indexedNormals = shape->getNormals();
+
+    auto indexes = _indexingService->index(indexedVertexes, indexedUvs, indexedNormals);
+
     auto name = path + shape->getName();
 
     // Prepare vertices VBO
@@ -95,8 +106,7 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
     auto verticesBuffer = _buffersService->takeVbo(verticesBufferName);
     glBindBuffer(GL_ARRAY_BUFFER, verticesBuffer);
 
-    const auto &vertices = shape->getVertices();
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, indexedVertexes.size() * sizeof(unsigned), indexedVertexes.data(), GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -106,9 +116,7 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
     auto normalsBuffer = _buffersService->takeVbo(normalsBufferName);
     glBindBuffer(GL_ARRAY_BUFFER, normalsBuffer);
 
-    const auto &normals = shape->getNormals();
-    auto normalsCount = normals.size();
-    glBufferData(GL_ARRAY_BUFFER, normalsCount * sizeof(float), normals.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, indexedNormals.size() * sizeof(float), indexedNormals.data(), GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     // Prepare UVs VBO
@@ -123,9 +131,7 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
         uvsBuffer = _buffersService->takeVbo(uvsBufferName);
         glBindBuffer(GL_ARRAY_BUFFER, uvsBuffer);
 
-        const auto &uvs = shape->getUVs();
-        auto uvsCount = uvs.size();
-        glBufferData(GL_ARRAY_BUFFER, uvsCount * sizeof(float), uvs.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, indexedUvs.size() * sizeof(float), indexedUvs.data(), GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
@@ -151,6 +157,15 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
 
     glBindVertexArray(0);
 
+    // Prepare index buffer
+    auto indexBufferName = toIndexName(name);
+
+    auto indexBuffer = _buffersService->takeVbo(indexBufferName);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(unsigned int), indexes.data(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
     // Prepare program
     auto vertedShader = isTextured ? TEXTURED_VERTEX_SHADER_SOURCE : COLORED_VERTEX_SHADER_SOURCE;
     auto fragmentShader = isTextured ? TEXTURED_FRAGMENT_SHADER_SOURCE : COLORED_FRAGMENT_SHADER_SOURCE;
@@ -166,8 +181,8 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
 
     // Prepare texture
     GLuint textureId;
-    
-    if(isTextured)
+
+    if (isTextured)
     {
         textureId = _texturesService->take(shape->getTexturePath());
     }
@@ -179,7 +194,8 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
     return std::make_shared<RenderableShape>(
         name,
         vao,
-        vertices,
+        indexBuffer,
+        shape->getVertices(),
         program,
         mvpMatrixShaderId,
         modelMatrixShaderId,

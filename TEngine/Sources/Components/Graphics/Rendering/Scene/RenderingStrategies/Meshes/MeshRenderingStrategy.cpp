@@ -54,6 +54,7 @@ void MeshRenderingStrategy::_renderSafe(std::shared_ptr<ICameraStrategy> activeC
     for (auto &shape : _renderableMesh->getShapes())
     {
         glBindVertexArray(shape->getVAO());
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, shape->getIndexBuffer());
 
         glUseProgram(shape->getProgram());
         glUniformMatrix4fv(shape->getMvpMatrixShaderId(), 1, GL_FALSE, getMvpMatrix().getInternalData());
@@ -77,7 +78,7 @@ void MeshRenderingStrategy::_renderSafe(std::shared_ptr<ICameraStrategy> activeC
             glBindTexture(GL_TEXTURE_2D, shape->getTextureId());
         }
 
-        glDrawArrays(GL_TRIANGLES, 0, shape->getVertices().size());
+        glDrawElements(GL_TRIANGLES, shape->getVertices().size(), GL_UNSIGNED_INT, nullptr);
 
         glUseProgram(0);
         glBindTexture(GL_TEXTURE_2D, 0);
