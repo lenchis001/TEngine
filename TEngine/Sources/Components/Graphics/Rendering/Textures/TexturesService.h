@@ -3,13 +3,16 @@
 
 #include "ITexturesService.h"
 
-#include "unordered_map"
-#include "string"
-#include "memory"
+#include <unordered_map>
+#include <string>
+#include <memory>
 
 #include "Components/Graphics/ImageLoading/Services/IImageLoadingService.h"
 
 using namespace TEngine::Components::Graphics::ImageLoading::Services;
+using namespace TEngine::Components::Graphics::ImageLoading::Models;
+
+using EnginePixelType = TEngine::Components::Graphics::ImageLoading::Models::PixelType;
 
 namespace TEngine::Components::Graphics::Rendering::Textures
 {
@@ -37,6 +40,8 @@ namespace TEngine::Components::Graphics::Rendering::Textures
         GLuint _readTexture(const std::string& textureFile);
 
         void _loadCubeMapSide(GLenum side, const std::string& texturePath);
+
+        static GLuint _toTextureInternalFormat(EnginePixelType pixelType);
 
         std::shared_ptr<IImageLoadingService> _imageLoadingService;
 

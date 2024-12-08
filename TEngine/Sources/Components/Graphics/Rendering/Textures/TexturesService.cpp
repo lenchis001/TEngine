@@ -3,7 +3,7 @@
 
 #include "TexturesService.h"
 
-#include "cassert"
+#include <cassert>
 
 using namespace TEngine::Components::Graphics::Rendering::Textures;
 
@@ -113,7 +113,9 @@ GLuint TexturesService::_readTexture(const std::string &textureFile)
 
     glBindTexture(GL_TEXTURE_2D, texture);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->getWidth(), image->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, image->getData());
+    auto internalFormat = _toTextureInternalFormat(image->getPixelType());
+
+    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, image->getWidth(), image->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, image->getData());
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -127,5 +129,21 @@ void TexturesService::_loadCubeMapSide(GLenum side, const std::string &texturePa
 {
     auto image = _imageLoadingService->load(texturePath);
 
-    glTexImage2D(side, 0, GL_RGB, image->getWidth(), image->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, image->getData());
+    auto internalFormat = _toTextureInternalFormat(image->getPixelType());
+
+    glTexImage2D(side, 0, internalFormat, image->getWidth(), image->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, image->getData());
+}
+
+GLuint TexturesService::_toTextureInternalFormat(EnginePixelType pixelType)
+{
+    switch (pixelType)
+    {
+    case PixelType::RGB:
+        return GL_RGB;
+    case PixelType::RGBA:
+        return GL_RGBA;
+    default:
+        assert(false && "Unknown pixel type!");
+        return GL_RGB;
+    }
 }

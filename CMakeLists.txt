@@ -62,7 +62,8 @@ endif()
 
 # Include sub-projects.
 add_subdirectory("TEngine")
-add_subdirectory("Plugins/ImageLoading/BmpImageLoadingPlugin")
+add_subdirectory("Plugins/ImageLoading/BmpLoadingPlugin")
+add_subdirectory("Plugins/ImageLoading/PngLoadingPlugin")
 add_subdirectory("Plugins/MeshLoading/ObjLoadingPlugin")
 add_subdirectory("examples/Demo")
 add_subdirectory("Editor/Alice")

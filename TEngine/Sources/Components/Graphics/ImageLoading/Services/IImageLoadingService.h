@@ -1,8 +1,8 @@
 #ifndef TENGINE_IIMAGELOADINGSERVICE_H
 #define TENGINE_IIMAGELOADINGSERVICE_H
 
-#include "string"
-#include "memory"
+#include <string>
+#include <memory>
 
 #include "Components/Graphics/ImageLoading/Models/Image.h"
 

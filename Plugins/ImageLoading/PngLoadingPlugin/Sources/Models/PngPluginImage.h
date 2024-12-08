@@ -1,17 +1,19 @@
-#ifndef BMP_PLUGIN_IMAGE_H
-#define BMP_PLUGIN_IMAGE_H
+#ifndef PNG_PLUGIN_IMAGE_H
+#define PNG_PLUGIN_IMAGE_H
 
 #include "IPluginImage.h"
 
 using namespace TEngine::Components::Graphics::ImageLoading::Plugin;
 
-namespace BmpImageLoadingPlugin::Models
+namespace PngLoadingPlugin::Models
 {
-    class BmpPluginImage : public IPluginImage
+    class PngPluginImage : public IPluginImage
     {
     public:
-        BmpPluginImage(int width, int height, char *data, unsigned int dataSize);
-        ~BmpPluginImage() override;
+        PngPluginImage(int width, int height, char *data, unsigned int dataSize);
+        ~PngPluginImage() override;
+
+        virtual PixelType getPixelType() const override;
 
         virtual unsigned int getDataSize() const override;
 
@@ -28,4 +30,4 @@ namespace BmpImageLoadingPlugin::Models
     };
 }
 
-#endif // BMP_PLUGIN_IMAGE_H
+#endif // PNG_PLUGIN_IMAGE_H

@@ -55,8 +55,8 @@ add_custom_command(TARGET Alice
 # Copy plugin library to Alice output directory
 add_custom_command(TARGET Alice POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy
-    "$<TARGET_FILE:BmpImageLoadingPlugin>"
-    "$<TARGET_FILE_DIR:Alice>/Plugins/ImageLoading/${CMAKE_SHARED_LIBRARY_PREFIX}BmpImageLoadingPlugin${CMAKE_SHARED_LIBRARY_SUFFIX}"
+    "$<TARGET_FILE:BmpLoadingPlugin>"
+    "$<TARGET_FILE_DIR:Alice>/Plugins/ImageLoading/${CMAKE_SHARED_LIBRARY_PREFIX}BmpLoadingPlugin${CMAKE_SHARED_LIBRARY_SUFFIX}"
 )
 
 # Copy plugin library to Alice output directory

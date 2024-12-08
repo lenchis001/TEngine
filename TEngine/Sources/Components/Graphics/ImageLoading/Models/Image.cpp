@@ -4,8 +4,9 @@
 
 using namespace TEngine::Components::Graphics::ImageLoading::Models;
 
-Image::Image(char *data, unsigned int dataSize, int width, int height)
-    : _dataSize(dataSize),
+Image::Image(PixelType pixelType, char *data, unsigned int dataSize, int width, int height)
+    : _pixelType(pixelType),
+      _dataSize(dataSize),
       _width(width),
       _height(height)
 {
@@ -16,6 +17,11 @@ Image::Image(char *data, unsigned int dataSize, int width, int height)
 Image::~Image()
 {
     delete[] _data;
+}
+
+PixelType Image::getPixelType() const
+{
+    return _pixelType;
 }
 
 char *Image::getData() const

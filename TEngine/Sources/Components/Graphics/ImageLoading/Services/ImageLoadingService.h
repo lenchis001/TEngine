@@ -15,6 +15,10 @@ using namespace TEngine::Mixins;
 
 using namespace TEngine::Components::Graphics::ImageLoading::Models;
 using namespace TEngine::Components::Graphics::ImageLoading::Plugin;
+using namespace TEngine::Components::Graphics::ImageLoading::Models;
+
+using EnginePixelType = TEngine::Components::Graphics::ImageLoading::Models::PixelType;
+using PluginPixelType = TEngine::Components::Graphics::ImageLoading::Plugin::PixelType;
 
 namespace TEngine::Components::Graphics::ImageLoading::Services
 {
@@ -28,6 +32,7 @@ namespace TEngine::Components::Graphics::ImageLoading::Services
 
         std::shared_ptr<Image> load(const std::string &path) override;
     private:
+        static EnginePixelType _toEnginePixelType(PluginPixelType pluginPixelType);
     };
 }
 

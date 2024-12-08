@@ -19,5 +19,21 @@ std::shared_ptr<Image> ImageLoadingService::load(const std::string &path)
 
     auto result = plugin->load(path);
 
-    return std::make_shared<Image>(result->getData(), result->getDataSize(), result->getWidth(), result->getHeight());
+    auto enginePixelType = _toEnginePixelType(result->getPixelType());
+
+    return std::make_shared<Image>(enginePixelType, result->getData(), result->getDataSize(), result->getWidth(), result->getHeight());
+}
+
+EnginePixelType ImageLoadingService::_toEnginePixelType(PluginPixelType pluginPixelType)
+{
+    switch (pluginPixelType)
+    {
+    case PluginPixelType::RGB:
+        return EnginePixelType::RGB;
+    case PluginPixelType::RGBA:
+        return EnginePixelType::RGBA;
+    default:
+        assert(false && "Unknown pixel type!");
+        return EnginePixelType::RGB;
+    }
 }

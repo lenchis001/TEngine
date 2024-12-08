@@ -1,6 +1,6 @@
 #include "BmpPluginImage.h"
 
-using namespace BmpImageLoadingPlugin::Models;
+using namespace BmpLoadingPlugin::Models;
 
 BmpPluginImage::BmpPluginImage(int width, int height, char *data, unsigned int dataSize)
     : _width(width), _height(height), _data(data), _dataSize(dataSize)
@@ -10,6 +10,11 @@ BmpPluginImage::BmpPluginImage(int width, int height, char *data, unsigned int d
 BmpPluginImage::~BmpPluginImage()
 {
     delete[] _data;
+}
+
+PixelType BmpPluginImage::getPixelType() const
+{
+    return PixelType::RGB;
 }
 
 unsigned int BmpPluginImage::getDataSize() const

@@ -1,13 +1,17 @@
 #ifndef TENGINE_IMAGE_H
 #define TENGINE_IMAGE_H
 
+#include "PixelType.h"
+
 namespace TEngine::Components::Graphics::ImageLoading::Models
 {
     class Image
     {
     public:
-        Image(char *data, unsigned int dataSize, int width, int height);
+        Image(PixelType pixelType, char *data, unsigned int dataSize, int width, int height);
         ~Image();
+
+        PixelType getPixelType() const;
 
         unsigned int getDataSize() const;
 
@@ -17,6 +21,7 @@ namespace TEngine::Components::Graphics::ImageLoading::Models
         int getHeight() const;
 
     private:
+        PixelType _pixelType;
         char *_data;
         int _width;
         int _height;
