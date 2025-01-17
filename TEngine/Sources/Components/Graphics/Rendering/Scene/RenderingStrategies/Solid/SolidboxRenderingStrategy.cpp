@@ -41,6 +41,11 @@ std::type_index SolidboxRenderingStrategy::getType() const
     return typeid(SolidboxRenderingStrategy);
 }
 
+RenderingPriority SolidboxRenderingStrategy::getRenderingPriority() const
+{
+    return _isVisualizationEnabled ? RenderingPriority::LOW : RenderingPriority::NONE;
+}
+
 std::vector<float> SolidboxRenderingStrategy::_getVertices() const
 {
     return {

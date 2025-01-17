@@ -36,6 +36,10 @@ void GraphicsServiceBase::initialize(std::shared_ptr<IGraphicsParameters> parame
 
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
+
+	// Enable blending
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void GraphicsServiceBase::deinitialize()

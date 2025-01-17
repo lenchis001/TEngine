@@ -10,6 +10,7 @@
 #include "Components/Graphics/Models/Matrix4x4.h"
 #include "Components/Graphics/Rendering/Scene/CameraStrategies/ICameraStrategy.h"
 #include "Components/Graphics/Rendering/Models/Physics/PhysicsFlags.h"
+#include "Components/Graphics/Rendering/Models/Priority/RenderingPriorities.h"
 
 namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
 {
@@ -44,6 +45,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
         virtual void setName(const std::string &name) = 0;
 
         virtual int getId() const = 0;
+
+        virtual Models::Priority::RenderingPriority getRenderingPriority() const = 0;
 
         virtual ~IRenderingStrategy() = default;
 

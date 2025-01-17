@@ -1,5 +1,7 @@
 #include "ImageLoadingService.h"
 
+#include <cassert>
+
 #define TENGINE_IMAGE_LOADING_DIRECTORY "Plugins/ImageLoading"
 
 using namespace TEngine::Components::Graphics::ImageLoading::Services;
@@ -21,7 +23,7 @@ std::shared_ptr<Image> ImageLoadingService::load(const std::string &path)
 
     auto enginePixelType = _toEnginePixelType(result->getPixelType());
 
-    return std::make_shared<Image>(enginePixelType, result->getData(), result->getDataSize(), result->getWidth(), result->getHeight());
+    return std::make_shared<Image>(enginePixelType, result->getData(), result->getWidth(), result->getHeight());
 }
 
 EnginePixelType ImageLoadingService::_toEnginePixelType(PluginPixelType pluginPixelType)

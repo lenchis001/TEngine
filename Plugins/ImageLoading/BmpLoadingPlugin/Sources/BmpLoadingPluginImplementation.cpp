@@ -30,7 +30,10 @@ std::shared_ptr<IPluginImage> BmpLoadingPluginImplementation::load(const std::st
     unsigned char *pBmpData = new unsigned char[dataSize];
     BmpLoadImage(pBmpData, &info, path.c_str());
 
-    return std::make_shared<BmpPluginImage>(info.width, info.height, reinterpret_cast<char*>(pBmpData), dataSize);
+    std::vector<char> data(dataSize);
+    data.assign(pBmpData, pBmpData + dataSize);
+
+    return std::make_shared<BmpPluginImage>(info.width, info.height, data);
 }
 
 std::shared_ptr<IImageLoadingPlugin> load() {

@@ -10,6 +10,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
     public:
         std::type_index getType() const override;
 
+        Models::Priority::RenderingPriority getRenderingPriority() const override;
+
     protected:
         std::string _getDefaultName() const override;
 

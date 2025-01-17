@@ -10,6 +10,7 @@
 #include "Components/Graphics/Rendering/Scene/Buffers/IBuffersService.h"
 #include "Components/Graphics/Rendering/Textures/ITexturesService.h"
 
+using namespace TEngine::Components::Graphics::Rendering::Models::Priority;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Shaders;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Buffers;
 using namespace TEngine::Components::Graphics::Rendering::Textures;
@@ -36,6 +37,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
         void setCube(float size);
 
         std::type_index getType() const override;
+
+        RenderingPriority getRenderingPriority() const override;
 
     protected:
         std::string _getDefaultName() const override;

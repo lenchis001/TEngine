@@ -104,6 +104,18 @@ void TexturesService::release(GLuint textureId)
     assert(false && "Texture not found!");
 }
 
+bool TexturesService::isAlphaChannelAware(GLuint textureId)
+{
+    glBindTexture(GL_TEXTURE_2D, textureId);
+
+    GLint internalFormat;
+    glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_INTERNAL_FORMAT, &internalFormat);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    return internalFormat == GL_RGBA;
+}
+
 GLuint TexturesService::_readTexture(const std::string &textureFile)
 {
     auto image = _imageLoadingService->load(textureFile);
@@ -115,7 +127,16 @@ GLuint TexturesService::_readTexture(const std::string &textureFile)
 
     auto internalFormat = _toTextureInternalFormat(image->getPixelType());
 
-    glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, image->getWidth(), image->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, image->getData());
+    glTexImage2D(
+        GL_TEXTURE_2D,
+        0,
+        internalFormat,
+        image->getWidth(),
+        image->getHeight(),
+        0,
+        internalFormat,
+        GL_UNSIGNED_BYTE,
+        image->getData().data());
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -131,7 +152,16 @@ void TexturesService::_loadCubeMapSide(GLenum side, const std::string &texturePa
 
     auto internalFormat = _toTextureInternalFormat(image->getPixelType());
 
-    glTexImage2D(side, 0, internalFormat, image->getWidth(), image->getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, image->getData());
+    glTexImage2D(
+        side,
+        0,
+        internalFormat,
+        image->getWidth(),
+        image->getHeight(),
+        0,
+        internalFormat,
+        GL_UNSIGNED_BYTE,
+        image->getData().data());
 }
 
 GLuint TexturesService::_toTextureInternalFormat(EnginePixelType pixelType)

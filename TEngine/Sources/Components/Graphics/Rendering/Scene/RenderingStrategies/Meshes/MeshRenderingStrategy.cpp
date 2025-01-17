@@ -8,10 +8,12 @@ MeshRenderingStrategy::MeshRenderingStrategy(
     std::shared_ptr<IMeshService> meshService,
     std::shared_ptr<ILightServices> lightServices,
     std::shared_ptr<IPhysicsService> physicsService,
+    std::shared_ptr<ITexturesService> textureService,
     const std::string &path)
     : PhysicsRenderingStrategyBase(physicsService),
       _meshService(meshService),
       _lightServices(lightServices),
+      _textureService(textureService),
       _path(path)
 {
     _renderableMesh = _meshService->take(_path);
@@ -42,6 +44,26 @@ const std::string &MeshRenderingStrategy::getPath() const
     return _path;
 }
 
+RenderingPriority MeshRenderingStrategy::getRenderingPriority() const
+{
+    bool hasTexture = false;
+
+    for (const auto &shape : _renderableMesh->getShapes())
+    {
+        if (shape->getTextureId())
+        {
+            hasTexture = true;
+
+            if (_textureService->isAlphaChannelAware(shape->getTextureId()))
+            {
+                return RenderingPriority::LOW;
+            }
+        }
+    }
+
+    return hasTexture ? RenderingPriority::HIGH : RenderingPriority::NONE;
+}
+
 std::string MeshRenderingStrategy::_getDefaultName() const
 {
     return "Mesh";
@@ -64,7 +86,6 @@ void MeshRenderingStrategy::_renderSafe(std::shared_ptr<ICameraStrategy> activeC
         auto pointLight = _lightServices->getPointLight();
 
         glUniform3fv(shape->getLightPosShaderId(), 1, pointLight->getPosition().getInternalData());
-
         glUniform3fv(shape->getLightColorShaderId(), 1, pointLight->getDiffuseColor().getInternalData());
 
         float lightPower = 50.0f;

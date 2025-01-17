@@ -91,7 +91,7 @@ std::shared_ptr<IPluginImage> PngLoadingPluginImplementation::load(const std::st
 
     png_destroy_read_struct(&png, &info, nullptr);
 
-    return std::make_shared<PngPluginImage>(width, height, imageData.data(), imageData.size());
+    return std::make_shared<PngPluginImage>(width, height, imageData);
 }
 
 std::shared_ptr<IImageLoadingPlugin> load() {

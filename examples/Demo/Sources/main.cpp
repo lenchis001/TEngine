@@ -20,6 +20,8 @@ void setupScene(std::shared_ptr<ISceneService> sceneService)
 {
     sceneService->setActiveCamera(BuildinCameraTypes::FPS);
 
+    sceneService->addSkySphere();
+
     auto solid = sceneService->addSolidbox();
     solid->setPosition(Vector3df(5.0f, -10.0f, 0.0f));
     solid->setRotation(Vector3df(.0f, .0f, .1f));
@@ -49,8 +51,6 @@ void setupScene(std::shared_ptr<ISceneService> sceneService)
         auto sofa = sceneService->addMesh("./DemoResources/sofa.obj");
         sofa->setPosition(Vector3df(0.f, 0.f, -3.0f * i - 5.0f));
     }
-
-    auto sky = sceneService->addSkySphere();
 }
 
 void sendTestRequest(std::shared_ptr<INetworkService> networkService)
@@ -88,7 +88,7 @@ int main()
 
     auto graphicsParameters = creationParameters->getGraphicsParameters();
     graphicsParameters->setTitle("Demo");
-    graphicsParameters->setIsVerticalSyncEnabled(true);
+    graphicsParameters->setIsVerticalSyncEnabled(false);
 
     engine->initialize(creationParameters);
 

@@ -10,14 +10,12 @@ namespace PngLoadingPlugin::Models
     class PngPluginImage : public IPluginImage
     {
     public:
-        PngPluginImage(int width, int height, char *data, unsigned int dataSize);
+        PngPluginImage(int width, int height, const std::vector<char>& data);
         ~PngPluginImage() override;
 
         virtual PixelType getPixelType() const override;
 
-        virtual unsigned int getDataSize() const override;
-
-        virtual char *getData() const override;
+        virtual const std::vector<char>& getData() const override;
 
         virtual int getWidth() const override;
         virtual int getHeight() const override;
@@ -25,8 +23,7 @@ namespace PngLoadingPlugin::Models
     private:
         int _width;
         int _height;
-        char *_data;
-        unsigned int _dataSize;
+        std::vector<char> _data;
     };
 }
 

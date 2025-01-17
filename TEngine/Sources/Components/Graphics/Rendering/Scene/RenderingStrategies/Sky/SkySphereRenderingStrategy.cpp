@@ -88,6 +88,11 @@ std::type_index SkySphereRenderingStrategy::getType() const
     return typeid(SkySphereRenderingStrategy);
 }
 
+RenderingPriority SkySphereRenderingStrategy::getRenderingPriority() const
+{
+    return RenderingPriority::MEDIUM;
+}
+
 std::string SkySphereRenderingStrategy::_getDefaultName() const
 {
     return "SkySphere";

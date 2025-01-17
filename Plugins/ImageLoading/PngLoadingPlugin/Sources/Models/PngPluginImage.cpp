@@ -2,14 +2,13 @@
 
 using namespace PngLoadingPlugin::Models;
 
-PngPluginImage::PngPluginImage(int width, int height, char *data, unsigned int dataSize)
-    : _width(width), _height(height), _data(data), _dataSize(dataSize)
+PngPluginImage::PngPluginImage(int width, int height, const std::vector<char>& data)
+    : _width(width), _height(height), _data(data)
 {
 }
 
 PngPluginImage::~PngPluginImage()
 {
-    delete[] _data;
 }
 
 PixelType PngPluginImage::getPixelType() const
@@ -17,12 +16,7 @@ PixelType PngPluginImage::getPixelType() const
     return PixelType::RGBA;
 }
 
-unsigned int PngPluginImage::getDataSize() const
-{
-    return _dataSize;
-}
-
-char *PngPluginImage::getData() const
+const std::vector<char>& PngPluginImage::getData() const
 {
     return _data;
 }

@@ -79,6 +79,23 @@ void CubeRenderingStrategy::setTexture(const std::string &texturePath)
     _textureId = _texturesService->take(_texturePath);
 }
 
+RenderingPriority CubeRenderingStrategy::getRenderingPriority() const
+{
+    if (!_textureId)
+    {
+        return RenderingPriority::NONE;
+    }
+
+    if (_texturesService->isAlphaChannelAware(_textureId))
+    {
+        return RenderingPriority::LOW;
+    }
+    else
+    {
+        return RenderingPriority::HIGH;
+    }
+}
+
 std::string CubeRenderingStrategy::_getDefaultName() const
 {
     return "Cube";

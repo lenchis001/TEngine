@@ -11,6 +11,7 @@
 #include "RenderingStrategies/Solid/SolidboxRenderingStrategy.h"
 #include "RenderingStrategies/Empty/EmptyRenderingStrategy.h"
 #include "RenderingStrategies/Sky/SkySphereRenderingStrategy.h"
+#include "Sequence/IRenderingSequenceService.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies;
 using namespace TEngine::Components::Graphics::Rendering::Scene;
@@ -18,6 +19,7 @@ using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrate
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Solid;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Empty;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Sky;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Sequence;
 
 SceneService::SceneService(
 	std::shared_ptr<IEventService> eventService,
@@ -27,6 +29,7 @@ SceneService::SceneService(
 	std::shared_ptr<IMeshService> meshService,
 	std::shared_ptr<ILightServices> lightServices,
 	std::shared_ptr<IPhysicsService> physicsService,
+	std::shared_ptr<IRenderingSequenceService> renderingSequenceService,
 	std::vector<std::shared_ptr<ICameraTrackingStrategy>> buildinCameraTrackingStrategies)
 	: _eventService(eventService),
 	  _shadersService(shadersService),
@@ -35,6 +38,7 @@ SceneService::SceneService(
 	  _meshService(meshService),
 	  _lightServices(lightServices),
 	  _physicsService(physicsService),
+	  _renderingSequenceService(renderingSequenceService),
 	  _activeCamera(nullptr),
 	  _root(std::make_shared<EmptyRenderingStrategy>()),
 	  _buildinCameraTrackingStrategies(buildinCameraTrackingStrategies)
@@ -95,6 +99,7 @@ std::shared_ptr<IMeshRenderingStrategy> SceneService::addMesh(
 		_meshService,
 		_lightServices,
 		_physicsService,
+		_textureService,
 		path);
 
 	strategy->setPhysicsFlags(physicsFlags);

@@ -4,19 +4,16 @@
 
 using namespace TEngine::Components::Graphics::ImageLoading::Models;
 
-Image::Image(PixelType pixelType, char *data, unsigned int dataSize, int width, int height)
+Image::Image(PixelType pixelType, const std::vector<char>& data, int width, int height)
     : _pixelType(pixelType),
-      _dataSize(dataSize),
       _width(width),
-      _height(height)
+      _height(height),
+        _data(data)
 {
-    _data = new char[dataSize];
-    memcpy(_data, data, dataSize);
 }
 
 Image::~Image()
 {
-    delete[] _data;
 }
 
 PixelType Image::getPixelType() const
@@ -24,7 +21,7 @@ PixelType Image::getPixelType() const
     return _pixelType;
 }
 
-char *Image::getData() const
+const std::vector<char>& Image::getData() const
 {
     return _data;
 }

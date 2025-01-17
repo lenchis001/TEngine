@@ -51,6 +51,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene
             std::shared_ptr<IMeshService> meshService,
             std::shared_ptr<ILightServices> lightServices,
             std::shared_ptr<IPhysicsService> physicsService,
+            std::shared_ptr<IRenderingSequenceService> renderingSequenceService,
             std::vector<std::shared_ptr<ICameraTrackingStrategy>> buildinCameraTrackingStrategies);
 
         void initialize() override;
@@ -87,7 +88,6 @@ namespace TEngine::Components::Graphics::Rendering::Scene
         std::shared_ptr<IRenderingStrategy> getRoot() override;
 
     private:
-
         Vector2di _getWindowSize() const;
 
         std::shared_ptr<IEventService> _eventService;
@@ -100,6 +100,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene
         std::shared_ptr<IMeshService> _meshService;
         std::shared_ptr<ILightServices> _lightServices;
         std::shared_ptr<IPhysicsService> _physicsService;
+        std::shared_ptr<IRenderingSequenceService> _renderingSequenceService;
 
         std::vector<std::shared_ptr<ICameraTrackingStrategy>> _buildinCameraTrackingStrategies;
     };

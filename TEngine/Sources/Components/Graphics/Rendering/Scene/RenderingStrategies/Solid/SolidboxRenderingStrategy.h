@@ -7,6 +7,7 @@
 #include "Components/Graphics/Rendering/Scene/Buffers/IBuffersService.h"
 #include "Components/Graphics/Rendering/Scene/Physics/IPhysicsService.h"
 
+using namespace TEngine::Components::Graphics::Rendering::Models::Priority;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Shaders;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Buffers;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Physics;
@@ -25,6 +26,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
         std::type_index getType() const override;
 
         void setIsVisualizationEnabled(bool value) override;
+
+        RenderingPriority getRenderingPriority() const override;
 
     protected:
         std::vector<float> _getVertices() const override;

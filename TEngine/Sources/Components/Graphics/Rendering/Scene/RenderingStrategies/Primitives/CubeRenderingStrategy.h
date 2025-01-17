@@ -17,6 +17,7 @@
 #include "ICubeRenderingStrategy.h"
 
 using namespace TEngine::Components::Graphics::Models;
+using namespace TEngine::Components::Graphics::Rendering::Models::Priority;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Shaders;
 using namespace TEngine::Components::Graphics::ImageLoading::Models;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Buffers;
@@ -45,6 +46,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
         const std::string &getTexture() const override;
 
         void setTexture(const std::string &texturePath) override;
+
+        RenderingPriority getRenderingPriority() const override;
 
     protected:
         std::string _getDefaultName() const override;

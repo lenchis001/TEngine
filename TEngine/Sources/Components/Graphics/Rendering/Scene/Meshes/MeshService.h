@@ -41,6 +41,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::Meshes
     private:
         std::shared_ptr<IRenderableShape> _toRenderableShape(std::shared_ptr<IShape> shape, const std::string &path);
 
+        std::string _getFragmentShaderPath(GLuint textureId);
+
         std::map<std::string, std::pair<std::size_t, std::shared_ptr<IRenderableMesh>>> _renderableMeshes;
 
         std::shared_ptr<IMeshLoadingService> _meshLoadingService;
