@@ -15,6 +15,7 @@
 #include "Components/Graphics/Rendering/Scene/Lights/LightService.h"
 #include "Components/Graphics/Rendering/Scene/Physics/PhysicsService.h"
 #include "Components/Graphics/Rendering/Scene/Physics/EmptyPhysicsService.h"
+#include "Components/Graphics/Rendering/Scene/Sequence/RenderingSequenceService.h"
 #include "Components/Graphics/Rendering/Gui/GlfwGuiService.h"
 #include "Components/Graphics/Rendering/Gui/Win32GuiService.h"
 #include "Components/Graphics/CameraTracking/ListenerCameraTrackingStrategy.h"
@@ -53,6 +54,7 @@ using namespace TEngine::Components::Graphics::ImageLoading::Services;
 using namespace TEngine::Components::Graphics::Rendering::Textures;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Lights;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Physics;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Sequence;
 using namespace TEngine::Components::Graphics::Rendering::Gui;
 using namespace TEngine::Components::Graphics::CameraTracking;
 
@@ -115,10 +117,20 @@ std::shared_ptr<IEngine> TEngine::createEngine(
     auto meshService = std::make_shared<MeshService>(meshLoadingService, bufferCacheService, shadersService, texturesService, indexingService);
     auto lightServices = std::make_shared<LightService>();
     auto physicsService = isPhysicsEnabled ? std::static_pointer_cast<IPhysicsService>(std::make_shared<PhysicsService>()) : std::static_pointer_cast<IPhysicsService>(std::make_shared<EmptyPhysicsService>());
+    auto renderingSequenceService = std::make_shared<RenderingSequenceService>();
 
     auto buildinCameraTrackingStrategies = std::vector<std::shared_ptr<ICameraTrackingStrategy>>{
         std::make_shared<ListenerCameraTrackingStrategy>(audioService)};
-    auto sceneService = std::make_shared<SceneService>(eventsService, shadersService, bufferCacheService, texturesService, meshService, lightServices, physicsService, buildinCameraTrackingStrategies);
+    auto sceneService = std::make_shared<SceneService>(
+        eventsService,
+        shadersService,
+        bufferCacheService,
+        texturesService,
+        meshService,
+        lightServices,
+        physicsService,
+        renderingSequenceService,
+        buildinCameraTrackingStrategies);
 
     std::shared_ptr<IGuiService> guiService;
     std::shared_ptr<IGraphicsService> graphicsService;

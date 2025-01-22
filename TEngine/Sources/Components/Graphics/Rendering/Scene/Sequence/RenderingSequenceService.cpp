@@ -28,7 +28,7 @@ std::vector<std::shared_ptr<IRenderingStrategy>> RenderingSequenceService::gener
                 return aDistance < bDistance;
             }
 
-            return aPriority < bPriority;
+            return aPriority > bPriority;
         });
 
     return sequence;

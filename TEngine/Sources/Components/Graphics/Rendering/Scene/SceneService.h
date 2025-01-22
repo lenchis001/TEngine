@@ -15,6 +15,7 @@
 #include "Lights/ILightServices.h"
 #include "Physics/IPhysicsService.h"
 #include "CameraStrategies/Tracking/ICameraTrackingStrategy.h"
+#include "Sequence/IRenderingSequenceService.h"
 
 #include "Components/Graphics/Models/Vector2d.h"
 
@@ -37,6 +38,7 @@ using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrate
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Meshes;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Primitives;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Solid;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Sequence;
 
 namespace TEngine::Components::Graphics::Rendering::Scene
 {
@@ -103,6 +105,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene
         std::shared_ptr<IRenderingSequenceService> _renderingSequenceService;
 
         std::vector<std::shared_ptr<ICameraTrackingStrategy>> _buildinCameraTrackingStrategies;
+
+        std::vector<std::shared_ptr<IRenderingStrategy>> _renderingSequence;
     };
 }
 

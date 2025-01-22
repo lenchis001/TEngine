@@ -64,7 +64,12 @@ void SceneService::render(double time)
 		_lightServices->update();
 		_activeCamera->render(time);
 
-		_root->render(_activeCamera);
+		_root->update(_activeCamera);
+
+		for (const auto &strategy : _renderingSequence)
+		{
+			strategy->render(_activeCamera);
+		}
 	}
 }
 
@@ -87,6 +92,8 @@ std::shared_ptr<ICubeRenderingStrategy> SceneService::addCube(
 
 	(parent ? parent : _root)->addChild(strategy);
 
+	_renderingSequence = _renderingSequenceService->generateSequence(_root, _activeCamera->getPosition());
+
 	return strategy;
 }
 
@@ -106,6 +113,8 @@ std::shared_ptr<IMeshRenderingStrategy> SceneService::addMesh(
 
 	(parent ? parent : _root)->addChild(strategy);
 
+	_renderingSequence = _renderingSequenceService->generateSequence(_root, _activeCamera->getPosition());
+
 	return strategy;
 }
 
@@ -121,6 +130,8 @@ std::shared_ptr<ISolidboxRenderingStrategy> SceneService::addSolidbox(
 
 	strategy->setPhysicsFlags(PhysicsFlags::STATIC);
 
+	_renderingSequence = _renderingSequenceService->generateSequence(_root, _activeCamera->getPosition());
+
 	return strategy;
 }
 
@@ -130,6 +141,8 @@ std::shared_ptr<IRenderingStrategy> SceneService::addEmpty(
 	std::shared_ptr<IRenderingStrategy> strategy = std::make_shared<EmptyRenderingStrategy>();
 
 	(parent ? parent : _root)->addChild(strategy);
+
+	_renderingSequence = _renderingSequenceService->generateSequence(_root, _activeCamera->getPosition());
 
 	return strategy;
 }
@@ -154,6 +167,8 @@ std::shared_ptr<IRenderingStrategy> SceneService::addSkySphere(
 	strategy->setScale(Vector3df(100.0f, 100.0f, 100.0f));
 
 	(parent ? parent : _root)->addChild(strategy);
+
+	_renderingSequence = _renderingSequenceService->generateSequence(_root, _activeCamera->getPosition());
 
 	return strategy;
 }

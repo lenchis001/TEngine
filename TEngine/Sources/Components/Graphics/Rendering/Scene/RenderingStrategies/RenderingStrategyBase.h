@@ -47,6 +47,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
 
         int getId() const override;
 
+        void update(std::shared_ptr<ICameraStrategy> activeCameraStrategy) final;
         void render(std::shared_ptr<ICameraStrategy> activeCameraStrategy) final;
 
     protected:

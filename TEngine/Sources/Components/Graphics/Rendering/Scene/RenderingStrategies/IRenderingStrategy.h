@@ -19,6 +19,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
     class IRenderingStrategy : public Mixins::TypeInfoAware
     {
     public:
+        virtual void update(std::shared_ptr<Graphics::Rendering::Scene::CameraStrategies::ICameraStrategy> activeCameraStrategy) = 0;
         virtual void render(std::shared_ptr<Graphics::Rendering::Scene::CameraStrategies::ICameraStrategy> activeCameraStrategy) = 0;
 
         virtual void setPosition(const Graphics::Models::Vector3df &position) = 0;

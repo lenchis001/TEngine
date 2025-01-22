@@ -125,7 +125,7 @@ Vector3df RenderingStrategyBase::getAbsoluteScale() const
     return _modelMatrix.getScale();
 }
 
-void RenderingStrategyBase::render(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
+void RenderingStrategyBase::update(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
 {
     const auto &vpMatrix = activeCameraStrategy->getVpMatrix();
 
@@ -136,17 +136,20 @@ void RenderingStrategyBase::render(std::shared_ptr<ICameraStrategy> activeCamera
         _updateMvpMatrix();
     }
 
+    for (const auto child : _children)
+    {
+        child->update(activeCameraStrategy);
+    }
+}
+
+void RenderingStrategyBase::render(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
+{
     if (_isRenderingSkipAllowed(activeCameraStrategy))
     {
         return;
     }
 
     _renderSafe(activeCameraStrategy);
-
-    for (const auto child : _children)
-    {
-        child->render(activeCameraStrategy);
-    }
 }
 
 const std::string &RenderingStrategyBase::getName()
