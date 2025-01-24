@@ -22,7 +22,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
     public:
         SkySphereRenderingStrategy(std::shared_ptr<IShadersService> shadersService,
                                    std::shared_ptr<IBuffersService> bufferCacheService,
-                                   std::shared_ptr<ITexturesService> texturesService);
+                                   std::shared_ptr<ITexturesService> texturesService,
+                                   OnDeleteCallback onDeleteCallback);
 
         ~SkySphereRenderingStrategy();
 

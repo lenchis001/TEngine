@@ -20,7 +20,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingMixins
     class PhysicsRenderingStrategyBase : public RenderingStrategyBase, public virtual IPhysicsRenderingAware
     {
     public:
-        PhysicsRenderingStrategyBase(std::shared_ptr<IPhysicsService> physicsService);
+        PhysicsRenderingStrategyBase(std::shared_ptr<IPhysicsService> physicsService, OnDeleteCallback onDeleteCallback);
 
         void setPosition(const Vector3df &position) override;
 

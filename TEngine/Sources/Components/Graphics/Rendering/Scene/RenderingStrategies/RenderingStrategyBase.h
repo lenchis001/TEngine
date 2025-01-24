@@ -5,6 +5,7 @@
 
 #include <memory>
 #include <vector>
+#include <functional>
 
 #include "Components/Graphics/Models/Vector3d.h"
 
@@ -16,10 +17,12 @@ using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingMixins
 
 namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
 {
+    typedef std::function<void()> OnDeleteCallback;
+
     class RenderingStrategyBase : public RenderingOptimizationMixin, public std::enable_shared_from_this<IRenderingStrategy>, public virtual IRenderingStrategy
     {
     public:
-        RenderingStrategyBase();
+        RenderingStrategyBase(OnDeleteCallback onDeleteCallback);
         ~RenderingStrategyBase();
 
         const std::vector<std::shared_ptr<IRenderingStrategy>> &getChildren() const override;
@@ -89,6 +92,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
         int _id;
 
         static int _idCounter;
+
+        OnDeleteCallback _onDeleteCallback;
     };
 }
 

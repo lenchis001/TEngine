@@ -29,6 +29,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
             std::shared_ptr<ILightServices> lightServices,
             std::shared_ptr<IPhysicsService> physicsService,
             std::shared_ptr<ITexturesService> textureService,
+            OnDeleteCallback onDeleteCallback,
             const std::string &path);
         ~MeshRenderingStrategy();
 

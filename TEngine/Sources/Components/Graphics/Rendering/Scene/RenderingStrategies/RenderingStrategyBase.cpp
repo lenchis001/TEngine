@@ -2,16 +2,17 @@
 
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies;
 
-RenderingStrategyBase::RenderingStrategyBase() : _position(Vector3df(0.0f, 0.0f, 0.0f)),
-                                                 _rotation(Vector3df(0.0f, 0.0f, 0.0f)),
-                                                 _scale(Vector3df(1.0f, 1.0f, 1.0f)),
-                                                 _parentMatrix(Matrix4x4f(1.0f)),
-                                                 _vpMatrix(Matrix4x4f(1.f)),
-                                                 _mvpMatrix(Matrix4x4f(1.f)),
-                                                 _translationMatrix(Matrix4x4f(1.f)),
-                                                 _rotationMatrix(Matrix4x4f(1.f)),
-                                                 _scaleMatrix(Matrix4x4f(1.f)),
-                                                 _id(++_idCounter)
+RenderingStrategyBase::RenderingStrategyBase(OnDeleteCallback onDeleteCallback) : _position(Vector3df(0.0f, 0.0f, 0.0f)),
+                                                                                  _rotation(Vector3df(0.0f, 0.0f, 0.0f)),
+                                                                                  _scale(Vector3df(1.0f, 1.0f, 1.0f)),
+                                                                                  _parentMatrix(Matrix4x4f(1.0f)),
+                                                                                  _vpMatrix(Matrix4x4f(1.f)),
+                                                                                  _mvpMatrix(Matrix4x4f(1.f)),
+                                                                                  _translationMatrix(Matrix4x4f(1.f)),
+                                                                                  _rotationMatrix(Matrix4x4f(1.f)),
+                                                                                  _scaleMatrix(Matrix4x4f(1.f)),
+                                                                                  _id(++_idCounter),
+                                                                                  _onDeleteCallback(onDeleteCallback)
 {
     _updateTranslationMatrix();
     _updateRotationMatrix();
@@ -226,6 +227,8 @@ void RenderingStrategyBase::_onDetachedFromParent()
     _parentMatrix = Matrix4x4f(1.0f);
 
     _updateModelMatrix(_parentMatrix);
+    
+    _onDeleteCallback();
 }
 
 void RenderingStrategyBase::_updateMvpMatrix()

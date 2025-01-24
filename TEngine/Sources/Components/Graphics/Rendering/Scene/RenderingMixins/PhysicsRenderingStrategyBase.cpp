@@ -2,8 +2,9 @@
 
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingMixins;
 
-PhysicsRenderingStrategyBase::PhysicsRenderingStrategyBase(std::shared_ptr<IPhysicsService> physicsService)
-    : _physicsService(physicsService),
+PhysicsRenderingStrategyBase::PhysicsRenderingStrategyBase(std::shared_ptr<IPhysicsService> physicsService, OnDeleteCallback onDeleteCallback)
+    : RenderingStrategyBase(onDeleteCallback),
+      _physicsService(physicsService),
       _physicsFlags(PhysicsFlags::NONE),
       _isAttachedToParent(false)
 {

@@ -87,9 +87,12 @@ namespace TEngine::Components::Graphics::Rendering::Scene
 
         void setActiveCamera(std::shared_ptr<ICameraStrategy> camera) override;
 
-        std::shared_ptr<IRenderingStrategy> getRoot() override;
+        std::shared_ptr<IRenderingStrategy> getRoot() override; 
 
     private:
+        void _updateRenderingSequenceIfNecessary();
+        void _updateRenderingSequence();
+
         Vector2di _getWindowSize() const;
 
         std::shared_ptr<IEventService> _eventService;
@@ -107,6 +110,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene
         std::vector<std::shared_ptr<ICameraTrackingStrategy>> _buildinCameraTrackingStrategies;
 
         std::vector<std::shared_ptr<IRenderingStrategy>> _renderingSequence;
+
+        Vector3df _lastOptimizedPosition;
     };
 }
 

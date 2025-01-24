@@ -20,7 +20,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
         SolidboxRenderingStrategy(
             std::shared_ptr<IShadersService> shadersService,
             std::shared_ptr<IBuffersService> bufferCacheService,
-            std::shared_ptr<IPhysicsService> physicsService);
+            std::shared_ptr<IPhysicsService> physicsService,
+            OnDeleteCallback onDeleteCallback);
         ~SolidboxRenderingStrategy() override;
 
         std::type_index getType() const override;

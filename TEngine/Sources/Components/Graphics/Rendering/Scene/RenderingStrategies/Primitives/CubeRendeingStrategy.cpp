@@ -17,8 +17,9 @@ CubeRenderingStrategy::CubeRenderingStrategy(
     std::shared_ptr<IShadersService> shadersService,
     std::shared_ptr<IBuffersService> bufferCacheService,
     std::shared_ptr<ITexturesService> texturesService,
-    std::shared_ptr<IPhysicsService> physicsService)
-    : PhysicsRenderingStrategyBase(physicsService),
+    std::shared_ptr<IPhysicsService> physicsService,
+    OnDeleteCallback onDeleteCallback)
+    : PhysicsRenderingStrategyBase(physicsService, onDeleteCallback),
       _shadersService(shadersService),
       _bufferCacheService(bufferCacheService),
       _texturesService(texturesService),

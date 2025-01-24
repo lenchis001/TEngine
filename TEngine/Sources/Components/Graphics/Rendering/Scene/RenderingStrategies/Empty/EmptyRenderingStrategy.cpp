@@ -3,6 +3,11 @@
 using namespace TEngine::Components::Graphics::Rendering::Models::Priority;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Empty;
 
+EmptyRenderingStrategy::EmptyRenderingStrategy(OnDeleteCallback onDeleteCallback)
+    : RenderingStrategyBase(onDeleteCallback)
+{
+}
+
 std::type_index EmptyRenderingStrategy::getType() const
 {
     return typeid(EmptyRenderingStrategy);

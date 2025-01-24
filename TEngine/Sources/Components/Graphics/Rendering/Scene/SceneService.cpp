@@ -40,7 +40,7 @@ SceneService::SceneService(
 	  _physicsService(physicsService),
 	  _renderingSequenceService(renderingSequenceService),
 	  _activeCamera(nullptr),
-	  _root(std::make_shared<EmptyRenderingStrategy>()),
+	  _root(std::make_shared<EmptyRenderingStrategy>(std::bind(&SceneService::_updateRenderingSequence, this))),
 	  _buildinCameraTrackingStrategies(buildinCameraTrackingStrategies)
 {
 }
@@ -82,7 +82,8 @@ std::shared_ptr<ICubeRenderingStrategy> SceneService::addCube(
 		_shadersService,
 		_bufferCacheService,
 		_textureService,
-		_physicsService);
+		_physicsService,
+		std::bind(&SceneService::_updateRenderingSequence, this));
 
 	if (!texturePath.empty())
 	{
@@ -92,7 +93,7 @@ std::shared_ptr<ICubeRenderingStrategy> SceneService::addCube(
 
 	(parent ? parent : _root)->addChild(strategy);
 
-	_renderingSequence = _renderingSequenceService->generateSequence(_root, _activeCamera->getPosition());
+	_updateRenderingSequence();
 
 	return strategy;
 }
@@ -107,13 +108,14 @@ std::shared_ptr<IMeshRenderingStrategy> SceneService::addMesh(
 		_lightServices,
 		_physicsService,
 		_textureService,
+		std::bind(&SceneService::_updateRenderingSequence, this),
 		path);
 
 	strategy->setPhysicsFlags(physicsFlags);
 
 	(parent ? parent : _root)->addChild(strategy);
 
-	_renderingSequence = _renderingSequenceService->generateSequence(_root, _activeCamera->getPosition());
+	_updateRenderingSequence();
 
 	return strategy;
 }
@@ -124,13 +126,14 @@ std::shared_ptr<ISolidboxRenderingStrategy> SceneService::addSolidbox(
 	std::shared_ptr<ISolidboxRenderingStrategy> strategy = std::make_shared<SolidboxRenderingStrategy>(
 		_shadersService,
 		_bufferCacheService,
-		_physicsService);
+		_physicsService,
+		std::bind(&SceneService::_updateRenderingSequence, this));
 
 	(parent ? parent : _root)->addChild(strategy);
 
 	strategy->setPhysicsFlags(PhysicsFlags::STATIC);
 
-	_renderingSequence = _renderingSequenceService->generateSequence(_root, _activeCamera->getPosition());
+	_updateRenderingSequence();
 
 	return strategy;
 }
@@ -138,11 +141,11 @@ std::shared_ptr<ISolidboxRenderingStrategy> SceneService::addSolidbox(
 std::shared_ptr<IRenderingStrategy> SceneService::addEmpty(
 	std::shared_ptr<IRenderingStrategy> parent)
 {
-	std::shared_ptr<IRenderingStrategy> strategy = std::make_shared<EmptyRenderingStrategy>();
+	std::shared_ptr<IRenderingStrategy> strategy = std::make_shared<EmptyRenderingStrategy>(std::bind(&SceneService::_updateRenderingSequence, this));
 
 	(parent ? parent : _root)->addChild(strategy);
 
-	_renderingSequence = _renderingSequenceService->generateSequence(_root, _activeCamera->getPosition());
+	_updateRenderingSequence();
 
 	return strategy;
 }
@@ -153,7 +156,8 @@ std::shared_ptr<IRenderingStrategy> SceneService::addSkySphere(
 	std::shared_ptr<SkySphereRenderingStrategy> strategy = std::make_shared<SkySphereRenderingStrategy>(
 		_shadersService,
 		_bufferCacheService,
-		_textureService);
+		_textureService,
+		std::bind(&SceneService::_updateRenderingSequence, this));
 
 	// todo: remoove after test
 	strategy->setTexture(
@@ -168,7 +172,7 @@ std::shared_ptr<IRenderingStrategy> SceneService::addSkySphere(
 
 	(parent ? parent : _root)->addChild(strategy);
 
-	_renderingSequence = _renderingSequenceService->generateSequence(_root, _activeCamera->getPosition());
+	_updateRenderingSequence();
 
 	return strategy;
 }
@@ -219,4 +223,23 @@ std::shared_ptr<IRenderingStrategy> SceneService::getRoot()
 Vector2di SceneService::_getWindowSize() const
 {
 	return Vector2di(1280, 720);
+}
+
+void SceneService::_updateRenderingSequenceIfNecessary()
+{
+	const auto &cameraPosition = _activeCamera->getPosition();
+
+	if (_lastOptimizedPosition)
+	{
+		_updateRenderingSequence();
+	}
+}
+
+void SceneService::_updateRenderingSequence()
+{
+	const auto &cameraPosition = _activeCamera->getPosition();
+
+	_renderingSequence = _renderingSequenceService->generateSequence(_root, cameraPosition);
+
+	_lastOptimizedPosition = cameraPosition;
 }

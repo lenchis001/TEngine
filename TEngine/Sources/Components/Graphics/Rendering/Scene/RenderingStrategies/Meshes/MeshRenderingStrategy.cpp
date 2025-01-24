@@ -9,8 +9,9 @@ MeshRenderingStrategy::MeshRenderingStrategy(
     std::shared_ptr<ILightServices> lightServices,
     std::shared_ptr<IPhysicsService> physicsService,
     std::shared_ptr<ITexturesService> textureService,
+    OnDeleteCallback onDeleteCallback,
     const std::string &path)
-    : PhysicsRenderingStrategyBase(physicsService),
+    : PhysicsRenderingStrategyBase(physicsService, onDeleteCallback),
       _meshService(meshService),
       _lightServices(lightServices),
       _textureService(textureService),

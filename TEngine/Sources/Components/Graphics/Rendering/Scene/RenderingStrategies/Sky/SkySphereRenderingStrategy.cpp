@@ -14,8 +14,10 @@ using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrate
 SkySphereRenderingStrategy::
     SkySphereRenderingStrategy(std::shared_ptr<IShadersService> shadersService,
                                std::shared_ptr<IBuffersService> bufferCacheService,
-                               std::shared_ptr<ITexturesService> texturesService)
-    : _shadersService(shadersService),
+                               std::shared_ptr<ITexturesService> texturesService,
+                               OnDeleteCallback onDeleteCallback)
+    : RenderingStrategyBase(onDeleteCallback),
+      _shadersService(shadersService),
       _bufferCacheService(bufferCacheService),
       _texturesService(texturesService),
       _textureId(0),
