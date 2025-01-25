@@ -15,13 +15,14 @@
 #include "Lights/ILightServices.h"
 #include "Physics/IPhysicsService.h"
 #include "CameraStrategies/Tracking/ICameraTrackingStrategy.h"
+#include "Sequence/IRenderingSequenceService.h"
 
 #include "Components/Graphics/Models/Vector2d.h"
 
 using namespace TEngine::Components::Events::Services;
 
 using namespace TEngine::Components::Graphics::Models;
-using namespace TEngine::Components::Graphics::Rendering::Models::Physics;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Models::Physics;
 using namespace TEngine::Components::Graphics::Rendering::Models::Meshes;
 using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Shaders;
@@ -37,6 +38,8 @@ using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrate
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Meshes;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Primitives;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Solid;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Sequence;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Models;
 
 namespace TEngine::Components::Graphics::Rendering::Scene
 {
@@ -51,9 +54,10 @@ namespace TEngine::Components::Graphics::Rendering::Scene
             std::shared_ptr<IMeshService> meshService,
             std::shared_ptr<ILightServices> lightServices,
             std::shared_ptr<IPhysicsService> physicsService,
+            std::shared_ptr<IRenderingSequenceService> renderingSequenceService,
             std::vector<std::shared_ptr<ICameraTrackingStrategy>> buildinCameraTrackingStrategies);
 
-        void initialize() override;
+        void initialize(std::shared_ptr<ISceneParameters> parameters) override;
 
         void deinitialize() override;
 
@@ -84,9 +88,11 @@ namespace TEngine::Components::Graphics::Rendering::Scene
 
         void setActiveCamera(std::shared_ptr<ICameraStrategy> camera) override;
 
-        std::shared_ptr<IRenderingStrategy> getRoot() override;
+        std::shared_ptr<IRenderingStrategy> getRoot() override; 
 
     private:
+        void _updateRenderingSequenceIfNecessary();
+        void _updateRenderingSequence();
 
         Vector2di _getWindowSize() const;
 
@@ -100,8 +106,14 @@ namespace TEngine::Components::Graphics::Rendering::Scene
         std::shared_ptr<IMeshService> _meshService;
         std::shared_ptr<ILightServices> _lightServices;
         std::shared_ptr<IPhysicsService> _physicsService;
+        std::shared_ptr<IRenderingSequenceService> _renderingSequenceService;
 
         std::vector<std::shared_ptr<ICameraTrackingStrategy>> _buildinCameraTrackingStrategies;
+
+        std::vector<std::shared_ptr<IRenderingStrategy>> _renderingSequence;
+
+        Vector3df _lastOptimizedPosition;
+        float _sequenceUpdateThreshold;
     };
 }
 

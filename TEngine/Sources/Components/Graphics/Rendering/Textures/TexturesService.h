@@ -36,6 +36,8 @@ namespace TEngine::Components::Graphics::Rendering::Textures
 
         void release(GLuint textureId) override;
 
+        bool isAlphaChannelAware(GLuint textureId) override;
+
     private:
         GLuint _readTexture(const std::string& textureFile);
 

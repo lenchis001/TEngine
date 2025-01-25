@@ -5,7 +5,7 @@ in vec3 attenuationCosTheta;
 in vec3 attenuationCosAlpha5;
 
 // Output data
-out vec3 color;
+out vec4 color;
 
 uniform vec3 shapeColor;
 
@@ -16,11 +16,11 @@ void main()
 	vec3 MaterialAmbientColor = vec3(0.1, 0.1, 0.1) * MaterialDiffuseColor;
 	vec3 MaterialSpecularColor = shapeColor;
 
-	color =
+	color = vec4(
 		// Ambient : simulates indirect lighting
 		MaterialAmbientColor +
 		// Diffuse : "color" of the object
 		MaterialDiffuseColor * attenuationCosTheta +
 		// Specular : reflective highlight, like a mirror
-		MaterialSpecularColor * attenuationCosAlpha5;
+		MaterialSpecularColor * attenuationCosAlpha5, 1);
 }

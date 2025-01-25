@@ -12,11 +12,12 @@
 #include "Components/Graphics/Rendering/Textures/ITexturesService.h"
 #include "Components/Graphics/Rendering/Scene/Physics/IPhysicsService.h"
 
-#include "Components/Graphics/Rendering/Scene/RenderingMixins/PhysicsRenderingStrategyBase.h"
+#include "Components/Graphics/Rendering/Scene/RenderingStrategies/Physics/PhysicsRenderingStrategyBase.h"
 
 #include "ICubeRenderingStrategy.h"
 
 using namespace TEngine::Components::Graphics::Models;
+using namespace TEngine::Components::Graphics::Rendering::Models::Priority;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Shaders;
 using namespace TEngine::Components::Graphics::ImageLoading::Models;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Buffers;
@@ -33,7 +34,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
             std::shared_ptr<IShadersService> shadersService,
             std::shared_ptr<IBuffersService> bufferCacheService,
             std::shared_ptr<ITexturesService> texturesService,
-            std::shared_ptr<IPhysicsService> physicsService);
+            std::shared_ptr<IPhysicsService> physicsService,
+            OnDeleteCallback onDeleteCallback);
         ~CubeRenderingStrategy() override;
 
         std::type_index getType() const override;
@@ -45,6 +47,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
         const std::string &getTexture() const override;
 
         void setTexture(const std::string &texturePath) override;
+
+        RenderingPriority getRenderingPriority() const override;
 
     protected:
         std::string _getDefaultName() const override;

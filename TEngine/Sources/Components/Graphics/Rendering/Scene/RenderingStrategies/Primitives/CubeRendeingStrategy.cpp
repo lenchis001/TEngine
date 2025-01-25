@@ -17,8 +17,9 @@ CubeRenderingStrategy::CubeRenderingStrategy(
     std::shared_ptr<IShadersService> shadersService,
     std::shared_ptr<IBuffersService> bufferCacheService,
     std::shared_ptr<ITexturesService> texturesService,
-    std::shared_ptr<IPhysicsService> physicsService)
-    : PhysicsRenderingStrategyBase(physicsService),
+    std::shared_ptr<IPhysicsService> physicsService,
+    OnDeleteCallback onDeleteCallback)
+    : PhysicsRenderingStrategyBase(physicsService, onDeleteCallback),
       _shadersService(shadersService),
       _bufferCacheService(bufferCacheService),
       _texturesService(texturesService),
@@ -77,6 +78,23 @@ void CubeRenderingStrategy::setTexture(const std::string &texturePath)
     _texturePath = texturePath;
 
     _textureId = _texturesService->take(_texturePath);
+}
+
+RenderingPriority CubeRenderingStrategy::getRenderingPriority() const
+{
+    if (!_textureId)
+    {
+        return RenderingPriority::NONE;
+    }
+
+    if (_texturesService->isAlphaChannelAware(_textureId))
+    {
+        return RenderingPriority::LOW;
+    }
+    else
+    {
+        return RenderingPriority::HIGH;
+    }
 }
 
 std::string CubeRenderingStrategy::_getDefaultName() const

@@ -9,7 +9,7 @@
 #include "Components/Graphics/Models/Vector3d.h"
 
 using namespace TEngine::Components::Graphics::Models;
-using namespace TEngine::Components::Graphics::Rendering::Models::Physics;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Models::Physics;
 using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
 using namespace TEngine::Components::Graphics::Rendering::Scene;
 using namespace TEngine::Components::Network::Http;
@@ -19,6 +19,8 @@ using namespace TEngine::Components::Network::WebSocket::Client;
 void setupScene(std::shared_ptr<ISceneService> sceneService)
 {
     sceneService->setActiveCamera(BuildinCameraTypes::FPS);
+
+    sceneService->addSkySphere();
 
     auto solid = sceneService->addSolidbox();
     solid->setPosition(Vector3df(5.0f, -10.0f, 0.0f));
@@ -49,8 +51,6 @@ void setupScene(std::shared_ptr<ISceneService> sceneService)
         auto sofa = sceneService->addMesh("./DemoResources/sofa.obj");
         sofa->setPosition(Vector3df(0.f, 0.f, -3.0f * i - 5.0f));
     }
-
-    auto sky = sceneService->addSkySphere();
 }
 
 void sendTestRequest(std::shared_ptr<INetworkService> networkService)
@@ -88,7 +88,8 @@ int main()
 
     auto graphicsParameters = creationParameters->getGraphicsParameters();
     graphicsParameters->setTitle("Demo");
-    graphicsParameters->setIsVerticalSyncEnabled(true);
+    graphicsParameters->setIsVerticalSyncEnabled(false);
+    graphicsParameters->getSceneParameters()->setSequenceUpdateThreshold(20.f);
 
     engine->initialize(creationParameters);
 

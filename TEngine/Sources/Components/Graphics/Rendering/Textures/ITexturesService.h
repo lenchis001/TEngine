@@ -25,6 +25,8 @@ namespace TEngine::Components::Graphics::Rendering::Textures
             const std::string &backTexturePath) = 0;
 
         virtual void release(GLuint textureId) = 0;
+
+        virtual bool isAlphaChannelAware(GLuint textureId) = 0;
     };
 }
 

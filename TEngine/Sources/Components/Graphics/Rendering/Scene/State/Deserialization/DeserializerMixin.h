@@ -9,7 +9,7 @@ using namespace TEngine::Components::State::Deserialization::Deserializers;
 using namespace TEngine::Components::Graphics::Rendering::Scene;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies;
 using namespace TEngine::Components::Graphics::Models;
-using namespace TEngine::Components::Graphics::Rendering::Models::Physics;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Models::Physics;
 
 namespace TEngine::Components::Graphics::Rendering::Scene::State::Deserialization
 {

@@ -10,14 +10,12 @@ namespace BmpLoadingPlugin::Models
     class BmpPluginImage : public IPluginImage
     {
     public:
-        BmpPluginImage(int width, int height, char *data, unsigned int dataSize);
+        BmpPluginImage(int width, int height, const std::vector<char>& data);
         ~BmpPluginImage() override;
 
         virtual PixelType getPixelType() const override;
 
-        virtual unsigned int getDataSize() const override;
-
-        virtual char *getData() const override;
+        virtual const std::vector<char>& getData() const override;
 
         virtual int getWidth() const override;
         virtual int getHeight() const override;
@@ -25,8 +23,7 @@ namespace BmpLoadingPlugin::Models
     private:
         int _width;
         int _height;
-        char *_data;
-        unsigned int _dataSize;
+        std::vector<char> _data;
     };
 }
 

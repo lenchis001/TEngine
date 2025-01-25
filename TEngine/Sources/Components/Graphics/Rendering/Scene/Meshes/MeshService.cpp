@@ -13,7 +13,8 @@ using namespace TEngine::Components::Graphics::Rendering::Scene::Meshes;
 #define COLORED_VERTEX_SHADER_SOURCE "BuildinResources/Shaders/Mesh/ColoredShapeVertexShader.glsl"
 #define COLORED_FRAGMENT_SHADER_SOURCE "BuildinResources/Shaders/Mesh/ColoredShapeFragmentShader.glsl"
 #define TEXTURED_VERTEX_SHADER_SOURCE "BuildinResources/Shaders/Mesh/TexturedShapeVertexShader.glsl"
-#define TEXTURED_FRAGMENT_SHADER_SOURCE "BuildinResources/Shaders/Mesh/TexturedShapeFragmentShader.glsl"
+#define TEXTURED_FRAGMENT_SHADER_RGB_SOURCE "BuildinResources/Shaders/Mesh/TexturedShapeFragmentShaderRGB.glsl"
+#define TEXTURED_FRAGMENT_SHADER_RGBA_SOURCE "BuildinResources/Shaders/Mesh/TexturedShapeFragmentShaderRGBA.glsl"
 
 #define toVertexName(name) name + "Vertices"
 #define toNormalName(name) name + "Normals"
@@ -120,7 +121,6 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     // Prepare UVs VBO
-    auto texPath = shape->getTexturePath();
     auto isTextured = shape->isTextured();
 
     GLuint uvsBuffer = 0;
@@ -166,19 +166,6 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexes.size() * sizeof(unsigned int), indexes.data(), GL_STATIC_DRAW);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-    // Prepare program
-    auto vertedShader = isTextured ? TEXTURED_VERTEX_SHADER_SOURCE : COLORED_VERTEX_SHADER_SOURCE;
-    auto fragmentShader = isTextured ? TEXTURED_FRAGMENT_SHADER_SOURCE : COLORED_FRAGMENT_SHADER_SOURCE;
-    auto program = _shadersService->take(vertedShader, fragmentShader);
-
-    auto mvpMatrixShaderId = glGetUniformLocation(program, "MVP");
-    auto modelMatrixShaderId = glGetUniformLocation(program, "modelMatrix");
-    auto viewMatrixShaderId = glGetUniformLocation(program, "viewMatrix");
-    auto lightPosShaderId = glGetUniformLocation(program, "lightPosition");
-    auto lightColorShaderId = glGetUniformLocation(program, "lightColor");
-    auto lightPowerShaderId = glGetUniformLocation(program, "lightPower");
-    auto shapeColorShaderId = glGetUniformLocation(program, "shapeColor");
-
     // Prepare texture
     GLuint textureId;
 
@@ -190,6 +177,19 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
     {
         textureId = 0;
     }
+
+    // Prepare program
+    auto vertedShader = isTextured ? TEXTURED_VERTEX_SHADER_SOURCE : COLORED_VERTEX_SHADER_SOURCE;
+    auto fragmentShader = _getFragmentShaderPath(textureId);
+    auto program = _shadersService->take(vertedShader, fragmentShader);
+
+    auto mvpMatrixShaderId = glGetUniformLocation(program, "MVP");
+    auto modelMatrixShaderId = glGetUniformLocation(program, "modelMatrix");
+    auto viewMatrixShaderId = glGetUniformLocation(program, "viewMatrix");
+    auto lightPosShaderId = glGetUniformLocation(program, "lightPosition");
+    auto lightColorShaderId = glGetUniformLocation(program, "lightColor");
+    auto lightPowerShaderId = glGetUniformLocation(program, "lightPower");
+    auto shapeColorShaderId = glGetUniformLocation(program, "shapeColor");
 
     return std::make_shared<RenderableShape>(
         name,
@@ -206,4 +206,23 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
         shapeColorShaderId,
         shape->getDiffuseColor(),
         textureId);
+}
+
+std::string MeshService::_getFragmentShaderPath(GLuint textureId)
+{
+    if (!textureId)
+    {
+        return COLORED_FRAGMENT_SHADER_SOURCE;
+    }
+
+    auto isAlphaChannelAware = _texturesService->isAlphaChannelAware(textureId);
+
+    if (isAlphaChannelAware)
+    {
+        return TEXTURED_FRAGMENT_SHADER_RGBA_SOURCE;
+    }
+    else
+    {
+        return TEXTURED_FRAGMENT_SHADER_RGB_SOURCE;
+    }
 }

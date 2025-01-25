@@ -29,7 +29,8 @@ if(NOT zlib_POPULATED)
     add_subdirectory(${zlib_SOURCE_DIR} ${zlib_BINARY_DIR})
 endif()
 
-find_package(ZLIB)
+set(ZLIB_LIBRARY ${LIBRARY_OUTPUT_PATH}/${CMAKE_STATIC_LIBRARY_PREFIX}zlibstatic${CMAKE_STATIC_LIBRARY_SUFFIX})
+set(ZLIB_INCLUDE_DIR ${zlib_SOURCE_DIR} ${zlib_BINARY_DIR})
 
 # Download and configure libpng
 include(FetchContent)

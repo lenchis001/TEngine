@@ -1,12 +1,13 @@
 #include <memory>
 
-#include "Components/Graphics/Rendering/Scene/RenderingMixins/PhysicsRenderingStrategyBase.h"
+#include "Components/Graphics/Rendering/Scene/RenderingStrategies/Physics/PhysicsRenderingStrategyBase.h"
 #include "ISolidboxRenderingStrategy.h"
 
 #include "Components/Graphics/Rendering/Scene/Shaders/IShadersService.h"
 #include "Components/Graphics/Rendering/Scene/Buffers/IBuffersService.h"
 #include "Components/Graphics/Rendering/Scene/Physics/IPhysicsService.h"
 
+using namespace TEngine::Components::Graphics::Rendering::Models::Priority;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Shaders;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Buffers;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Physics;
@@ -19,12 +20,15 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
         SolidboxRenderingStrategy(
             std::shared_ptr<IShadersService> shadersService,
             std::shared_ptr<IBuffersService> bufferCacheService,
-            std::shared_ptr<IPhysicsService> physicsService);
+            std::shared_ptr<IPhysicsService> physicsService,
+            OnDeleteCallback onDeleteCallback);
         ~SolidboxRenderingStrategy() override;
 
         std::type_index getType() const override;
 
         void setIsVisualizationEnabled(bool value) override;
+
+        RenderingPriority getRenderingPriority() const override;
 
     protected:
         std::vector<float> _getVertices() const override;

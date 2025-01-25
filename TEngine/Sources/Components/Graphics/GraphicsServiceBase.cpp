@@ -28,7 +28,7 @@ void GraphicsServiceBase::initialize(std::shared_ptr<IGraphicsParameters> parame
 {
 	_meshLoadingService->initialize();
 	_texturesService->initialize();
-	_sceneService->initialize();
+	_sceneService->initialize(parameters->getSceneParameters());
 	_guiService->initialize();
 
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
@@ -36,6 +36,10 @@ void GraphicsServiceBase::initialize(std::shared_ptr<IGraphicsParameters> parame
 
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
+
+	// Enable blending
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void GraphicsServiceBase::deinitialize()

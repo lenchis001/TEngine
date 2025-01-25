@@ -17,8 +17,9 @@ using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrate
 SolidboxRenderingStrategy::SolidboxRenderingStrategy(
     std::shared_ptr<IShadersService> shadersService,
     std::shared_ptr<IBuffersService> bufferCacheService,
-    std::shared_ptr<IPhysicsService> physicsService)
-    : PhysicsRenderingStrategyBase(physicsService),
+    std::shared_ptr<IPhysicsService> physicsService,
+    OnDeleteCallback onDeleteCallback)
+    : PhysicsRenderingStrategyBase(physicsService, onDeleteCallback),
       _isVisualizationEnabled(false),
       _shadersService(shadersService),
       _bufferCacheService(bufferCacheService)
@@ -39,6 +40,11 @@ SolidboxRenderingStrategy::~SolidboxRenderingStrategy()
 std::type_index SolidboxRenderingStrategy::getType() const
 {
     return typeid(SolidboxRenderingStrategy);
+}
+
+RenderingPriority SolidboxRenderingStrategy::getRenderingPriority() const
+{
+    return _isVisualizationEnabled ? RenderingPriority::LOW : RenderingPriority::NONE;
 }
 
 std::vector<float> SolidboxRenderingStrategy::_getVertices() const

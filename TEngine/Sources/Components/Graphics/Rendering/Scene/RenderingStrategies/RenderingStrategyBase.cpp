@@ -2,16 +2,17 @@
 
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies;
 
-RenderingStrategyBase::RenderingStrategyBase() : _position(Vector3df(0.0f, 0.0f, 0.0f)),
-                                                 _rotation(Vector3df(0.0f, 0.0f, 0.0f)),
-                                                 _scale(Vector3df(1.0f, 1.0f, 1.0f)),
-                                                 _parentMatrix(Matrix4x4f(1.0f)),
-                                                 _vpMatrix(Matrix4x4f(1.f)),
-                                                 _mvpMatrix(Matrix4x4f(1.f)),
-                                                 _translationMatrix(Matrix4x4f(1.f)),
-                                                 _rotationMatrix(Matrix4x4f(1.f)),
-                                                 _scaleMatrix(Matrix4x4f(1.f)),
-                                                 _id(++_idCounter)
+RenderingStrategyBase::RenderingStrategyBase(OnDeleteCallback onDeleteCallback) : _position(Vector3df(0.0f, 0.0f, 0.0f)),
+                                                                                  _rotation(Vector3df(0.0f, 0.0f, 0.0f)),
+                                                                                  _scale(Vector3df(1.0f, 1.0f, 1.0f)),
+                                                                                  _parentMatrix(Matrix4x4f(1.0f)),
+                                                                                  _vpMatrix(Matrix4x4f(1.f)),
+                                                                                  _mvpMatrix(Matrix4x4f(1.f)),
+                                                                                  _translationMatrix(Matrix4x4f(1.f)),
+                                                                                  _rotationMatrix(Matrix4x4f(1.f)),
+                                                                                  _scaleMatrix(Matrix4x4f(1.f)),
+                                                                                  _id(++_idCounter),
+                                                                                  _onDeleteCallback(onDeleteCallback)
 {
     _updateTranslationMatrix();
     _updateRotationMatrix();
@@ -125,7 +126,7 @@ Vector3df RenderingStrategyBase::getAbsoluteScale() const
     return _modelMatrix.getScale();
 }
 
-void RenderingStrategyBase::render(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
+void RenderingStrategyBase::update(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
 {
     const auto &vpMatrix = activeCameraStrategy->getVpMatrix();
 
@@ -136,17 +137,20 @@ void RenderingStrategyBase::render(std::shared_ptr<ICameraStrategy> activeCamera
         _updateMvpMatrix();
     }
 
+    for (const auto child : _children)
+    {
+        child->update(activeCameraStrategy);
+    }
+}
+
+void RenderingStrategyBase::render(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
+{
     if (_isRenderingSkipAllowed(activeCameraStrategy))
     {
         return;
     }
 
     _renderSafe(activeCameraStrategy);
-
-    for (const auto child : _children)
-    {
-        child->render(activeCameraStrategy);
-    }
 }
 
 const std::string &RenderingStrategyBase::getName()
@@ -223,6 +227,8 @@ void RenderingStrategyBase::_onDetachedFromParent()
     _parentMatrix = Matrix4x4f(1.0f);
 
     _updateModelMatrix(_parentMatrix);
+    
+    _onDeleteCallback();
 }
 
 void RenderingStrategyBase::_updateMvpMatrix()

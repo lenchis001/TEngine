@@ -6,12 +6,13 @@
 #include "Components/Graphics/Models/Vector3d.h"
 
 #include "Components/Graphics/Rendering/Models/Cameras/BuildinCameraTypes.h"
-#include "Components/Graphics/Rendering/Scene/CameraStrategies/ICameraStrategy.h"
-#include "Components/Graphics/Rendering/Scene/RenderingStrategies/IRenderingStrategy.h"
-#include "Components/Graphics/Rendering/Scene/RenderingStrategies/Meshes/IMeshRenderingStrategy.h"
-#include "Components/Graphics/Rendering/Scene/RenderingStrategies/Primitives/ICubeRenderingStrategy.h"
-#include "Components/Graphics/Rendering/Scene/RenderingStrategies/Solid/ISolidboxRenderingStrategy.h"
-#include "Components/Graphics/Rendering/Models/Physics/PhysicsFlags.h"
+#include "Components/Graphics/Rendering/Scene/Models/Physics/PhysicsFlags.h"
+#include "CameraStrategies/ICameraStrategy.h"
+#include "RenderingStrategies/IRenderingStrategy.h"
+#include "RenderingStrategies/Meshes/IMeshRenderingStrategy.h"
+#include "RenderingStrategies/Primitives/ICubeRenderingStrategy.h"
+#include "RenderingStrategies/Solid/ISolidboxRenderingStrategy.h"
+#include "Models/ISceneParameters.h"
 
 namespace TEngine::Components::Graphics::Rendering::Scene
 {
@@ -20,7 +21,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene
     public:
         virtual ~ISceneService() = default;
 
-        virtual void initialize() = 0;
+        virtual void initialize(std::shared_ptr<Models::ISceneParameters> parameters) = 0;
 
         virtual void deinitialize() = 0;
 
@@ -29,12 +30,12 @@ namespace TEngine::Components::Graphics::Rendering::Scene
         virtual std::shared_ptr<RenderingStrategies::Primitives::ICubeRenderingStrategy> addCube(
             std::string texturePath = "",
             std::shared_ptr<RenderingStrategies::IRenderingStrategy> parent = nullptr,
-            Rendering::Models::Physics::PhysicsFlags physics = Rendering::Models::Physics::PhysicsFlags::NONE) = 0;
+            Models::Physics::PhysicsFlags physics = Models::Physics::PhysicsFlags::NONE) = 0;
 
         virtual std::shared_ptr<RenderingStrategies::Meshes::IMeshRenderingStrategy> addMesh(
             std::string path,
             std::shared_ptr<RenderingStrategies::IRenderingStrategy> parent = nullptr,
-            Rendering::Models::Physics::PhysicsFlags physics = Rendering::Models::Physics::PhysicsFlags::NONE) = 0;
+            Models::Physics::PhysicsFlags physics = Models::Physics::PhysicsFlags::NONE) = 0;
 
         virtual std::shared_ptr<RenderingStrategies::Solid::ISolidboxRenderingStrategy> addSolidbox(
             std::shared_ptr<RenderingStrategies::IRenderingStrategy> parent = nullptr) = 0;

@@ -9,7 +9,8 @@
 #include "Components/Graphics/Models/Vector3d.h"
 #include "Components/Graphics/Models/Matrix4x4.h"
 #include "Components/Graphics/Rendering/Scene/CameraStrategies/ICameraStrategy.h"
-#include "Components/Graphics/Rendering/Models/Physics/PhysicsFlags.h"
+#include "Components/Graphics/Rendering/Scene/Models/Physics/PhysicsFlags.h"
+#include "Components/Graphics/Rendering/Models/Priority/RenderingPriorities.h"
 
 namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
 {
@@ -18,6 +19,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
     class IRenderingStrategy : public Mixins::TypeInfoAware
     {
     public:
+        virtual void update(std::shared_ptr<Graphics::Rendering::Scene::CameraStrategies::ICameraStrategy> activeCameraStrategy) = 0;
         virtual void render(std::shared_ptr<Graphics::Rendering::Scene::CameraStrategies::ICameraStrategy> activeCameraStrategy) = 0;
 
         virtual void setPosition(const Graphics::Models::Vector3df &position) = 0;
@@ -44,6 +46,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
         virtual void setName(const std::string &name) = 0;
 
         virtual int getId() const = 0;
+
+        virtual Rendering::Models::Priority::RenderingPriority getRenderingPriority() const = 0;
 
         virtual ~IRenderingStrategy() = default;
 

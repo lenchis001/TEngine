@@ -3,18 +3,21 @@
 
 #include "IMeshRenderingStrategy.h"
 
-#include "Components/Graphics/Rendering/Scene/RenderingMixins/PhysicsRenderingStrategyBase.h"
+#include "Components/Graphics/Rendering/Scene/RenderingStrategies/Physics/PhysicsRenderingStrategyBase.h"
 
 #include "Components/Graphics/Rendering/Models/Meshes/IRenderableMesh.h"
 #include "Components/Graphics/Rendering/Scene/Meshes/IMeshService.h"
 #include "Components/Graphics/Rendering/Scene/Lights/ILightServices.h"
 #include "Components/Graphics/Rendering/Scene/Physics/IPhysicsService.h"
+#include "Components/Graphics/Rendering/Textures/ITexturesService.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Models::Meshes;
+using namespace TEngine::Components::Graphics::Rendering::Models::Priority;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Meshes;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Lights;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Physics;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingMixins;
+using namespace TEngine::Components::Graphics::Rendering::Textures;
 
 namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Meshes
 {
@@ -25,6 +28,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
             std::shared_ptr<IMeshService> meshService,
             std::shared_ptr<ILightServices> lightServices,
             std::shared_ptr<IPhysicsService> physicsService,
+            std::shared_ptr<ITexturesService> textureService,
+            OnDeleteCallback onDeleteCallback,
             const std::string &path);
         ~MeshRenderingStrategy();
 
@@ -35,6 +40,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
         void setRotation(const Vector3df &rotation) override;
 
         const std::string &getPath() const;
+
+        RenderingPriority getRenderingPriority() const override;
 
     protected:
         std::string _getDefaultName() const override;
@@ -51,6 +58,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
         std::shared_ptr<IRenderableMesh> _renderableMesh;
         std::shared_ptr<IMeshService> _meshService;
         std::shared_ptr<ILightServices> _lightServices;
+        std::shared_ptr<ITexturesService> _textureService;
 
         const std::string _path;
     };
