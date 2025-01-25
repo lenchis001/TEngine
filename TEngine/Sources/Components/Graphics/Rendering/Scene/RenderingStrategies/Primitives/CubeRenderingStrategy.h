@@ -12,7 +12,7 @@
 #include "Components/Graphics/Rendering/Textures/ITexturesService.h"
 #include "Components/Graphics/Rendering/Scene/Physics/IPhysicsService.h"
 
-#include "Components/Graphics/Rendering/Scene/RenderingMixins/PhysicsRenderingStrategyBase.h"
+#include "Components/Graphics/Rendering/Scene/RenderingStrategies/Physics/PhysicsRenderingStrategyBase.h"
 
 #include "ICubeRenderingStrategy.h"
 

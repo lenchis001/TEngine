@@ -9,7 +9,7 @@
 #include "Components/Graphics/Models/Vector3d.h"
 #include "Components/Graphics/Models/Matrix4x4.h"
 #include "Components/Graphics/Rendering/Scene/CameraStrategies/ICameraStrategy.h"
-#include "Components/Graphics/Rendering/Models/Physics/PhysicsFlags.h"
+#include "Components/Graphics/Rendering/Scene/Models/Physics/PhysicsFlags.h"
 #include "Components/Graphics/Rendering/Models/Priority/RenderingPriorities.h"
 
 namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
@@ -47,7 +47,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
 
         virtual int getId() const = 0;
 
-        virtual Models::Priority::RenderingPriority getRenderingPriority() const = 0;
+        virtual Rendering::Models::Priority::RenderingPriority getRenderingPriority() const = 0;
 
         virtual ~IRenderingStrategy() = default;
 

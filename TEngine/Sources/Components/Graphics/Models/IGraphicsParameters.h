@@ -6,6 +6,8 @@
 
 #include "Configs/TEngineExport.h"
 
+#include "Components/Graphics/Rendering/Scene/Models/ISceneParameters.h"
+
 namespace TEngine::Components::Graphics::Models
 {
 	class TENGINE_API IGraphicsParameters
@@ -36,6 +38,10 @@ namespace TEngine::Components::Graphics::Models
 		virtual bool getIsVerticalSyncEnabled() const = 0;
 
 		virtual void setIsVerticalSyncEnabled(bool value) = 0;
+
+		virtual std::shared_ptr<Rendering::Scene::Models::ISceneParameters> getSceneParameters() const = 0;
+
+		virtual void setSceneParameters(std::shared_ptr<Rendering::Scene::Models::ISceneParameters> sceneParameters) = 0;
 	};
 }
 

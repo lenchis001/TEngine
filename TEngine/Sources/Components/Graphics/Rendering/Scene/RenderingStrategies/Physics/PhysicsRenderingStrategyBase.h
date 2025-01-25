@@ -10,7 +10,7 @@
 #include "Components/Graphics/Rendering/Scene/RenderingStrategies/RenderingStrategyBase.h"
 
 using namespace TEngine::Components::Graphics::Models;
-using namespace TEngine::Components::Graphics::Rendering::Models::Physics;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Models::Physics;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Physics;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies;
 

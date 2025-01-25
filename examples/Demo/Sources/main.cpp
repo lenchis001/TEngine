@@ -9,7 +9,7 @@
 #include "Components/Graphics/Models/Vector3d.h"
 
 using namespace TEngine::Components::Graphics::Models;
-using namespace TEngine::Components::Graphics::Rendering::Models::Physics;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Models::Physics;
 using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
 using namespace TEngine::Components::Graphics::Rendering::Scene;
 using namespace TEngine::Components::Network::Http;
@@ -89,6 +89,7 @@ int main()
     auto graphicsParameters = creationParameters->getGraphicsParameters();
     graphicsParameters->setTitle("Demo");
     graphicsParameters->setIsVerticalSyncEnabled(false);
+    graphicsParameters->getSceneParameters()->setSequenceUpdateThreshold(20.f);
 
     engine->initialize(creationParameters);
 

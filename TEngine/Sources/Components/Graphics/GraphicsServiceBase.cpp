@@ -28,7 +28,7 @@ void GraphicsServiceBase::initialize(std::shared_ptr<IGraphicsParameters> parame
 {
 	_meshLoadingService->initialize();
 	_texturesService->initialize();
-	_sceneService->initialize();
+	_sceneService->initialize(parameters->getSceneParameters());
 	_guiService->initialize();
 
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);

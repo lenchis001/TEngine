@@ -1,6 +1,9 @@
 #include "GraphicsParameters.h"
 
+#include "Components/Graphics/Rendering/Scene/Models/SceneParameters.h"
+
 using namespace TEngine::Components::Graphics::Models;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Models;
 
 GraphicsParameters::GraphicsParameters()
 {
@@ -10,6 +13,7 @@ GraphicsParameters::GraphicsParameters()
     setOpenGlMinorVersion(3);
     setTitle("TEngine");
     setIsVerticalSyncEnabled(true);
+    setSceneParameters(std::make_shared<SceneParameters>());
 }
 
 int GraphicsParameters::getWidth() const
@@ -70,4 +74,14 @@ bool GraphicsParameters::getIsVerticalSyncEnabled() const
 void GraphicsParameters::setIsVerticalSyncEnabled(bool value)
 {
     _isVerticalSyncEnabled = value;
+}
+
+std::shared_ptr<ISceneParameters> GraphicsParameters::getSceneParameters() const
+{
+    return _sceneParameters;
+}
+
+void GraphicsParameters::setSceneParameters(std::shared_ptr<ISceneParameters> sceneParameters)
+{
+    _sceneParameters = sceneParameters;
 }

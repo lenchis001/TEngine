@@ -1,7 +1,7 @@
 #ifndef TENGINE_ISOLIDBOXRENDERINGSTRATEGY_H
 #define TENGINE_ISOLIDBOXRENDERINGSTRATEGY_H
 
-#include "Components/Graphics/Rendering/Scene/RenderingMixins/IPhysicsRenderingAware.h"
+#include "Components/Graphics/Rendering/Scene/RenderingStrategies/Physics/IPhysicsRenderingAware.h"
 
 namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Solid
 {

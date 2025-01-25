@@ -1,7 +1,7 @@
 #ifndef TENGINE_PHYSICSFLAGS_H
 #define TENGINE_PHYSICSFLAGS_H
 
-namespace TEngine::Components::Graphics::Rendering::Models::Physics
+namespace TEngine::Components::Graphics::Rendering::Scene::Models::Physics
 {
     enum class PhysicsFlags : int {
         NONE = 0,

@@ -22,7 +22,7 @@
 using namespace TEngine::Components::Events::Services;
 
 using namespace TEngine::Components::Graphics::Models;
-using namespace TEngine::Components::Graphics::Rendering::Models::Physics;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Models::Physics;
 using namespace TEngine::Components::Graphics::Rendering::Models::Meshes;
 using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Shaders;
@@ -39,6 +39,7 @@ using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrate
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Primitives;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Solid;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Sequence;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Models;
 
 namespace TEngine::Components::Graphics::Rendering::Scene
 {
@@ -56,7 +57,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene
             std::shared_ptr<IRenderingSequenceService> renderingSequenceService,
             std::vector<std::shared_ptr<ICameraTrackingStrategy>> buildinCameraTrackingStrategies);
 
-        void initialize() override;
+        void initialize(std::shared_ptr<ISceneParameters> parameters) override;
 
         void deinitialize() override;
 
@@ -112,6 +113,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene
         std::vector<std::shared_ptr<IRenderingStrategy>> _renderingSequence;
 
         Vector3df _lastOptimizedPosition;
+        float _sequenceUpdateThreshold;
     };
 }
 

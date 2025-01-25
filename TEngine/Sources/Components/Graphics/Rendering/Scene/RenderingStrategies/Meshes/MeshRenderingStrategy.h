@@ -3,7 +3,7 @@
 
 #include "IMeshRenderingStrategy.h"
 
-#include "Components/Graphics/Rendering/Scene/RenderingMixins/PhysicsRenderingStrategyBase.h"
+#include "Components/Graphics/Rendering/Scene/RenderingStrategies/Physics/PhysicsRenderingStrategyBase.h"
 
 #include "Components/Graphics/Rendering/Models/Meshes/IRenderableMesh.h"
 #include "Components/Graphics/Rendering/Scene/Meshes/IMeshService.h"

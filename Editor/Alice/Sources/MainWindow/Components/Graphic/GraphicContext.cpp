@@ -5,7 +5,7 @@
 using namespace Alice::MainWindow::Components::Graphic;
 
 using namespace TEngine::Components::Graphics::Models;
-using namespace TEngine::Components::Graphics::Rendering::Models::Physics;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Models::Physics;
 using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
 
 using namespace Alice::MainWindow::Components::Graphic::Events::SceneTreeView;

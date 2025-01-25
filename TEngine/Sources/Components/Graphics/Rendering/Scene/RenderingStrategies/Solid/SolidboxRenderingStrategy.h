@@ -1,6 +1,6 @@
 #include <memory>
 
-#include "Components/Graphics/Rendering/Scene/RenderingMixins/PhysicsRenderingStrategyBase.h"
+#include "Components/Graphics/Rendering/Scene/RenderingStrategies/Physics/PhysicsRenderingStrategyBase.h"
 #include "ISolidboxRenderingStrategy.h"
 
 #include "Components/Graphics/Rendering/Scene/Shaders/IShadersService.h"

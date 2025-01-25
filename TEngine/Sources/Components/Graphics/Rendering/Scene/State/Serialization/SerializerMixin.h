@@ -11,7 +11,7 @@ using namespace TEngine::Components::State::Serialization;
 using namespace TEngine::Components::State::Serialization::Serializers;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies;
 using namespace TEngine::Components::Graphics::Models;
-using namespace TEngine::Components::Graphics::Rendering::Models::Physics;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Models::Physics;
 
 namespace TEngine::Components::Graphics::Rendering::Scene::State::Serialization
 {

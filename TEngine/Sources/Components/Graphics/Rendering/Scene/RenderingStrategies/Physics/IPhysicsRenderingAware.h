@@ -2,7 +2,7 @@
 #define TENGINE_IPHYSICSRENDERINGAWARE_H
 
 #include "Components/Graphics/Models/Vector3d.h"
-#include "Components/Graphics/Rendering/Models/Physics/PhysicsFlags.h"
+#include "Components/Graphics/Rendering/Scene/Models/Physics/PhysicsFlags.h"
 #include "Components/Graphics/Rendering/Scene/RenderingStrategies/IRenderingStrategy.h"
 
 namespace TEngine::Components::Graphics::Rendering::Scene::Physics

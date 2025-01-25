@@ -3,7 +3,7 @@
 #include <cassert>
 
 using namespace TEngine::Components::Graphics::Rendering::Scene::Physics;
-using namespace TEngine::Components::Graphics::Rendering::Models::Physics;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Models::Physics;
 
 PhysicsService::PhysicsService() : _lastTime(0.0)
 {

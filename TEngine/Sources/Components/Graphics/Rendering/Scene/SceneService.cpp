@@ -41,12 +41,16 @@ SceneService::SceneService(
 	  _renderingSequenceService(renderingSequenceService),
 	  _activeCamera(nullptr),
 	  _root(std::make_shared<EmptyRenderingStrategy>(std::bind(&SceneService::_updateRenderingSequence, this))),
-	  _buildinCameraTrackingStrategies(buildinCameraTrackingStrategies)
+	  _buildinCameraTrackingStrategies(buildinCameraTrackingStrategies),
+	  _lastOptimizedPosition(Vector3df(0, 0, 0)),
+	  _sequenceUpdateThreshold(10.0f)
 {
 }
 
-void SceneService::initialize()
+void SceneService::initialize(std::shared_ptr<ISceneParameters> parameters)
 {
+	_sequenceUpdateThreshold = parameters->getSequenceUpdateThreshold();
+
 	_physicsService->initialize();
 }
 
@@ -63,6 +67,8 @@ void SceneService::render(double time)
 	{
 		_lightServices->update();
 		_activeCamera->render(time);
+
+		_updateRenderingSequenceIfNecessary();
 
 		_root->update(_activeCamera);
 
@@ -229,7 +235,7 @@ void SceneService::_updateRenderingSequenceIfNecessary()
 {
 	const auto &cameraPosition = _activeCamera->getPosition();
 
-	if (_lastOptimizedPosition)
+	if (_lastOptimizedPosition.distance(cameraPosition) > _sequenceUpdateThreshold)
 	{
 		_updateRenderingSequence();
 	}
