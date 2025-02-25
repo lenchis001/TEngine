@@ -84,10 +84,10 @@ void MeshRenderingStrategy::_renderSafe(std::shared_ptr<ICameraStrategy> activeC
         glUniformMatrix4fv(shape->getModelMatrixShaderId(), 1, GL_FALSE, getModelMatrix().getInternalData());
         glUniformMatrix4fv(shape->getViewMatrixShaderId(), 1, GL_FALSE, viewMatrix.getInternalData());
 
-        auto pointLight = _lightServices->getPointLight();
+        //auto pointLight = _lightServices->getPointLight();
 
-        glUniform3fv(shape->getLightPosShaderId(), 1, pointLight->getPosition().getInternalData());
-        glUniform3fv(shape->getLightColorShaderId(), 1, pointLight->getDiffuseColor().getInternalData());
+        //glUniform3fv(shape->getLightPosShaderId(), 1, pointLight->getPosition().getInternalData());
+        //glUniform3fv(shape->getLightColorShaderId(), 1, pointLight->getDiffuseColor().getInternalData());
 
         float lightPower = 50.0f;
         glUniform1f(shape->getLightPowerShaderId(), lightPower);

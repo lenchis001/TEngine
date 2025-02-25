@@ -7,7 +7,7 @@ namespace TEngine::Components::Graphics::Models
     {
     public:
         Box(const Vector3d<T> &position, const Vector3d<T> &size)
-            : _topCorner(position + size / (T)2), _bottomCorner(position - size / (T)2)
+            : _topCorner(position + size / static_cast<T>(2)), _bottomCorner(position - size / static_cast<T>(2))
         {
         }
 
@@ -23,5 +23,5 @@ namespace TEngine::Components::Graphics::Models
         Vector3d<T> _bottomCorner;
     };
 
-    typedef Box<Vector3d<float>> Box3df;
+    typedef Box<float> Box3df;
 }

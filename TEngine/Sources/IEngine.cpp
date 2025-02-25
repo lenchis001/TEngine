@@ -82,7 +82,7 @@ using namespace TEngine::Components::Graphics::Indexing;
 
 using namespace TEngine::Components::Network::Http;
 
-#include "Components/Graphics/Models/Box.h"
+
 
 std::shared_ptr<IEngine> TEngine::createEngine(
 #ifdef _WIN32
@@ -93,20 +93,6 @@ std::shared_ptr<IEngine> TEngine::createEngine(
     ,
     bool isPhysicsEnabled)
 {
-
-    using namespace TEngine::Components::Graphics::Models;
-
-    Vector3df position(0,0,0);
-    Vector3df size(1,1,1);
-    Box3df box1(position, size);
-
-    Vector3df position2(2,2,2);
-    Vector3df size2(1,1,1);
-    Box3df box2(position2, size2);
-
-    bool overlaps = box1.overlaps(box2);
-
-    // ----------------------------------------------------------------
     std::shared_ptr<IEventService> eventsService;
 
     if (parent)
