@@ -3,14 +3,18 @@
 
 #include "IPointLight.h"
 
+#include <memory>
+
 using namespace TEngine::Components::Graphics::Models;
 
-namespace TEngine::Components::Graphics::Rendering::Models::Lights
+namespace TEngine::Components::Graphics::Rendering::Scene::Models::Lights
 {
-    class PointLight : public IPointLight
+    typedef std::function<void(std::shared_ptr<IPointLight>)> PointLightUpdatedCallback;
+
+    class PointLight : public IPointLight, public std::enable_shared_from_this<IPointLight>
     {
     public:
-        PointLight(const Vector3df &position, const Vector3df &diffuseColor, float radius, LightUpdateRequiredCallback lightUpdateRequiredCallback);
+        PointLight(const Vector3df &position, const Vector3df &diffuseColor, float radius, PointLightUpdatedCallback lightUpdateRequiredCallback);
 
         void setPosition(const Vector3df &position) override;
         const Vector3df& getPosition() const override;
@@ -25,7 +29,7 @@ namespace TEngine::Components::Graphics::Rendering::Models::Lights
         Vector3df _diffuseColor;
         float _radius;
 
-        LightUpdateRequiredCallback _lightUpdateRequiredCallback;
+        PointLightUpdatedCallback _lightUpdateRequiredCallback;
     };
 }
 

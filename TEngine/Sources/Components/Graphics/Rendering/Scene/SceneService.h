@@ -12,7 +12,7 @@
 #include "Buffers/IBuffersService.h"
 #include "Components/Graphics/Rendering/Textures/ITexturesService.h"
 #include "Meshes/IMeshService.h"
-#include "Lights/ILightServices.h"
+#include "Lights/ILightService.h"
 #include "Physics/IPhysicsService.h"
 #include "CameraStrategies/Tracking/ICameraTrackingStrategy.h"
 #include "Sequence/IRenderingSequenceService.h"
@@ -52,7 +52,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene
             std::shared_ptr<IBuffersService> bufferCacheService,
             std::shared_ptr<ITexturesService> texturesService,
             std::shared_ptr<IMeshService> meshService,
-            std::shared_ptr<ILightServices> lightServices,
+            std::shared_ptr<ILightService> lightServices,
             std::shared_ptr<IPhysicsService> physicsService,
             std::shared_ptr<IRenderingSequenceService> renderingSequenceService,
             std::vector<std::shared_ptr<ICameraTrackingStrategy>> buildinCameraTrackingStrategies);
@@ -104,7 +104,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene
         std::shared_ptr<IBuffersService> _bufferCacheService;
         std::shared_ptr<ITexturesService> _textureService;
         std::shared_ptr<IMeshService> _meshService;
-        std::shared_ptr<ILightServices> _lightServices;
+        std::shared_ptr<ILightService> _lightServices;
         std::shared_ptr<IPhysicsService> _physicsService;
         std::shared_ptr<IRenderingSequenceService> _renderingSequenceService;
 

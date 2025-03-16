@@ -117,7 +117,7 @@ std::shared_ptr<IEngine> TEngine::createEngine(
     auto texturesService = std::make_shared<TexturesService>(imageLoadingService);
     auto indexingService = std::make_shared<IndexingService>();
     auto meshService = std::make_shared<MeshService>(meshLoadingService, bufferCacheService, shadersService, texturesService, indexingService);
-    auto lightServices = std::make_shared<LightService>();
+    auto lightService = std::make_shared<LightService>();
     auto physicsService = isPhysicsEnabled ? std::static_pointer_cast<IPhysicsService>(std::make_shared<PhysicsService>()) : std::static_pointer_cast<IPhysicsService>(std::make_shared<EmptyPhysicsService>());
     auto renderingSequenceService = std::make_shared<RenderingSequenceService>();
 
@@ -129,7 +129,7 @@ std::shared_ptr<IEngine> TEngine::createEngine(
         bufferCacheService,
         texturesService,
         meshService,
-        lightServices,
+        lightService,
         physicsService,
         renderingSequenceService,
         buildinCameraTrackingStrategies);
@@ -176,6 +176,7 @@ std::shared_ptr<IEngine> TEngine::createEngine(
 
     return std::make_shared<Engine>(
         graphicsService,
+        lightService,
         eventsService,
         audioService,
         serializationService,

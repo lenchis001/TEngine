@@ -1,5 +1,8 @@
 #include "LightService.h"
 
+#include "Components/Graphics/Rendering/Scene/Models/Lights/PointLight.h"
+#include "Components/Graphics/Models/Box.h"
+
 using namespace TEngine::Components::Graphics::Rendering::Scene::Lights;
 
 LightService::LightService()
@@ -8,7 +11,6 @@ LightService::LightService()
 
 LightService::~LightService()
 {
-	_threadPool.join();
 }
 
 void LightService::update()
@@ -16,12 +18,56 @@ void LightService::update()
 
 }
 
-void LightService::updateTrackingObjectState(int id, const Vector3df& position, const Vector3df& size)
+void LightService::updateTrackingObjectState(std::shared_ptr<ILightRenderingStrategy> strategy)
 {
-	_trackingObjects[id] = Box3df(position, size);
+
 }
 
-std::shared_ptr<IPointLight> TEngine::Components::Graphics::Rendering::Scene::Lights::LightService::addPointLight(const Vector3df& position, const Vector3df& diffuseColor, float radius)
+void LightService::stopTracking(int id) {
+
+}
+
+std::shared_ptr<IPointLight> LightService::addPointLight(const Vector3df& position, const Vector3df& diffuseColor, float radius)
 {
-	return nullptr;// std::make_shared<PointLight>(position, diffuseColor, radius, [this]() {});
+	auto pointLight = 
+		std::make_shared<PointLight>(
+			position,
+			diffuseColor,
+			radius,
+			std::bind(&LightService::_onPointLightUpdated, this)
+		);
+
+	_pointLights.push_back(pointLight);
+
+	return pointLight;
+}
+
+void LightService::removePointLight(const std::shared_ptr<IPointLight> light) {
+	_pointLights.remove(light);
+}
+
+void LightService::_onPointLightUpdated() {
+	// tracking objects clean required?
+	_processingLock.lock();
+	_trakingStrategies.remove_if([](auto strategy) {
+		return strategy.expired();
+	});
+
+	auto lockedStrategies = std::list<std::shared_ptr<ILightRenderingStrategy>>(_trakingStrategies.size());
+
+	std::transform(_trakingStrategies.begin(), _trakingStrategies.end(), lockedStrategies.begin(), [](auto strategy) {
+		return strategy.lock();
+	});
+	_processingLock.unlock();
+
+	for (auto& strategy : lockedStrategies) {
+		_processingLock.lock();
+		auto position = strategy->getAbsolutePosition();
+		auto size = strategy->getSize();
+		_processingLock.unlock();
+
+		auto strategyBox = Box3df(position, size);
+
+		auto applicableSources = std::fil
+	}
 }

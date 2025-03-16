@@ -4,8 +4,8 @@
 #include <functional>
 #include <queue>
 #include <atomic>
-#include <thread>
-#include <mutex>
+
+#include "SpinLock.h"
 
 namespace TEngine::Mixins
 {

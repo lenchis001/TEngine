@@ -6,7 +6,7 @@ using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrate
 
 MeshRenderingStrategy::MeshRenderingStrategy(
     std::shared_ptr<IMeshService> meshService,
-    std::shared_ptr<ILightServices> lightServices,
+    std::shared_ptr<ILightService> lightServices,
     std::shared_ptr<IPhysicsService> physicsService,
     std::shared_ptr<ITexturesService> textureService,
     OnDeleteCallback onDeleteCallback,

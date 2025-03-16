@@ -93,7 +93,8 @@ int main()
 
     engine->initialize(creationParameters);
 
-    auto eventService = engine->getEventService();
+    auto lightService = engine->getLightService();
+    auto pointLight1 = lightService->addPointLight(Vector3df(0,0,0),Vector3df(0,0,0),0);
 
     auto graphicsService = engine->getGraphicsService();
     auto sceneService = graphicsService->getSceneService();

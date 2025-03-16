@@ -5,10 +5,8 @@
 
 #include "Components/Graphics/Models/Vector3d.h"
 
-namespace TEngine::Components::Graphics::Rendering::Models::Lights
+namespace TEngine::Components::Graphics::Rendering::Scene::Models::Lights
 {
-	typedef std::function<void()> LightUpdateRequiredCallback;
-
 	class ILight
 	{
 	public:

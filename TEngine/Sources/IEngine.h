@@ -10,6 +10,7 @@
 #include "Configs/TEngineExport.h"
 
 #include "Components/Graphics/IGraphicsService.h"
+#include "Components/Graphics/Rendering/Scene/Lights/ILightService.h"
 #include "Components/Events/Services/IEventService.h"
 #include "Components/Audio/Services/IAudioService.h"
 #include "Components/State/Serialization/ISerializationService.h"
@@ -25,6 +26,8 @@ namespace TEngine
     {
     public:
         virtual std::shared_ptr<TEngine::Components::Graphics::IGraphicsService> getGraphicsService() = 0;
+
+        virtual std::shared_ptr<TEngine::Components::Graphics::Rendering::Scene::Lights::ILightService> getLightService() = 0;
 
         virtual std::shared_ptr<TEngine::Components::Events::Services::IEventService> getEventService() = 0;
 

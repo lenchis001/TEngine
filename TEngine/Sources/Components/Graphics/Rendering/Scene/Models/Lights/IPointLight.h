@@ -3,7 +3,7 @@
 
 #include "ILight.h"
 
-namespace TEngine::Components::Graphics::Rendering::Models::Lights {
+namespace TEngine::Components::Graphics::Rendering::Scene::Models::Lights {
 	class IPointLight : public ILight
 	{
 	public:

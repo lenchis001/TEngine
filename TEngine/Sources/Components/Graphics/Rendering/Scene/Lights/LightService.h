@@ -2,26 +2,23 @@
 #define TENGINE_LIGHTSERVICE_H
 
 #include <map>
+#include <list>
+#include <memory>
 
-#include <boost/asio.hpp>
+#include "ILightService.h"
 
-#include "Components/Graphics/Models/Box.h"
+#include "Components/Graphics/Rendering/Scene/RenderingStrategies/Light/ILightRenderingStrategy.h"
 
-#include "ILightServices.h"
-
-#include "Mixins/ThreadSafeExecutionAware.h"
-
-using namespace boost::asio;
-
-using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies;
-using namespace TEngine::Components::Graphics::Rendering::Models::Lights;
-using namespace TEngine::Mixins;
+#include "Mixins/SpinLock.h"
 
 using namespace TEngine::Components::Graphics::Models;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Models::Lights;
+using namespace TEngine::Mixins;
+using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Light;
 
 namespace TEngine::Components::Graphics::Rendering::Scene::Lights
 {
-    class LightService : public ILightServices, private ThreadSafeExecutionAware
+    class LightService : public ILightService
     {
     public:
         LightService();
@@ -29,14 +26,20 @@ namespace TEngine::Components::Graphics::Rendering::Scene::Lights
 
         void update() override;
 
-        void updateTrackingObjectState(int id, const Vector3df& position, const Vector3df& size) override;
+        void updateTrackingObjectState(std::shared_ptr<ILightRenderingStrategy> strategy) override;
+
+        void stopTracking(int id) override;
 
 		std::shared_ptr<IPointLight> addPointLight(const Vector3df& position, const Vector3df& diffuseColor, float radius) override;
+        void removePointLight(const std::shared_ptr<IPointLight> light) override;
 
     private:
-        std::map<int, Box3df> _trackingObjects;
+        void _onPointLightUpdated();
 
-		thread_pool _threadPool;
+        SpinLock _processingLock;
+
+        std::list<std::shared_ptr<IPointLight>> _pointLights;
+        std::list<std::weak_ptr<ILightRenderingStrategy>> _trakingStrategies;
     };
 }
 

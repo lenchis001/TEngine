@@ -13,27 +13,27 @@
 
 namespace TEngine::Components::Graphics::Models
 {
-#define _m(l, c) _data[(c - 1) * 4 + l - 1]
+#define _mxx(l, c) _data[(c - 1) * 4 + l - 1]
 
-#define _m11 _m(1, 1)
-#define _m21 _m(2, 1)
-#define _m31 _m(3, 1)
-#define _m41 _m(4, 1)
+#define _m11 _mxx(1, 1)
+#define _m21 _mxx(2, 1)
+#define _m31 _mxx(3, 1)
+#define _m41 _mxx(4, 1)
 
-#define _m12 _m(1, 2)
-#define _m22 _m(2, 2)
-#define _m32 _m(3, 2)
-#define _m42 _m(4, 2)
+#define _m12 _mxx(1, 2)
+#define _m22 _mxx(2, 2)
+#define _m32 _mxx(3, 2)
+#define _m42 _mxx(4, 2)
 
-#define _m13 _m(1, 3)
-#define _m23 _m(2, 3)
-#define _m33 _m(3, 3)
-#define _m43 _m(4, 3)
+#define _m13 _mxx(1, 3)
+#define _m23 _mxx(2, 3)
+#define _m33 _mxx(3, 3)
+#define _m43 _mxx(4, 3)
 
-#define _m14 _m(1, 4)
-#define _m24 _m(2, 4)
-#define _m34 _m(3, 4)
-#define _m44 _m(4, 4)
+#define _m14 _mxx(1, 4)
+#define _m24 _mxx(2, 4)
+#define _m34 _mxx(3, 4)
+#define _m44 _mxx(4, 4)
 
     template <typename T>
     class Matrix4x4

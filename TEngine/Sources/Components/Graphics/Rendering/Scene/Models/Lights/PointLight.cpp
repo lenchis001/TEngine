@@ -1,8 +1,8 @@
 #include "PointLight.h"
 
-using namespace TEngine::Components::Graphics::Rendering::Models::Lights;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Models::Lights;
 
-PointLight::PointLight(const Vector3df &position, const Vector3df &diffuseColor, float radius, LightUpdateRequiredCallback lightUpdateRequiredCallback)
+PointLight::PointLight(const Vector3df &position, const Vector3df &diffuseColor, float radius, PointLightUpdatedCallback lightUpdateRequiredCallback)
 	: _position(position),
     _diffuseColor(diffuseColor),
     _radius(radius),
@@ -14,7 +14,7 @@ void PointLight::setPosition(const Vector3df &position)
 {
     _position = position;
 
-    _lightUpdateRequiredCallback();
+    _lightUpdateRequiredCallback(shared_from_this());
 }
 
 const Vector3df& PointLight::getPosition() const
@@ -36,5 +36,5 @@ void PointLight::setRadius(float radius)
 {
 	_radius = radius;
 
-    _lightUpdateRequiredCallback();
+    _lightUpdateRequiredCallback(shared_from_this());
 }
