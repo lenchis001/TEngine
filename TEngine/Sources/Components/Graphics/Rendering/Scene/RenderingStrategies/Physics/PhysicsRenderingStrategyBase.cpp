@@ -1,6 +1,6 @@
 #include "PhysicsRenderingStrategyBase.h"
 
-using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingMixins;
+using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Physics;
 
 PhysicsRenderingStrategyBase::PhysicsRenderingStrategyBase(std::shared_ptr<IPhysicsService> physicsService, OnDeleteCallback onDeleteCallback)
     : RenderingStrategyBase(onDeleteCallback),

@@ -11,7 +11,7 @@
 #include "Components/Graphics/Models/Vector2d.h"
 
 using namespace TEngine::Components::Graphics::Models;
-using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingMixins;
+using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Physics;
 
 namespace TEngine::Components::Graphics::Rendering::Scene::Physics
 {

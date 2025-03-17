@@ -2,10 +2,12 @@
 #define TENGINE_IMESHRENDERINGSTRATEGY_H
 
 #include "Components/Graphics/Rendering/Scene/RenderingStrategies/Physics/IPhysicsRenderingAware.h"
+#include "Components/Graphics/Rendering/Scene/RenderingStrategies/Light/ILightRenderingStrategy.h"
 
 namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Meshes
 {
-    class IMeshRenderingStrategy : public virtual RenderingMixins::IPhysicsRenderingAware
+    class IMeshRenderingStrategy : public virtual RenderingStrategies::Physics::IPhysicsRenderingAware,
+                                   public virtual RenderingStrategies::Light::ILightRenderingStrategy
     {
     public:
         const std::string &getPath() const;

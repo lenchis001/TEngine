@@ -4,6 +4,7 @@
 #include "IMeshRenderingStrategy.h"
 
 #include "Components/Graphics/Rendering/Scene/RenderingStrategies/Physics/PhysicsRenderingStrategyBase.h"
+#include "Components/Graphics/Rendering/Scene/RenderingStrategies/Light/LightRenderingStrategyBase.h"
 
 #include "Components/Graphics/Rendering/Models/Meshes/IRenderableMesh.h"
 #include "Components/Graphics/Rendering/Scene/Meshes/IMeshService.h"
@@ -21,7 +22,10 @@ using namespace TEngine::Components::Graphics::Rendering::Textures;
 
 namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Meshes
 {
-    class MeshRenderingStrategy : public PhysicsRenderingStrategyBase, public IMeshRenderingStrategy
+    class MeshRenderingStrategy : 
+        public RenderingStrategies::Physics::PhysicsRenderingStrategyBase, 
+        public RenderingStrategies::Light::LightRenderingStrategyBase,
+        public IMeshRenderingStrategy
     {
     public:
         MeshRenderingStrategy(

@@ -10,7 +10,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene::Physics
     class PhysicsService;
 }
 
-namespace TEngine::Components::Graphics::Rendering::Scene::RenderingMixins
+namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Physics
 {
     class IPhysicsRenderingAware : public virtual RenderingStrategies::IRenderingStrategy
     {
@@ -19,7 +19,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingMixins
 
         virtual Models::Physics::PhysicsFlags getPhysicsFlags() const = 0;
 
-        friend Physics::PhysicsService;
+        friend Scene::Physics::PhysicsService;
 
     protected:
         virtual std::vector<float> getVertices() const = 0;

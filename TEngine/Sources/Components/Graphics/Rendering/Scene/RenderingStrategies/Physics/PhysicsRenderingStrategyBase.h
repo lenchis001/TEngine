@@ -14,7 +14,7 @@ using namespace TEngine::Components::Graphics::Rendering::Scene::Models::Physics
 using namespace TEngine::Components::Graphics::Rendering::Scene::Physics;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies;
 
-namespace TEngine::Components::Graphics::Rendering::Scene::RenderingMixins
+namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Physics
 {
     // todo: rename PhysicsRenderingStrategyBase?
     class PhysicsRenderingStrategyBase : public RenderingStrategyBase, public virtual IPhysicsRenderingAware
