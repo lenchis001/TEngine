@@ -5,7 +5,7 @@
 
 namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Solid
 {
-    class ISolidboxRenderingStrategy : public virtual RenderingMixins::IPhysicsRenderingAware
+    class ISolidboxRenderingStrategy : public virtual RenderingStrategies::Physics::IPhysicsRenderingAware
     {
     public:
         virtual void setIsVisualizationEnabled(bool value) = 0;

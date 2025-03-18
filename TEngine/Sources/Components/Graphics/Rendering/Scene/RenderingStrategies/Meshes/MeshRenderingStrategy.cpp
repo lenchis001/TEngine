@@ -12,8 +12,8 @@ MeshRenderingStrategy::MeshRenderingStrategy(
     OnDeleteCallback onDeleteCallback,
     const std::string &path)
     : PhysicsRenderingStrategyBase(physicsService, onDeleteCallback),
+      LightRenderingStrategyBase(lightServices),
       _meshService(meshService),
-      _lightServices(lightServices),
       _textureService(textureService),
       _path(path)
 {

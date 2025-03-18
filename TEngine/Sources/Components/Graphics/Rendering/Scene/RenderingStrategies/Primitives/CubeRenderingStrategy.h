@@ -24,6 +24,7 @@ using namespace TEngine::Components::Graphics::Rendering::Scene::Buffers;
 using namespace TEngine::Components::Graphics::Rendering::Textures;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingMixins;
+using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Physics;
 
 namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Primitives
 {

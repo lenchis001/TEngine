@@ -13,6 +13,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
     public:
         LightRenderingStrategyBase(std::shared_ptr<ILightService> lightService);
 
+        void updatePointLights(const std::vector<std::shared_ptr<Graphics::Rendering::Scene::Models::Lights::IPointLight>>& pointLights) override;
+
     private:
         std::shared_ptr<ILightService> _lightService;
     };

@@ -8,7 +8,6 @@
 
 #include "Components/Graphics/Rendering/Models/Meshes/IRenderableMesh.h"
 #include "Components/Graphics/Rendering/Scene/Meshes/IMeshService.h"
-#include "Components/Graphics/Rendering/Scene/Lights/ILightService.h"
 #include "Components/Graphics/Rendering/Scene/Physics/IPhysicsService.h"
 #include "Components/Graphics/Rendering/Textures/ITexturesService.h"
 
@@ -61,7 +60,6 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
     private:
         std::shared_ptr<IRenderableMesh> _renderableMesh;
         std::shared_ptr<IMeshService> _meshService;
-        std::shared_ptr<ILightService> _lightServices;
         std::shared_ptr<ITexturesService> _textureService;
 
         const std::string _path;

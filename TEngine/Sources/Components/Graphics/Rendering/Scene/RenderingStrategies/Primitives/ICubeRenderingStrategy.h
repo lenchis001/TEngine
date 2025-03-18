@@ -7,7 +7,7 @@
 
 namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Primitives
 {
-    class ICubeRenderingStrategy : public virtual RenderingMixins::IPhysicsRenderingAware
+    class ICubeRenderingStrategy : public virtual RenderingStrategies::Physics::IPhysicsRenderingAware
     {
     public:
         virtual const std::string &getTexture() const = 0;

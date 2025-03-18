@@ -11,6 +11,7 @@ using namespace TEngine::Components::Graphics::Rendering::Models::Priority;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Shaders;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Buffers;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Physics;
+using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Physics;
 
 namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Solid
 {
