@@ -46,6 +46,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
 
         RenderingPriority getRenderingPriority() const override;
 
+        const Graphics::Models::Vector3df& getSize() const override;
+
     protected:
         std::string _getDefaultName() const override;
 
@@ -63,6 +65,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
         std::shared_ptr<ITexturesService> _textureService;
 
         const std::string _path;
+        Vector3df _size;
     };
 }
 

@@ -12,7 +12,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene::Physics
 
 namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Physics
 {
-    class IPhysicsRenderingAware : public virtual RenderingStrategies::IRenderingStrategy
+    class IPhysicsRenderingAware : public virtual IRenderingStrategy
     {
     public:
         virtual void setPhysicsFlags(Models::Physics::PhysicsFlags physicsFlags) = 0;

@@ -83,7 +83,7 @@ void LightService::_onPointLightUpdated()
 			});
 
 		_processingLock.lock();
-		strategy->updatePointLights(visiblePointLights);
+		strategy->updatePointLights(std::move(visiblePointLights));
 		_processingLock.unlock();
 	}
 }
