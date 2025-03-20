@@ -20,7 +20,6 @@ namespace TEngine
     public:
         Engine(
             std::shared_ptr<IGraphicsService> graphicsService,
-            std::shared_ptr<ILightService> lightService,
             std::shared_ptr<IEventService> eventService,
             std::shared_ptr<IAudioService> audioService,
             std::shared_ptr<ISerializationService> serializationService,
@@ -35,8 +34,6 @@ namespace TEngine
 
         std::shared_ptr<IGraphicsService> getGraphicsService() override;
 
-        std::shared_ptr<ILightService> getLightService() override;
-
         std::shared_ptr<IEventService> getEventService() override;
 
         std::shared_ptr<IAudioService> getAudioService() override;
@@ -50,7 +47,6 @@ namespace TEngine
         std::shared_ptr<IWebSocketFactory> getWebSocketFactory() override;
     private:
         std::shared_ptr<IGraphicsService> _graphicsService;
-        std::shared_ptr<ILightService> _lightService;
         std::shared_ptr<IEventService> _eventService;
         std::shared_ptr<IAudioService> _audioService;
         std::shared_ptr<ISerializationService> _serializationService;

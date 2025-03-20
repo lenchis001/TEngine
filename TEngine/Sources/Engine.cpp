@@ -6,7 +6,6 @@ using namespace TEngine;
 
 Engine::Engine(
     std::shared_ptr<IGraphicsService> graphicsService,
-    std::shared_ptr<ILightService> lightService,
     std::shared_ptr<IEventService> eventService,
     std::shared_ptr<IAudioService> audioService,
     std::shared_ptr<ISerializationService> serializationService,
@@ -14,7 +13,6 @@ Engine::Engine(
     std::shared_ptr<INetworkService> networkService,
     std::shared_ptr<IWebSocketFactory> webSocketFactory)
     : _graphicsService(graphicsService),
-      _lightService(lightService),
       _eventService(eventService),
       _audioService(audioService),
       _serializationService(serializationService),
@@ -45,10 +43,6 @@ void Engine::deinitialize()
 std::shared_ptr<IGraphicsService> Engine::getGraphicsService()
 {
     return _graphicsService;
-}
-
-std::shared_ptr<ILightService> Engine::getLightService() {
-    return _lightService;
 }
 
 std::shared_ptr<IEventService> Engine::getEventService()

@@ -176,7 +176,6 @@ std::shared_ptr<IEngine> TEngine::createEngine(
 
     return std::make_shared<Engine>(
         graphicsService,
-        lightService,
         eventsService,
         audioService,
         serializationService,

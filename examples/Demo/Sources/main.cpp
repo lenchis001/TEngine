@@ -12,12 +12,15 @@ using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Models::Physics;
 using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
 using namespace TEngine::Components::Graphics::Rendering::Scene;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Lights;
 using namespace TEngine::Components::Network::Http;
 using namespace TEngine::Components::Network::WebSocket;
 using namespace TEngine::Components::Network::WebSocket::Client;
 
 void setupScene(std::shared_ptr<ISceneService> sceneService)
 {
+    auto lightService = sceneService->getLightService();
+
     sceneService->setActiveCamera(BuildinCameraTypes::FPS);
 
     sceneService->addSkySphere();
@@ -51,6 +54,8 @@ void setupScene(std::shared_ptr<ISceneService> sceneService)
         auto sofa = sceneService->addMesh("./DemoResources/sofa.obj");
         sofa->setPosition(Vector3df(0.f, 0.f, -3.0f * i - 5.0f));
     }
+
+    lightService->addPointLight(Vector3df(0, 0, 0), Vector3df(1, 1, 1), 10);
 }
 
 void sendTestRequest(std::shared_ptr<INetworkService> networkService)
@@ -92,9 +97,6 @@ int main()
     graphicsParameters->getSceneParameters()->setSequenceUpdateThreshold(20.f);
 
     engine->initialize(creationParameters);
-
-    auto lightService = engine->getLightService();
-    auto pointLight1 = lightService->addPointLight(Vector3df(0,0,0),Vector3df(0,0,0),0);
 
     auto graphicsService = engine->getGraphicsService();
     auto sceneService = graphicsService->getSceneService();

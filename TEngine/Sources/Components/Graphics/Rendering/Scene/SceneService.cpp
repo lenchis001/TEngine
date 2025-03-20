@@ -226,6 +226,11 @@ std::shared_ptr<IRenderingStrategy> SceneService::getRoot()
 	return _root;
 }
 
+std::shared_ptr<ILightService> SceneService::getLightService()
+{
+	return _lightServices;
+}
+
 Vector2di SceneService::_getWindowSize() const
 {
 	return Vector2di(1280, 720);

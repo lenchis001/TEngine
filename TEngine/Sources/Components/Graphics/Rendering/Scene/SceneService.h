@@ -88,7 +88,9 @@ namespace TEngine::Components::Graphics::Rendering::Scene
 
         void setActiveCamera(std::shared_ptr<ICameraStrategy> camera) override;
 
-        std::shared_ptr<IRenderingStrategy> getRoot() override; 
+        std::shared_ptr<IRenderingStrategy> getRoot() override;
+
+        std::shared_ptr<ILightService> getLightService() override;
 
     private:
         void _updateRenderingSequenceIfNecessary();

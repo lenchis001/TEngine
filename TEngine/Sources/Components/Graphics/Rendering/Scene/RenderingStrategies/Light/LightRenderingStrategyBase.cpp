@@ -12,6 +12,11 @@ void LightRenderingStrategyBase::updatePointLights(const std::vector<std::shared
     _pointLights = pointLights;
 }
 
+std::vector<std::shared_ptr<IPointLight>> const &LightRenderingStrategyBase::getPointLights() const
+{
+    return _pointLights;
+}
+
 Vector3df LightRenderingStrategyBase::_determineSize(const std::vector<float> &vertices)
 {
     Vector3df min(0, 0, 0);

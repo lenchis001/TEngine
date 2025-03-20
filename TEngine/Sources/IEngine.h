@@ -27,8 +27,6 @@ namespace TEngine
     public:
         virtual std::shared_ptr<TEngine::Components::Graphics::IGraphicsService> getGraphicsService() = 0;
 
-        virtual std::shared_ptr<TEngine::Components::Graphics::Rendering::Scene::Lights::ILightService> getLightService() = 0;
-
         virtual std::shared_ptr<TEngine::Components::Events::Services::IEventService> getEventService() = 0;
 
         virtual std::shared_ptr<TEngine::Components::Audio::Services::IAudioService> getAudioService() = 0;
