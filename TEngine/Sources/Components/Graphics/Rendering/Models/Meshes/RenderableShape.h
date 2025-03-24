@@ -17,9 +17,7 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
             GLuint mvpMatrixShaderId,
             GLuint modelMatrixShaderId,
             GLuint viewMatrixShaderId,
-            GLuint lightPosShaderId,
-            GLuint lightColorShaderId,
-            GLuint lightPowerShaderId,
+            GLuint pointLightsAmountShaderId,
             GLuint shapeColorShaderId,
             const std::vector<float> &diffuseColor,
             GLuint textureId);
@@ -51,16 +49,8 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
             return _viewMatrixShaderId;
         }
 
-        inline GLuint getLightPosShaderId() const override {
-            return _lightPosShaderId;
-        }
-
-        inline GLuint getLightColorShaderId() const override {
-            return _lightColorShaderId;
-        }
-
-        inline GLuint getLightPowerShaderId() const override {
-            return _lightPowerShaderId;
+        inline GLuint getPointLightsAmountShaderId() const override {
+            return _pointLightsAmountShaderId;
         }
 
         inline GLuint getShapeColorShaderId() const override {
@@ -89,6 +79,7 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
         GLuint _mvpMatrixShaderId;
         GLuint _modelMatrixShaderId;
         GLuint _viewMatrixShaderId;
+        GLuint _pointLightsAmountShaderId;
         GLuint _lightPosShaderId;
         GLuint _lightColorShaderId;
         GLuint _lightPowerShaderId;

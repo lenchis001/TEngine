@@ -15,7 +15,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene::Lights {
 
         virtual void update() = 0;
 
-        virtual void updateTrackingObjectState(std::shared_ptr<RenderingStrategies::Light::ILightRenderingStrategy> strategy) = 0;
+        virtual void addToTrack(std::shared_ptr<RenderingStrategies::Light::ILightRenderingStrategy> strategy) = 0;
 
         virtual void stopTracking(int id) = 0;
 

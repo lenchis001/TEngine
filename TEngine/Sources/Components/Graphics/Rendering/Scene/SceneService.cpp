@@ -121,6 +121,8 @@ std::shared_ptr<IMeshRenderingStrategy> SceneService::addMesh(
 
 	(parent ? parent : _root)->addChild(strategy);
 
+	_lightServices->addToTrack(strategy);
+
 	_updateRenderingSequence();
 
 	return strategy;

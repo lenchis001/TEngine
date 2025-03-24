@@ -4,7 +4,7 @@
 #include <vector>
 #include <memory>
 
-#include "Components/Graphics/Rendering/Scene/Models/Lights/IPointLight.h"
+#include "Components/Graphics/Rendering/Scene/Models/Lights/Shader/ShaderPointLight.h"
 #include "Components/Graphics/Models/Vector3d.h"
 
 #include "Components/Graphics/Rendering/Scene/RenderingStrategies/IRenderingStrategy.h"
@@ -16,7 +16,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
     public:
         virtual const Graphics::Models::Vector3df& getSize() const = 0;
 
-        virtual void updatePointLights(const std::vector<std::shared_ptr<Graphics::Rendering::Scene::Models::Lights::IPointLight>>&& pointLights) = 0;
+        virtual void updatePointLights(const std::vector<Graphics::Rendering::Scene::Models::Lights::Shader::ShaderPointLight>&& pointLights) = 0;
     };
 }
 

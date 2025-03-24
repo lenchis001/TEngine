@@ -2,7 +2,7 @@
 
 // Interpolated values from the vertex shaders
 in vec3 attenuationCosTheta;
-in vec3 attenuationCosAlpha5;
+in vec3 attenuationCosAlpha;
 
 // Output data
 out vec4 color;
@@ -22,5 +22,5 @@ void main()
 		// Diffuse : "color" of the object
 		MaterialDiffuseColor * attenuationCosTheta +
 		// Specular : reflective highlight, like a mirror
-		MaterialSpecularColor * attenuationCosAlpha5, 1);
+		MaterialSpecularColor * attenuationCosAlpha, 1);
 }

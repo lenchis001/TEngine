@@ -1,20 +1,42 @@
+#include "gl/glew.h"
+
 #include "LightRenderingStrategyBase.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Light;
 
 LightRenderingStrategyBase::LightRenderingStrategyBase(std::shared_ptr<ILightService> lightService)
-    : _lightService(lightService)
+    : _lightService(lightService), _pointLightsBuffer(0)
 {
 }
 
-void LightRenderingStrategyBase::updatePointLights(const std::vector<std::shared_ptr<IPointLight>> &&pointLights)
+void LightRenderingStrategyBase::updatePointLights(const std::vector<ShaderPointLight> &&pointLights)
 {
-    _pointLights = pointLights;
+    if (_pointLightsBuffer != 0)
+    {
+        glDeleteBuffers(1, &_pointLightsBuffer);
+    }
+
+    glGenBuffers(1, &_pointLightsBuffer);
+    glBindBuffer(GL_UNIFORM_BUFFER, _pointLightsBuffer);
+
+    _pointLightsAmount = pointLights.size();
+    size_t bufferSize = pointLights.size() * sizeof(ShaderPointLight);
+
+    glBufferData(GL_UNIFORM_BUFFER, bufferSize, pointLights.data(), GL_DYNAMIC_DRAW);
+
+    glBindBufferBase(GL_UNIFORM_BUFFER, 1, _pointLightsBuffer);
+
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-std::vector<std::shared_ptr<IPointLight>> const &LightRenderingStrategyBase::getPointLights() const
+GLuint LightRenderingStrategyBase::getPointLightsBuffer() const
 {
-    return _pointLights;
+    return _pointLightsBuffer;
+}
+
+GLuint LightRenderingStrategyBase::getPointLightsAmount() const
+{
+    return _pointLightsAmount;
 }
 
 Vector3df LightRenderingStrategyBase::_determineSize(const std::vector<float> &vertices)

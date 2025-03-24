@@ -3,9 +3,13 @@
 #include <algorithm>
 
 #include "Components/Graphics/Rendering/Scene/Models/Lights/PointLight.h"
+#include "Components/Graphics/Rendering/Scene/Models/Lights/Shader/ShaderPointLight.h"
+#include "Components/Graphics/Rendering/Scene/Models/Lights/Shader/ShaderPointLight.h"
 #include "Components/Graphics/Models/Box.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Scene::Lights;
+
+using namespace TEngine::Components::Graphics::Rendering::Scene::Models::Lights::Shader;
 
 LightService::LightService()
 {
@@ -19,8 +23,13 @@ void LightService::update()
 {
 }
 
-void LightService::updateTrackingObjectState(std::shared_ptr<ILightRenderingStrategy> strategy)
+void LightService::addToTrack(std::shared_ptr<ILightRenderingStrategy> strategy)
 {
+	_processingLock.lock();
+	_trakingStrategies.push_back(strategy);
+	_processingLock.unlock();
+
+	_onPointLightUpdated();
 }
 
 void LightService::stopTracking(int id)
@@ -37,6 +46,8 @@ std::shared_ptr<IPointLight> LightService::addPointLight(const Vector3df &positi
 			std::bind(&LightService::_onPointLightUpdated, this));
 
 	_pointLights.push_back(pointLight);
+
+	_onPointLightUpdated();
 
 	return pointLight;
 }
@@ -68,19 +79,30 @@ void LightService::_onPointLightUpdated()
 
 		auto strategyBox = Box3df(position, size);
 
-		std::vector<std::shared_ptr<IPointLight>> visiblePointLights;
-		std::copy_if(
-			_pointLights.begin(),
-			_pointLights.end(),
-			std::back_inserter(visiblePointLights),
-			[&strategyBox](const std::shared_ptr<IPointLight> &light)
-			{
-				auto lightPosition = light->getPosition();
-				auto lightRadius = light->getRadius();
-				auto lightBox = Box3df(lightPosition, Vector3df(lightRadius, lightRadius, lightRadius));
+		std::vector<ShaderPointLight> visiblePointLights;
+		for (auto &light : _pointLights)
+		{
+			auto lightPosition = light->getPosition();
+			auto lightRadius = light->getRadius();
+			auto lightBox = Box3df(lightPosition, Vector3df(lightRadius, lightRadius, lightRadius));
 
-				return strategyBox.overlaps(lightBox);
-			});
+			if (strategyBox.overlaps(lightBox))
+			{
+				auto shaderLight = ShaderPointLight();
+				shaderLight.position[0] = lightPosition.getX();
+				shaderLight.position[1] = lightPosition.getY();
+				shaderLight.position[2] = lightPosition.getZ();
+
+				auto color = light->getDiffuseColor();
+				shaderLight.color[0] = color.getX();
+				shaderLight.color[1] = color.getY();
+				shaderLight.color[2] = color.getZ();
+
+				shaderLight.intensity = light->getRadius();
+
+				visiblePointLights.push_back(shaderLight);
+			}
+		}
 
 		_processingLock.lock();
 		strategy->updatePointLights(std::move(visiblePointLights));

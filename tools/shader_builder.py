@@ -3,6 +3,27 @@ import re
 import shutil
 import argparse
 
+def resolve_includes(glsl_content, root):
+    # Find all "#include" statements in the GLSL file
+    include_statements = re.findall(r'#include\s+"([^"]+)"', glsl_content)
+
+    # Process each include statement
+    for include_statement in include_statements:
+        # Get the path of the included file
+        included_file_path = os.path.join(root, include_statement)
+
+        # Read the contents of the included file
+        with open(included_file_path, 'r') as included_file:
+            included_content = included_file.read()
+
+        # Recursively resolve includes in the included content
+        included_content = resolve_includes(included_content, os.path.dirname(included_file_path))
+
+        # Replace the include statement with the included content
+        glsl_content = glsl_content.replace(f'#include "{include_statement}"', included_content)
+
+    return glsl_content
+
 def process_glsl_files(glsl_path, result_path):
     # Create the result directory if it doesn't exist
     if not os.path.exists(result_path):
@@ -27,20 +48,8 @@ def process_glsl_files(glsl_path, result_path):
                 with open(glsl_file_path, 'r') as glsl_file:
                     glsl_content = glsl_file.read()
 
-                # Find all "#include" statements in the GLSL file
-                include_statements = re.findall(r'#include\s+"([^"]+)"', glsl_content)
-
-                # Process each include statement
-                for include_statement in include_statements:
-                    # Get the path of the included file
-                    included_file_path = os.path.join(root, include_statement)
-
-                    # Read the contents of the included file
-                    with open(included_file_path, 'r') as included_file:
-                        included_content = included_file.read()
-
-                    # Replace the include statement with the included content
-                    glsl_content = glsl_content.replace(f'#include "{include_statement}"', included_content)
+                # Resolve all includes recursively
+                glsl_content = resolve_includes(glsl_content, root)
 
                 # Write the processed GLSL file to the result directory
                 with open(result_file_path, 'w') as result_file:

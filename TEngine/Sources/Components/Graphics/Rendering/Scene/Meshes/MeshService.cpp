@@ -183,13 +183,15 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
     auto fragmentShader = _getFragmentShaderPath(textureId);
     auto program = _shadersService->take(vertedShader, fragmentShader);
 
+    // Bind uniform blocks
+    GLuint pointLightsBlockIndex = glGetUniformBlockIndex(program, "PointLightsBuffer");
+    glUniformBlockBinding(program, pointLightsBlockIndex, 1);
+
     auto mvpMatrixShaderId = glGetUniformLocation(program, "MVP");
     auto modelMatrixShaderId = glGetUniformLocation(program, "modelMatrix");
     auto viewMatrixShaderId = glGetUniformLocation(program, "viewMatrix");
-    auto lightPosShaderId = glGetUniformLocation(program, "lightPosition");
-    auto lightColorShaderId = glGetUniformLocation(program, "lightColor");
-    auto lightPowerShaderId = glGetUniformLocation(program, "lightPower");
     auto shapeColorShaderId = glGetUniformLocation(program, "shapeColor");
+    auto pointLightCountShaderId = glGetUniformLocation(program, "pointLightCount");
 
     return std::make_shared<RenderableShape>(
         name,
@@ -200,9 +202,7 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
         mvpMatrixShaderId,
         modelMatrixShaderId,
         viewMatrixShaderId,
-        lightPosShaderId,
-        lightColorShaderId,
-        lightPowerShaderId,
+        pointLightCountShaderId,
         shapeColorShaderId,
         shape->getDiffuseColor(),
         textureId);

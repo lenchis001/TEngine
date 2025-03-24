@@ -6,11 +6,15 @@ layout(location = 2) in vec2 vertexUv;
 
 out vec2 UV;
 out vec3 attenuationCosTheta;
-out vec3 attenuationCosAlpha5;
+out vec3 attenuationCosAlpha;
 
 uniform mat4 MVP;
 
 #include "_lightning.glsl"
+
+layout(std140) uniform PointLightsBuffer {
+    PointLight lights[MAX_LIGHTS];
+};
 
 void main()
 {
@@ -22,15 +26,19 @@ void main()
 
 	vec3 eyeDirectionCameraspace = determineEyeDirectionCameraspace();
 
-	// Direction of the light (from the fragment to the light)
-	vec3 l = determineLightDirection(eyeDirectionCameraspace);
+	for (int i = 0; i < pointLightCount; i++) {
+		PointLight light = lights[i];
 
-	float cosTheta = determineCosTheta(l, n);
-	float cosAlpha = determineCosAlpha(l, n, eyeDirectionCameraspace);
-	vec3 attenuation = determineAttenuation();
+		// Direction of the light (from the fragment to the light)
+		vec3 l = determineLightDirection(eyeDirectionCameraspace, light.position);
 
-	attenuationCosTheta = attenuation * cosTheta;
-	attenuationCosAlpha5 = attenuation * pow(cosAlpha, 5);
+		float cosTheta = determineCosTheta(l, n);
+		float cosAlpha = determineCosAlpha(l, n, eyeDirectionCameraspace);
+		vec3 attenuation = determineAttenuation(light);
+
+		attenuationCosTheta = attenuation * cosTheta;
+		attenuationCosAlpha = attenuation * pow(cosAlpha, 5);
+	}
 
 	// UV of the vertex. No special space for this one.
 	UV = vertexUv;

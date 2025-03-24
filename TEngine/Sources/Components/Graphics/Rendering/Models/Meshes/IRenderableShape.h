@@ -27,11 +27,7 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
 
         virtual GLuint getViewMatrixShaderId() const = 0;
 
-        virtual GLuint getLightPosShaderId() const = 0;
-
-        virtual GLuint getLightColorShaderId() const = 0;
-
-        virtual GLuint getLightPowerShaderId() const = 0;
+        virtual GLuint getPointLightsAmountShaderId() const = 0;
 
         virtual GLuint getShapeColorShaderId() const = 0;
 

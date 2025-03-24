@@ -1,20 +1,23 @@
 // Lightweight shader for mesh rendering with lightning -----------------
 
+#define MAX_LIGHTS 16
+
 uniform mat4 viewMatrix;
 uniform mat4 modelMatrix;
-uniform vec3 lightPosition;
-uniform vec3 lightColor;
-uniform float lightPower;
 
-vec3 determineAttenuation()
+uniform int pointLightCount;
+
+#include "Models/PointLight.glsl"
+
+vec3 determineAttenuation(in PointLight light)
 {
 	// Position of the vertex, in worldspace : modelMatrix * position
 	vec3 positionWorldspace = (modelMatrix * vec4(vertexPosition, 1)).xyz;
 
 	// Distance to the light
-	float distance = length(lightPosition - positionWorldspace);
+	float distance = length(light.position - positionWorldspace);
 
-	return (lightColor * lightPower) / (distance * distance);
+	return (light.color * light.intensity) / (distance * distance);
 }
 
 vec3 determineCameraspaceNormale()
@@ -26,7 +29,7 @@ vec3 determineCameraspaceNormale()
 }
 
 // Direction of the light (from the fragment to the light)
-vec3 determineLightDirection(vec3 eyeDirectionCameraspace)
+vec3 determineLightDirection(vec3 eyeDirectionCameraspace, vec3 lightPosition)
 {
 	// Vector that goes from the vertex to the light, in camera space. modelMatrix is ommited because it's identity.
 	vec3 lightPositionCameraspace = (viewMatrix * vec4(lightPosition, 1)).xyz;

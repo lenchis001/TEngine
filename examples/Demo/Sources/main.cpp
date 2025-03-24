@@ -31,31 +31,31 @@ void setupScene(std::shared_ptr<ISceneService> sceneService)
     solid->setScale(Vector3df(35.0f, 1.0f, 15.0f));
     solid->setIsVisualizationEnabled(true);
 
-    for (int i = 1; i < 10; i++)
+    for (int i = 1; i < 2; i++)
     {
-        for (int j = 1; j < 32; j++)
+        for (int j = 1; j < 2; j++)
         {
             auto cube = sceneService->addMesh("./DemoResources/test plane/plane.obj");
             cube->setPosition(Vector3df(2.0f * i, 0.0f, 2.0f * j));
         }
 
-        if (i > 5)
-        {
-            auto cube = sceneService->addCube("./DemoResources/texture2.bmp", nullptr, PhysicsFlags::STATIC);
-            cube->setPosition(Vector3df(i, 0.0f, 0.0f));
-        }
+        // if (i > 5)
+        // {
+        //     auto cube = sceneService->addCube("./DemoResources/texture2.bmp", nullptr, PhysicsFlags::STATIC);
+        //     cube->setPosition(Vector3df(i, 0.0f, 0.0f));
+        // }
 
-        auto cube2 = sceneService->addCube("./DemoResources/texture2.bmp", nullptr, PhysicsFlags::DYNAMIC);
-        cube2->setPosition(Vector3df(i, 2.f * i, 0.0f));
+        // auto cube2 = sceneService->addCube("./DemoResources/texture2.bmp", nullptr, PhysicsFlags::DYNAMIC);
+        // cube2->setPosition(Vector3df(i, 2.f * i, 0.0f));
 
-        auto testCube = sceneService->addMesh("./DemoResources/test cube/cube.obj");
-        testCube->setPosition(Vector3df(0.0f, 0.0f, 3.0f * i));
+        // auto testCube = sceneService->addMesh("./DemoResources/test cube/cube.obj");
+        // testCube->setPosition(Vector3df(0.0f, 0.0f, 3.0f * i));
 
-        auto sofa = sceneService->addMesh("./DemoResources/sofa.obj");
-        sofa->setPosition(Vector3df(0.f, 0.f, -3.0f * i - 5.0f));
+        // auto sofa = sceneService->addMesh("./DemoResources/sofa.obj");
+        // sofa->setPosition(Vector3df(0.f, 0.f, -3.0f * i - 5.0f));
     }
 
-    lightService->addPointLight(Vector3df(0, 0, 0), Vector3df(1, 1, 1), 10);
+    lightService->addPointLight(Vector3df(0, 0, 0), Vector3df(1, 1, 1), 5);
 }
 
 void sendTestRequest(std::shared_ptr<INetworkService> networkService)

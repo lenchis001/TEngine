@@ -26,7 +26,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene::Lights
 
         void update() override;
 
-        void updateTrackingObjectState(std::shared_ptr<ILightRenderingStrategy> strategy) override;
+        void addToTrack(std::shared_ptr<ILightRenderingStrategy> strategy) override;
 
         void stopTracking(int id) override;
 

@@ -11,9 +11,7 @@ RenderableShape::RenderableShape(
     GLuint mvpMatrixShaderId,
     GLuint modelMatrixShaderId,
     GLuint viewMatrixShaderId,
-    GLuint lightPosShaderId,
-    GLuint lightColorShaderId,
-    GLuint lightPowerShaderId,
+    GLuint pointLightsAmountShaderId,
     GLuint shapeColorShaderId,
     const std::vector<float> &diffuseColor,
     GLuint textureId)
@@ -25,9 +23,7 @@ RenderableShape::RenderableShape(
       _mvpMatrixShaderId(mvpMatrixShaderId),
       _modelMatrixShaderId(modelMatrixShaderId),
       _viewMatrixShaderId(viewMatrixShaderId),
-      _lightPosShaderId(lightPosShaderId),
-      _lightColorShaderId(lightColorShaderId),
-      _lightPowerShaderId(lightPowerShaderId),
+      _pointLightsAmountShaderId(pointLightsAmountShaderId),
       _shapeColorShaderId(shapeColorShaderId),
       _diffuseColor(diffuseColor),
       _textureId(textureId)

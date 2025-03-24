@@ -92,17 +92,10 @@ void MeshRenderingStrategy::_renderSafe(std::shared_ptr<ICameraStrategy> activeC
         glUniformMatrix4fv(shape->getModelMatrixShaderId(), 1, GL_FALSE, getModelMatrix().getInternalData());
         glUniformMatrix4fv(shape->getViewMatrixShaderId(), 1, GL_FALSE, viewMatrix.getInternalData());
 
+        auto pointLightsBuffer = getPointLightsBuffer();
+        glBindBuffer(GL_UNIFORM_BUFFER, pointLightsBuffer);
 
-        auto& pointLights = getPointLights();
-        auto& pointLight = pointLights[0];
-        // auto pointLight = _lightServices->getPointLight();
-
-        glUniform3fv(shape->getLightPosShaderId(), 1, pointLight->getPosition().getInternalData());
-        glUniform3fv(shape->getLightColorShaderId(), 1, pointLight->getDiffuseColor().getInternalData());
-
-        float lightPower = 50.0f;
-        glUniform1f(shape->getLightPowerShaderId(), lightPower);
-
+        glUniform1i(shape->getPointLightsAmountShaderId(), getPointLightsAmount());
         glUniform3fv(shape->getShapeColorShaderId(), 1, shape->getDiffuseColor().data());
 
         if (shape->getTextureId())
@@ -116,6 +109,7 @@ void MeshRenderingStrategy::_renderSafe(std::shared_ptr<ICameraStrategy> activeC
         glUseProgram(0);
         glBindTexture(GL_TEXTURE_2D, 0);
         glBindVertexArray(0);
+        glBindBuffer(GL_UNIFORM_BUFFER, 0);
     }
 }
 

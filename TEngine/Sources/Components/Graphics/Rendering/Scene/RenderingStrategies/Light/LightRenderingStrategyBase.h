@@ -6,8 +6,10 @@
 #include "Components/Graphics/Models/Vector3d.h"
 #include "Components/Graphics/Rendering/Scene/Lights/ILightService.h"
 
+#include "GLFW/glfw3.h"
+
 using namespace TEngine::Components::Graphics::Models;
-using namespace TEngine::Components::Graphics::Rendering::Scene::Models::Lights;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Models::Lights::Shader;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Lights;
 
 namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Light
@@ -17,14 +19,16 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
     public:
         LightRenderingStrategyBase(std::shared_ptr<ILightService> lightService);
 
-        void updatePointLights(const std::vector<std::shared_ptr<IPointLight>>&& pointLights) override;
+        void updatePointLights(const std::vector<ShaderPointLight>&& pointLights) override;
 
     protected:
-        const std::vector<std::shared_ptr<IPointLight>> &getPointLights() const;
+        GLuint getPointLightsBuffer() const;
+        GLuint getPointLightsAmount() const;
 
         static Vector3df _determineSize(const std::vector<float> &vertices);
     private:
+        GLuint _pointLightsBuffer;
+        GLuint _pointLightsAmount;
         std::shared_ptr<ILightService> _lightService;
-        std::vector<std::shared_ptr<IPointLight>> _pointLights;
     };
 }
