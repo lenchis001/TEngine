@@ -114,12 +114,14 @@ void SkySphereRenderingStrategy::_renderSafe(std::shared_ptr<ICameraStrategy> ac
 
     glDrawArrays(GL_TRIANGLES, 0, 36);
 
+#ifdef TENGINE_DEBUG
     // check for errors
     GLenum error = glGetError();
     if (error != GL_NO_ERROR)
     {
         std::cerr << "OpenGL error during rendering: " << error << std::endl;
     }
+#endif
 
     glUseProgram(0);
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);

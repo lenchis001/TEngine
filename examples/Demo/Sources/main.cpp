@@ -33,7 +33,7 @@ void setupScene(std::shared_ptr<ISceneService> sceneService)
 
     for (int i = 1; i < 2; i++)
     {
-        for (int j = 1; j < 2; j++)
+        for (int j = 1; j < 3; j++)
         {
             auto cube = sceneService->addMesh("./DemoResources/test plane/plane.obj");
             cube->setPosition(Vector3df(2.0f * i, 0.0f, 2.0f * j));

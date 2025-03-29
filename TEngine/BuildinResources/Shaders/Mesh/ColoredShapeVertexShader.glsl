@@ -3,12 +3,12 @@
 layout(location = 0) in vec3 vertexPosition;
 layout(location = 1) in vec3 vertexNormal;
 
-out vec3 attenuationCosTheta;
-out vec3 attenuationCosAlpha5;
-
 uniform mat4 MVP;
 
 #include "_lightning.glsl"
+
+out vec3 attenuationCosTheta[MAX_LIGHTS];
+out vec3 attenuationCosAlpha[MAX_LIGHTS];
 
 layout(std140) uniform PointLightsBuffer {
     PointLight lights[MAX_LIGHTS];
@@ -34,8 +34,8 @@ void main()
 		float cosAlpha = determineCosAlpha(l, n, eyeDirectionCameraspace);
 		vec3 attenuation = determineAttenuation(light);
 
-		attenuationCosTheta = attenuation * cosTheta;
-		attenuationCosAlpha = attenuation * pow(cosAlpha, 5);
+		attenuationCosTheta[i] = attenuation * cosTheta;
+		attenuationCosAlpha[i] = attenuation * pow(cosAlpha, 5);
 	}
 
 }

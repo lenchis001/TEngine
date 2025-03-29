@@ -66,8 +66,12 @@ void LightService::_onPointLightUpdated()
 
 	auto lockedStrategies = std::list<std::shared_ptr<ILightRenderingStrategy>>(_trakingStrategies.size());
 
-	std::transform(_trakingStrategies.begin(), _trakingStrategies.end(), lockedStrategies.begin(), [](auto strategy)
-				   { return strategy.lock(); });
+	std::transform(
+		_trakingStrategies.begin(),
+		_trakingStrategies.end(),
+		lockedStrategies.begin(),
+		[](auto strategy)
+		{ return strategy.lock(); });
 	_processingLock.unlock();
 
 	for (auto &strategy : lockedStrategies)

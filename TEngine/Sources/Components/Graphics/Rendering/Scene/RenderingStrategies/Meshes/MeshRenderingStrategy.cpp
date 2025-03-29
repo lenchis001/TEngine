@@ -95,7 +95,8 @@ void MeshRenderingStrategy::_renderSafe(std::shared_ptr<ICameraStrategy> activeC
         auto pointLightsBuffer = getPointLightsBuffer();
         glBindBuffer(GL_UNIFORM_BUFFER, pointLightsBuffer);
 
-        glUniform1i(shape->getPointLightsAmountShaderId(), getPointLightsAmount());
+        auto pointLightsAmount = getPointLightsAmount();
+        glUniform1i(shape->getPointLightsAmountShaderId(), pointLightsAmount);
         glUniform3fv(shape->getShapeColorShaderId(), 1, shape->getDiffuseColor().data());
 
         if (shape->getTextureId())
@@ -105,6 +106,15 @@ void MeshRenderingStrategy::_renderSafe(std::shared_ptr<ICameraStrategy> activeC
         }
 
         glDrawElements(GL_TRIANGLES, shape->getVertices().size(), GL_UNSIGNED_INT, nullptr);
+
+#ifdef TENGINE_DEBUG
+        // check for errors
+        GLenum error = glGetError();
+        if (error != GL_NO_ERROR)
+        {
+            std::cerr << "OpenGL error during mesh rendering: " << error << std::endl;
+        }
+#endif
 
         glUseProgram(0);
         glBindTexture(GL_TEXTURE_2D, 0);

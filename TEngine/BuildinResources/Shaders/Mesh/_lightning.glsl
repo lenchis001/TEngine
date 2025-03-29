@@ -1,11 +1,11 @@
 // Lightweight shader for mesh rendering with lightning -----------------
 
-#define MAX_LIGHTS 16
+#include "Configs/Constants.glsl"
 
 uniform mat4 viewMatrix;
 uniform mat4 modelMatrix;
 
-uniform int pointLightCount;
+#include "Utils/LightCountUniforms.glsl"
 
 #include "Models/PointLight.glsl"
 
