@@ -15,9 +15,6 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
             const std::vector<float> vertices,
             GLuint program,
             GLuint mvpMatrixShaderId,
-            GLuint modelMatrixShaderId,
-            GLuint viewMatrixShaderId,
-            GLuint pointLightsAmountShaderId,
             GLuint shapeColorShaderId,
             const std::vector<float> &diffuseColor,
             GLuint textureId);
@@ -39,18 +36,6 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
 
         inline GLuint getMvpMatrixShaderId() const override {
             return _mvpMatrixShaderId;
-        }
-
-        inline GLuint getModelMatrixShaderId() const override {
-            return _modelMatrixShaderId;
-        }
-
-        inline GLuint getViewMatrixShaderId() const override {
-            return _viewMatrixShaderId;
-        }
-
-        inline GLuint getPointLightsAmountShaderId() const override {
-            return _pointLightsAmountShaderId;
         }
 
         inline GLuint getShapeColorShaderId() const override {
@@ -77,12 +62,6 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
         GLuint _indexBuffer;
         GLuint _program;
         GLuint _mvpMatrixShaderId;
-        GLuint _modelMatrixShaderId;
-        GLuint _viewMatrixShaderId;
-        GLuint _pointLightsAmountShaderId;
-        GLuint _lightPosShaderId;
-        GLuint _lightColorShaderId;
-        GLuint _lightPowerShaderId;
         GLuint _shapeColorShaderId;
         std::vector<float> _diffuseColor;
         GLuint _textureId;

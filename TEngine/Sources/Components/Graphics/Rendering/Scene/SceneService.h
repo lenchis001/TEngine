@@ -12,7 +12,6 @@
 #include "Buffers/IBuffersService.h"
 #include "Components/Graphics/Rendering/Textures/ITexturesService.h"
 #include "Meshes/IMeshService.h"
-#include "Lights/ILightService.h"
 #include "Physics/IPhysicsService.h"
 #include "CameraStrategies/Tracking/ICameraTrackingStrategy.h"
 #include "Sequence/IRenderingSequenceService.h"
@@ -31,7 +30,6 @@ using namespace TEngine::Components::Graphics::Rendering::Scene::Buffers;
 using namespace TEngine::Components::Graphics::Rendering::Textures;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Meshes;
-using namespace TEngine::Components::Graphics::Rendering::Scene::Lights;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Physics;
 using namespace TEngine::Components::Graphics::Rendering::Scene::CameraStrategies::Tracking;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies;
@@ -52,7 +50,6 @@ namespace TEngine::Components::Graphics::Rendering::Scene
             std::shared_ptr<IBuffersService> bufferCacheService,
             std::shared_ptr<ITexturesService> texturesService,
             std::shared_ptr<IMeshService> meshService,
-            std::shared_ptr<ILightService> lightServices,
             std::shared_ptr<IPhysicsService> physicsService,
             std::shared_ptr<IRenderingSequenceService> renderingSequenceService,
             std::vector<std::shared_ptr<ICameraTrackingStrategy>> buildinCameraTrackingStrategies);
@@ -90,8 +87,6 @@ namespace TEngine::Components::Graphics::Rendering::Scene
 
         std::shared_ptr<IRenderingStrategy> getRoot() override;
 
-        std::shared_ptr<ILightService> getLightService() override;
-
     private:
         void _updateRenderingSequenceIfNecessary();
         void _updateRenderingSequence();
@@ -106,7 +101,6 @@ namespace TEngine::Components::Graphics::Rendering::Scene
         std::shared_ptr<IBuffersService> _bufferCacheService;
         std::shared_ptr<ITexturesService> _textureService;
         std::shared_ptr<IMeshService> _meshService;
-        std::shared_ptr<ILightService> _lightServices;
         std::shared_ptr<IPhysicsService> _physicsService;
         std::shared_ptr<IRenderingSequenceService> _renderingSequenceService;
 

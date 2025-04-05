@@ -1,1 +1,0 @@
-#define MAX_LIGHTS 8

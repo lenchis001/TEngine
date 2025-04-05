@@ -1,6 +1,6 @@
 #include "IEngine.h"
 
-#include "memory"
+#include <memory>
 
 #include "Engine.h"
 
@@ -12,7 +12,6 @@
 #include "Components/Graphics/Rendering/Scene/Buffers/BuffersService.h"
 #include "Components/Graphics/Rendering/Textures/TexturesService.h"
 #include "Components/Graphics/Rendering/Scene/Meshes/MeshService.h"
-#include "Components/Graphics/Rendering/Scene/Lights/LightService.h"
 #include "Components/Graphics/Rendering/Scene/Physics/PhysicsService.h"
 #include "Components/Graphics/Rendering/Scene/Physics/EmptyPhysicsService.h"
 #include "Components/Graphics/Rendering/Scene/Sequence/RenderingSequenceService.h"
@@ -35,6 +34,8 @@
 #include "Components/Graphics/Rendering/Scene/State/Deserialization/Meshes/MeshRenderingStrategyDeserializer.h"
 #include "Components/Graphics/Indexing/IndexingService.h"
 
+#include "Components/Core/CoreService.h"
+
 #ifdef _WIN32
 #include "Components/Graphics/Win32GraphicService.h"
 #include "Components/Events/Services/Win32EventService.h"
@@ -52,7 +53,6 @@ using namespace TEngine::Components::Graphics::MeshLoading::Services;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Shaders;
 using namespace TEngine::Components::Graphics::ImageLoading::Services;
 using namespace TEngine::Components::Graphics::Rendering::Textures;
-using namespace TEngine::Components::Graphics::Rendering::Scene::Lights;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Physics;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Sequence;
 using namespace TEngine::Components::Graphics::Rendering::Gui;
@@ -82,6 +82,7 @@ using namespace TEngine::Components::Graphics::Indexing;
 
 using namespace TEngine::Components::Network::Http;
 
+using namespace TEngine::Components::Core;
 
 
 std::shared_ptr<IEngine> TEngine::createEngine(
@@ -93,7 +94,7 @@ std::shared_ptr<IEngine> TEngine::createEngine(
     ,
     bool isPhysicsEnabled)
 {
-    std::shared_ptr<IEventService> eventsService;
+        std::shared_ptr<IEventService> eventsService;
 
     if (parent)
     {
@@ -109,6 +110,8 @@ std::shared_ptr<IEngine> TEngine::createEngine(
     auto vorbisOggReader = std::make_shared<VorbisOggReader>();
     auto audioService = std::make_shared<AudioService>(vorbisOggReader);
 
+    auto coreService = std::make_shared<CoreService>();
+
     auto imageLoadingService = std::make_shared<ImageLoadingService>();
     auto meshLoadingService = std::make_shared<MeshLoadingService>();
 
@@ -117,7 +120,6 @@ std::shared_ptr<IEngine> TEngine::createEngine(
     auto texturesService = std::make_shared<TexturesService>(imageLoadingService);
     auto indexingService = std::make_shared<IndexingService>();
     auto meshService = std::make_shared<MeshService>(meshLoadingService, bufferCacheService, shadersService, texturesService, indexingService);
-    auto lightService = std::make_shared<LightService>();
     auto physicsService = isPhysicsEnabled ? std::static_pointer_cast<IPhysicsService>(std::make_shared<PhysicsService>()) : std::static_pointer_cast<IPhysicsService>(std::make_shared<EmptyPhysicsService>());
     auto renderingSequenceService = std::make_shared<RenderingSequenceService>();
 
@@ -129,7 +131,6 @@ std::shared_ptr<IEngine> TEngine::createEngine(
         bufferCacheService,
         texturesService,
         meshService,
-        lightService,
         physicsService,
         renderingSequenceService,
         buildinCameraTrackingStrategies);
@@ -181,5 +182,6 @@ std::shared_ptr<IEngine> TEngine::createEngine(
         serializationService,
         deserializationService,
         networkService,
-        webSocketFactory);
+        webSocketFactory,
+        coreService);
 }

@@ -4,8 +4,6 @@
 #include "Models/Request.h"
 #include "Models/Response.h"
 
-#include <future>
-
 namespace TEngine::Components::Network::Http
 {
     class INetworkService

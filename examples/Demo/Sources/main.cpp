@@ -12,15 +12,12 @@ using namespace TEngine::Components::Graphics::Models;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Models::Physics;
 using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
 using namespace TEngine::Components::Graphics::Rendering::Scene;
-using namespace TEngine::Components::Graphics::Rendering::Scene::Lights;
 using namespace TEngine::Components::Network::Http;
 using namespace TEngine::Components::Network::WebSocket;
 using namespace TEngine::Components::Network::WebSocket::Client;
 
 void setupScene(std::shared_ptr<ISceneService> sceneService)
 {
-    auto lightService = sceneService->getLightService();
-
     sceneService->setActiveCamera(BuildinCameraTypes::FPS);
 
     sceneService->addSkySphere();
@@ -31,9 +28,9 @@ void setupScene(std::shared_ptr<ISceneService> sceneService)
     solid->setScale(Vector3df(35.0f, 1.0f, 15.0f));
     solid->setIsVisualizationEnabled(true);
 
-    for (int i = 1; i < 2; i++)
+    for (int i = 1; i < 32; i++)
     {
-        for (int j = 1; j < 3; j++)
+        for (int j = 1; j < 32; j++)
         {
             auto cube = sceneService->addMesh("./DemoResources/test plane/plane.obj");
             cube->setPosition(Vector3df(2.0f * i, 0.0f, 2.0f * j));
@@ -54,8 +51,6 @@ void setupScene(std::shared_ptr<ISceneService> sceneService)
         // auto sofa = sceneService->addMesh("./DemoResources/sofa.obj");
         // sofa->setPosition(Vector3df(0.f, 0.f, -3.0f * i - 5.0f));
     }
-
-    lightService->addPointLight(Vector3df(0, 0, 0), Vector3df(1, 1, 1), 5);
 }
 
 void sendTestRequest(std::shared_ptr<INetworkService> networkService)
@@ -117,6 +112,8 @@ int main()
     source->play();
     source->setPosition(0.0f, 0.0f, 0.0f);
 
+    auto coreService = engine->getCoreService();
+
     while (true)
     {
         auto time = graphicsService->getTime();
@@ -134,6 +131,8 @@ int main()
                 break;
             }
         }
+
+        //coreService->processQueue(TEngine::Components::Core::Models::ThreadType::RENDERING);
 
         graphicsService->render();
     }

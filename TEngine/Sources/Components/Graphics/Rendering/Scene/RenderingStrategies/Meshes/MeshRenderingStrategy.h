@@ -4,7 +4,6 @@
 #include "IMeshRenderingStrategy.h"
 
 #include "Components/Graphics/Rendering/Scene/RenderingStrategies/Physics/PhysicsRenderingStrategyBase.h"
-#include "Components/Graphics/Rendering/Scene/RenderingStrategies/Light/LightRenderingStrategyBase.h"
 
 #include "Components/Graphics/Rendering/Models/Meshes/IRenderableMesh.h"
 #include "Components/Graphics/Rendering/Scene/Meshes/IMeshService.h"
@@ -14,7 +13,6 @@
 using namespace TEngine::Components::Graphics::Rendering::Models::Meshes;
 using namespace TEngine::Components::Graphics::Rendering::Models::Priority;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Meshes;
-using namespace TEngine::Components::Graphics::Rendering::Scene::Lights;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Physics;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingMixins;
 using namespace TEngine::Components::Graphics::Rendering::Textures;
@@ -23,13 +21,11 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
 {
     class MeshRenderingStrategy : 
         public RenderingStrategies::Physics::PhysicsRenderingStrategyBase, 
-        public RenderingStrategies::Light::LightRenderingStrategyBase,
         public IMeshRenderingStrategy
     {
     public:
         MeshRenderingStrategy(
             std::shared_ptr<IMeshService> meshService,
-            std::shared_ptr<ILightService> lightServices,
             std::shared_ptr<IPhysicsService> physicsService,
             std::shared_ptr<ITexturesService> textureService,
             OnDeleteCallback onDeleteCallback,
@@ -45,8 +41,6 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
         const std::string &getPath() const;
 
         RenderingPriority getRenderingPriority() const override;
-
-        const Graphics::Models::Vector3df& getSize() const override;
 
     protected:
         std::string _getDefaultName() const override;
@@ -65,7 +59,6 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
         std::shared_ptr<ITexturesService> _textureService;
 
         const std::string _path;
-        Vector3df _size;
     };
 }
 

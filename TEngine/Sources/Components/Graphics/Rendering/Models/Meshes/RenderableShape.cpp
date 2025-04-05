@@ -9,9 +9,6 @@ RenderableShape::RenderableShape(
     const std::vector<float> vertices,
     GLuint program,
     GLuint mvpMatrixShaderId,
-    GLuint modelMatrixShaderId,
-    GLuint viewMatrixShaderId,
-    GLuint pointLightsAmountShaderId,
     GLuint shapeColorShaderId,
     const std::vector<float> &diffuseColor,
     GLuint textureId)
@@ -21,9 +18,6 @@ RenderableShape::RenderableShape(
       _vertices(vertices),
       _program(program),
       _mvpMatrixShaderId(mvpMatrixShaderId),
-      _modelMatrixShaderId(modelMatrixShaderId),
-      _viewMatrixShaderId(viewMatrixShaderId),
-      _pointLightsAmountShaderId(pointLightsAmountShaderId),
       _shapeColorShaderId(shapeColorShaderId),
       _diffuseColor(diffuseColor),
       _textureId(textureId)

@@ -13,7 +13,6 @@
 #include "RenderingStrategies/Primitives/ICubeRenderingStrategy.h"
 #include "RenderingStrategies/Solid/ISolidboxRenderingStrategy.h"
 #include "Models/ISceneParameters.h"
-#include "Components/Graphics/Rendering/Scene/Lights/ILightService.h"
 
 namespace TEngine::Components::Graphics::Rendering::Scene
 {
@@ -55,8 +54,6 @@ namespace TEngine::Components::Graphics::Rendering::Scene
         virtual void setActiveCamera(std::shared_ptr<CameraStrategies::ICameraStrategy> camera) = 0;
 
         virtual std::shared_ptr<RenderingStrategies::IRenderingStrategy> getRoot() = 0;
-
-        virtual std::shared_ptr<Lights::ILightService> getLightService() = 0;
     };
 }
 

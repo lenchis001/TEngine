@@ -2,6 +2,7 @@
 #define TENGINE_SPINLOCK_H
 
 #include <thread>
+#include <atomic>
 
 namespace TEngine::Mixins
 {

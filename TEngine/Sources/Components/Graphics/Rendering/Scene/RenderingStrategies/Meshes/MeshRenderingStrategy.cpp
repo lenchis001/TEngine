@@ -6,21 +6,16 @@ using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrate
 
 MeshRenderingStrategy::MeshRenderingStrategy(
     std::shared_ptr<IMeshService> meshService,
-    std::shared_ptr<ILightService> lightServices,
     std::shared_ptr<IPhysicsService> physicsService,
     std::shared_ptr<ITexturesService> textureService,
     OnDeleteCallback onDeleteCallback,
     const std::string &path)
     : PhysicsRenderingStrategyBase(physicsService, onDeleteCallback),
-      LightRenderingStrategyBase(lightServices),
       _meshService(meshService),
       _textureService(textureService),
-      _path(path),
-      _size(0, 0, 0)
+      _path(path)
 {
     _renderableMesh = _meshService->take(_path);
-
-    _size = _determineSize(_getVertices());
 }
 
 MeshRenderingStrategy::~MeshRenderingStrategy()
@@ -68,11 +63,6 @@ RenderingPriority MeshRenderingStrategy::getRenderingPriority() const
     return hasTexture ? RenderingPriority::HIGH : RenderingPriority::NONE;
 }
 
-const Vector3df &MeshRenderingStrategy::getSize() const
-{
-    return _size;
-}
-
 std::string MeshRenderingStrategy::_getDefaultName() const
 {
     return "Mesh";
@@ -89,14 +79,7 @@ void MeshRenderingStrategy::_renderSafe(std::shared_ptr<ICameraStrategy> activeC
 
         glUseProgram(shape->getProgram());
         glUniformMatrix4fv(shape->getMvpMatrixShaderId(), 1, GL_FALSE, getMvpMatrix().getInternalData());
-        glUniformMatrix4fv(shape->getModelMatrixShaderId(), 1, GL_FALSE, getModelMatrix().getInternalData());
-        glUniformMatrix4fv(shape->getViewMatrixShaderId(), 1, GL_FALSE, viewMatrix.getInternalData());
 
-        auto pointLightsBuffer = getPointLightsBuffer();
-        glBindBuffer(GL_UNIFORM_BUFFER, pointLightsBuffer);
-
-        auto pointLightsAmount = getPointLightsAmount();
-        glUniform1i(shape->getPointLightsAmountShaderId(), pointLightsAmount);
         glUniform3fv(shape->getShapeColorShaderId(), 1, shape->getDiffuseColor().data());
 
         if (shape->getTextureId())

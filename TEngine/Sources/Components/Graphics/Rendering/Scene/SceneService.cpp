@@ -27,7 +27,6 @@ SceneService::SceneService(
 	std::shared_ptr<IBuffersService> bufferCacheService,
 	std::shared_ptr<ITexturesService> textureService,
 	std::shared_ptr<IMeshService> meshService,
-	std::shared_ptr<ILightService> lightServices,
 	std::shared_ptr<IPhysicsService> physicsService,
 	std::shared_ptr<IRenderingSequenceService> renderingSequenceService,
 	std::vector<std::shared_ptr<ICameraTrackingStrategy>> buildinCameraTrackingStrategies)
@@ -36,7 +35,6 @@ SceneService::SceneService(
 	  _bufferCacheService(bufferCacheService),
 	  _textureService(textureService),
 	  _meshService(meshService),
-	  _lightServices(lightServices),
 	  _physicsService(physicsService),
 	  _renderingSequenceService(renderingSequenceService),
 	  _activeCamera(nullptr),
@@ -65,7 +63,6 @@ void SceneService::render(double time)
 
 	if (_activeCamera)
 	{
-		_lightServices->update();
 		_activeCamera->render(time);
 
 		_updateRenderingSequenceIfNecessary();
@@ -111,7 +108,6 @@ std::shared_ptr<IMeshRenderingStrategy> SceneService::addMesh(
 {
 	std::shared_ptr<IMeshRenderingStrategy> strategy = std::make_shared<MeshRenderingStrategy>(
 		_meshService,
-		_lightServices,
 		_physicsService,
 		_textureService,
 		std::bind(&SceneService::_updateRenderingSequence, this),
@@ -120,8 +116,6 @@ std::shared_ptr<IMeshRenderingStrategy> SceneService::addMesh(
 	strategy->setPhysicsFlags(physicsFlags);
 
 	(parent ? parent : _root)->addChild(strategy);
-
-	_lightServices->addToTrack(strategy);
 
 	_updateRenderingSequence();
 
@@ -228,11 +222,6 @@ std::shared_ptr<IRenderingStrategy> SceneService::getRoot()
 	return _root;
 }
 
-std::shared_ptr<ILightService> SceneService::getLightService()
-{
-	return _lightServices;
-}
-
 Vector2di SceneService::_getWindowSize() const
 {
 	return Vector2di(1280, 720);
@@ -245,6 +234,10 @@ void SceneService::_updateRenderingSequenceIfNecessary()
 	if (_lastOptimizedPosition.distance(cameraPosition) > _sequenceUpdateThreshold)
 	{
 		_updateRenderingSequence();
+
+#ifdef TENGINE_DEBUG
+		std::cout << "Rendering sequence updated" << std::endl;
+#endif // TENGINE_DEBUG
 	}
 }
 

@@ -23,12 +23,6 @@ namespace TEngine::Components::Graphics::Rendering::Models::Meshes
 
         virtual GLuint getMvpMatrixShaderId() const = 0;
 
-        virtual GLuint getModelMatrixShaderId() const = 0;
-
-        virtual GLuint getViewMatrixShaderId() const = 0;
-
-        virtual GLuint getPointLightsAmountShaderId() const = 0;
-
         virtual GLuint getShapeColorShaderId() const = 0;
 
         virtual const std::vector<float>& getDiffuseColor() const = 0;

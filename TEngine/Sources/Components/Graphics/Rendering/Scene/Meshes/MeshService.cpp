@@ -144,15 +144,15 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
     glBindBuffer(GL_ARRAY_BUFFER, verticesBuffer);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
-    glEnableVertexAttribArray(1);
-    glBindBuffer(GL_ARRAY_BUFFER, normalsBuffer);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+    // glEnableVertexAttribArray(1);
+    // glBindBuffer(GL_ARRAY_BUFFER, normalsBuffer);
+    // glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
     if (isTextured)
     {
-        glEnableVertexAttribArray(2);
+        glEnableVertexAttribArray(1);
         glBindBuffer(GL_ARRAY_BUFFER, uvsBuffer);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
     }
 
     glBindVertexArray(0);
@@ -183,15 +183,8 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
     auto fragmentShader = _getFragmentShaderPath(textureId);
     auto program = _shadersService->take(vertedShader, fragmentShader);
 
-    // Bind uniform blocks
-    GLuint pointLightsBlockIndex = glGetUniformBlockIndex(program, "PointLightsBuffer");
-    glUniformBlockBinding(program, pointLightsBlockIndex, 1);
-
     auto mvpMatrixShaderId = glGetUniformLocation(program, "MVP");
-    auto modelMatrixShaderId = glGetUniformLocation(program, "modelMatrix");
-    auto viewMatrixShaderId = glGetUniformLocation(program, "viewMatrix");
     auto shapeColorShaderId = glGetUniformLocation(program, "shapeColor");
-    auto pointLightCountShaderId = glGetUniformLocation(program, "pointLightCount");
 
     return std::make_shared<RenderableShape>(
         name,
@@ -200,9 +193,6 @@ std::shared_ptr<IRenderableShape> MeshService::_toRenderableShape(std::shared_pt
         shape->getVertices(),
         program,
         mvpMatrixShaderId,
-        modelMatrixShaderId,
-        viewMatrixShaderId,
-        pointLightCountShaderId,
         shapeColorShaderId,
         shape->getDiffuseColor(),
         textureId);
