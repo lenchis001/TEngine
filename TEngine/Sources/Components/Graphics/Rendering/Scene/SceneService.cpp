@@ -38,10 +38,11 @@ SceneService::SceneService(
 	  _physicsService(physicsService),
 	  _renderingSequenceService(renderingSequenceService),
 	  _activeCamera(nullptr),
-	  _root(std::make_shared<EmptyRenderingStrategy>(std::bind(&SceneService::_updateRenderingSequence, this))),
+	  _root(std::make_shared<EmptyRenderingStrategy>(std::bind(&SceneService::_requestDefferedRenderingSequenceUpdate, this))),
 	  _buildinCameraTrackingStrategies(buildinCameraTrackingStrategies),
 	  _lastOptimizedPosition(Vector3df(0, 0, 0)),
-	  _sequenceUpdateThreshold(10.0f)
+	  _sequenceUpdateThreshold(10.0f),
+	  _isDefferedRenderingSequenceUpdateRequired(false)
 {
 }
 
@@ -55,6 +56,8 @@ void SceneService::initialize(std::shared_ptr<ISceneParameters> parameters)
 void SceneService::deinitialize()
 {
 	_root->removeAllChildren();
+	_activeCamera = nullptr;
+	_renderingSequence.clear();
 }
 
 void SceneService::render(double time)
@@ -86,7 +89,7 @@ std::shared_ptr<ICubeRenderingStrategy> SceneService::addCube(
 		_bufferCacheService,
 		_textureService,
 		_physicsService,
-		std::bind(&SceneService::_updateRenderingSequence, this));
+		std::bind(&SceneService::_requestDefferedRenderingSequenceUpdate, this));
 
 	if (!texturePath.empty())
 	{
@@ -96,7 +99,7 @@ std::shared_ptr<ICubeRenderingStrategy> SceneService::addCube(
 
 	(parent ? parent : _root)->addChild(strategy);
 
-	_updateRenderingSequence();
+	_requestDefferedRenderingSequenceUpdate();
 
 	return strategy;
 }
@@ -110,14 +113,14 @@ std::shared_ptr<IMeshRenderingStrategy> SceneService::addMesh(
 		_meshService,
 		_physicsService,
 		_textureService,
-		std::bind(&SceneService::_updateRenderingSequence, this),
+		std::bind(&SceneService::_requestDefferedRenderingSequenceUpdate, this),
 		path);
 
 	strategy->setPhysicsFlags(physicsFlags);
 
 	(parent ? parent : _root)->addChild(strategy);
 
-	_updateRenderingSequence();
+	_requestDefferedRenderingSequenceUpdate();
 
 	return strategy;
 }
@@ -129,13 +132,13 @@ std::shared_ptr<ISolidboxRenderingStrategy> SceneService::addSolidbox(
 		_shadersService,
 		_bufferCacheService,
 		_physicsService,
-		std::bind(&SceneService::_updateRenderingSequence, this));
+		std::bind(&SceneService::_requestDefferedRenderingSequenceUpdate, this));
 
 	(parent ? parent : _root)->addChild(strategy);
 
 	strategy->setPhysicsFlags(PhysicsFlags::STATIC);
 
-	_updateRenderingSequence();
+	_requestDefferedRenderingSequenceUpdate();
 
 	return strategy;
 }
@@ -143,11 +146,11 @@ std::shared_ptr<ISolidboxRenderingStrategy> SceneService::addSolidbox(
 std::shared_ptr<IRenderingStrategy> SceneService::addEmpty(
 	std::shared_ptr<IRenderingStrategy> parent)
 {
-	std::shared_ptr<IRenderingStrategy> strategy = std::make_shared<EmptyRenderingStrategy>(std::bind(&SceneService::_updateRenderingSequence, this));
+	std::shared_ptr<IRenderingStrategy> strategy = std::make_shared<EmptyRenderingStrategy>(std::bind(&SceneService::_requestDefferedRenderingSequenceUpdate, this));
 
 	(parent ? parent : _root)->addChild(strategy);
 
-	_updateRenderingSequence();
+	_requestDefferedRenderingSequenceUpdate();
 
 	return strategy;
 }
@@ -159,7 +162,7 @@ std::shared_ptr<IRenderingStrategy> SceneService::addSkySphere(
 		_shadersService,
 		_bufferCacheService,
 		_textureService,
-		std::bind(&SceneService::_updateRenderingSequence, this));
+		std::bind(&SceneService::_requestDefferedRenderingSequenceUpdate, this));
 
 	// todo: remoove after test
 	strategy->setTexture(
@@ -174,7 +177,7 @@ std::shared_ptr<IRenderingStrategy> SceneService::addSkySphere(
 
 	(parent ? parent : _root)->addChild(strategy);
 
-	_updateRenderingSequence();
+	_requestDefferedRenderingSequenceUpdate();
 
 	return strategy;
 }
@@ -231,14 +234,16 @@ void SceneService::_updateRenderingSequenceIfNecessary()
 {
 	const auto &cameraPosition = _activeCamera->getPosition();
 
-	if (_lastOptimizedPosition.distance(cameraPosition) > _sequenceUpdateThreshold)
+	if (_lastOptimizedPosition.distance(cameraPosition) > _sequenceUpdateThreshold ||
+	    _isDefferedRenderingSequenceUpdateRequired)
 	{
 		_updateRenderingSequence();
-
-#ifdef TENGINE_DEBUG
-		std::cout << "Rendering sequence updated" << std::endl;
-#endif // TENGINE_DEBUG
 	}
+}
+
+void SceneService::_requestDefferedRenderingSequenceUpdate()
+{
+	_isDefferedRenderingSequenceUpdateRequired = true;
 }
 
 void SceneService::_updateRenderingSequence()
@@ -248,4 +253,10 @@ void SceneService::_updateRenderingSequence()
 	_renderingSequence = _renderingSequenceService->generateSequence(_root, cameraPosition);
 
 	_lastOptimizedPosition = cameraPosition;
+
+	_isDefferedRenderingSequenceUpdateRequired = false;
+
+	#ifdef TENGINE_DEBUG
+			std::cout << "Rendering sequence updated" << std::endl;
+	#endif // TENGINE_DEBUG
 }

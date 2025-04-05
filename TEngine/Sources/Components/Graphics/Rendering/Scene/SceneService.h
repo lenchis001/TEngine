@@ -89,6 +89,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene
 
     private:
         void _updateRenderingSequenceIfNecessary();
+        void _requestDefferedRenderingSequenceUpdate();
         void _updateRenderingSequence();
 
         Vector2di _getWindowSize() const;
@@ -110,6 +111,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene
 
         Vector3df _lastOptimizedPosition;
         float _sequenceUpdateThreshold;
+        bool _isDefferedRenderingSequenceUpdateRequired;
     };
 }
 

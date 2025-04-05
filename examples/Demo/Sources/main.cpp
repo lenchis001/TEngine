@@ -36,20 +36,20 @@ void setupScene(std::shared_ptr<ISceneService> sceneService)
             cube->setPosition(Vector3df(2.0f * i, 0.0f, 2.0f * j));
         }
 
-        // if (i > 5)
-        // {
-        //     auto cube = sceneService->addCube("./DemoResources/texture2.bmp", nullptr, PhysicsFlags::STATIC);
-        //     cube->setPosition(Vector3df(i, 0.0f, 0.0f));
-        // }
+        if (i > 5)
+        {
+            auto cube = sceneService->addCube("./DemoResources/texture2.bmp", nullptr, PhysicsFlags::STATIC);
+            cube->setPosition(Vector3df(i, 0.0f, 0.0f));
+        }
 
-        // auto cube2 = sceneService->addCube("./DemoResources/texture2.bmp", nullptr, PhysicsFlags::DYNAMIC);
-        // cube2->setPosition(Vector3df(i, 2.f * i, 0.0f));
+        auto cube2 = sceneService->addCube("./DemoResources/texture2.bmp", nullptr, PhysicsFlags::DYNAMIC);
+        cube2->setPosition(Vector3df(i, 2.f * i, 0.0f));
 
-        // auto testCube = sceneService->addMesh("./DemoResources/test cube/cube.obj");
-        // testCube->setPosition(Vector3df(0.0f, 0.0f, 3.0f * i));
+        auto testCube = sceneService->addMesh("./DemoResources/test cube/cube.obj");
+        testCube->setPosition(Vector3df(0.0f, 0.0f, 3.0f * i));
 
-        // auto sofa = sceneService->addMesh("./DemoResources/sofa.obj");
-        // sofa->setPosition(Vector3df(0.f, 0.f, -3.0f * i - 5.0f));
+        auto sofa = sceneService->addMesh("./DemoResources/sofa.obj");
+        sofa->setPosition(Vector3df(0.f, 0.f, -3.0f * i - 5.0f));
     }
 }
 
