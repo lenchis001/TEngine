@@ -1,7 +1,7 @@
 #include <memory>
 #include <vector>
 
-#include <GLFW/glfw3.h>
+#include "GL/gl.h"
 
 #include "ISkySphereRenderingStrategy.h"
 #include "Components/Graphics/Rendering/Scene/RenderingStrategies/RenderingStrategyBase.h"

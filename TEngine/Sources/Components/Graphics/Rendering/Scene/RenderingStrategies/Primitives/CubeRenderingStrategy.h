@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "GLFW/glfw3.h"
+#include "GL/gl.h"
 
 #include "Components/Graphics/Rendering/Scene/RenderingStrategies/RenderingStrategyBase.h"
 #include "Components/Graphics/Rendering/Scene/Shaders/IShadersService.h"

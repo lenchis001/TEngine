@@ -6,7 +6,7 @@
 #include "cassert"
 #include "iostream"
 
-#include "GLFW/glfw3.h"
+#include "GL/gl.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Scene::Shaders;
 

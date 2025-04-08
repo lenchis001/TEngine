@@ -5,6 +5,9 @@ cmake_minimum_required (VERSION 3.8)
 
 project ("TEngine")
 
+option(BUILD_DEMO "Build the Demo project" ON)
+option(BUILD_ALICE "Build the Alice project" ON)
+
 set(CMAKE_COLOR_MAKEFILE   ON)
 set(CMAKE_CXX_STANDARD 17)
 
@@ -62,5 +65,9 @@ add_subdirectory("TEngine")
 add_subdirectory("Plugins/ImageLoading/BmpLoadingPlugin")
 add_subdirectory("Plugins/ImageLoading/PngLoadingPlugin")
 add_subdirectory("Plugins/MeshLoading/ObjLoadingPlugin")
+if(BUILD_DEMO)
 add_subdirectory("examples/Demo")
+endif()
+if(BUILD_ALICE)
 add_subdirectory("Editor/Alice")
+endif()

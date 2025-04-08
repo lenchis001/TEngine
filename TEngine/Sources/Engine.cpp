@@ -1,6 +1,6 @@
 #include "Engine.h"
 
-#include "GLFW/glfw3.h"
+#include "GL/gl.h"
 
 using namespace TEngine;
 

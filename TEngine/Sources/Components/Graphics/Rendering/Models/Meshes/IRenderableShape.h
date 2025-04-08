@@ -4,7 +4,7 @@
 #include "vector"
 #include "string"
 
-#include "GLFW/glfw3.h"
+#include "GL/gl.h"
 
 namespace TEngine::Components::Graphics::Rendering::Models::Meshes
 {

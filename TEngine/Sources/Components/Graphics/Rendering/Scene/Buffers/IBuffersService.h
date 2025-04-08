@@ -3,7 +3,7 @@
 
 #include "string"
 
-#include "GLFW/glfw3.h"
+#include "GL/gl.h"
 
 #define GET_VBO(name) _bufferCacheService->getVbo(name)
 #define TAKE_VBO(name) _bufferCacheService->takeVbo(name)
