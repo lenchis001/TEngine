@@ -21,6 +21,9 @@ target_include_directories(Demo PRIVATE "../../TEngine/Sources")
 target_link_libraries(Demo PRIVATE TEngine)
 
 # Find Python interpreter
+if(NOT PYTHON_EXECUTABLE)
+    set(PYTHON_EXECUTABLE "C:/Users/Leon/AppData/Local/Microsoft/WindowsApps/python.exe") # Replace with the actual path to your Python 3 executable
+endif()
 find_package(PythonInterp 3 REQUIRED)
 
 # Add post-build command to run a Python script
