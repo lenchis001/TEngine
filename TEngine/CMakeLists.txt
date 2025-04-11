@@ -13,6 +13,9 @@ endif()
 if(DEBUG)
     target_compile_definitions(TEngine PRIVATE TENGINE_DEBUG)
 endif()
+if(BUILD_WITH_GLFW)
+    target_compile_definitions(TEngine PRIVATE TENGINE_USE_GLFW)
+endif()
 target_include_directories(TEngine PUBLIC "Sources")
 
 # Copy Resources directory to the output directory
@@ -24,38 +27,39 @@ add_custom_command(TARGET TEngine POST_BUILD
 
 # --------------------- Dependencies ---------------------
 
-# Download and configure GLFW
-include(FetchContent)
+if(BUILD_WITH_GLFW)
+    # Download and configure GLFW
+    include(FetchContent)
 
-FetchContent_Declare(
-    glfw
-    GIT_REPOSITORY https://github.com/glfw/glfw.git
-    GIT_TAG        3.4
-    GIT_SHALLOW    TRUE
-)
+    FetchContent_Declare(
+        glfw
+        GIT_REPOSITORY https://github.com/glfw/glfw.git
+        GIT_TAG        3.4
+        GIT_SHALLOW    TRUE
+    )
 
-FetchContent_GetProperties(glfw)
-if(NOT glfw_POPULATED)
-    FetchContent_Populate(glfw)
+    FetchContent_GetProperties(glfw)
+    if(NOT glfw_POPULATED)
+        FetchContent_Populate(glfw)
 
-    set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
-    set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-    set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-    set(GLFW_BUILD_INSTALL OFF CACHE BOOL " " FORCE)
-    set(GLFW_INSTALL OFF CACHE BOOL " " FORCE)
+        set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+        set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+        set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+        set(GLFW_BUILD_INSTALL OFF CACHE BOOL " " FORCE)
+        set(GLFW_INSTALL OFF CACHE BOOL " " FORCE)
 
-    add_subdirectory(${glfw_SOURCE_DIR} ${glfw_BINARY_DIR})
+        add_subdirectory(${glfw_SOURCE_DIR} ${glfw_BINARY_DIR})
+    endif()
+
+    # Set GLFW as an external project
+    set_target_properties(glfw PROPERTIES FOLDER external)
+
+    # Add GLFW includes
+    target_include_directories(TEngine PRIVATE ${glfw_SOURCE_DIR}/include)
+
+    # Add GLFW library
+    target_link_libraries(TEngine PRIVATE glfw)
 endif()
-
-# Set GLFW as an external project
-set_target_properties(glfw PROPERTIES FOLDER external)
-
-# Add GLFW includes
-target_include_directories(TEngine PRIVATE ${glfw_SOURCE_DIR}/include)
-
-# Add GLFW library
-target_link_libraries(TEngine PRIVATE glfw)
-
 # --------------------- Add OpenGL library ---------------------
 
 find_package(OpenGL REQUIRED)

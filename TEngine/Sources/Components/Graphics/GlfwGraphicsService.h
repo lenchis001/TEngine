@@ -1,6 +1,8 @@
 #ifndef TENGINE_GRAPHICSSERVICE_H
 #define TENGINE_GRAPHICSSERVICE_H
 
+#ifdef TENGINE_USE_GLFW
+
 #include "GLFW/glfw3.h"
 
 #include "Mixins/ContextAwareMixin.h"
@@ -40,5 +42,7 @@ namespace TEngine::Components::Graphics
         GLFWwindow *_window;
     };
 }
+
+#endif // TENGINE_USE_GLFW
 
 #endif // TENGINE_GRAPHICSSERVICE_H

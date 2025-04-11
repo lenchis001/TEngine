@@ -1,3 +1,5 @@
+#ifdef TENGINE_USE_GLFW
+
 #include "GL/glew.h"
 
 #include "GlfwGraphicsService.h"
@@ -92,3 +94,5 @@ void GlfwGraphicsService::_onWindowResized(GLFWwindow *window, int width, int he
 	
 	that->resize(width, height);
 }
+
+#endif // TENGINE_USE_GLFW

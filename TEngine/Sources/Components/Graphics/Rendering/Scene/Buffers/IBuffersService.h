@@ -3,7 +3,11 @@
 
 #include "string"
 
-#include "GL/gl.h"
+#ifdef __ANDROID__
+#include <EGL/egl.h>
+#else
+#include <GL/gl.h>
+#endif
 
 #define GET_VBO(name) _bufferCacheService->getVbo(name)
 #define TAKE_VBO(name) _bufferCacheService->takeVbo(name)

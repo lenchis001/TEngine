@@ -7,6 +7,7 @@ project ("TEngine")
 
 option(BUILD_DEMO "Build the Demo project" ON)
 option(BUILD_ALICE "Build the Alice project" ON)
+option(BUILD_WITH_GLFW "Build with GLFW window system" ON)
 
 set(CMAKE_COLOR_MAKEFILE   ON)
 set(CMAKE_CXX_STANDARD 17)

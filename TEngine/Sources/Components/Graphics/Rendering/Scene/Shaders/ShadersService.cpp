@@ -6,7 +6,11 @@
 #include "cassert"
 #include "iostream"
 
-#include "GL/gl.h"
+#ifdef __ANDROID__
+#include <EGL/egl.h>
+#else
+#include <GL/gl.h>
+#endif
 
 using namespace TEngine::Components::Graphics::Rendering::Scene::Shaders;
 

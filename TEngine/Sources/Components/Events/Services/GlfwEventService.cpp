@@ -1,5 +1,7 @@
 #include "GlfwEventService.h"
 
+#ifdef TENGINE_USE_GLFW
+
 using namespace TEngine::Components::Events::Services;
 
 GlfwEventService::~GlfwEventService()
@@ -74,3 +76,5 @@ void GlfwEventService::_cursorEnterCallback(GLFWwindow *window, int entered)
 
     that->fireCursorEnterHandler(entered);
 }
+
+#endif // TENGINE_USE_GLFW

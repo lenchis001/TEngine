@@ -1,6 +1,10 @@
 #include "Engine.h"
 
-#include "GL/gl.h"
+#ifdef __ANDROID__
+#include <EGL/egl.h>
+#else
+#include <GL/gl.h>
+#endif
 
 using namespace TEngine;
 

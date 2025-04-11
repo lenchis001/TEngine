@@ -6,7 +6,11 @@
 #include <string>
 #include <memory>
 
-#include "GL/gl.h"
+#ifdef __ANDROID__
+#include <EGL/egl.h>
+#else
+#include <GL/gl.h>
+#endif
 
 #include "Components/Graphics/Rendering/Textures/ITexturesService.h"
 

@@ -1,6 +1,8 @@
 #ifndef TENGINE_EVENT_SERVICE_H
 #define TENGINE_EVENT_SERVICE_H
 
+#ifdef TENGINE_USE_GLFW
+
 #include "EventServiceBase.h"
 
 #include "GLFW/glfw3.h"
@@ -32,5 +34,7 @@ namespace TEngine::Components::Events::Services
         static void _cursorEnterCallback(GLFWwindow *window, int entered);
     };
 }
+
+#endif // TENGINE_USE_GLFW
 
 #endif // TENGINE_EVENT_SERVICE_H

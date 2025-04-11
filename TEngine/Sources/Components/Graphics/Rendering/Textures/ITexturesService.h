@@ -3,7 +3,11 @@
 
 #include "string"
 
-#include "GL/gl.h"
+#ifdef __ANDROID__
+#include <EGL/egl.h>
+#else
+#include <GL/gl.h>
+#endif
 
 namespace TEngine::Components::Graphics::Rendering::Textures
 {

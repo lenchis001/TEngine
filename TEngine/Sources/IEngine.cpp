@@ -104,7 +104,11 @@ std::shared_ptr<IEngine> TEngine::createEngine(
     }
     else
     {
+#ifdef TENGINE_USE_GLFW
         eventsService = std::make_shared<GlfwEventService>();
+#else
+        throw std::runtime_error("No event service available");
+#endif
     }
 
     auto vorbisOggReader = std::make_shared<VorbisOggReader>();
@@ -148,8 +152,12 @@ std::shared_ptr<IEngine> TEngine::createEngine(
     }
     else
     {
+#ifdef TENGINE_USE_GLFW
         guiService = std::make_shared<GlfwGuiService>(eventsService, texturesService);
         graphicsService = std::make_shared<GlfwGraphicsService>(sceneService, guiService, meshLoadingService, texturesService);
+#else
+        throw std::runtime_error("No graphics service available");
+#endif
     }
 
     auto serializers = std::map<std::type_index, std::shared_ptr<Serializers::ISerializer>>();
