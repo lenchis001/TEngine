@@ -62,8 +62,24 @@ if(BUILD_WITH_GLFW)
 endif()
 # --------------------- Add OpenGL library ---------------------
 
+if(ANDROID)
+    target_link_libraries(TEngine
+            PRIVATE
+            # The game activity
+            game-activity::game-activity
+
+            # EGL and other dependent libraries required for drawing
+            # and interacting with Android system
+            EGL
+            GLESv3
+            jnigraphics
+            android
+            log
+    )
+else()
 find_package(OpenGL REQUIRED)
 target_link_libraries(TEngine PRIVATE OpenGL::GL)
+endif()
 
 # --------------------- Add GLEW library ---------------------
 
