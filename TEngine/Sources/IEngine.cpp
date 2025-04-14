@@ -90,6 +90,8 @@ std::shared_ptr<IEngine> TEngine::createEngine(
     HWND parent
 #elif __APPLE__
     void *parent
+#elif __ANDROID__
+    android_app *parent
 #endif
     ,
     bool isPhysicsEnabled)

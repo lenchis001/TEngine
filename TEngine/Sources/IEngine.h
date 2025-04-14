@@ -5,6 +5,8 @@
 
 #ifdef _WIN32
 #include <windows.h>
+#elif __ANDROID__
+#include <game-activity/native_app_glue/android_native_app_glue.h>
 #endif
 
 #include "Configs/TEngineExport.h"
@@ -53,6 +55,8 @@ namespace TEngine
         HWND parent = nullptr
 #elif __APPLE__
         void *parent = nullptr
+#elif __ANDROID__
+        android_app *parent = nullptr
 #endif
         ,
         bool isPhysicsEnabled = true);

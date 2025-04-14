@@ -16,7 +16,7 @@ if(UNIX AND NOT APPLE)
     set(LINUX TRUE)
 endif()
 
-if(LINUX)
+if(LINUX AND NOT ANDROID)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pthread -static-libgcc" )
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -static-libstdc++")
 elseif(MSVC)
