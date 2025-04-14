@@ -6,7 +6,7 @@
 #ifdef _WIN32
 #include <windows.h>
 #elif __ANDROID__
-#include <game-activity/native_app_glue/android_native_app_glue.h>
+struct android_app;
 #endif
 
 #include "Configs/TEngineExport.h"
