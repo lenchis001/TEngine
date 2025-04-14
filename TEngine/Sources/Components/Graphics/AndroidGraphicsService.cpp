@@ -2,7 +2,7 @@
 
 #include "AndroidGraphicsService.h"
 
-using TEngine::Components::Graphics;
+using namespace TEngine::Components::Graphics;
 
 AndroidGraphicsService::AndroidGraphicsService(
     std::shared_ptr<ISceneService> sceneService,
