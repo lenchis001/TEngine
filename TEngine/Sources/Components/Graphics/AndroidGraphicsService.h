@@ -2,6 +2,8 @@
 
 #include "Components/Graphics/PlatformWrapping/GlWrapper.h"
 
+#include "Components/Graphics/GraphicsServiceBase.h"
+
 struct android_app;
 
 namespace TEngine::Components::Graphics
@@ -9,7 +11,12 @@ namespace TEngine::Components::Graphics
     class AndroidGraphicsService : public GraphicsServiceBase
     {
     public:
-        AndroidGraphicsService(android_app *pApp);
+        AndroidGraphicsService(
+            std::shared_ptr<ISceneService> sceneService,
+            std::shared_ptr<IGuiService> guiService,
+            std::shared_ptr<IMeshLoadingService> meshLoadingService,
+            std::shared_ptr<ITexturesService> texturesService,
+            android_app *pApp);
 
         void initialize(std::shared_ptr<IGraphicsParameters> parameters) override;
 

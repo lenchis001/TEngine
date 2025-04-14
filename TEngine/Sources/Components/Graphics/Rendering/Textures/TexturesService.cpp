@@ -93,6 +93,11 @@ void TexturesService::release(GLuint textureId)
 
                 _usagesCounter.erase(texture.first);
                 _textures.erase(texture.first);
+
+                if (isAlphaChannelAware(texture.second))
+                {
+                    _alphaTextures.erase(texture.second);
+                }
             }
 
             return;
@@ -104,14 +109,7 @@ void TexturesService::release(GLuint textureId)
 
 bool TexturesService::isAlphaChannelAware(GLuint textureId)
 {
-    glBindTexture(GL_TEXTURE_2D, textureId);
-
-    GLint internalFormat;
-    glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_INTERNAL_FORMAT, &internalFormat);
-
-    glBindTexture(GL_TEXTURE_2D, 0);
-
-    return internalFormat == GL_RGBA;
+    return _alphaTextures.find(textureId) != _alphaTextures.end();
 }
 
 GLuint TexturesService::_readTexture(const std::string &textureFile)
@@ -140,6 +138,11 @@ GLuint TexturesService::_readTexture(const std::string &textureFile)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     glBindTexture(GL_TEXTURE_2D, 0);
+
+    if (internalFormat == GL_RGBA)
+    {
+        _alphaTextures.insert(texture);
+    }
 
     return texture;
 }

@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <string>
 #include <memory>
+#include <set>
 
 #include "Components/Graphics/ImageLoading/Services/IImageLoadingService.h"
 
@@ -49,6 +50,7 @@ namespace TEngine::Components::Graphics::Rendering::Textures
 
         std::unordered_map<std::string, std::size_t> _usagesCounter;
         std::unordered_map<std::string, GLuint> _textures;
+        std::set<GLuint> _alphaTextures;
     };
 }
 

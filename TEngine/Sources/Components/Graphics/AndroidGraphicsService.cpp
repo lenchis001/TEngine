@@ -4,8 +4,14 @@
 
 using TEngine::Components::Graphics;
 
-AndroidGraphicsService::AndroidGraphicsService(android_app *pApp)
-    : app_(pApp),
+AndroidGraphicsService::AndroidGraphicsService(
+    std::shared_ptr<ISceneService> sceneService,
+    std::shared_ptr<IGuiService> guiService,
+    std::shared_ptr<IMeshLoadingService> meshLoadingService,
+    std::shared_ptr<ITexturesService> texturesService,
+    android_app *pApp)
+    : GraphicsServiceBase(sceneService, guiService, meshLoadingService, texturesService),
+      app_(pApp),
       display_(EGL_NO_DISPLAY),
       surface_(EGL_NO_SURFACE),
       context_(EGL_NO_CONTEXT),

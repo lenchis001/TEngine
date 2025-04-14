@@ -16,13 +16,4 @@
     #error "Platform not supported"
 #endif
 
-inline void BindVertexArray(GLuint array) {
-#if defined(__ANDROID__)
-    glBindVertexArrayOES(array);
-#else
-    glBindVertexArray(array);
-#endif
-}
-
-
 #endif // TENGINE_GL_WRAPPER_H
