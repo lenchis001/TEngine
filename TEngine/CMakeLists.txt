@@ -65,9 +65,6 @@ endif()
 if(ANDROID)
     target_link_libraries(TEngine
             PRIVATE
-            # The game activity
-            game-activity::game-activity
-
             # EGL and other dependent libraries required for drawing
             # and interacting with Android system
             EGL

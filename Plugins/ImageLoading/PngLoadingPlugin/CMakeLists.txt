@@ -60,4 +60,8 @@ target_include_directories(PngLoadingPlugin PRIVATE ${libpng_SOURCE_DIR} ${libpn
 target_link_libraries(PngLoadingPlugin PRIVATE png_static)
 
 # Add libpng dependencies
+if(ANDROID)
+add_dependencies(PngLoadingPlugin zlibstatic)
+else()
 add_dependencies(PngLoadingPlugin pnglibconf_h pnglibconf_out png_static zlibstatic)
+endif()
