@@ -1,7 +1,5 @@
 #ifdef __APPLE__
 
-#include "GL/glew.h"
-
 #include <chrono>
 #include <thread>
 
@@ -67,13 +65,6 @@ void CocoaGraphicsService::initialize(std::shared_ptr<IGraphicsParameters> param
     {
         GLint swapInterval = 1;
         [static_cast<NSOpenGLContext*>(_openGlContext) setValues:&swapInterval forParameter:NSOpenGLCPSwapInterval];
-    }
-
-    // Initialize GLEW
-    GLenum glewError = glewInit();
-    if (glewError != GLEW_OK)
-    {
-        throw std::runtime_error("Failed to initialize GLEW");
     }
 
     GraphicsServiceBase::initialize(parameters);

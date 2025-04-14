@@ -1,11 +1,7 @@
 #include <memory>
 #include <vector>
 
-#ifdef __ANDROID__
-#include <EGL/egl.h>
-#else
-#include <GL/gl.h>
-#endif
+#include "Components/Graphics/PlatformWrapping/GlWrapper.h"
 
 #include "ISkySphereRenderingStrategy.h"
 #include "Components/Graphics/Rendering/Scene/RenderingStrategies/RenderingStrategyBase.h"

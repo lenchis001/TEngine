@@ -81,36 +81,6 @@ find_package(OpenGL REQUIRED)
 target_link_libraries(TEngine PRIVATE OpenGL::GL)
 endif()
 
-# --------------------- Add GLEW library ---------------------
-
-# Download and configure GLEW
-include(FetchContent)
-
-FetchContent_Declare(
-    glew
-    GIT_REPOSITORY https://github.com/Perlmint/glew-cmake.git
-    GIT_TAG        glew-cmake-2.2.0
-    GIT_SHALLOW    TRUE
-)
-
-FetchContent_GetProperties(glew)
-if(NOT glew_POPULATED)
-    FetchContent_Populate(glew)
-
-    # Set GLEW to build as a static library
-    set(BUILD_SHARED_LIBS OFF CACHE BOOL " " FORCE)
-    set(glew-cmake_BUILD_SHARED OFF CACHE BOOL " " FORCE)
-    set(ONLY_LIBS ON CACHE BOOL " " FORCE)
-
-    add_subdirectory(${glew_SOURCE_DIR} ${glew_BINARY_DIR})
-endif()
-
-# Add GLEW includes
-target_include_directories(TEngine PRIVATE ${glew_SOURCE_DIR}/include)
-
-# Add GLEW library
-target_link_libraries(TEngine PRIVATE libglew_static)
-
 # --------------------- Add OpenAL library ---------------------
 
 # Download and configure OpenAL

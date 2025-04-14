@@ -1,13 +1,9 @@
 #ifndef TENGINE_ISHADERSSERVICE_H
 #define TENGINE_ISHADERSSERVICE_H
 
-#include "string"
+#include <string>
 
-#ifdef __ANDROID__
-#include <EGL/egl.h>
-#else
-#include <GL/gl.h>
-#endif
+#include "Components/Graphics/PlatformWrapping/GlWrapper.h"
 
 namespace TEngine::Components::Graphics::Rendering::Scene::Shaders
 {

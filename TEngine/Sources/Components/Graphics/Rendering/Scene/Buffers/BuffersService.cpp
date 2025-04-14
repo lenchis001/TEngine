@@ -1,8 +1,6 @@
-#include "GL/glew.h"
-
 #include "BuffersService.h"
 
-#include "cassert"
+#include <cassert>
 
 using namespace TEngine::Components::Graphics::Rendering::Scene::Buffers;
 

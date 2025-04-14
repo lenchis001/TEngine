@@ -1,6 +1,6 @@
-#include "GL/glew.h"
-
 #include "MeshRenderingStrategy.h"
+
+#include "Components/Graphics/PlatformWrapping/GlWrapper.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Meshes;
 

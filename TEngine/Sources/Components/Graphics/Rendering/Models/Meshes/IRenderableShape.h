@@ -4,11 +4,7 @@
 #include "vector"
 #include "string"
 
-#ifdef __ANDROID__
-#include <EGL/egl.h>
-#else
-#include <GL/gl.h>
-#endif
+#include "Components/Graphics/PlatformWrapping/GlWrapper.h"
 
 namespace TEngine::Components::Graphics::Rendering::Models::Meshes
 {

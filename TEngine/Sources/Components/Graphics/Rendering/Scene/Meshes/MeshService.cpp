@@ -1,9 +1,9 @@
-#include "GL/glew.h"
-
 #include <cassert>
 #include <iostream>
 
 #include "MeshService.h"
+
+#include "Components/Graphics/PlatformWrapping/GlWrapper.h"
 
 #include "Components/Graphics/Rendering/Models/Meshes/RenderableMesh.h"
 #include "Components/Graphics/Rendering/Models/Meshes/RenderableShape.h"

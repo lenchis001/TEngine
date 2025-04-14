@@ -1,5 +1,3 @@
-#include "GL/glew.h"
-
 #include "GraphicsServiceBase.h"
 
 #include "Components/Graphics/CameraTracking/ListenerCameraTrackingStrategy.h"

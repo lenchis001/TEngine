@@ -1,5 +1,3 @@
-#include "GL/glew.h"
-
 #include "SolidboxRenderingStrategy.h"
 
 #include "Components/Graphics/Rendering/Scene/RenderingStrategies/Primitives/CubeRenderingStrategy.h"

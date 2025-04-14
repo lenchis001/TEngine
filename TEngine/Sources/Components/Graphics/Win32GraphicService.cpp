@@ -1,7 +1,5 @@
 #ifdef _WIN32
 
-#include "GL/glew.h"
-
 #include "Win32GraphicService.h"
 
 using namespace TEngine::Components::Graphics;

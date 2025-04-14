@@ -1,5 +1,3 @@
-#include "GL/glew.h"
-
 #include "SkySphereRenderingStrategy.h"
 
 #define VERTEX_SHADER_SOURCE "BuildinResources/Shaders/SkyBox/VertexShader.glsl"

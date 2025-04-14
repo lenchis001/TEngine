@@ -1,7 +1,5 @@
 #ifdef TENGINE_USE_GLFW
 
-#include "GL/glew.h"
-
 #include "GlfwGraphicsService.h"
 
 #include "Components/Graphics/CameraTracking/ListenerCameraTrackingStrategy.h"
@@ -77,11 +75,6 @@ void GlfwGraphicsService::_initializeGlfw(std::shared_ptr<IGraphicsParameters> p
 	}
 
 	glfwMakeContextCurrent(_window);
-
-	if (glewInit() != GLEW_OK)
-	{
-		throw std::runtime_error("Failed to initialize GLEW");
-	}
 
 	setContext(this);
 	glfwSetWindowSizeCallback(_window, &GlfwGraphicsService::_onWindowResized);

@@ -1,5 +1,7 @@
 #include "ICoreService.h"
 
+#include <vector>
+
 #include "Mixins/SpinLock.h"
 
 using namespace TEngine::Mixins;

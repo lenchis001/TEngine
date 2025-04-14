@@ -1,16 +1,10 @@
-#include "GL/glew.h"
-
 #include "ShadersService.h"
 
 #include "fstream"
 #include "cassert"
 #include "iostream"
 
-#ifdef __ANDROID__
-#include <EGL/egl.h>
-#else
-#include <GL/gl.h>
-#endif
+#include "Components/Graphics/PlatformWrapping/GlWrapper.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Scene::Shaders;
 
