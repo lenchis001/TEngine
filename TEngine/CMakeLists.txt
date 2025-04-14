@@ -97,6 +97,10 @@ FetchContent_Declare(
 
 FetchContent_GetProperties(openal)
 
+set(ALSOFT_EXAMPLES OFF CACHE BOOL " " FORCE)
+set(ALSOFT_TESTS OFF CACHE BOOL " " FORCE)
+set(ALSOFT_UTILS OFF CACHE BOOL " " FORCE)
+
 if(NOT openal_POPULATED)
     FetchContent_Populate(openal)
     add_subdirectory(${openal_SOURCE_DIR} ${openal_BINARY_DIR})
@@ -178,14 +182,13 @@ FetchContent_Declare(
 
 FetchContent_GetProperties(bullet)
 
-unset(BUILD_BULLET2_DEMOS CACHE)
 set(BUILD_BULLET2_DEMOS OFF CACHE BOOL " " FORCE)
-unset(BUILD_CPU_DEMOS CACHE)
 set(BUILD_CPU_DEMOS OFF CACHE BOOL " " FORCE)
-unset(BUILD_OPENGL3_DEMOS CACHE)
 set(BUILD_OPENGL3_DEMOS OFF CACHE BOOL " " FORCE)
-unset (BUILD_UNIT_TESTS CACHE)
 set(BUILD_UNIT_TESTS OFF CACHE BOOL " " FORCE)
+set(BUILD_OBJ2SDF_EXTRA OFF CACHE BOOL " " FORCE)
+set(BUILD_BULLET_ROBOTICS_EXTRA OFF CACHE BOOL " " FORCE)
+set(BUILD_BULLET_ROBOTICS_GUI_EXTRA OFF CACHE BOOL " " FORCE)
 
 if(NOT bullet_POPULATED)
     FetchContent_Populate(bullet)
