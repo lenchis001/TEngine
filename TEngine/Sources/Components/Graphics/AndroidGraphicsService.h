@@ -1,10 +1,10 @@
 #ifdef __ANDROID__
 
+#include <android_native_app_glue.h>
+
 #include "Components/Graphics/PlatformWrapping/GlWrapper.h"
 
 #include "Components/Graphics/GraphicsServiceBase.h"
-
-struct android_app;
 
 namespace TEngine::Components::Graphics
 {
