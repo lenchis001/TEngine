@@ -63,14 +63,12 @@ endif()
 # --------------------- Add OpenGL library ---------------------
 
 if(ANDROID)
-    # Add native_app_glue include directory
-    target_include_directories(TEngine PRIVATE ${ANDROID_NDK}/sources/android/native_app_glue)
-
-    # Add native_app_glue source file
-    target_sources(TEngine PRIVATE ${ANDROID_NDK}/sources/android/native_app_glue/android_native_app_glue.c)
+    # Searches for a package provided by the game activity dependency
+    find_package(game-activity REQUIRED CONFIG)
 
     target_link_libraries(TEngine
             PRIVATE
+            game-activity::game-activity
             # EGL and other dependent libraries required for drawing
             # and interacting with Android system
             EGL
