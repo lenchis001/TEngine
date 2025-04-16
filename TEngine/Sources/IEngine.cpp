@@ -41,6 +41,9 @@
 #include "Components/Events/Services/Win32EventService.h"
 #elif __APPLE__
 #include "Components/Graphics/CocoaGraphicsService.h"
+#elif __ANDROID__
+#include "Components/Graphics/AndroidGraphicsService.h"
+#include "Components/Events/Services/AndroidEventService.h"
 #endif
 
 #include "Components/Network/Http/NetworkService.h"
@@ -84,7 +87,6 @@ using namespace TEngine::Components::Network::Http;
 
 using namespace TEngine::Components::Core;
 
-
 std::shared_ptr<IEngine> TEngine::createEngine(
 #ifdef _WIN32
     HWND parent
@@ -96,12 +98,16 @@ std::shared_ptr<IEngine> TEngine::createEngine(
     ,
     bool isPhysicsEnabled)
 {
-        std::shared_ptr<IEventService> eventsService;
+    std::shared_ptr<IEventService> eventsService;
 
     if (parent)
     {
 #ifdef _WIN32
         eventsService = std::make_shared<Win32EventService>();
+#elif __ANDROID__
+        eventsService = std::make_shared<AndroidEventService>(parent);
+#else
+        throw std::runtime_error("No event service available");
 #endif // _WIN32
     }
     else
@@ -150,6 +156,8 @@ std::shared_ptr<IEngine> TEngine::createEngine(
         graphicsService = std::make_shared<Win32GraphicService>(sceneService, guiService, meshLoadingService, texturesService, parent);
 #elif __APPLE__
         graphicsService = std::make_shared<CocoaGraphicsService>(sceneService, guiService, meshLoadingService, texturesService, parent);
+#elif __ANDROID__
+        graphicsService = std::make_shared<AndroidGraphicsService>(sceneService, guiService, meshLoadingService, texturesService, parent);
 #endif
     }
     else
