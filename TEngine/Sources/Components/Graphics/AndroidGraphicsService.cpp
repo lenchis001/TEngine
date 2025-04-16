@@ -81,11 +81,6 @@ void AndroidGraphicsService::initialize(std::shared_ptr<IGraphicsParameters> par
     width_ = -1;
     height_ = -1;
 
-    PRINT_GL_STRING(GL_VENDOR);
-    PRINT_GL_STRING(GL_RENDERER);
-    PRINT_GL_STRING(GL_VERSION);
-    PRINT_GL_STRING_AS_LIST(GL_EXTENSIONS);
-
     GraphicsServiceBase::initialize(parameters);
 }
 
