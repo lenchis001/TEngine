@@ -21,7 +21,7 @@ target_include_directories(TEngine PUBLIC "Sources")
 # Copy Resources directory to the output directory
 add_custom_command(TARGET TEngine POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${CMAKE_SOURCE_DIR}/TEngine/BuildinResources"
+    "${CMAKE_CURRENT_SOURCE_DIR}/BuildinResources"
     "$<TARGET_FILE_DIR:TEngine>/BuildinResources"
 )
 
