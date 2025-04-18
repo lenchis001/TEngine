@@ -11,9 +11,11 @@
 
 #include "Mixins/ContextAwareMixin.h"
 
+using namespace TEngine::Mixins;
+
 namespace TEngine::Components::Events::Services
 {
-    class AndroidEventService : public EventServiceBase, public ContextAwareMixin
+    class AndroidEventService : public EventServiceBase, public ContextAwareMixin<AndroidEventService>
     {
     public:
         AndroidEventService(android_app *app);

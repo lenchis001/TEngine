@@ -19,7 +19,11 @@ namespace TEngine::Components::Graphics::MeshLoading::Services
     class MeshLoadingService : public PluginsLoadingAware<IMeshLoadingPlugin>, public IMeshLoadingService
     {
     public:
-        MeshLoadingService();
+        MeshLoadingService(
+#ifdef __ANDROID__
+            AAssetManager *assetManager
+#endif
+        );
 
         void initialize() override;
 

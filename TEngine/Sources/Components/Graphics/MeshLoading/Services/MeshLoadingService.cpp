@@ -8,7 +8,14 @@
 using namespace TEngine::Components::Graphics::MeshLoading::Models;
 using namespace TEngine::Components::Graphics::MeshLoading::Services;
 
-MeshLoadingService::MeshLoadingService()
+MeshLoadingService::MeshLoadingService(
+#ifdef __ANDROID__
+    AAssetManager *assetManager
+#endif
+)
+#ifdef __ANDROID__ 
+    : PluginsLoadingAware(assetManager)
+#endif
 {
 }
 

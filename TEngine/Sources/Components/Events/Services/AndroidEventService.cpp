@@ -2,6 +2,8 @@
 
 #include "AndroidEventService.h"
 
+using namespace TEngine::Components::Events::Models;
+
 namespace TEngine::Components::Events::Services
 {
     AndroidEventService::AndroidEventService(android_app *app)
@@ -36,7 +38,7 @@ namespace TEngine::Components::Events::Services
         if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_KEY)
         {
             KeyboardKeys key = static_cast<KeyboardKeys>(AKeyEvent_getKeyCode(event));
-            KeyStates action = (AKeyEvent_getAction(event) == AKEY_EVENT_ACTION_DOWN) ? KeyStates::Pressed : KeyStates::Released;
+            KeyStates action = (AKeyEvent_getAction(event) == AKEY_EVENT_ACTION_DOWN) ? KeyStates::PRESS : KeyStates::RELEASE;
             fireKeyHandler(key, 0, action, 0);
         }
         else if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_MOTION)
@@ -50,8 +52,8 @@ namespace TEngine::Components::Events::Services
             }
             else if (action == AMOTION_EVENT_ACTION_DOWN || action == AMOTION_EVENT_ACTION_UP)
             {
-                MouseButtons button = MouseButtons::Left; // Assuming left button for simplicity
-                KeyStates state = (action == AMOTION_EVENT_ACTION_DOWN) ? KeyStates::Pressed : KeyStates::Released;
+                MouseButtons button = MouseButtons::BUTTON_LEFT; // Assuming left button for simplicity
+                KeyStates state = (action == AMOTION_EVENT_ACTION_DOWN) ? KeyStates::PRESS : KeyStates::RELEASE;
                 fireMouseButtonHandler(button, state, 0);
             }
         }

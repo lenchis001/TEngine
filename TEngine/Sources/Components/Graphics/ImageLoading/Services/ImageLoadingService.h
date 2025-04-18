@@ -1,12 +1,11 @@
 #ifndef IMAGELOADINGSERVICE_H
 #define IMAGELOADINGSERVICE_H
 
-#include "string"
-#include "vector"
-#include "unordered_map"
+#include <string>
+#include <vector>
+#include <unordered_map>
 
 #include "Components/Graphics/ImageLoading/Plugin/IImageLoadingPlugin.h"
-
 
 #include "IImageLoadingService.h"
 #include "Mixins/PluginsLoadingAware.hpp"
@@ -25,12 +24,17 @@ namespace TEngine::Components::Graphics::ImageLoading::Services
     class ImageLoadingService : public PluginsLoadingAware<IImageLoadingPlugin>, public IImageLoadingService
     {
     public:
+#ifdef __ANDROID__
+        ImageLoadingService(AAssetManager *assetManager);
+#else
         ImageLoadingService() = default;
+#endif
         ~ImageLoadingService() override;
 
         void initialize() override;
 
         std::shared_ptr<Image> load(const std::string &path) override;
+
     private:
         static EnginePixelType _toEnginePixelType(PluginPixelType pluginPixelType);
     };

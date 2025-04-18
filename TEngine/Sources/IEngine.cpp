@@ -20,6 +20,7 @@
 #include "Components/Graphics/CameraTracking/ListenerCameraTrackingStrategy.h"
 #include "Components/Audio/Services/Readers/VorbisOggReader.h"
 #include "Components/Audio/Services/AudioService.h"
+#include "Components/Audio/Services/AndroidAudioService.h"
 #include "Components/Events/Services/GlfwEventService.h"
 
 #include "Components/State/Serialization/SerializationService.h"
@@ -119,13 +120,25 @@ std::shared_ptr<IEngine> TEngine::createEngine(
 #endif
     }
 
+#ifdef __ANDROID__
+    std::shared_ptr<IAudioService> audioService = std::make_shared<AndroidAudioService>(nullptr);
+#else
     auto vorbisOggReader = std::make_shared<VorbisOggReader>();
     auto audioService = std::make_shared<AudioService>(vorbisOggReader);
+#endif
 
     auto coreService = std::make_shared<CoreService>();
 
-    auto imageLoadingService = std::make_shared<ImageLoadingService>();
-    auto meshLoadingService = std::make_shared<MeshLoadingService>();
+    auto imageLoadingService = std::make_shared<ImageLoadingService>(
+#ifdef __ANDROID__
+        parent->activity->assetManager
+#endif
+            );
+    auto meshLoadingService = std::make_shared<MeshLoadingService>(
+#ifdef __ANDROID__
+            parent->activity->assetManager
+#endif
+            );
 
     auto shadersService = std::make_shared<ShadersService>();
     auto bufferCacheService = std::make_shared<BuffersService>();
