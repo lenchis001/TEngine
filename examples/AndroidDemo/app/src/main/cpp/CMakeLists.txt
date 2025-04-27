@@ -73,6 +73,13 @@ add_custom_command(TARGET android_demo POST_BUILD
 # Copy the generated .so library to the Assets directory
 add_custom_command(TARGET android_demo POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
-        "$<TARGET_FILE:ObjLoadingPlugin>"
-        "${CMAKE_SOURCE_DIR}/../assets/Plugins/MeshLoading/ObjLoadingPlugin.so"
+        "$<TARGET_FILE:BmpLoadingPlugin>"
+        "${CMAKE_SOURCE_DIR}/../assets/Plugins/ImageLoading/BmpLoadingPlugin.so"
+)
+
+# Copy the generated .so library to the Assets directory
+add_custom_command(TARGET android_demo POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        "$<TARGET_FILE:PngLoadingPlugin>"
+        "${CMAKE_SOURCE_DIR}/../assets/Plugins/ImageLoading/PngLoadingPlugin.so"
 )

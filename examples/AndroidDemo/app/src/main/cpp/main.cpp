@@ -14,9 +14,50 @@ extern "C" {
 
 using namespace TEngine;
 using namespace TEngine::Components::Graphics;
+using namespace TEngine::Components::Graphics::Models;
+using namespace TEngine::Components::Graphics::Rendering::Scene::Models::Physics;
+using namespace TEngine::Components::Graphics::Rendering::Models::Cameras;
+using namespace TEngine::Components::Graphics::Rendering::Scene;
 
 std::shared_ptr<IEngine> engine;
 std::shared_ptr<IGraphicsService> graphicsService;
+
+void setupScene(std::shared_ptr<ISceneService> sceneService)
+{
+    sceneService->setActiveCamera(BuildinCameraTypes::FPS);
+
+    //sceneService->addSkySphere();
+
+    auto solid = sceneService->addSolidbox();
+    solid->setPosition(Vector3df(5.0f, -10.0f, 0.0f));
+    solid->setRotation(Vector3df(.0f, .0f, .1f));
+    solid->setScale(Vector3df(35.0f, 1.0f, 15.0f));
+    solid->setIsVisualizationEnabled(true);
+
+    /*for (int i = 1; i < 10; i++)
+    {
+        for (int j = 1; j < 32; j++)
+        {
+            auto cube = sceneService->addMesh("./DemoResources/test plane/plane.obj");
+            cube->setPosition(Vector3df(2.0f * i, 0.0f, 2.0f * j));
+        }
+
+        if (i > 5)
+        {
+            auto cube = sceneService->addCube("./DemoResources/texture2.bmp", nullptr, PhysicsFlags::STATIC);
+            cube->setPosition(Vector3df(i, 0.0f, 0.0f));
+        }
+
+        auto cube2 = sceneService->addCube("./DemoResources/texture2.bmp", nullptr, PhysicsFlags::DYNAMIC);
+        cube2->setPosition(Vector3df(i, 2.f * i, 0.0f));
+
+        auto testCube = sceneService->addMesh("./DemoResources/test cube/cube.obj");
+        testCube->setPosition(Vector3df(0.0f, 0.0f, 3.0f * i));
+
+        auto sofa = sceneService->addMesh("./DemoResources/sofa.obj");
+        sofa->setPosition(Vector3df(0.f, 0.f, -3.0f * i - 5.0f));
+    }*/
+}
 
 /*!
  * Handles commands sent to this Android application
@@ -42,6 +83,8 @@ void handle_cmd(android_app *pApp, int32_t cmd) {
             engine->initialize(creationParameters);
 
             graphicsService = engine->getGraphicsService();
+
+            setupScene(graphicsService->getSceneService());
             //pApp->userData = new Renderer(pApp);
             break;
         }
