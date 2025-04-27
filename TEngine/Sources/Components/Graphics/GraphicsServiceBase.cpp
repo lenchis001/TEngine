@@ -1,5 +1,7 @@
 #include "GraphicsServiceBase.h"
 
+#include "Components/Graphics/PlatformWrapping/GlWrapper.h"
+
 #include "Components/Graphics/CameraTracking/ListenerCameraTrackingStrategy.h"
 
 using namespace TEngine::Components::Graphics;
@@ -24,6 +26,10 @@ GraphicsServiceBase::~GraphicsServiceBase()
 
 void GraphicsServiceBase::initialize(std::shared_ptr<IGraphicsParameters> parameters)
 {
+#if defined(_WIN32)
+	InitializeOpenGLFunctionPointers();
+#endif
+
 	_meshLoadingService->initialize();
 	_texturesService->initialize();
 	_sceneService->initialize(parameters->getSceneParameters());
@@ -36,8 +42,8 @@ void GraphicsServiceBase::initialize(std::shared_ptr<IGraphicsParameters> parame
 	glCullFace(GL_BACK);
 
 	// Enable blending
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void GraphicsServiceBase::deinitialize()

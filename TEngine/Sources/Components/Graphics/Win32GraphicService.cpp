@@ -95,11 +95,6 @@ void Win32GraphicService::initialize(std::shared_ptr<IGraphicsParameters> parame
         }
     }
 
-    if (glewInit() != GLEW_OK)
-    {
-        throw std::runtime_error("Failed to initialize GLEW");
-    }
-
     GraphicsServiceBase::initialize(parameters);
 }
 

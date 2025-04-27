@@ -7,7 +7,7 @@
 #include <filesystem>
 
 #ifdef __ANDROID__
-#include <dirent.h> // Include for directory traversal on POSIX systems
+#include <dirent.h>   // Include for directory traversal on POSIX systems
 #include <sys/stat.h> // Include for file status checks
 #include <android/asset_manager.h>
 #include <android/asset_manager_jni.h>
@@ -35,10 +35,10 @@ namespace TEngine::Mixins
     class PluginsLoadingAware
     {
     public:
-    #ifdef __ANDROID__
-        PluginsLoadingAware(AAssetManager *assetManager) 
+#ifdef __ANDROID__
+        PluginsLoadingAware(AAssetManager *assetManager)
             : _assetManager(assetManager) {}
-    #endif
+#endif
 
         ~PluginsLoadingAware()
         {
@@ -173,7 +173,9 @@ namespace TEngine::Mixins
         std::unordered_map<std::string, std::shared_ptr<PT>> _plugins;
         std::vector<DYNAMIC_LIB_HANDLE> _loadedLibraries;
 
+#ifdef __ANDROID__
         AAssetManager *_assetManager;
+#endif
     };
 }
 
