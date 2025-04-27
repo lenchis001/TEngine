@@ -1,7 +1,7 @@
 #ifdef __ANDROID__
 
-#ifndef TENGINE_AUDIOSERVICE_H
-#define TENGINE_AUDIOSERVICE_H
+#ifndef TENGINE_ANDROID_AUDIOSERVICE_H
+#define TENGINE_ANDROID_AUDIOSERVICE_H
 
 #include <memory>
 #include <map>
@@ -16,12 +16,12 @@ using namespace TEngine::Components::Audio::Services::Readers;
 
 namespace TEngine::Components::Audio::Services
 {
-    class AudioService : public IAudioService
+    class AndroidAudioService : public IAudioService
     {
     public:
-        AudioService(std::shared_ptr<IReader> reader);
+        AndroidAudioService(std::shared_ptr<IReader> reader);
 
-        ~AudioService() override;
+        ~AndroidAudioService() override;
 
         void initialize() override;
 
@@ -38,6 +38,6 @@ namespace TEngine::Components::Audio::Services
     };
 }
 
-#endif // TENGINE_AUDIOSERVICE_H
+#endif // TENGINE_ANDROID_AUDIOSERVICE_H
 
 #endif // __ANDROID__

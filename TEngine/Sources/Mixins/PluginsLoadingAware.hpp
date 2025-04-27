@@ -104,15 +104,32 @@ namespace TEngine::Mixins
             const char *filename = nullptr;
             while ((filename = AAssetDir_getNextFileName(assetDir)) != nullptr)
             {
-                std::string filePath = directory + "/" + filename;
-
                 // Check for valid plugin extensions
+                std::string filePath = directory + "/" + filename;
                 if (filePath.size() > 3 &&
                     (filePath.substr(filePath.size() - 3) == ".so" ||
                      filePath.substr(filePath.size() - 4) == ".dll" ||
                      filePath.substr(filePath.size() - 6) == ".dylib"))
                 {
-                    libraries.push_back(filePath);
+                    // Extract the file to internal storage
+                    std::string tempPath = "/data/data/com.tengine.android_demo/files/" + std::string(filename);
+                    AAsset *asset = AAssetManager_open(_assetManager, filePath.c_str(), AASSET_MODE_STREAMING);
+                    if (asset)
+                    {
+                        FILE *outFile = fopen(tempPath.c_str(), "wb");
+                        if (outFile)
+                        {
+                            char buffer[1024];
+                            int bytesRead;
+                            while ((bytesRead = AAsset_read(asset, buffer, sizeof(buffer))) > 0)
+                            {
+                                fwrite(buffer, 1, bytesRead, outFile);
+                            }
+                            fclose(outFile);
+                            libraries.push_back(tempPath);
+                        }
+                        AAsset_close(asset);
+                    }
                 }
             }
 

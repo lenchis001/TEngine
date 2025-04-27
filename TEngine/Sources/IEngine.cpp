@@ -121,7 +121,7 @@ std::shared_ptr<IEngine> TEngine::createEngine(
     }
 
 #ifdef __ANDROID__
-    std::shared_ptr<IAudioService> audioService = std::make_shared<AndroidAudioService>(nullptr);
+auto audioService = std::make_shared<AndroidAudioService>(nullptr);
 #else
     auto vorbisOggReader = std::make_shared<VorbisOggReader>();
     auto audioService = std::make_shared<AudioService>(vorbisOggReader);
