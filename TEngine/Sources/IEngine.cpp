@@ -17,6 +17,7 @@
 #include "Components/Graphics/Rendering/Scene/Sequence/RenderingSequenceService.h"
 #include "Components/Graphics/Rendering/Gui/GlfwGuiService.h"
 #include "Components/Graphics/Rendering/Gui/Win32GuiService.h"
+#include "Components/Graphics/Rendering/Gui/AndroidGuiService.h"
 #include "Components/Graphics/CameraTracking/ListenerCameraTrackingStrategy.h"
 #include "Components/Audio/Services/Readers/VorbisOggReader.h"
 #include "Components/Audio/Services/AudioService.h"
@@ -170,6 +171,7 @@ auto audioService = std::make_shared<AndroidAudioService>(nullptr);
 #elif __APPLE__
         graphicsService = std::make_shared<CocoaGraphicsService>(sceneService, guiService, meshLoadingService, texturesService, parent);
 #elif __ANDROID__
+        guiService = std::make_shared<AndroidGuiService>();
         graphicsService = std::make_shared<AndroidGraphicsService>(sceneService, guiService, meshLoadingService, texturesService, parent);
 #endif
     }
