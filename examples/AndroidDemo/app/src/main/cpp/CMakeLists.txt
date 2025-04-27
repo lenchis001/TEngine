@@ -9,8 +9,6 @@ set(CMAKE_CXX_STANDARD 17)
 project("android_demo")
 
 # --------------------- Add TEngine library ---------------------
-include_directories(${TEngine_SOURCE_DIR})
-
 include(FetchContent)
 
 FetchContent_Declare(
@@ -27,6 +25,7 @@ if(NOT tengine_POPULATED)
     set(BUILD_DEMO OFF CACHE BOOL " " FORCE)
     set(BUILD_ALICE OFF CACHE BOOL " " FORCE)
     set(BUILD_WITH_GLFW OFF CACHE BOOL " " FORCE)
+    set(ANDROID ON CACHE BOOL " " FORCE)
 
     add_subdirectory(${tengine_SOURCE_DIR} ${tengine_BINARY_DIR})
 endif()
@@ -61,4 +60,19 @@ target_link_libraries(android_demo
         jnigraphics
         android
         log
+        TEngine
+)
+
+# Copy the generated .so library to the Assets directory
+add_custom_command(TARGET android_demo POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        "$<TARGET_FILE:ObjLoadingPlugin>"
+        "${CMAKE_SOURCE_DIR}/../assets/Plugins/MeshLoading/ObjLoadingPlugin.so"
+)
+
+# Copy the generated .so library to the Assets directory
+add_custom_command(TARGET android_demo POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        "$<TARGET_FILE:ObjLoadingPlugin>"
+        "${CMAKE_SOURCE_DIR}/../assets/Plugins/MeshLoading/ObjLoadingPlugin.so"
 )
