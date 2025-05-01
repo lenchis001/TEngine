@@ -20,7 +20,16 @@ void setupScene(std::shared_ptr<ISceneService> sceneService)
 {
     sceneService->setActiveCamera(BuildinCameraTypes::FPS);
 
-    sceneService->addSkySphere();
+    auto sidesTextures = std::vector<std::string>
+    {
+        "./DemoResources/skybox/right.bmp",
+        "./DemoResources/skybox/left.bmp",
+        "./DemoResources/skybox/top.bmp",
+        "./DemoResources/skybox/bottom.bmp",
+        "./DemoResources/skybox/front.bmp",
+        "./DemoResources/skybox/back.bmp"
+    };
+    sceneService->addSkyCude(sidesTextures);
 
     auto solid = sceneService->addSolidbox();
     solid->setPosition(Vector3df(5.0f, -10.0f, 0.0f));

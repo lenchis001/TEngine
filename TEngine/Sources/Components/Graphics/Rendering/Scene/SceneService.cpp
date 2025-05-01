@@ -10,7 +10,7 @@
 #include "RenderingStrategies/Meshes/MeshRenderingStrategy.h"
 #include "RenderingStrategies/Solid/SolidboxRenderingStrategy.h"
 #include "RenderingStrategies/Empty/EmptyRenderingStrategy.h"
-#include "RenderingStrategies/Sky/SkySphereRenderingStrategy.h"
+#include "RenderingStrategies/Sky/SkyCubeRenderingStrategy.h"
 #include "Sequence/IRenderingSequenceService.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies;
@@ -155,24 +155,26 @@ std::shared_ptr<IRenderingStrategy> SceneService::addEmpty(
 	return strategy;
 }
 
-std::shared_ptr<IRenderingStrategy> SceneService::addSkySphere(
+std::shared_ptr<ISkyCubeRenderingStrategy> SceneService::addSkyCude(
+	std::vector<std::string> sidesPaths,
 	std::shared_ptr<IRenderingStrategy> parent)
 {
-	std::shared_ptr<SkySphereRenderingStrategy> strategy = std::make_shared<SkySphereRenderingStrategy>(
+	assert(sidesPaths.size() == 6 && "Sky cube textures should have 6 sides");
+
+	std::shared_ptr<SkyCubeRenderingStrategy> strategy = std::make_shared<SkyCubeRenderingStrategy>(
 		_shadersService,
 		_bufferCacheService,
 		_textureService,
 		std::bind(&SceneService::_requestDefferedRenderingSequenceUpdate, this));
 
-	// todo: remoove after test
 	strategy->setTexture(
-		"./DemoResources/skybox/right.bmp",
-		"./DemoResources/skybox/left.bmp",
-		"./DemoResources/skybox/top.bmp",
-		"./DemoResources/skybox/bottom.bmp",
-		"./DemoResources/skybox/front.bmp",
-		"./DemoResources/skybox/back.bmp");
-	strategy->setCube(20.0f);
+		sidesPaths[0],
+		sidesPaths[1],
+		sidesPaths[2],
+		sidesPaths[3],
+		sidesPaths[4],
+		sidesPaths[5]);
+	strategy->setSize(20.0f);
 	strategy->setScale(Vector3df(100.0f, 100.0f, 100.0f));
 
 	(parent ? parent : _root)->addChild(strategy);

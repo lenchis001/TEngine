@@ -1,4 +1,4 @@
-#include "SkySphereRenderingStrategy.h"
+#include "SkyCubeRenderingStrategy.h"
 
 #define VERTEX_SHADER_SOURCE "buildin_bundle://BuildinResources/Shaders/SkyBox/VertexShader.glsl"
 #define FRAGMENT_SHADER_SOURCE "buildin_bundle://BuildinResources/Shaders/SkyBox/FragmentShader.glsl"
@@ -9,8 +9,8 @@
 
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Sky;
 
-SkySphereRenderingStrategy::
-    SkySphereRenderingStrategy(std::shared_ptr<IShadersService> shadersService,
+SkyCubeRenderingStrategy::
+    SkyCubeRenderingStrategy(std::shared_ptr<IShadersService> shadersService,
                                std::shared_ptr<IBuffersService> bufferCacheService,
                                std::shared_ptr<ITexturesService> texturesService,
                                OnDeleteCallback onDeleteCallback)
@@ -25,7 +25,7 @@ SkySphereRenderingStrategy::
     _prepareShader();
 }
 
-SkySphereRenderingStrategy::~SkySphereRenderingStrategy()
+SkyCubeRenderingStrategy::~SkyCubeRenderingStrategy()
 {
     if (_textureId != 0)
     {
@@ -37,7 +37,7 @@ SkySphereRenderingStrategy::~SkySphereRenderingStrategy()
     _shadersService->release(_shaderProgram);
 }
 
-void SkySphereRenderingStrategy::setTexture(
+void SkyCubeRenderingStrategy::setTexture(
     const std::string &rightTexturePath,
     const std::string &leftTexturePath,
     const std::string &topTexturePath,
@@ -59,7 +59,7 @@ void SkySphereRenderingStrategy::setTexture(
         backTexturePath);
 }
 
-void SkySphereRenderingStrategy::setCube(float size)
+void SkyCubeRenderingStrategy::setSize(float size)
 {
     _releaseBuffers();
 
@@ -83,22 +83,22 @@ void SkySphereRenderingStrategy::setCube(float size)
     glBindVertexArray(0);
 }
 
-std::type_index SkySphereRenderingStrategy::getType() const
+std::type_index SkyCubeRenderingStrategy::getType() const
 {
-    return typeid(SkySphereRenderingStrategy);
+    return typeid(SkyCubeRenderingStrategy);
 }
 
-RenderingPriority SkySphereRenderingStrategy::getRenderingPriority() const
+RenderingPriority SkyCubeRenderingStrategy::getRenderingPriority() const
 {
     return RenderingPriority::MEDIUM;
 }
 
-std::string SkySphereRenderingStrategy::_getDefaultName() const
+std::string SkyCubeRenderingStrategy::_getDefaultName() const
 {
     return "SkySphere";
 }
 
-void SkySphereRenderingStrategy::_renderSafe(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
+void SkyCubeRenderingStrategy::_renderSafe(std::shared_ptr<ICameraStrategy> activeCameraStrategy)
 {
     glBindVertexArray(_vao);
 
@@ -126,7 +126,7 @@ void SkySphereRenderingStrategy::_renderSafe(std::shared_ptr<ICameraStrategy> ac
     glBindVertexArray(0);
 }
 
-std::vector<float> SkySphereRenderingStrategy::_generateCubeVertices(float size)
+std::vector<float> SkyCubeRenderingStrategy::_generateCubeVertices(float size)
 {
     std::vector<float> vertices =
         {
@@ -179,7 +179,7 @@ std::vector<float> SkySphereRenderingStrategy::_generateCubeVertices(float size)
     return vertices;
 }
 
-void SkySphereRenderingStrategy::_releaseBuffers()
+void SkyCubeRenderingStrategy::_releaseBuffers()
 {
     if (_bufferCacheService->existsVao(VAO_NAME))
     {
@@ -192,7 +192,7 @@ void SkySphereRenderingStrategy::_releaseBuffers()
     }
 }
 
-void SkySphereRenderingStrategy::_prepareShader()
+void SkyCubeRenderingStrategy::_prepareShader()
 {
     _shaderProgram = _shadersService->take(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
 

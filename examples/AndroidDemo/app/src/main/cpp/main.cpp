@@ -26,7 +26,7 @@ void setupScene(std::shared_ptr<ISceneService> sceneService)
 {
     sceneService->setActiveCamera(BuildinCameraTypes::FPS);
 
-    //sceneService->addSkySphere();
+    //sceneService->addSkyCude();
 
     auto solid = sceneService->addSolidbox();
     solid->setPosition(Vector3df(5.0f, -10.0f, 0.0f));

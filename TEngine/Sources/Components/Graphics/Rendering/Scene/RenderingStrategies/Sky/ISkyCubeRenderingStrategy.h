@@ -1,5 +1,5 @@
-#ifndef TENGINE_ISKYSPHERERENDERINGSTRATEGY_H
-#define TENGINE_ISKYSPHERERENDERINGSTRATEGY_H
+#ifndef TENGINE_ISKY_CUBE_RENDERING_STRATEGY_H
+#define TENGINE_ISKY_CUBE_RENDERING_STRATEGY_H
 
 #include <memory>
 #include <vector>
@@ -8,7 +8,7 @@
 
 namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Sky
 {
-    class ISkySphereRenderingStrategy : public virtual IRenderingStrategy
+    class ISkyCubeRenderingStrategy : public virtual IRenderingStrategy
     {
     public:
         void setTexture(const std::string &texturePath);
@@ -17,4 +17,4 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
     };
 } // namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies
 
-#endif // TENGINE_ISKYSPHERERENDERINGSTRATEGY_H
+#endif // TENGINE_ISKY_CUBE_RENDERING_STRATEGY_H

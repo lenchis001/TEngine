@@ -2,6 +2,8 @@
 #define TENGINE_ISCENESERVICE_H
 
 #include <memory>
+#include <string>
+#include <vector>
 
 #include "Components/Graphics/Models/Vector3d.h"
 
@@ -12,6 +14,7 @@
 #include "RenderingStrategies/Meshes/IMeshRenderingStrategy.h"
 #include "RenderingStrategies/Primitives/ICubeRenderingStrategy.h"
 #include "RenderingStrategies/Solid/ISolidboxRenderingStrategy.h"
+#include "RenderingStrategies/Sky/ISkyCubeRenderingStrategy.h"
 #include "Models/ISceneParameters.h"
 
 namespace TEngine::Components::Graphics::Rendering::Scene
@@ -43,7 +46,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene
         virtual std::shared_ptr<RenderingStrategies::IRenderingStrategy> addEmpty(
             std::shared_ptr<RenderingStrategies::IRenderingStrategy> parent = nullptr) = 0;
 
-        virtual std::shared_ptr<RenderingStrategies::IRenderingStrategy> addSkySphere(
+        virtual std::shared_ptr<RenderingStrategies::Sky::ISkyCubeRenderingStrategy> addSkyCude(
+            std::vector<std::string> sidesPaths,
             std::shared_ptr<RenderingStrategies::IRenderingStrategy> parent = nullptr) = 0;
 
         virtual std::shared_ptr<CameraStrategies::ICameraStrategy> getActiveCamera() = 0;

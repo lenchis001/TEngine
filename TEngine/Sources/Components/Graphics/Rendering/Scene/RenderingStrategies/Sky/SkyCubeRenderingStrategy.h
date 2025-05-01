@@ -3,7 +3,7 @@
 
 #include "Components/Graphics/PlatformWrapping/GlWrapper.h"
 
-#include "ISkySphereRenderingStrategy.h"
+#include "ISkyCubeRenderingStrategy.h"
 #include "Components/Graphics/Rendering/Scene/RenderingStrategies/RenderingStrategyBase.h"
 
 #include "Components/Graphics/Rendering/Scene/Shaders/IShadersService.h"
@@ -17,15 +17,15 @@ using namespace TEngine::Components::Graphics::Rendering::Textures;
 
 namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Sky
 {
-    class SkySphereRenderingStrategy : public RenderingStrategyBase, public ISkySphereRenderingStrategy
+    class SkyCubeRenderingStrategy : public RenderingStrategyBase, public ISkyCubeRenderingStrategy
     {
     public:
-        SkySphereRenderingStrategy(std::shared_ptr<IShadersService> shadersService,
+        SkyCubeRenderingStrategy(std::shared_ptr<IShadersService> shadersService,
                                    std::shared_ptr<IBuffersService> bufferCacheService,
                                    std::shared_ptr<ITexturesService> texturesService,
                                    OnDeleteCallback onDeleteCallback);
 
-        ~SkySphereRenderingStrategy();
+        ~SkyCubeRenderingStrategy();
 
         void setTexture(
             const std::string &rightTexturePath,
@@ -35,7 +35,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::
             const std::string &frontTexturePath,
             const std::string &backTexturePath);
 
-        void setCube(float size);
+        void setSize(float size);
 
         std::type_index getType() const override;
 

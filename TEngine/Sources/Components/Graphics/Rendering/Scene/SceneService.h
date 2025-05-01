@@ -36,6 +36,7 @@ using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrate
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Meshes;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Primitives;
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Solid;
+using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Sky;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Sequence;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Models;
 
@@ -74,7 +75,8 @@ namespace TEngine::Components::Graphics::Rendering::Scene
         std::shared_ptr<IRenderingStrategy> addEmpty(
             std::shared_ptr<IRenderingStrategy> parent = nullptr) override;
 
-        std::shared_ptr<IRenderingStrategy> addSkySphere(
+        std::shared_ptr<ISkyCubeRenderingStrategy> addSkyCude(
+            std::vector<std::string> sidesPaths,
             std::shared_ptr<IRenderingStrategy> parent = nullptr) override;
 
         void render(double time) override;
