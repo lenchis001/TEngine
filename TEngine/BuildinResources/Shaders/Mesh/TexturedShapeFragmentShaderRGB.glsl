@@ -1,4 +1,4 @@
-#version 330 core
+<shader header>
 
 in vec2 UV;
 

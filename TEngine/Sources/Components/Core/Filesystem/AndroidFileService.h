@@ -5,11 +5,11 @@
 
 #include <android/asset_manager.h>
 
-#include "IFileService.h"
+#include "FileService.h"
 
 namespace TEngine::Components::Core::Filesystem
 {
-    class AndroidFileService : public IFileService
+    class AndroidFileService : public FileService
     {
     public:
         AndroidFileService(AAssetManager *assetManager);
@@ -17,6 +17,8 @@ namespace TEngine::Components::Core::Filesystem
         std::string read(const std::string &path) override;
 
     private:
+        static std::string _replacePrefix(const std::string &path, const std::string &prefix, const std::string &replacement);
+
         AAssetManager *_assetManager;
     };
 }

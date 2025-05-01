@@ -1,4 +1,4 @@
-#version 330 core
+<shader header>
 
 out vec4 color;
 

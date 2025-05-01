@@ -48,7 +48,7 @@ add_custom_command(TARGET Alice POST_BUILD
 add_custom_command(TARGET Alice
                    POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E echo "Running shaders processing..."
-                   COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/shader_builder.py "${CMAKE_SOURCE_DIR}/TEngine/BuildinResources/Shaders" "$<TARGET_FILE_DIR:Alice>/BuildinResources/Shaders"
+                   COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/shader_builder.py "${CMAKE_SOURCE_DIR}/TEngine/BuildinResources/Shaders" "$<TARGET_FILE_DIR:Alice>/BuildinResources/Shaders" "#version 330 core"
                    COMMAND ${CMAKE_COMMAND} -E echo "Shaders processing completed."
                    COMMENT "Executing post-build shaders processing")
 
