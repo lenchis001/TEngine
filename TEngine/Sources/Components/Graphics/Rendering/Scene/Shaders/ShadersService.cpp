@@ -6,7 +6,13 @@
 
 #include "Components/Graphics/PlatformWrapping/GlWrapper.h"
 
+using namespace TEngine::Components::Core::Filesystem;
 using namespace TEngine::Components::Graphics::Rendering::Scene::Shaders;
+
+ShadersService::ShadersService(std::shared_ptr<IFileService> fileService)
+    : _fileService(fileService)
+{
+}
 
 ShadersService::~ShadersService()
 {
@@ -19,13 +25,13 @@ GLuint ShadersService::take(const std::string &vertexShaderFile, const std::stri
 
     if (_shaderPrograms.find(shaderKey) == _shaderPrograms.end())
     {
-        std::string vertex = _readShader(vertexShaderFile);
+        std::string vertex = _fileService->read(vertexShaderFile);
         if (vertex.empty())
         {
             assert(false && "Vertex shader not found!");
             return 0;
         }
-        std::string fragment = _readShader(fragmentShaderFile);
+        std::string fragment = _fileService->read(fragmentShaderFile);
         if (fragment.empty())
         {
             assert(false && "Fragment shader not found!");
@@ -119,20 +125,4 @@ void ShadersService::release(GLuint programId)
     }
 
     assert(false && "Shader program not found!");
-}
-
-std::string ShadersService::_readShader(const std::string &shaderFile)
-{
-    std::ifstream file(shaderFile);
-    if (!file.is_open())
-    {
-        return "";
-    }
-
-    // Read the entire file into a string
-    std::string shader((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
-
-    file.close();
-
-    return shader;
 }

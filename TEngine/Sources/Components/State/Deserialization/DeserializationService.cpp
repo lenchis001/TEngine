@@ -5,8 +5,11 @@
 
 using namespace TEngine::Components::State::Deserialization;
 
-DeserializationService::DeserializationService(std::map<std::string, std::shared_ptr<IDeserializer>> deserializers)
-    : _deserializers(deserializers)
+DeserializationService::DeserializationService(
+    std::map<std::string, std::shared_ptr<IDeserializer>> deserializers,
+    std::shared_ptr<Components::Core::Filesystem::IFileService> fileService)
+    : _deserializers(deserializers),
+      _fileService(fileService)
 {
 }
 
@@ -19,14 +22,9 @@ void DeserializationService::deserialize(const std::string &data, std::shared_pt
 
 void DeserializationService::deserializeFromFile(const std::string &path, std::shared_ptr<TypeInfoAware> root)
 {
-    std::ifstream sceneFile(path);
+    auto sceneFileContent = _fileService->read(path);
 
-    std::stringstream buffer;
-    buffer << sceneFile.rdbuf();
-
-    sceneFile.close();
-
-    deserialize(buffer.str(), root);
+    deserialize(sceneFileContent, root);
 }
 
 void DeserializationService::_deserialize(const boost::json::value &data, std::shared_ptr<TypeInfoAware> root)

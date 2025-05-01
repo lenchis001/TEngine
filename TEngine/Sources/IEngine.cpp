@@ -37,6 +37,11 @@
 #include "Components/Graphics/Indexing/IndexingService.h"
 
 #include "Components/Core/CoreService.h"
+#ifdef __ANDROID__
+#include "Components/Core/Filesystem/AndroidFileService.h"
+#else
+#include "Components/Core/Filesystem/FileService.h"
+#endif
 
 #ifdef _WIN32
 #include "Components/Graphics/Win32GraphicService.h"
@@ -88,6 +93,7 @@ using namespace TEngine::Components::Graphics::Indexing;
 using namespace TEngine::Components::Network::Http;
 
 using namespace TEngine::Components::Core;
+using namespace TEngine::Components::Core::Filesystem;
 
 std::shared_ptr<IEngine> TEngine::createEngine(
 #ifdef _WIN32
@@ -141,7 +147,14 @@ auto audioService = std::make_shared<AndroidAudioService>(nullptr);
 #endif
             );
 
-    auto shadersService = std::make_shared<ShadersService>();
+
+#ifdef __ANDROID__
+    auto fileService = std::make_shared<AndroidFileService>(parent->activity->assetManager);
+#else
+    auto fileService = std::make_shared<FileService>();
+#endif
+
+    auto shadersService = std::make_shared<ShadersService>(fileService);
     auto bufferCacheService = std::make_shared<BuffersService>();
     auto texturesService = std::make_shared<TexturesService>(imageLoadingService);
     auto indexingService = std::make_shared<IndexingService>();
@@ -203,7 +216,7 @@ auto audioService = std::make_shared<AndroidAudioService>(nullptr);
     deserializers["cube"] = std::make_shared<CubeRenderingStrategyDeserializer>(sceneService);
     deserializers["mesh"] = std::make_shared<MeshRenderingStrategyDeserializer>(sceneService);
 
-    auto deserializationService = std::make_shared<DeserializationService>(deserializers);
+    auto deserializationService = std::make_shared<DeserializationService>(deserializers, fileService);
 
     auto networkService = std::make_shared<NetworkService>();
     auto webSocketFactory = std::make_shared<WebSocketFactory>();

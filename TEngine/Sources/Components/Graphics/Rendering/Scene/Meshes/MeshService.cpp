@@ -10,11 +10,11 @@
 
 using namespace TEngine::Components::Graphics::Rendering::Scene::Meshes;
 
-#define COLORED_VERTEX_SHADER_SOURCE "BuildinResources/Shaders/Mesh/ColoredShapeVertexShader.glsl"
-#define COLORED_FRAGMENT_SHADER_SOURCE "BuildinResources/Shaders/Mesh/ColoredShapeFragmentShader.glsl"
-#define TEXTURED_VERTEX_SHADER_SOURCE "BuildinResources/Shaders/Mesh/TexturedShapeVertexShader.glsl"
-#define TEXTURED_FRAGMENT_SHADER_RGB_SOURCE "BuildinResources/Shaders/Mesh/TexturedShapeFragmentShaderRGB.glsl"
-#define TEXTURED_FRAGMENT_SHADER_RGBA_SOURCE "BuildinResources/Shaders/Mesh/TexturedShapeFragmentShaderRGBA.glsl"
+#define COLORED_VERTEX_SHADER_SOURCE "bundle://BuildinResources/Shaders/Mesh/ColoredShapeVertexShader.glsl"
+#define COLORED_FRAGMENT_SHADER_SOURCE "bundle://BuildinResources/Shaders/Mesh/ColoredShapeFragmentShader.glsl"
+#define TEXTURED_VERTEX_SHADER_SOURCE "bundle://BuildinResources/Shaders/Mesh/TexturedShapeVertexShader.glsl"
+#define TEXTURED_FRAGMENT_SHADER_RGB_SOURCE "bundle://BuildinResources/Shaders/Mesh/TexturedShapeFragmentShaderRGB.glsl"
+#define TEXTURED_FRAGMENT_SHADER_RGBA_SOURCE "bundle://BuildinResources/Shaders/Mesh/TexturedShapeFragmentShaderRGBA.glsl"
 
 #define toVertexName(name) name + "Vertices"
 #define toNormalName(name) name + "Normals"
