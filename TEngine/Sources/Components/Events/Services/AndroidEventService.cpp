@@ -1,5 +1,7 @@
 #ifdef __ANDROID__
 
+#include <android/log.h>
+
 #include "AndroidEventService.h"
 
 using namespace TEngine::Components::Events::Models;
@@ -10,7 +12,6 @@ namespace TEngine::Components::Events::Services
         : EventServiceBase(),
           _app(app)
     {
-        setContext(this);
     }
 
     AndroidEventService::~AndroidEventService()
@@ -18,9 +19,16 @@ namespace TEngine::Components::Events::Services
         setContext(nullptr);
     }
 
+    AndroidEventService *global;
     void AndroidEventService::initialize()
     {
-        // Initialization logic for Android-specific event handling
+        AndroidEventService::setContext(this);
+        global = this;
+
+        GameActivity *activity = (GameActivity *)_app->activity;
+
+        activity->callbacks->onKeyDown = &AndroidEventService::_onKeyDown;
+        activity->callbacks->onTouchEvent = &AndroidEventService::_onTouch;
     }
 
     void AndroidEventService::setCursorePosition(const Vector2di &value)
@@ -33,30 +41,32 @@ namespace TEngine::Components::Events::Services
         // Set cursor visibility logic for Android
     }
 
-    void AndroidEventService::handleInput(AInputEvent *event)
+    bool AndroidEventService::_onKeyDown(GameActivity *activity, const GameActivityKeyEvent *event)
     {
-        if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_KEY)
+        return true;
+    }
+
+    bool AndroidEventService::_onTouch(GameActivity *activity, const GameActivityMotionEvent *event)
+    {
+        int action = event->action;
+        int pointerCount = event->pointerCount;
+        auto that = AndroidEventService::getContext();
+
+        for (int i = 0; i < pointerCount; ++i)
         {
-            KeyboardKeys key = static_cast<KeyboardKeys>(AKeyEvent_getKeyCode(event));
-            KeyStates action = (AKeyEvent_getAction(event) == AKEY_EVENT_ACTION_DOWN) ? KeyStates::PRESS : KeyStates::RELEASE;
-            fireKeyHandler(key, 0, action, 0);
+            auto axes = event->pointers[i];
+
+            global->fireCursorMoveHandler(static_cast<int>(axes.rawX), static_cast<int>(axes.rawX));
         }
-        else if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_MOTION)
+
+        if (action == AMOTION_EVENT_ACTION_DOWN || action == AMOTION_EVENT_ACTION_UP)
         {
-            int32_t action = AMotionEvent_getAction(event) & AMOTION_EVENT_ACTION_MASK;
-            if (action == AMOTION_EVENT_ACTION_MOVE)
-            {
-                int x = static_cast<int>(AMotionEvent_getX(event, 0));
-                int y = static_cast<int>(AMotionEvent_getY(event, 0));
-                fireCursorMoveHandler(x, y);
-            }
-            else if (action == AMOTION_EVENT_ACTION_DOWN || action == AMOTION_EVENT_ACTION_UP)
-            {
-                MouseButtons button = MouseButtons::BUTTON_LEFT; // Assuming left button for simplicity
-                KeyStates state = (action == AMOTION_EVENT_ACTION_DOWN) ? KeyStates::PRESS : KeyStates::RELEASE;
-                fireMouseButtonHandler(button, state, 0);
-            }
+            MouseButtons button = static_cast<MouseButtons>(event->buttonState);
+            KeyStates state = static_cast<KeyStates>(action);
+            global->fireMouseButtonHandler(button, state, 0);
         }
+
+        return true;
     }
 }
 

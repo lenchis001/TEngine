@@ -4,7 +4,7 @@
 #define TENGINE_ANDROID_EVENT_SERVICE_H
 
 #include <game-activity/native_app_glue/android_native_app_glue.h>
-#include <android/input.h>
+#include <game-activity/GameActivity.h>
 #include <android/native_activity.h>
 
 #include "EventServiceBase.h"
@@ -26,9 +26,10 @@ namespace TEngine::Components::Events::Services
         void setCursorePosition(const Vector2di &value) override;
         void setCursorVisibility(bool isVisible) override;
 
-        void handleInput(AInputEvent *event); // New method for handling input events
-
     private:
+        static bool _onKeyDown(GameActivity* activity, const GameActivityKeyEvent* event);
+        static bool _onTouch(GameActivity* activity, const GameActivityMotionEvent* event);
+
         android_app *_app;
     };
 }
