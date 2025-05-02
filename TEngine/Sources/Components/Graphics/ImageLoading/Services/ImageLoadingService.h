@@ -25,7 +25,7 @@ namespace TEngine::Components::Graphics::ImageLoading::Services
     {
     public:
 #ifdef __ANDROID__
-        ImageLoadingService(AAssetManager *assetManager);
+        ImageLoadingService(GameActivity *gameActivity);
 #else
         ImageLoadingService() = default;
 #endif

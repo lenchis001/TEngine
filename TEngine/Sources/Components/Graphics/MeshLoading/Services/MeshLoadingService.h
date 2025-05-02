@@ -21,7 +21,7 @@ namespace TEngine::Components::Graphics::MeshLoading::Services
     public:
         MeshLoadingService(
 #ifdef __ANDROID__
-            AAssetManager *assetManager
+            GameActivity *gameActivity
 #endif
         );
 

@@ -11,28 +11,8 @@
 #include <sys/stat.h> // Include for file status checks
 #include <android/asset_manager.h>
 #include <android/asset_manager_jni.h>
-
-#include <unistd.h>
-#include <sys/syscall.h>
-
-#ifndef __NR_memfd_create
-#if defined(__aarch64__)
-#define __NR_memfd_create 279
-#elif defined(__arm__)
-#define __NR_memfd_create 385
-#elif defined(__x86_64__)
-#define __NR_memfd_create 319
-#elif defined(__i386__)
-#define __NR_memfd_create 356
-#else
-#error "Platform not supported"
-#endif
-#endif
-
-#ifndef MFD_CLOEXEC
-#define MFD_CLOEXEC 0x0001U
-#endif
-
+#include <game-activity/GameActivity.h>
+#include <boost/filesystem.hpp>
 #endif
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -49,11 +29,7 @@
 #define CLOSE_DYNAMIC_LIB dlclose
 #endif
 
-#include "Models/DynamicLibrary.hpp"
-
 #define LOAD_FUNCTION_NAME "load"
-
-using namespace TEngine::Mixins::Models;
 
 namespace TEngine::Mixins
 {
@@ -62,8 +38,8 @@ namespace TEngine::Mixins
     {
     public:
 #ifdef __ANDROID__
-        PluginsLoadingAware(AAssetManager *assetManager)
-            : _assetManager(assetManager) {}
+        PluginsLoadingAware(GameActivity *gameActivity)
+            : _gameActivity(gameActivity) {}
 #endif
 
         ~PluginsLoadingAware()
@@ -77,11 +53,11 @@ namespace TEngine::Mixins
     protected:
         void _initialize(std::string directory)
         {
-            auto plugins = _findPlugins(directory);
+            std::vector<std::string> plugins = _findPlugins(directory);
 
             for (const auto &plugin : plugins)
             {
-                std::shared_ptr<PT> loadedPlugin = _loadPlugin(plugin->getPath());
+                std::shared_ptr<PT> loadedPlugin = _loadPlugin(plugin);
                 if (loadedPlugin)
                 {
                     for (const auto &extension : loadedPlugin->getSupportedExtensions())
@@ -109,20 +85,14 @@ namespace TEngine::Mixins
     private:
         typedef std::shared_ptr<PT> (*loadPluginDelegate)();
 
-        std::vector<std::shared_ptr<DynamicLibrary>> _findPlugins(std::string directory) const
+        std::vector<std::string> _findPlugins(std::string directory) const
         {
-            std::vector<std::shared_ptr<DynamicLibrary>> libraries;
+            std::vector<std::string> libraries;
 
 #ifdef __ANDROID__
-            if (!_assetManager)
-            {
-                // Handle error if asset manager is unavailable
-                return libraries;
-            }
-
             auto finalDirectoryPath = "generated/" + directory;
 
-            AAssetDir *assetDir = AAssetManager_openDir(_assetManager, finalDirectoryPath.c_str());
+            AAssetDir *assetDir = AAssetManager_openDir(_gameActivity->assetManager, finalDirectoryPath.c_str());
             if (!assetDir)
             {
                 // Handle error if directory cannot be opened
@@ -139,20 +109,25 @@ namespace TEngine::Mixins
                      filePath.substr(filePath.size() - 4) == ".dll" ||
                      filePath.substr(filePath.size() - 6) == ".dylib"))
                 {
-                    AAsset *asset = AAssetManager_open(_assetManager, filePath.c_str(), AASSET_MODE_STREAMING);
+                    // Extract the file to internal storage
+                    std::string tempPath =
+                        (boost::filesystem::path(_gameActivity->internalDataPath) /
+                         boost::filesystem::path(filename))
+                            .string();
+                    AAsset *asset = AAssetManager_open(_gameActivity->assetManager, filePath.c_str(), AASSET_MODE_STREAMING);
                     if (asset)
                     {
-                        int memFd = syscall(__NR_memfd_create, filename, MFD_CLOEXEC);
-                        if (memFd != -1)
+                        FILE *outFile = fopen(tempPath.c_str(), "wb");
+                        if (outFile)
                         {
                             char buffer[1024];
                             int bytesRead;
                             while ((bytesRead = AAsset_read(asset, buffer, sizeof(buffer))) > 0)
                             {
-                                write(memFd, buffer, bytesRead);
+                                fwrite(buffer, 1, bytesRead, outFile);
                             }
-                            lseek(memFd, 0, SEEK_SET); // Reset file descriptor position
-                            libraries.push_back(std::make_shared<DynamicLibrary>(memFd));
+                            fclose(outFile);
+                            libraries.push_back(tempPath);
                         }
                         AAsset_close(asset);
                     }
@@ -168,7 +143,7 @@ namespace TEngine::Mixins
                 std::string filename = entry.path().filename().string();
                 if (filename.size() > 3 && (filename.substr(filename.size() - 3) == ".so" || filename.substr(filename.size() - 4) == ".dll" || filename.substr(filename.size() - 6) == ".dylib"))
                 {
-                    libraries.push_back(std::make_shared<DynamicLibrary>(entry.path().string()));
+                    libraries.push_back(entry.path().string());
                 }
             }
 #endif
@@ -217,7 +192,7 @@ namespace TEngine::Mixins
         std::vector<DYNAMIC_LIB_HANDLE> _loadedLibraries;
 
 #ifdef __ANDROID__
-        AAssetManager *_assetManager;
+        GameActivity *_gameActivity;
 #endif
     };
 }

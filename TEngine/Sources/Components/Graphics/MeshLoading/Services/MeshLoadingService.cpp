@@ -10,11 +10,11 @@ using namespace TEngine::Components::Graphics::MeshLoading::Services;
 
 MeshLoadingService::MeshLoadingService(
 #ifdef __ANDROID__
-    AAssetManager *assetManager
+    GameActivity *gameActivity
 #endif
-)
-#ifdef __ANDROID__ 
-    : PluginsLoadingAware(assetManager)
+    )
+#ifdef __ANDROID__
+    : PluginsLoadingAware(gameActivity)
 #endif
 {
 }

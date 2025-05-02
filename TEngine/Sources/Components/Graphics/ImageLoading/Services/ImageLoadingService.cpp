@@ -7,8 +7,8 @@
 using namespace TEngine::Components::Graphics::ImageLoading::Services;
 
 #ifdef __ANDROID__
-ImageLoadingService::ImageLoadingService(AAssetManager *assetManager)
-    : PluginsLoadingAware(assetManager)
+ImageLoadingService::ImageLoadingService(GameActivity *gameActivity)
+    : PluginsLoadingAware(gameActivity)
 {
 }
 #endif
