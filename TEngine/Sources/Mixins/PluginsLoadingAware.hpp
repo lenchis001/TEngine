@@ -11,6 +11,28 @@
 #include <sys/stat.h> // Include for file status checks
 #include <android/asset_manager.h>
 #include <android/asset_manager_jni.h>
+
+#include <unistd.h>
+#include <sys/syscall.h>
+
+#ifndef __NR_memfd_create
+#if defined(__aarch64__)
+#define __NR_memfd_create 279
+#elif defined(__arm__)
+#define __NR_memfd_create 385
+#elif defined(__x86_64__)
+#define __NR_memfd_create 319
+#elif defined(__i386__)
+#define __NR_memfd_create 356
+#else
+#error "Platform not supported"
+#endif
+#endif
+
+#ifndef MFD_CLOEXEC
+#define MFD_CLOEXEC 0x0001U
+#endif
+
 #endif
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -27,7 +49,11 @@
 #define CLOSE_DYNAMIC_LIB dlclose
 #endif
 
+#include "Models/DynamicLibrary.hpp"
+
 #define LOAD_FUNCTION_NAME "load"
+
+using namespace TEngine::Mixins::Models;
 
 namespace TEngine::Mixins
 {
@@ -51,11 +77,11 @@ namespace TEngine::Mixins
     protected:
         void _initialize(std::string directory)
         {
-            std::vector<std::string> plugins = _findPlugins(directory);
+            auto plugins = _findPlugins(directory);
 
             for (const auto &plugin : plugins)
             {
-                std::shared_ptr<PT> loadedPlugin = _loadPlugin(plugin);
+                std::shared_ptr<PT> loadedPlugin = _loadPlugin(plugin->getPath());
                 if (loadedPlugin)
                 {
                     for (const auto &extension : loadedPlugin->getSupportedExtensions())
@@ -83,9 +109,9 @@ namespace TEngine::Mixins
     private:
         typedef std::shared_ptr<PT> (*loadPluginDelegate)();
 
-        std::vector<std::string> _findPlugins(std::string directory) const
+        std::vector<std::shared_ptr<DynamicLibrary>> _findPlugins(std::string directory) const
         {
-            std::vector<std::string> libraries;
+            std::vector<std::shared_ptr<DynamicLibrary>> libraries;
 
 #ifdef __ANDROID__
             if (!_assetManager)
@@ -113,22 +139,20 @@ namespace TEngine::Mixins
                      filePath.substr(filePath.size() - 4) == ".dll" ||
                      filePath.substr(filePath.size() - 6) == ".dylib"))
                 {
-                    // Extract the file to internal storage
-                    std::string tempPath = "/data/data/com.tengine.android_demo/files/" + std::string(filename);
                     AAsset *asset = AAssetManager_open(_assetManager, filePath.c_str(), AASSET_MODE_STREAMING);
                     if (asset)
                     {
-                        FILE *outFile = fopen(tempPath.c_str(), "wb");
-                        if (outFile)
+                        int memFd = syscall(__NR_memfd_create, filename, MFD_CLOEXEC);
+                        if (memFd != -1)
                         {
                             char buffer[1024];
                             int bytesRead;
                             while ((bytesRead = AAsset_read(asset, buffer, sizeof(buffer))) > 0)
                             {
-                                fwrite(buffer, 1, bytesRead, outFile);
+                                write(memFd, buffer, bytesRead);
                             }
-                            fclose(outFile);
-                            libraries.push_back(tempPath);
+                            lseek(memFd, 0, SEEK_SET); // Reset file descriptor position
+                            libraries.push_back(std::make_shared<DynamicLibrary>(memFd));
                         }
                         AAsset_close(asset);
                     }
@@ -144,7 +168,7 @@ namespace TEngine::Mixins
                 std::string filename = entry.path().filename().string();
                 if (filename.size() > 3 && (filename.substr(filename.size() - 3) == ".so" || filename.substr(filename.size() - 4) == ".dll" || filename.substr(filename.size() - 6) == ".dylib"))
                 {
-                    libraries.push_back(entry.path().string());
+                    libraries.push_back(std::make_shared<DynamicLibrary>(entry.path().string()));
                 }
             }
 #endif
