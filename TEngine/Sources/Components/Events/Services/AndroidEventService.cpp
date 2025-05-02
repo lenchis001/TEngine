@@ -56,7 +56,7 @@ namespace TEngine::Components::Events::Services
         {
             auto axes = event->pointers[i];
 
-            global->fireCursorMoveHandler(static_cast<int>(axes.rawX), static_cast<int>(axes.rawX));
+            global->fireCursorMoveHandler(static_cast<int>(axes.rawX), static_cast<int>(axes.rawY));
         }
 
         if (action == AMOTION_EVENT_ACTION_DOWN || action == AMOTION_EVENT_ACTION_UP)
@@ -64,6 +64,10 @@ namespace TEngine::Components::Events::Services
             MouseButtons button = static_cast<MouseButtons>(event->buttonState);
             KeyStates state = static_cast<KeyStates>(action);
             global->fireMouseButtonHandler(button, state, 0);
+
+            if (action == AMOTION_EVENT_ACTION_UP) {
+                global->fireCursorMoveHandler(static_cast<int>(-1), static_cast<int>(-1));
+            }
         }
 
         return true;

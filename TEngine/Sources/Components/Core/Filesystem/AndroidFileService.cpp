@@ -24,7 +24,7 @@ std::string AndroidFileService::read(const std::string &path)
         // Replace "buildin_bundle://" with "generated/" if exists
         finalPath = _replacePrefix(finalPath, BUILD_IN_BUNDLE_PATH, GENERATED_PATH);
 
-        AAsset *asset = AAssetManager_open(_assetManager, path.c_str(), AASSET_MODE_BUFFER);
+        AAsset *asset = AAssetManager_open(_assetManager, finalPath.c_str(), AASSET_MODE_BUFFER);
         if (!asset)
         {
             return "";

@@ -21,12 +21,12 @@ namespace TEngine::Components::Graphics::Rendering::Scene::CameraStrategies
     {
     public:
         FpsCameraStrategy(
-            std::shared_ptr<IEventService> eventService,
-            float fov,
-            const Vector2di &windowSize,
-            float zNear,
-            float zFar,
-            const Vector3df &position);
+                std::shared_ptr<IEventService> eventService,
+                float fov,
+                const Vector2di &windowSize,
+                float zNear,
+                float zFar,
+                const Vector3df &position);
         ~FpsCameraStrategy() override;
 
         void render(double time) override;

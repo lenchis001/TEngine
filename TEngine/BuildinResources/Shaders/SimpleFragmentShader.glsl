@@ -1,5 +1,7 @@
 <shader header>
 
+precision lowp float;
+
 in vec2 UV;
 
 out vec4 color;

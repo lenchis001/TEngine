@@ -18,21 +18,6 @@ if(BUILD_WITH_GLFW)
 endif()
 target_include_directories(TEngine PUBLIC "Sources")
 
-# Copy Resources directory to the output directory
-if(ANDROID)
-add_custom_command(TARGET TEngine POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${CMAKE_CURRENT_SOURCE_DIR}/BuildinResources"
-    "${CMAKE_SOURCE_DIR}/../assets/BuildinResources"
-)
-else()
-add_custom_command(TARGET TEngine POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${CMAKE_CURRENT_SOURCE_DIR}/BuildinResources"
-    "$<TARGET_FILE_DIR:TEngine>/BuildinResources"
-)
-endif()
-
 # --------------------- Dependencies ---------------------
 
 if(BUILD_WITH_GLFW)

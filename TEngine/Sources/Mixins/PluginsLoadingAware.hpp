@@ -94,7 +94,9 @@ namespace TEngine::Mixins
                 return libraries;
             }
 
-            AAssetDir *assetDir = AAssetManager_openDir(_assetManager, directory.c_str());
+            auto finalDirectoryPath = "generated/" + directory;
+
+            AAssetDir *assetDir = AAssetManager_openDir(_assetManager, finalDirectoryPath.c_str());
             if (!assetDir)
             {
                 // Handle error if directory cannot be opened
@@ -105,7 +107,7 @@ namespace TEngine::Mixins
             while ((filename = AAssetDir_getNextFileName(assetDir)) != nullptr)
             {
                 // Check for valid plugin extensions
-                std::string filePath = directory + "/" + filename;
+                std::string filePath = finalDirectoryPath + "/" + filename;
                 if (filePath.size() > 3 &&
                     (filePath.substr(filePath.size() - 3) == ".so" ||
                      filePath.substr(filePath.size() - 4) == ".dll" ||

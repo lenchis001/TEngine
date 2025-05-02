@@ -1,4 +1,7 @@
 <shader header>
+
+precision lowp float;
+
 layout (location = 0) in vec3 vertexPosition;
 
 out vec3 TexCoords;

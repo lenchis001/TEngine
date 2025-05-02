@@ -24,8 +24,7 @@ std::shared_ptr<IGraphicsService> graphicsService;
 
 void setupScene(std::shared_ptr<ISceneService> sceneService)
 {
-    auto camera = sceneService->setActiveCamera(BuildinCameraTypes::FPS);
-    camera->setWindowSize({2037,1080});
+    sceneService->setActiveCamera(BuildinCameraTypes::FPS);
 
     //sceneService->addSkyCude();
 
