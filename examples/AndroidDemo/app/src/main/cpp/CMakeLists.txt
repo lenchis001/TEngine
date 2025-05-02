@@ -64,10 +64,10 @@ target_link_libraries(android_demo
 )
 
 # Add post-build command to run a Python script
-add_custom_command(TARGET Demo
+add_custom_command(TARGET android_demo
                    POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E echo "Running shaders processing..."
-                   COMMAND ${PYTHON_EXECUTABLE} ${tengine_SOURCE_DIR}/tools/shader_builder.py "${tengine_SOURCE_DIR}/TEngine/BuildinResources/Shaders" "${CMAKE_SOURCE_DIR}/../assets/generated/BuildinResources/Shaders" "#version 300 es\nprecision lowp float;"
+                   COMMAND ${PYTHON_EXECUTABLE} ${tengine_SOURCE_DIR}/tools/shader_builder.py "${tengine_SOURCE_DIR}/TEngine/BuildinResources/Shaders" "${CMAKE_SOURCE_DIR}/../assets/generated/BuildinResources/Shaders" "#version 300 es"
                    COMMAND ${CMAKE_COMMAND} -E echo "Shaders processing completed."
                    COMMENT "Executing post-build shaders processing")
 

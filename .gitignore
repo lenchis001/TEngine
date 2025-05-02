@@ -339,4 +339,4 @@ out/**
 
 # obj models
 !examples/Demo/DemoResources/**/*.obj
-examples\AndroidDemo\app\src\main\assets\generated/*
+examples/AndroidDemo/app/src/main/assets/generated/*

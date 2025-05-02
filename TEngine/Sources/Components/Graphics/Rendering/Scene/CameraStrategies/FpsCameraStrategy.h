@@ -51,7 +51,7 @@ namespace TEngine::Components::Graphics::Rendering::Scene::CameraStrategies
         float _radius;
         bool _isMovingForward, _isMovingBackward, _isMovingLeft, _isMovingRight, _isMovingUp, _isMovingDown, _isBoostActivated;
         Vector3df _position, _target;
-        Vector2di _windowCenter;
+        Vector2di _windowCenter, _lastCursorPosition;
         double _lastTime;
 
         std::vector<KeyboardEventHandler> _keyboardEventHandlers;
