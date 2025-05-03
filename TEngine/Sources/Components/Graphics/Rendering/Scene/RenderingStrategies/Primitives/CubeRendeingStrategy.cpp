@@ -4,8 +4,8 @@
 
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Primitives;
 
-#define VERTEX_SHADER_SOURCE "buildin_bundle://BuildinResources/Shaders/SimpleVertexShader.glsl"
-#define FRAGMENT_SHADER_SOURCE "buildin_bundle://BuildinResources/Shaders/SimpleFragmentShader.glsl"
+#define VERTEX_SHADER_SOURCE "bundle://BuildinResources/Shaders/SimpleVertexShader.glsl"
+#define FRAGMENT_SHADER_SOURCE "bundle://BuildinResources/Shaders/SimpleFragmentShader.glsl"
 
 #define VERTEX_VBO_NAME "CubeRenderingStrategy_VertexVbo"
 #define UV_VBO_NAME "CubeRenderingStrategy_ColorVbo"

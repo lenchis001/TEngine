@@ -13,7 +13,6 @@ std::string FileService::readAsString(const std::string &path)
 
     // Check if the path starts with "bundle://" - remove this prefix (so it's a desktop platform)
     finalPath = _removePrefix(finalPath, BUNDLE_PATH);
-    finalPath = _removePrefix(finalPath, BUILD_IN_BUNDLE_PATH);
 
     std::ifstream file(finalPath);
     if (!file.is_open())
@@ -35,7 +34,6 @@ std::vector<uint8_t> FileService::readAsBytes(const std::string &path)
 
     // Check if the path starts with "bundle://" - remove this prefix (so it's a desktop platform)
     finalPath = _removePrefix(finalPath, BUNDLE_PATH);
-    finalPath = _removePrefix(finalPath, BUILD_IN_BUNDLE_PATH);
 
     std::ifstream file(finalPath, std::ios::binary | std::ios::ate);
     if (!file.is_open())

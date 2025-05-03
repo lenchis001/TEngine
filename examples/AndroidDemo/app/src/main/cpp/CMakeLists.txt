@@ -67,7 +67,7 @@ target_link_libraries(android_demo
 add_custom_command(TARGET android_demo
                    POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E echo "Running shaders processing..."
-                   COMMAND ${PYTHON_EXECUTABLE} ${tengine_SOURCE_DIR}/tools/shader_builder.py "${tengine_SOURCE_DIR}/TEngine/BuildinResources/Shaders" "${CMAKE_SOURCE_DIR}/../assets/generated/BuildinResources/Shaders" "#version 300 es"
+                   COMMAND ${PYTHON_EXECUTABLE} ${tengine_SOURCE_DIR}/tools/shader_builder.py "${tengine_SOURCE_DIR}/TEngine/BuildinResources/Shaders" "${CMAKE_SOURCE_DIR}/../assets/BuildinResources/Shaders" "#version 300 es"
                    COMMAND ${CMAKE_COMMAND} -E echo "Shaders processing completed."
                    COMMENT "Executing post-build shaders processing")
 
@@ -75,19 +75,19 @@ add_custom_command(TARGET android_demo
 add_custom_command(TARGET android_demo POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
         "$<TARGET_FILE:ObjLoadingPlugin>"
-        "${CMAKE_SOURCE_DIR}/../assets/generated/Plugins/MeshLoading/ObjLoadingPlugin.so"
+        "${CMAKE_SOURCE_DIR}/../assets/Plugins/MeshLoading/ObjLoadingPlugin.so"
 )
 
 # Copy the generated .so library to the Assets directory
 add_custom_command(TARGET android_demo POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
         "$<TARGET_FILE:BmpLoadingPlugin>"
-        "${CMAKE_SOURCE_DIR}/../assets/generated/Plugins/ImageLoading/BmpLoadingPlugin.so"
+        "${CMAKE_SOURCE_DIR}/../assets/Plugins/ImageLoading/BmpLoadingPlugin.so"
 )
 
 # Copy the generated .so library to the Assets directory
 add_custom_command(TARGET android_demo POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
         "$<TARGET_FILE:PngLoadingPlugin>"
-        "${CMAKE_SOURCE_DIR}/../assets/generated/Plugins/ImageLoading/PngLoadingPlugin.so"
+        "${CMAKE_SOURCE_DIR}/../assets/Plugins/ImageLoading/PngLoadingPlugin.so"
 )

@@ -6,7 +6,6 @@
 #include <cstdint>
 
 #define BUNDLE_PATH "bundle://"
-#define BUILD_IN_BUNDLE_PATH "buildin_bundle://"
 
 namespace TEngine::Components::Core::Filesystem
 {

@@ -92,9 +92,7 @@ namespace TEngine::Mixins
             std::vector<std::string> libraries;
 
 #ifdef __ANDROID__
-            auto finalDirectoryPath = "generated/" + directory;
-
-            AAssetDir *assetDir = AAssetManager_openDir(_gameActivity->assetManager, finalDirectoryPath.c_str());
+            AAssetDir *assetDir = AAssetManager_openDir(_gameActivity->assetManager, directory.c_str());
             if (!assetDir)
             {
                 // Handle error if directory cannot be opened
@@ -105,7 +103,7 @@ namespace TEngine::Mixins
             while ((filename = AAssetDir_getNextFileName(assetDir)) != nullptr)
             {
                 // Check for valid plugin extensions
-                std::string filePath = finalDirectoryPath + "/" + filename;
+                std::string filePath = directory + "/" + filename;
                 if (filePath.size() > 3 &&
                     (filePath.substr(filePath.size() - 3) == ".so" ||
                      filePath.substr(filePath.size() - 4) == ".dll" ||

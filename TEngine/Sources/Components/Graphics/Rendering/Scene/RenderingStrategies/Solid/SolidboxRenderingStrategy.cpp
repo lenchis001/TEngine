@@ -5,8 +5,8 @@
 #define VERTEX_VBO_NAME "SolidboxRenderingStrategy_VertexVbo"
 #define VAO_NAME "SolidboxRenderingStrategy_Vao"
 
-#define VERTEX_SHADER_SOURCE "buildin_bundle://BuildinResources/Shaders/Solidbox/VertexShader.glsl"
-#define FRAGMENT_SHADER_SOURCE "buildin_bundle://BuildinResources/Shaders/Solidbox/FragmentShader.glsl"
+#define VERTEX_SHADER_SOURCE "bundle://BuildinResources/Shaders/Solidbox/VertexShader.glsl"
+#define FRAGMENT_SHADER_SOURCE "bundle://BuildinResources/Shaders/Solidbox/FragmentShader.glsl"
 
 using namespace TEngine::Components::Graphics::Rendering::Scene::RenderingStrategies::Primitives;
 

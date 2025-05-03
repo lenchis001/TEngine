@@ -1,7 +1,7 @@
 #include "SkyCubeRenderingStrategy.h"
 
-#define VERTEX_SHADER_SOURCE "buildin_bundle://BuildinResources/Shaders/SkyBox/VertexShader.glsl"
-#define FRAGMENT_SHADER_SOURCE "buildin_bundle://BuildinResources/Shaders/SkyBox/FragmentShader.glsl"
+#define VERTEX_SHADER_SOURCE "bundle://BuildinResources/Shaders/SkyBox/VertexShader.glsl"
+#define FRAGMENT_SHADER_SOURCE "bundle://BuildinResources/Shaders/SkyBox/FragmentShader.glsl"
 
 #define VERTEX_BUFFER_NAME "SkySphereRenderingStrategy_VertexBuffer" + std::to_string(getId())
 #define TEXTURE_BUFFER_NAME "SkySphereRenderingStrategy_TextureBuffer" + std::to_string(getId())
