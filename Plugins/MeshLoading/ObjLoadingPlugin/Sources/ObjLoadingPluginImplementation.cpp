@@ -1,7 +1,8 @@
 #include "ObjLoadingPluginImplementation.h"
 
-#include "memory"
-#include "iostream"
+#include <iostream>
+#include <sstream>
+#include <string>
 
 #include "rapidobj/rapidobj.hpp"
 
@@ -28,9 +29,13 @@ std::vector<std::string> ObjLoadingPluginImplementation::getSupportedExtensions(
     return std::vector<std::string>{"obj"};
 }
 
-std::shared_ptr<IPluginMesh> ObjLoadingPluginImplementation::load(const std::string &path)
+std::shared_ptr<IPluginMesh> ObjLoadingPluginImplementation::load(const std::vector<uint8_t>& data, const std::string& basePath)
 {
-    auto result = ParseFile(path);
+    std::istringstream stream(std::string(reinterpret_cast<const char*>(data.data()), data.size()));
+
+    auto materialLibrary = MaterialLibrary::SearchPath(basePath.c_str(), Load::Mandatory);
+
+    auto result = ParseStream(stream, materialLibrary);
 
     if (result.error)
     {
@@ -58,9 +63,7 @@ std::shared_ptr<IPluginMesh> ObjLoadingPluginImplementation::load(const std::str
 
             if (!material.diffuse_texname.empty())
             {
-                auto meshDirectory = boost::filesystem::path(path).parent_path();
-
-                texturePath = boost::filesystem::absolute(material.diffuse_texname, meshDirectory).string();
+                texturePath = boost::filesystem::absolute(material.diffuse_texname, basePath).string();
             }
         }
         else

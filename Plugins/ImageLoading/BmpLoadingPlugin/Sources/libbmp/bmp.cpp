@@ -57,6 +57,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "cstdio"
 #include "string"
 #include "cstring"
+#include <vector>
+#include <cstdint>
 
 #include "bmp.h"
 
@@ -297,6 +299,149 @@ LIBBMP_API int BmpLoadImage(unsigned char *pBmpData, const BmpInfo* pBmpInfo, co
 
   delete [] pBuf;
   fclose(pFile);
+  return 0;
+}
+
+LIBBMP_API int BmpLoadImageFromMemory(unsigned char* pBmpData, const BmpInfo* pBmpInfo, const std::vector<uint8_t>& bmpBuffer)
+{
+  if (!pBmpData || !pBmpInfo || bmpBuffer.empty())
+    return -1;
+
+  const uint8_t* buffer = bmpBuffer.data();
+  size_t bufferSize = bmpBuffer.size();
+
+  if (bufferSize < BmpFileHeaderSize + BmpDibHeaderSize)
+    return -1;
+
+  // Check BMP signature
+  if (buffer[0] != BmpSignature[0] || buffer[1] != BmpSignature[1])
+    return -1;
+
+  // Read offset to pixel data
+  uint32_t offset = *reinterpret_cast<const uint32_t*>(buffer + 10);
+  if (offset >= bufferSize)
+    return -1;
+
+  // Validate width, height, and depth without modifying pBmpInfo
+  int32_t width = *reinterpret_cast<const int32_t*>(buffer + 18);
+  int32_t height = *reinterpret_cast<const int32_t*>(buffer + 22);
+  uint16_t depth = *reinterpret_cast<const uint16_t*>(buffer + 28);
+
+  if (width <= 0 || height <= 0)
+    return -1;
+
+  int bytesPerPix = 0;
+  switch (depth)
+  {
+  case 1:
+    bytesPerPix = 0; // Mono
+    break;
+  case 8:
+    bytesPerPix = 1; // Gray
+    break;
+  case 24:
+    bytesPerPix = 3; // RGB
+    break;
+  case 32:
+    bytesPerPix = 4; // RGBA
+    break;
+  default:
+    return -1;
+  }
+
+  int stride = GetBytesPerLine(pBmpInfo);
+  int bytesPerLine = GetBytesPerLine(pBmpInfo);
+
+  if (offset + height * bytesPerLine > bufferSize)
+    return -1;
+
+  // Read pixel data
+  for (int y = 0; y < pBmpInfo->height; ++y) // Fix row order
+  {
+    const uint8_t* srcLine = buffer + offset + y * bytesPerLine;
+    unsigned char* dstLine = pBmpData + (pBmpInfo->height - 1 - y) * stride; // Reverse row order
+
+    if (bytesPerPix == 0) // Mono
+    {
+      memcpy(dstLine, srcLine, bytesPerLine);
+    }
+    else if (bytesPerPix == 1) // Gray
+    {
+      memcpy(dstLine, srcLine, bytesPerLine);
+    }
+    else if (bytesPerPix == 3) // BGR
+    {
+      for (int x = 0; x < pBmpInfo->width; ++x)
+      {
+        dstLine[3 * x + 0] = srcLine[3 * x + 2];
+        dstLine[3 * x + 1] = srcLine[3 * x + 1];
+        dstLine[3 * x + 2] = srcLine[3 * x + 0];
+      }
+    }
+    else if (bytesPerPix == 4) // BGRA
+    {
+      for (int x = 0; x < pBmpInfo->width; ++x)
+      {
+        dstLine[4 * x + 0] = srcLine[4 * x + 2];
+        dstLine[4 * x + 1] = srcLine[4 * x + 1];
+        dstLine[4 * x + 2] = srcLine[4 * x + 0];
+        dstLine[4 * x + 3] = srcLine[4 * x + 3];
+      }
+    }
+  }
+
+  return 0;
+}
+
+LIBBMP_API int BmpGetInfoFromMemory(BmpInfo* pBmpInfo, const std::vector<uint8_t>& bmpBuffer)
+{
+  if (!pBmpInfo || bmpBuffer.empty())
+    return -1;
+
+  const uint8_t* buffer = bmpBuffer.data();
+  size_t bufferSize = bmpBuffer.size();
+
+  if (bufferSize < BmpFileHeaderSize + BmpDibHeaderSize)
+    return -1;
+
+  // Check BMP signature
+  if (buffer[0] != BmpSignature[0] || buffer[1] != BmpSignature[1])
+    return -1;
+
+  // Read width, height, and depth
+  pBmpInfo->width = *reinterpret_cast<const int32_t*>(buffer + 18);
+  pBmpInfo->height = *reinterpret_cast<const int32_t*>(buffer + 22);
+  uint16_t depth = *reinterpret_cast<const uint16_t*>(buffer + 28);
+
+  if (pBmpInfo->width <= 0 || pBmpInfo->height <= 0)
+    return -1;
+
+  switch (depth)
+  {
+  case 1:
+    pBmpInfo->type = BmpMono;
+    break;
+  case 8:
+    pBmpInfo->type = BmpGray;
+    break;
+  case 24:
+    pBmpInfo->type = BmpRgb;
+    break;
+  case 32:
+    pBmpInfo->type = BmpRgba;
+    break;
+  default:
+    return -1;
+  }
+
+  pBmpInfo->stride = GetBytesPerLine(pBmpInfo);
+
+  // Read DPI
+  int xDPM = *reinterpret_cast<const int32_t*>(buffer + 38);
+  int yDPM = *reinterpret_cast<const int32_t*>(buffer + 42);
+  pBmpInfo->xDPI = static_cast<float>(xDPM / BmpInchToMeter);
+  pBmpInfo->yDPI = static_cast<float>(yDPM / BmpInchToMeter);
+
   return 0;
 }
 

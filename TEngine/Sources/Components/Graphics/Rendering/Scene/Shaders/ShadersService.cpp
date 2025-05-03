@@ -25,13 +25,13 @@ GLuint ShadersService::take(const std::string &vertexShaderFile, const std::stri
 
     if (_shaderPrograms.find(shaderKey) == _shaderPrograms.end())
     {
-        std::string vertex = _fileService->read(vertexShaderFile);
+        std::string vertex = _fileService->readAsString(vertexShaderFile);
         if (vertex.empty())
         {
             assert(false && "Vertex shader not found!");
             return 0;
         }
-        std::string fragment = _fileService->read(fragmentShaderFile);
+        std::string fragment = _fileService->readAsString(fragmentShaderFile);
         if (fragment.empty())
         {
             assert(false && "Fragment shader not found!");

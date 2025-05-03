@@ -69,6 +69,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 extern "C" {
 #endif
 
+#include <vector>
+
 typedef enum
 {
   BmpUnknown,
@@ -106,6 +108,19 @@ LIBBMP_API int BmpGetInfo
 (
   BmpInfo*     pBmpInfo,
   const char*  pFileName
+);
+
+LIBBMP_API int BmpLoadImageFromMemory
+(
+  unsigned char* pBmpData,
+  const BmpInfo* pBmpInfo,
+  const std::vector<uint8_t>& bmpBuffer
+);
+
+LIBBMP_API int BmpGetInfoFromMemory
+(
+  BmpInfo* pBmpInfo,
+  const std::vector<uint8_t>& bmpBuffer
 );
 
 #ifdef __cplusplus

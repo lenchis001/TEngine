@@ -4,12 +4,15 @@
 #include "IMeshLoadingService.h"
 
 #include <map>
+#include <memory>
 
 #include "Mixins/PluginsLoadingAware.hpp"
+#include "Components/Core/Filesystem/IFileService.h"
 
 #include "Components/Graphics/MeshLoading/Plugin/IMeshLoadingPlugin.h"
 
 using namespace TEngine::Mixins;
+using namespace TEngine::Components::Core::Filesystem;
 
 using namespace TEngine::Components::Graphics::MeshLoading::Models;
 using namespace TEngine::Components::Graphics::MeshLoading::Plugin;
@@ -21,8 +24,9 @@ namespace TEngine::Components::Graphics::MeshLoading::Services
     public:
         MeshLoadingService(
 #ifdef __ANDROID__
-            AAssetManager *assetManager
+            AAssetManager *assetManager,
 #endif
+            std::shared_ptr<IFileService> fileService
         );
 
         void initialize() override;
@@ -31,8 +35,9 @@ namespace TEngine::Components::Graphics::MeshLoading::Services
 
     private:
         std::shared_ptr<IMesh> _toMesh(std::shared_ptr<IPluginMesh> pluginMesh);
-
         std::shared_ptr<IShape> _toShape(std::shared_ptr<IPluginShape> pluginShape, unsigned int index);
+
+        std::shared_ptr<IFileService> _fileService;
     };
 }
 

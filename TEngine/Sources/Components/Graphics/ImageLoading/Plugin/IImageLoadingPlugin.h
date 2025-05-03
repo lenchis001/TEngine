@@ -15,7 +15,7 @@ namespace TEngine::Components::Graphics::ImageLoading::Plugin {
 
         virtual std::vector<std::string> getSupportedExtensions() const = 0;
 
-        virtual std::shared_ptr<IPluginImage> load(const std::string &path) = 0;
+        virtual std::shared_ptr<IPluginImage> load(const std::vector<uint8_t>& data) = 0;
     };
 }
 

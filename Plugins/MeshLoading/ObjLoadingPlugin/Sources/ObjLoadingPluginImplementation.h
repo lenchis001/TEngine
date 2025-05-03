@@ -1,8 +1,6 @@
 #ifndef OBJ_LOADING_PLUGIN_H
 #define OBJ_LOADING_PLUGIN_H
 
-#include "memory"
-
 #include "IMeshLoadingPlugin.h"
 
 using namespace TEngine::Components::Graphics::MeshLoading::Plugin;
@@ -17,7 +15,7 @@ namespace ObjLoadingPlugin
 
         virtual std::vector<std::string> getSupportedExtensions() const override;
 
-        virtual std::shared_ptr<IPluginMesh> load(const std::string &path) override;
+        virtual std::shared_ptr<IPluginMesh> load(const std::vector<uint8_t>& data, const std::string& basePath) override;
     };
 }
 

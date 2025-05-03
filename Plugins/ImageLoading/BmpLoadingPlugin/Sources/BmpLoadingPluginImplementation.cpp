@@ -20,20 +20,20 @@ std::vector<std::string> BmpLoadingPluginImplementation::getSupportedExtensions(
     return std::vector<std::string>{"bmp"};
 }
 
-std::shared_ptr<IPluginImage> BmpLoadingPluginImplementation::load(const std::string &path)
+std::shared_ptr<IPluginImage> BmpLoadingPluginImplementation::load(const std::vector<uint8_t>& data)
 {
     BmpInfo info = {0};
-    BmpGetInfo(&info, path.c_str());
+    BmpGetInfoFromMemory(&info, data);
 
     auto dataSize = info.height * info.stride;
 
     unsigned char *pBmpData = new unsigned char[dataSize];
-    BmpLoadImage(pBmpData, &info, path.c_str());
+    BmpLoadImageFromMemory(pBmpData, &info, data);
 
-    std::vector<char> data(dataSize);
-    data.assign(pBmpData, pBmpData + dataSize);
+    std::vector<char> imageData(dataSize);
+    imageData.assign(pBmpData, pBmpData + dataSize);
 
-    return std::make_shared<BmpPluginImage>(info.width, info.height, data);
+    return std::make_shared<BmpPluginImage>(info.width, info.height, imageData);
 }
 
 std::shared_ptr<IImageLoadingPlugin> load() {

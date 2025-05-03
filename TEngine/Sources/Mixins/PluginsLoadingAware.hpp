@@ -6,6 +6,8 @@
 #include <string>
 #include <filesystem>
 
+#include "Components/Core/Filesystem/IFileService.h"
+
 #ifdef __ANDROID__
 #include <dirent.h>   // Include for directory traversal on POSIX systems
 #include <sys/stat.h> // Include for file status checks
@@ -92,7 +94,7 @@ namespace TEngine::Mixins
             }
         }
 
-        std::shared_ptr<PT> _load(const std::string &path)
+        std::shared_ptr<PT> _getPlugin(const std::string &path)
         {
             auto extension = path.substr(path.find_last_of('.') + 1);
 

@@ -17,7 +17,7 @@ namespace PngLoadingPlugin
 
         virtual std::vector<std::string> getSupportedExtensions() const override;
 
-        virtual std::shared_ptr<IPluginImage> load(const std::string &path) override;
+        virtual std::shared_ptr<IPluginImage> load(const std::vector<uint8_t>& data) override;
     };
 }
 

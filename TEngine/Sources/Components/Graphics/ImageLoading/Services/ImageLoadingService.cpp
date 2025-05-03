@@ -6,12 +6,20 @@
 
 using namespace TEngine::Components::Graphics::ImageLoading::Services;
 
+ImageLoadingService::ImageLoadingService(
 #ifdef __ANDROID__
-ImageLoadingService::ImageLoadingService(AAssetManager *assetManager)
-    : PluginsLoadingAware(assetManager)
+    AAssetManager *assetManager,
+#endif
+    std::shared_ptr<IFileService> fileService)
+    : PluginsLoadingAware(
+#ifdef __ANDROID__
+          assetManager
+#endif
+          ),
+      _fileService(fileService)
+
 {
 }
-#endif
 
 ImageLoadingService::~ImageLoadingService()
 {
@@ -24,9 +32,11 @@ void ImageLoadingService::initialize()
 
 std::shared_ptr<Image> ImageLoadingService::load(const std::string &path)
 {
-    auto plugin = _load(path);
+    auto plugin = _getPlugin(path);
+    
+    auto data = _fileService->readAsBytes(path);
 
-    auto result = plugin->load(path);
+    auto result = plugin->load(data);
 
     auto enginePixelType = _toEnginePixelType(result->getPixelType());
 

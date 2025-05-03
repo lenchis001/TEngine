@@ -22,7 +22,7 @@ void DeserializationService::deserialize(const std::string &data, std::shared_pt
 
 void DeserializationService::deserializeFromFile(const std::string &path, std::shared_ptr<TypeInfoAware> root)
 {
-    auto sceneFileContent = _fileService->read(path);
+    auto sceneFileContent = _fileService->readAsString(path);
 
     deserialize(sceneFileContent, root);
 }

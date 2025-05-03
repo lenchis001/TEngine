@@ -128,7 +128,7 @@ std::shared_ptr<IEngine> TEngine::createEngine(
     }
 
 #ifdef __ANDROID__
-auto audioService = std::make_shared<AndroidAudioService>(nullptr);
+    auto audioService = std::make_shared<AndroidAudioService>(nullptr);
 #else
     auto vorbisOggReader = std::make_shared<VorbisOggReader>();
     auto audioService = std::make_shared<AudioService>(vorbisOggReader);
@@ -136,23 +136,23 @@ auto audioService = std::make_shared<AndroidAudioService>(nullptr);
 
     auto coreService = std::make_shared<CoreService>();
 
-    auto imageLoadingService = std::make_shared<ImageLoadingService>(
-#ifdef __ANDROID__
-        parent->activity->assetManager
-#endif
-            );
-    auto meshLoadingService = std::make_shared<MeshLoadingService>(
-#ifdef __ANDROID__
-            parent->activity->assetManager
-#endif
-            );
-
-
 #ifdef __ANDROID__
     auto fileService = std::make_shared<AndroidFileService>(parent->activity->assetManager);
 #else
     auto fileService = std::make_shared<FileService>();
 #endif
+
+    auto imageLoadingService = std::make_shared<ImageLoadingService>(
+#ifdef __ANDROID__
+        parent->activity->assetManager,
+#endif
+        fileService
+    );
+    auto meshLoadingService = std::make_shared<MeshLoadingService>(
+#ifdef __ANDROID__
+        parent->activity->assetManager,
+#endif
+        fileService);
 
     auto shadersService = std::make_shared<ShadersService>(fileService);
     auto bufferCacheService = std::make_shared<BuffersService>();

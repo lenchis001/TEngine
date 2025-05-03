@@ -7,10 +7,13 @@
 
 #include "Components/Graphics/ImageLoading/Plugin/IImageLoadingPlugin.h"
 
-#include "IImageLoadingService.h"
 #include "Mixins/PluginsLoadingAware.hpp"
+#include "Components/Core/Filesystem/IFileService.h"
+
+#include "IImageLoadingService.h"
 
 using namespace TEngine::Mixins;
+using namespace TEngine::Components::Core::Filesystem;
 
 using namespace TEngine::Components::Graphics::ImageLoading::Models;
 using namespace TEngine::Components::Graphics::ImageLoading::Plugin;
@@ -24,11 +27,12 @@ namespace TEngine::Components::Graphics::ImageLoading::Services
     class ImageLoadingService : public PluginsLoadingAware<IImageLoadingPlugin>, public IImageLoadingService
     {
     public:
-#ifdef __ANDROID__
-        ImageLoadingService(AAssetManager *assetManager);
-#else
-        ImageLoadingService() = default;
-#endif
+        ImageLoadingService(
+            #ifdef __ANDROID__
+            AAssetManager *assetManager,
+            #endif
+            std::shared_ptr<IFileService> fileService);
+
         ~ImageLoadingService() override;
 
         void initialize() override;
@@ -37,6 +41,8 @@ namespace TEngine::Components::Graphics::ImageLoading::Services
 
     private:
         static EnginePixelType _toEnginePixelType(PluginPixelType pluginPixelType);
+        
+        std::shared_ptr<IFileService> _fileService;
     };
 }
 

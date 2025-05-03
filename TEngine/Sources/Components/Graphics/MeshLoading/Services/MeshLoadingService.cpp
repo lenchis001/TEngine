@@ -1,5 +1,7 @@
 #include "MeshLoadingService.h"
 
+#include "boost/filesystem.hpp"
+
 #include "Components/Graphics/MeshLoading/Models/Shape.h"
 #include "Components/Graphics/MeshLoading/Models/Mesh.h"
 
@@ -10,12 +12,16 @@ using namespace TEngine::Components::Graphics::MeshLoading::Services;
 
 MeshLoadingService::MeshLoadingService(
 #ifdef __ANDROID__
-    AAssetManager *assetManager
+    AAssetManager *assetManager,
 #endif
+    std::shared_ptr<IFileService> fileService
 )
 #ifdef __ANDROID__ 
-    : PluginsLoadingAware(assetManager)
+    : PluginsLoadingAware(assetManager),
+#else
+    :
 #endif
+    _fileService(fileService)
 {
 }
 
@@ -26,9 +32,14 @@ void MeshLoadingService::initialize()
 
 std::shared_ptr<IMesh> MeshLoadingService::load(const std::string &path)
 {
-    auto plugin = _load(path);
+    auto plugin = _getPlugin(path);
 
-    auto pluginMesh = plugin->load(path);
+    auto data = _fileService->readAsBytes(path);
+
+    auto absolutePath = _fileService->toAbsolutePath(path);
+    auto parentDirectory = boost::filesystem::path(absolutePath).parent_path().string();
+
+    auto pluginMesh = plugin->load(data, parentDirectory);
 
     return _toMesh(pluginMesh);
 }
