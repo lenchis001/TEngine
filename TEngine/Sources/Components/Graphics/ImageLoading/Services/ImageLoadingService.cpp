@@ -8,15 +8,15 @@ using namespace TEngine::Components::Graphics::ImageLoading::Services;
 
 ImageLoadingService::ImageLoadingService(
 #ifdef __ANDROID__
-    AAssetManager *assetManager,
+    ameActivity *gameActivity,
 #endif
     std::shared_ptr<IFileService> fileService)
     : PluginsLoadingAware(
 #ifdef __ANDROID__
-          assetManager
+    gameActivity
 #endif
-          ),
-      _fileService(fileService)
+    ),
+    _fileService(fileService)
 
 {
 }

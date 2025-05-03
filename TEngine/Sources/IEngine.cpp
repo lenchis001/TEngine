@@ -144,13 +144,13 @@ std::shared_ptr<IEngine> TEngine::createEngine(
 
     auto imageLoadingService = std::make_shared<ImageLoadingService>(
 #ifdef __ANDROID__
-        parent->activity->assetManager,
+        parent->activity,
 #endif
         fileService
     );
     auto meshLoadingService = std::make_shared<MeshLoadingService>(
 #ifdef __ANDROID__
-        parent->activity->assetManager,
+        parent->activity,
 #endif
         fileService);
 

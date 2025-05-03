@@ -12,14 +12,12 @@ using namespace TEngine::Components::Graphics::MeshLoading::Services;
 
 MeshLoadingService::MeshLoadingService(
 #ifdef __ANDROID__
-    AAssetManager *assetManager,
+    GameActivity *gameActivity,
 #endif
     std::shared_ptr<IFileService> fileService
-)
+    ):
 #ifdef __ANDROID__ 
-    : PluginsLoadingAware(assetManager),
-#else
-    :
+    PluginsLoadingAware(gameActivity),
 #endif
     _fileService(fileService)
 {

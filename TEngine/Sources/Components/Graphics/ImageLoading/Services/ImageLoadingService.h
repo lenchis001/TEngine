@@ -28,9 +28,9 @@ namespace TEngine::Components::Graphics::ImageLoading::Services
     {
     public:
         ImageLoadingService(
-            #ifdef __ANDROID__
-            AAssetManager *assetManager,
-            #endif
+#ifdef __ANDROID__
+            GameActivity *gameActivity,
+#endif
             std::shared_ptr<IFileService> fileService);
 
         ~ImageLoadingService() override;
@@ -41,7 +41,7 @@ namespace TEngine::Components::Graphics::ImageLoading::Services
 
     private:
         static EnginePixelType _toEnginePixelType(PluginPixelType pluginPixelType);
-        
+
         std::shared_ptr<IFileService> _fileService;
     };
 }
