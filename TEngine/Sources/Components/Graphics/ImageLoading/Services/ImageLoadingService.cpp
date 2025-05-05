@@ -8,7 +8,7 @@ using namespace TEngine::Components::Graphics::ImageLoading::Services;
 
 ImageLoadingService::ImageLoadingService(
 #ifdef __ANDROID__
-    ameActivity *gameActivity,
+    GameActivity *gameActivity,
 #endif
     std::shared_ptr<IFileService> fileService)
     : PluginsLoadingAware(
