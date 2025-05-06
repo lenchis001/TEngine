@@ -21,16 +21,16 @@ target_include_directories(Demo PRIVATE "../../TEngine/Sources")
 target_link_libraries(Demo PRIVATE TEngine)
 
 # Find Python interpreter
+find_package(PythonInterp 3 REQUIRED)
 if(NOT PYTHON_EXECUTABLE)
     set(PYTHON_EXECUTABLE "C:/Users/Leon/AppData/Local/Microsoft/WindowsApps/python.exe") # Replace with the actual path to your Python 3 executable
 endif()
-find_package(PythonInterp 3 REQUIRED)
 
 # Add post-build command to run a Python script
 add_custom_command(TARGET Demo
                    POST_BUILD
                    COMMAND ${CMAKE_COMMAND} -E echo "Running shaders processing..."
-                   COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/shader_builder.py "${CMAKE_SOURCE_DIR}/TEngine/BuildinResources/Shaders" "$<TARGET_FILE_DIR:Demo>/BuildinResources/Shaders" "#version 330 core"
+                   COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/shader_builder.py "${CMAKE_SOURCE_DIR}/TEngine/BuildinResources/Shaders" "$<TARGET_FILE_DIR:Demo>/BuildinResources/Shaders" "330 core"
                    COMMAND ${CMAKE_COMMAND} -E echo "Shaders processing completed."
                    COMMENT "Executing post-build shaders processing")
 

@@ -24,7 +24,7 @@ def resolve_includes(glsl_content, root):
 
     return glsl_content
 
-def process_glsl_files(glsl_path, result_path, shader_header):
+def process_glsl_files(glsl_path, result_path, shader_version):
     # Create the result directory if it doesn't exist
     if not os.path.exists(result_path):
         os.makedirs(result_path)
@@ -48,8 +48,8 @@ def process_glsl_files(glsl_path, result_path, shader_header):
                 with open(glsl_file_path, 'r') as glsl_file:
                     glsl_content = glsl_file.read()
 
-                # Replace <shader header> with the provided shader_header
-                glsl_content = glsl_content.replace("<shader header>", shader_header)
+                # Replace <shader version> with the provided shader_version
+                glsl_content = glsl_content.replace("<shader version>", shader_version)
 
                 # Resolve all includes recursively
                 glsl_content = resolve_includes(glsl_content, root)
@@ -64,10 +64,10 @@ def main():
     parser = argparse.ArgumentParser(description="Process GLSL files.")
     parser.add_argument("glsl_path", help="Path to the directory containing GLSL files")
     parser.add_argument("result_path", help="Path to the directory where processed files will be saved")
-    parser.add_argument("shader_header", help="Replaceable shader header (OpenGL version, precesion, etc.)")
+    parser.add_argument("shader_version", help="Replaceable shader version (OpenGL version, precesion, etc.)")
     args = parser.parse_args()
 
-    process_glsl_files(args.glsl_path, args.result_path, args.shader_header)
+    process_glsl_files(args.glsl_path, args.result_path, args.shader_version)
 
 if __name__ == "__main__":
     main()

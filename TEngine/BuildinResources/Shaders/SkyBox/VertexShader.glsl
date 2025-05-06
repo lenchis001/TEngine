@@ -1,4 +1,4 @@
-<shader header>
+#version <shader version>
 
 precision lowp float;
 
