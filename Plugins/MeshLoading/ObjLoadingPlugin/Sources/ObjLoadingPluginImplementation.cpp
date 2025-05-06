@@ -33,7 +33,7 @@ std::shared_ptr<IPluginMesh> ObjLoadingPluginImplementation::load(const std::vec
 {
     std::istringstream stream(std::string(reinterpret_cast<const char*>(data.data()), data.size()));
 
-    auto materialLibrary = MaterialLibrary::SearchPath(basePath.c_str(), Load::Mandatory);
+    auto materialLibrary = MaterialLibrary::SearchPath(basePath.c_str(), Load::Optional);
 
     auto result = ParseStream(stream, materialLibrary);
 
