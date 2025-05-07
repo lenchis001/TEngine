@@ -55,20 +55,33 @@ std::shared_ptr<IPluginMesh> GltfLoadingPluginImplementation::load(const std::ve
             if (primitive.indices < 0)
                 continue;
 
+            std::vector<uint32_t> indices;
+            const auto &indexAccessor = model.accessors[primitive.indices];
+            const auto &indexBufferView = model.bufferViews[indexAccessor.bufferView];
+            const auto &indexBuffer = model.buffers[indexBufferView.buffer];
+            const uint16_t *indexData = reinterpret_cast<const uint16_t *>(&indexBuffer.data[indexBufferView.byteOffset]);
+
+            for (size_t i = 0; i < indexAccessor.count; ++i)
+            {
+                indices.push_back(indexData[i]);
+            }
+
             std::vector<float> vertices;
             std::vector<float> normals;
             std::vector<float> uvs;
 
+            auto floatSize = sizeof(float);
             const auto &positionAccessor = model.accessors[primitive.attributes.at("POSITION")];
             const auto &positionBufferView = model.bufferViews[positionAccessor.bufferView];
             const auto &positionBuffer = model.buffers[positionBufferView.buffer];
-            const float *positionData = reinterpret_cast<const float *>(&positionBuffer.data[positionBufferView.byteOffset + positionAccessor.byteOffset]);
+            const float *positionData = reinterpret_cast<const float *>(&positionBuffer.data[positionBufferView.byteOffset]);
 
-            for (size_t i = 0; i < positionAccessor.count; ++i)
+            for (size_t i = 0; i < indexAccessor.count; ++i)
             {
-                vertices.push_back(positionData[i * 3 + 0]);
-                vertices.push_back(positionData[i * 3 + 1]);
-                vertices.push_back(positionData[i * 3 + 2]);
+                uint32_t vertexIndex = indexData[i]; // Индекс вершины
+                vertices.push_back(positionData[vertexIndex * 3 + 0]); // X
+                vertices.push_back(positionData[vertexIndex * 3 + 1]); // Y
+                vertices.push_back(positionData[vertexIndex * 3 + 2]); // Z
             }
 
             if (primitive.attributes.find("NORMAL") != primitive.attributes.end())
@@ -76,13 +89,14 @@ std::shared_ptr<IPluginMesh> GltfLoadingPluginImplementation::load(const std::ve
                 const auto &normalAccessor = model.accessors[primitive.attributes.at("NORMAL")];
                 const auto &normalBufferView = model.bufferViews[normalAccessor.bufferView];
                 const auto &normalBuffer = model.buffers[normalBufferView.buffer];
-                const float *normalData = reinterpret_cast<const float *>(&normalBuffer.data[normalBufferView.byteOffset + normalAccessor.byteOffset]);
+                const float *normalData = reinterpret_cast<const float *>(&normalBuffer.data[normalBufferView.byteOffset]);
 
-                for (size_t i = 0; i < normalAccessor.count; ++i)
+                for (size_t i = 0; i < indexAccessor.count; ++i)
                 {
-                    normals.push_back(normalData[i * 3 + 0]);
-                    normals.push_back(normalData[i * 3 + 1]);
-                    normals.push_back(normalData[i * 3 + 2]);
+                    uint32_t vertexIndex = indexData[i]; // Индекс вершины
+                    normals.push_back(normalData[vertexIndex * 3 + 0]); // X
+                    normals.push_back(normalData[vertexIndex * 3 + 1]); // Y
+                    normals.push_back(normalData[vertexIndex * 3 + 2]); // Z
                 }
             }
 
@@ -91,16 +105,17 @@ std::shared_ptr<IPluginMesh> GltfLoadingPluginImplementation::load(const std::ve
                 const auto &uvAccessor = model.accessors[primitive.attributes.at("TEXCOORD_0")];
                 const auto &uvBufferView = model.bufferViews[uvAccessor.bufferView];
                 const auto &uvBuffer = model.buffers[uvBufferView.buffer];
-                const float *uvData = reinterpret_cast<const float *>(&uvBuffer.data[uvBufferView.byteOffset + uvAccessor.byteOffset]);
+                const float *uvData = reinterpret_cast<const float *>(&uvBuffer.data[uvBufferView.byteOffset]);
 
-                for (size_t i = 0; i < uvAccessor.count; ++i)
+                for (size_t i = 0; i < indexAccessor.count; ++i)
                 {
-                    uvs.push_back(uvData[i * 2 + 0]);
-                    uvs.push_back(uvData[i * 2 + 1]);
+                    uint32_t vertexIndex = indexData[i]; // Индекс вершины
+                    uvs.push_back(uvData[vertexIndex * 2 + 0]); // U
+                    uvs.push_back(uvData[vertexIndex * 2 + 1]); // V
                 }
             }
 
-            std::vector<float> diffuseColor = {0.3f, 0.3f, 0.3f};
+            std::vector<float> diffuseColor = {0.f, 0.f, 0.f};
             std::string texturePath;
 
             if (primitive.material >= 0)
@@ -108,9 +123,9 @@ std::shared_ptr<IPluginMesh> GltfLoadingPluginImplementation::load(const std::ve
                 const auto &material = model.materials[primitive.material];
                 if (material.pbrMetallicRoughness.baseColorFactor.size() == 4)
                 {
-                    diffuseColor[0] = static_cast<float>(material.pbrMetallicRoughness.baseColorFactor[0]);
-                    diffuseColor[1] = static_cast<float>(material.pbrMetallicRoughness.baseColorFactor[1]);
-                    diffuseColor[2] = static_cast<float>(material.pbrMetallicRoughness.baseColorFactor[2]);
+                    // diffuseColor[0] = static_cast<float>(material.pbrMetallicRoughness.baseColorFactor[0]);
+                    // diffuseColor[1] = static_cast<float>(material.pbrMetallicRoughness.baseColorFactor[1]);
+                    // diffuseColor[2] = static_cast<float>(material.pbrMetallicRoughness.baseColorFactor[2]);
                 }
 
                 if (material.pbrMetallicRoughness.baseColorTexture.index >= 0)

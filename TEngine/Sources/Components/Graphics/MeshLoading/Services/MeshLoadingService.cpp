@@ -41,18 +41,6 @@ std::shared_ptr<IMesh> MeshLoadingService::load(const std::string &path)
 
     auto pluginMesh = plugin->load(data, parentDirectory);
 
-    for(const auto& shape : pluginMesh->getShapes())
-    {
-        std::cout << "Shape name: " << shape->getName() << std::endl;
-        std::cout << "Vertices count: " << shape->getVertices().size() / 3 << std::endl;
-        std::cout << "Normals count: " << shape->getNormals().size() / 3 << std::endl;
-        std::cout << "UVs count: " << shape->getUVs().size() / 2 << std::endl;
-        std::cout << "Diffuse color: " << shape->getDiffuseColor()[0] << ", " << shape->getDiffuseColor()[1] << ", " << shape->getDiffuseColor()[2] << std::endl;
-        std::cout << "Texture path: " << shape->getTexturePath() << std::endl;
-        std::cout << "------------------------" << std::endl;
-    }
-    
-    
     return _toMesh(pluginMesh);
 }
 
