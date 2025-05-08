@@ -1,6 +1,8 @@
 #include "MeshLoadingService.h"
 
-#include "boost/filesystem.hpp"
+#include <iostream>
+
+#include <boost/filesystem.hpp>
 
 #include "Components/Graphics/MeshLoading/Models/Shape.h"
 #include "Components/Graphics/MeshLoading/Models/Mesh.h"

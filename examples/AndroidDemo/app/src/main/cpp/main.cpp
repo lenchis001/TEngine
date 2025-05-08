@@ -27,7 +27,16 @@ void setupScene(std::shared_ptr<ISceneService> sceneService)
     auto camera = sceneService->setActiveCamera(BuildinCameraTypes::FPS);
     camera->setWindowSize({2037,1080});
 
-    //sceneService->addSkyCude();
+    auto sidesTextures = std::vector<std::string>
+    {
+        "bundle://DemoResources/skybox/right.bmp",
+        "bundle://DemoResources/skybox/left.bmp",
+        "bundle://DemoResources/skybox/top.bmp",
+        "bundle://DemoResources/skybox/bottom.bmp",
+        "bundle://DemoResources/skybox/front.bmp",
+        "bundle://DemoResources/skybox/back.bmp"
+    };
+    sceneService->addSkyCude(sidesTextures);
 
     auto solid = sceneService->addSolidbox();
     solid->setPosition(Vector3df(5.0f, -10.0f, 0.0f));
@@ -35,29 +44,29 @@ void setupScene(std::shared_ptr<ISceneService> sceneService)
     solid->setScale(Vector3df(35.0f, 1.0f, 15.0f));
     solid->setIsVisualizationEnabled(true);
 
-    /*for (int i = 1; i < 10; i++)
+    for (int i = 1; i < 10; i++)
     {
         for (int j = 1; j < 32; j++)
         {
-            auto cube = sceneService->addMesh("./DemoResources/test plane/plane.obj");
+            auto cube = sceneService->addMesh("bundle://DemoResources/test plane/plane.obj");
             cube->setPosition(Vector3df(2.0f * i, 0.0f, 2.0f * j));
         }
 
         if (i > 5)
         {
-            auto cube = sceneService->addCube("./DemoResources/texture2.bmp", nullptr, PhysicsFlags::STATIC);
+            auto cube = sceneService->addCube("bundle://DemoResources/texture2.bmp", nullptr, PhysicsFlags::STATIC);
             cube->setPosition(Vector3df(i, 0.0f, 0.0f));
         }
 
-        auto cube2 = sceneService->addCube("./DemoResources/texture2.bmp", nullptr, PhysicsFlags::DYNAMIC);
+        auto cube2 = sceneService->addCube("bundle://DemoResources/texture2.bmp", nullptr, PhysicsFlags::DYNAMIC);
         cube2->setPosition(Vector3df(i, 2.f * i, 0.0f));
 
-        auto testCube = sceneService->addMesh("./DemoResources/test cube/cube.obj");
+        auto testCube = sceneService->addMesh("bundle://DemoResources/test cube/cube.obj");
         testCube->setPosition(Vector3df(0.0f, 0.0f, 3.0f * i));
 
-        auto sofa = sceneService->addMesh("./DemoResources/sofa.obj");
+        auto sofa = sceneService->addMesh("bundle://DemoResources/sofa.obj");
         sofa->setPosition(Vector3df(0.f, 0.f, -3.0f * i - 5.0f));
-    }*/
+    }
 }
 
 /*!
