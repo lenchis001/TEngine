@@ -26,7 +26,7 @@ GraphicsServiceBase::~GraphicsServiceBase()
 
 void GraphicsServiceBase::initialize(std::shared_ptr<IGraphicsParameters> parameters)
 {
-#if defined(_WIN32)
+#if defined(_WIN32) || defined(__linux__)
 	InitializeOpenGLFunctionPointers();
 #endif
 

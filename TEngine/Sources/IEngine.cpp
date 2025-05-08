@@ -102,6 +102,8 @@ std::shared_ptr<IEngine> TEngine::createEngine(
     void *parent
 #elif __ANDROID__
     android_app *parent
+#elif __linux__
+    void *parent
 #endif
     ,
     bool isPhysicsEnabled)
@@ -146,8 +148,7 @@ std::shared_ptr<IEngine> TEngine::createEngine(
 #ifdef __ANDROID__
         parent->activity,
 #endif
-        fileService
-    );
+        fileService);
     auto meshLoadingService = std::make_shared<MeshLoadingService>(
 #ifdef __ANDROID__
         parent->activity,
@@ -186,6 +187,8 @@ std::shared_ptr<IEngine> TEngine::createEngine(
 #elif __ANDROID__
         guiService = std::make_shared<AndroidGuiService>();
         graphicsService = std::make_shared<AndroidGraphicsService>(sceneService, guiService, meshLoadingService, texturesService, parent);
+#else
+        throw std::runtime_error("No graphics service available");
 #endif
     }
     else
