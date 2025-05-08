@@ -46,11 +46,8 @@ void setupScene(std::shared_ptr<ISceneService> sceneService)
 
     for (int i = 1; i < 10; i++)
     {
-        for (int j = 1; j < 32; j++)
-        {
-            auto cube = sceneService->addMesh("bundle://DemoResources/test plane/plane.obj");
-            cube->setPosition(Vector3df(2.0f * i, 0.0f, 2.0f * j));
-        }
+        auto testCube = sceneService->addMesh("bundle://DemoResources/glb_test/model.glb");
+        testCube->setPosition(Vector3df(0.0f, 0.0f, 3.0f * i));
 
         if (i > 5)
         {
@@ -60,12 +57,6 @@ void setupScene(std::shared_ptr<ISceneService> sceneService)
 
         auto cube2 = sceneService->addCube("bundle://DemoResources/texture2.bmp", nullptr, PhysicsFlags::DYNAMIC);
         cube2->setPosition(Vector3df(i, 2.f * i, 0.0f));
-
-        auto testCube = sceneService->addMesh("bundle://DemoResources/test cube/cube.obj");
-        testCube->setPosition(Vector3df(0.0f, 0.0f, 3.0f * i));
-
-        auto sofa = sceneService->addMesh("bundle://DemoResources/sofa.obj");
-        sofa->setPosition(Vector3df(0.f, 0.f, -3.0f * i - 5.0f));
     }
 }
 

@@ -78,6 +78,12 @@ add_custom_command(TARGET android_demo POST_BUILD
         "${CMAKE_SOURCE_DIR}/../assets/Plugins/MeshLoading/ObjLoadingPlugin.so"
 )
 
+add_custom_command(TARGET android_demo POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        "$<TARGET_FILE:GltfLoadingPlugin>"
+        "${CMAKE_SOURCE_DIR}/../assets/Plugins/MeshLoading/GltfLoadingPlugin.so"
+)
+
 # Copy the generated .so library to the Assets directory
 add_custom_command(TARGET android_demo POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
