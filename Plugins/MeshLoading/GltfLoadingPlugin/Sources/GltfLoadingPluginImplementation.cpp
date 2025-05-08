@@ -107,7 +107,8 @@ std::string GltfLoadingPluginImplementation::extractTexturePath(const Model& mod
                 {
                     extension = ".jpg";
                 }
-                return boost::filesystem::absolute(image.name + extension, basePath).string();
+
+                return basePath + "/" + image.name + extension;
             }
         }
     }
