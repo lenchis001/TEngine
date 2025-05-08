@@ -57,6 +57,8 @@ namespace TEngine
         void *parent = nullptr
 #elif __ANDROID__
         android_app *parent = nullptr
+#elif __linux__
+        void *parent = nullptr
 #endif
         ,
         bool isPhysicsEnabled = true);

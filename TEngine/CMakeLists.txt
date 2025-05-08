@@ -1,8 +1,15 @@
+if(APPLE)
 file(GLOB_RECURSE tengine_sources_files
     "Sources/*.cpp"
     "Sources/*.c"
     "Sources/*.mm"
 )
+else()
+file(GLOB_RECURSE tengine_sources_files
+    "Sources/*.cpp"
+    "Sources/*.c"
+)
+endif()
 
 add_library(TEngine SHARED ${tengine_sources_files})
 
@@ -215,7 +222,7 @@ set(USE_LIBIDN2 OFF CACHE BOOL " " FORCE)
 set(BUILD_EXAMPLES OFF CACHE BOOL " " FORCE)
 set(BUILD_TESTING OFF CACHE BOOL " " FORCE)
 set(HAVE_MANUAL_TOOLS OFF CACHE BOOL " " FORCE)
-if(ANDROID)
+if(ANDROID OR LINUX)
     set(CURL_USE_OPENSSL OFF CACHE BOOL " " FORCE)
 endif()
 

@@ -1,5 +1,7 @@
 #include "InputRenderingStrategy.h"
 
+#include <cstring>
+
 // #include "imgui.h"
 
 using namespace TEngine::Components::Graphics::Rendering::Gui::ControlRenderingStrategies;

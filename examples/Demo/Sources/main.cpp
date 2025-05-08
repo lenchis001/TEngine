@@ -19,9 +19,6 @@ using namespace TEngine::Components::Network::WebSocket::Client;
 void setupScene(std::shared_ptr<ISceneService> sceneService)
 {
     sceneService->setActiveCamera(BuildinCameraTypes::FPS);
-    
-    sceneService->addMesh("./DemoResources/glb_test/model.glb")->setPosition(Vector3df(1.0f, 1.0f, 1.0f));
-    sceneService->addMesh("./DemoResources/test cube/cube.obj")->setPosition(Vector3df(5.0f, 1.0f, 1.0f));
 
     auto sidesTextures = std::vector<std::string>
     {
@@ -33,8 +30,6 @@ void setupScene(std::shared_ptr<ISceneService> sceneService)
         "./DemoResources/skybox/back.bmp"
     };
     sceneService->addSkyCude(sidesTextures);
-
-    return;
 
     auto solid = sceneService->addSolidbox();
     solid->setPosition(Vector3df(5.0f, -10.0f, 0.0f));
@@ -61,6 +56,9 @@ void setupScene(std::shared_ptr<ISceneService> sceneService)
 
         auto testCube = sceneService->addMesh("./DemoResources/test cube/cube.obj");
         testCube->setPosition(Vector3df(0.0f, 0.0f, 3.0f * i));
+
+        auto glbCube = sceneService->addMesh("./DemoResources/glb_test/model.glb");
+        glbCube->setPosition(Vector3df(3.0f * i, 0.0f, 0.0f));
 
         auto sofa = sceneService->addMesh("./DemoResources/sofa.obj");
         sofa->setPosition(Vector3df(0.f, 0.f, -3.0f * i - 5.0f));
@@ -102,7 +100,7 @@ int main()
 
     auto graphicsParameters = creationParameters->getGraphicsParameters();
     graphicsParameters->setTitle("Demo");
-    graphicsParameters->setIsVerticalSyncEnabled(false);
+    graphicsParameters->setIsVerticalSyncEnabled(true);
     graphicsParameters->getSceneParameters()->setSequenceUpdateThreshold(20.f);
 
     engine->initialize(creationParameters);
@@ -121,10 +119,10 @@ int main()
     int fpsCounter = 0;
 
     auto audioService = engine->getAudioService();
-    auto source = audioService->take("./DemoResources/birds.ogg");
+    /*auto source = audioService->take("./DemoResources/birds.ogg");
 
     source->play();
-    source->setPosition(0.0f, 0.0f, 0.0f);
+    source->setPosition(0.0f, 0.0f, 0.0f);*/
 
     auto coreService = engine->getCoreService();
 
@@ -151,7 +149,7 @@ int main()
         graphicsService->render();
     }
 
-    audioService->release(source);
+    //audioService->release(source);
     engine->deinitialize();
 
     return 0;
