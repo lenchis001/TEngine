@@ -36,11 +36,6 @@ endif()
 # one used for loading in your Kotlin/Java or AndroidManifest.txt files.
 add_library(android_demo SHARED
         main.cpp
-        AndroidOut.cpp
-        Renderer.cpp
-        Shader.cpp
-        TextureAsset.cpp
-        Utility.cpp
 )
 
 target_include_directories(android_demo PRIVATE ${tengine_SOURCE_DIR}/TEngine/Sources)
@@ -62,6 +57,12 @@ target_link_libraries(android_demo
         log
         TEngine
 )
+
+# Find Python interpreter
+find_package(PythonInterp 3 REQUIRED)
+if(NOT PYTHON_EXECUTABLE)
+    set(PYTHON_EXECUTABLE "C:/Users/Leon/AppData/Local/Microsoft/WindowsApps/python.exe") # Replace with the actual path to your Python 3 executable
+endif()
 
 # Add post-build command to run a Python script
 add_custom_command(TARGET android_demo

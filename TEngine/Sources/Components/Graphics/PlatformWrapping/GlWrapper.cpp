@@ -79,7 +79,7 @@ void InitializeOpenGLFunctionPointers()
     }
 }
 
-#elif defined(__linux__)
+#elif defined(__linux__) && not defined (__ANDROID__)
 
 #include <dlfcn.h>
 #include <stdio.h>
