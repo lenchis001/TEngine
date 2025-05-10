@@ -1,0 +1,20 @@
+name: Dockerfile Build Check
+
+on:
+  pull_request:
+    paths:
+      - "CiCd/UbuntuDockerfile"
+
+jobs:
+  build-dockerfile:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Build the Dockerfile
+      - name: Build Dockerfile
+        run: |
+          docker build -f CiCd/UbuntuDockerfile -t tengine-dockerfile-test .
