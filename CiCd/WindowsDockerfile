@@ -1,0 +1,36 @@
+# filepath: /home/leon/Projects/TEngine/CiCd/WindowsDockerfile
+# Use a lightweight Windows base image
+FROM mcr.microsoft.com/windows/servercore:ltsc2022
+
+# Set environment variables
+ENV WINLIBS_VERSION=12.2.0-llvm-17.0.1
+ENV WINLIBS_DIR=C:\\winlibs
+
+# Set working directory
+WORKDIR C:\\workspace
+
+# Download and extract winlibs
+RUN powershell -Command \
+    Invoke-WebRequest -Uri https://github.com/brechtsanders/winlibs_mingw/releases/download/$env:WINLIBS_VERSION/winlibs-x86_64-posix-seh-gcc-$env:WINLIBS_VERSION.7z -OutFile winlibs.7z; \
+    Expand-Archive -Path winlibs.7z -DestinationPath C:\\; \
+    Rename-Item -Path C:\\winlibs-x86_64-posix-seh-gcc-$env:WINLIBS_VERSION -NewName $env:WINLIBS_DIR; \
+    Remove-Item winlibs.7z
+
+# Add winlibs to PATH
+ENV PATH="${WINLIBS_DIR}\\bin;${PATH}"
+
+# Verify g++ installation
+RUN g++ --version
+
+# Copy project files
+COPY . C:\\workspace
+
+# Configure cmake project
+RUN powershell -Command \
+    cmake -S . -B build -G "MinGW Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
+
+# Build the project
+RUN powershell -Command cmake --build build
+
+# Default command
+CMD ["cmd.exe"]

@@ -1,0 +1,26 @@
+name: Checking build for Windows
+
+on:
+  pull_request:
+    paths:
+      - "CiCd/WindowsDockerfile"
+
+jobs:
+  build-dockerfile:
+    runs-on: windows-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Install Docker on Windows
+      - name: Install Docker
+        run: |
+          choco install docker-desktop --confirm
+          Start-Service docker
+
+      # Build the Dockerfile
+      - name: Build Dockerfile
+        run: |
+          docker build -f CiCd/WindowsDockerfile -t tengine-dockerfile-test .

@@ -1,4 +1,4 @@
-name: Dockerfile Build Check
+name: Checking build for Ubuntu
 
 on:
   pull_request:
