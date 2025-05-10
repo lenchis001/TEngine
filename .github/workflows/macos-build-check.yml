@@ -1,0 +1,32 @@
+name: Checking build for macOS
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/macos-build-check.yml"
+      - "**.cpp"
+      - "**.c"
+      - "**CMakeLists.txt"
+      - "**.h"
+      - "**.hpp"
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          brew update
+          brew install python3 cmake
+
+      - name: Configure CMake project
+        run: |
+          cmake -S . -B build -DBUILD_ALICE=OFF -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build the project
+        run: |
+          cmake --build build --config Release -j$(sysctl -n hw.ncpu)

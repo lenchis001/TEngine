@@ -2,7 +2,7 @@
 
 #if defined(_WIN32)
 
-#include <Windows.h>
+#include <windows.h>
 
 PFNGLBINDVERTEXARRAYPROC glBindVertexArray = nullptr;
 PFNGLGENVERTEXARRAYSPROC glGenVertexArrays = nullptr;

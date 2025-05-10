@@ -58,12 +58,6 @@ target_link_libraries(android_demo
         TEngine
 )
 
-# Find Python interpreter
-find_package(PythonInterp 3 REQUIRED)
-if(NOT PYTHON_EXECUTABLE)
-    set(PYTHON_EXECUTABLE "C:/Users/Leon/AppData/Local/Microsoft/WindowsApps/python.exe") # Replace with the actual path to your Python 3 executable
-endif()
-
 # Add post-build command to run a Python script
 add_custom_command(TARGET android_demo
                    POST_BUILD
