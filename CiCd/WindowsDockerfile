@@ -3,7 +3,6 @@
 FROM mcr.microsoft.com/windows/servercore:ltsc2022
 
 # Set environment variables
-ENV WINLIBS_VERSION=12.2.0-llvm-17.0.1
 ENV WINLIBS_DIR=C:\\winlibs
 
 # Set working directory
@@ -11,9 +10,9 @@ WORKDIR C:\\workspace
 
 # Download and extract winlibs
 RUN powershell -Command \
-    Invoke-WebRequest -Uri https://github.com/brechtsanders/winlibs_mingw/releases/download/$env:WINLIBS_VERSION/winlibs-x86_64-posix-seh-gcc-$env:WINLIBS_VERSION.7z -OutFile winlibs.7z; \
+    Invoke-WebRequest -Uri https://github.com/brechtsanders/winlibs_mingw/releases/download/15.1.0posix-12.0.0-ucrt-r1/winlibs-i686-posix-dwarf-gcc-15.1.0-mingw-w64ucrt-12.0.0-r1.7z -OutFile winlibs.7z; \
     Expand-Archive -Path winlibs.7z -DestinationPath C:\\; \
-    Rename-Item -Path C:\\winlibs-x86_64-posix-seh-gcc-$env:WINLIBS_VERSION -NewName $env:WINLIBS_DIR; \
+    Rename-Item -Path C:\\winlibs-i686-posix-dwarf-gcc-15.1.0-mingw-w64ucrt-12.0.0-r1 -NewName $env:WINLIBS_DIR; \
     Remove-Item winlibs.7z
 
 # Add winlibs to PATH
