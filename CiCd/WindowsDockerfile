@@ -1,35 +1,55 @@
-# filepath: /home/leon/Projects/TEngine/CiCd/WindowsDockerfile
-# Use a lightweight Windows base image
-FROM mcr.microsoft.com/windows/servercore:ltsc2022
+# Use Ubuntu 24.04 LTS as the base image
+FROM ubuntu:24.04
 
-# Set environment variables
-ENV WINLIBS_DIR=C:\\winlibs
+# Set non-interactive mode for apt-get
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Update and install required packages
+RUN apt-get update && apt-get install -y \
+    cmake \
+    python3 \
+    python3-pip \
+    g++-mingw-w64-i686 \
+    mingw-w64 \
+    git \
+    pkg-config \
+    ninja-build \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Set default shell to bash
+SHELL ["/bin/bash", "-c"]
+
+# Verify installations
+RUN cmake --version && \
+    python3 --version && \
+    i686-w64-mingw32-g++ --version
 
 # Set working directory
-WORKDIR C:\\workspace
-
-# Download and extract winlibs
-RUN powershell -Command \
-    Invoke-WebRequest -Uri https://github.com/brechtsanders/winlibs_mingw/releases/download/15.1.0posix-12.0.0-ucrt-r1/winlibs-i686-posix-dwarf-gcc-15.1.0-mingw-w64ucrt-12.0.0-r1.7z -OutFile winlibs.7z; \
-    Expand-Archive -Path winlibs.7z -DestinationPath C:\\; \
-    Rename-Item -Path C:\\winlibs-i686-posix-dwarf-gcc-15.1.0-mingw-w64ucrt-12.0.0-r1 -NewName $env:WINLIBS_DIR; \
-    Remove-Item winlibs.7z
-
-# Add winlibs to PATH
-ENV PATH="${WINLIBS_DIR}\\bin;${PATH}"
-
-# Verify g++ installation
-RUN g++ --version
-
-# Copy project files
-COPY . C:\\workspace
-
-# Configure cmake project
-RUN powershell -Command \
-    cmake -S . -B build -G "MinGW Makefiles" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
-
-# Build the project
-RUN powershell -Command cmake --build build
+WORKDIR /workspace
 
 # Default command
-CMD ["cmd.exe"]
+CMD ["/bin/bash"]
+
+COPY . /workspace
+
+# Create a custom MinGW toolchain file
+RUN echo "set(CMAKE_SYSTEM_NAME Windows)" > /workspace/mingw-toolchain.cmake && \
+    echo "set(CMAKE_C_COMPILER i686-w64-mingw32-gcc)" >> /workspace/mingw-toolchain.cmake && \
+    echo "set(CMAKE_CXX_COMPILER i686-w64-mingw32-g++)" >> /workspace/mingw-toolchain.cmake && \
+    echo "set(CMAKE_RC_COMPILER i686-w64-mingw32-windres)" >> /workspace/mingw-toolchain.cmake && \
+    echo "set(CMAKE_FIND_ROOT_PATH /usr/i686-w64-mingw32)" >> /workspace/mingw-toolchain.cmake && \
+    echo "set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)" >> /workspace/mingw-toolchain.cmake && \
+    echo "set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)" >> /workspace/mingw-toolchain.cmake && \
+    echo "set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)" >> /workspace/mingw-toolchain.cmake
+
+# Configure cmake project for cross-compilation
+RUN cmake -S . -B build \
+    -DCMAKE_TOOLCHAIN_FILE=/workspace/mingw-toolchain.cmake \
+    -DCMAKE_GENERATOR=Ninja \
+    -DCMAKE_MAKE_PROGRAM=/usr/bin/ninja \
+    -DCMAKE_C_COMPILER=i686-w64-mingw32-gcc \
+    -DCMAKE_CXX_COMPILER=i686-w64-mingw32-g++ \
+    -DBUILD_ALICE=OFF
+
+# Build the project
+RUN cmake --build build --target PngLoadingPlugin

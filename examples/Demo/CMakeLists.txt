@@ -21,10 +21,12 @@ target_include_directories(Demo PRIVATE "../../TEngine/Sources")
 target_link_libraries(Demo PRIVATE TEngine)
 
 # Add runtime search path for .so libraries in the current directory
-set_target_properties(Demo PROPERTIES
-    BUILD_RPATH "$ORIGIN"
-    INSTALL_RPATH "$ORIGIN"
-)
+if (UNIX AND NOT ANDROID)
+    set_target_properties(Demo PROPERTIES
+        BUILD_RPATH "$ORIGIN"
+        INSTALL_RPATH "$ORIGIN"
+    )
+endif()
 
 # Add post-build command to run a Python script
 add_custom_command(TARGET Demo
