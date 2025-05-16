@@ -3,7 +3,8 @@ name: Checking build for Windows
 on:
   pull_request:
     paths:
-      - "CiCd/WindowsDockerfile"
+      - "**"
+      - "!CiCd/**"
 
 jobs:
   build-project:
