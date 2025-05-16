@@ -29,7 +29,8 @@ jobs:
       - name: Configure project
         run: |
           cmake -S . -B build \
-            -DBUILD_ALICE=OFF
+            -DCMAKE_C_COMPILER=C:/mingw/bin/gcc.exe \
+            -DCMAKE_CXX_COMPILER=C:/mingw/bin/g++.exe
 
       # Build the project
       - name: Build project
