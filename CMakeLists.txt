@@ -63,9 +63,6 @@ endif()
 
 # Find Python interpreter
 find_package(PythonInterp 3 REQUIRED)
-if(NOT PYTHON_EXECUTABLE)
-    set(PYTHON_EXECUTABLE "C:/Users/Leon/AppData/Local/Microsoft/WindowsApps/python.exe") # Replace with the actual path to your Python 3 executable
-endif()
 
 # Include sub-projects.
 add_subdirectory("TEngine")
@@ -74,8 +71,8 @@ add_subdirectory("Plugins/ImageLoading/PngLoadingPlugin")
 add_subdirectory("Plugins/MeshLoading/ObjLoadingPlugin")
 add_subdirectory("Plugins/MeshLoading/GltfLoadingPlugin")
 if(BUILD_DEMO)
-add_subdirectory("examples/Demo")
+  add_subdirectory("examples/Demo")
 endif()
 if(BUILD_ALICE)
-add_subdirectory("Editor/Alice")
+  add_subdirectory("Editor/Alice")
 endif()

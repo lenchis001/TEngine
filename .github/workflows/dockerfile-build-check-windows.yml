@@ -6,7 +6,7 @@ on:
       - "CiCd/WindowsDockerfile"
 
 jobs:
-  build-dockerfile:
+  build-project:
     runs-on: windows-latest
 
     steps:
@@ -14,13 +14,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Install Docker on Windows
-      - name: Install Docker
+      # Install required tools
+      - name: Install dependencies
         run: |
-          choco install docker-desktop --confirm
-          Start-Service docker
+          choco install cmake python3 mingw ninja git --confirm
+          refreshenv
 
-      # Build the Dockerfile
-      - name: Build Dockerfile
+      # Configure the project
+      - name: Configure project
         run: |
-          docker build -f CiCd/WindowsDockerfile -t tengine-dockerfile-test .
+          cmake -S . -B build \
+            -DCMAKE_GENERATOR=Ninja \
+            -DCMAKE_MAKE_PROGRAM=ninja \
+            -DBUILD_ALICE=OFF
+
+      # Build the project
+      - name: Build project
+        run: cmake --build build
