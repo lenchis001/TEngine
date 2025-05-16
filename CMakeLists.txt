@@ -61,6 +61,9 @@ endif()
 
 # -----------------------------------------------------------------------
 
+# Find Python interpreter
+find_package(PythonInterp 3 REQUIRED)
+
 # Include sub-projects.
 add_subdirectory("TEngine")
 add_subdirectory("Plugins/ImageLoading/BmpLoadingPlugin")
@@ -68,8 +71,8 @@ add_subdirectory("Plugins/ImageLoading/PngLoadingPlugin")
 add_subdirectory("Plugins/MeshLoading/ObjLoadingPlugin")
 add_subdirectory("Plugins/MeshLoading/GltfLoadingPlugin")
 if(BUILD_DEMO)
-add_subdirectory("examples/Demo")
+  add_subdirectory("examples/Demo")
 endif()
 if(BUILD_ALICE)
-add_subdirectory("Editor/Alice")
+  add_subdirectory("Editor/Alice")
 endif()
