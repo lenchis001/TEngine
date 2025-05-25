@@ -19,7 +19,8 @@ jobs:
       - name: Install dependencies
         shell: pwsh
         run: |
-          choco install cmake --version=3.30.3 python3 ninja git --confirm
+          choco install cmake --version=3.30.3 --confirm
+          choco install python3 ninja git --confirm
           Invoke-WebRequest -Uri https://github.com/brechtsanders/winlibs_mingw/releases/download/15.1.0posix-12.0.0-ucrt-r1/winlibs-i686-posix-dwarf-gcc-15.1.0-mingw-w64ucrt-12.0.0-r1.zip -OutFile mingw.zip
           Expand-Archive -Path mingw.zip -DestinationPath C:/mingw32_15.1.0
           $env:Path += ";C:/mingw32_15.1.0\mingw32\bin"
