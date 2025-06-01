@@ -20,10 +20,12 @@ target_include_directories(Demo PRIVATE "../../TEngine/Sources")
 # Link the TEngine library to the executable
 target_link_libraries(Demo PRIVATE TEngine)
 
-# Find Python interpreter
-find_package(PythonInterp 3 REQUIRED)
-if(NOT PYTHON_EXECUTABLE)
-    set(PYTHON_EXECUTABLE "C:/Users/Leon/AppData/Local/Microsoft/WindowsApps/python.exe") # Replace with the actual path to your Python 3 executable
+# Add runtime search path for .so libraries in the current directory
+if (UNIX AND NOT ANDROID)
+    set_target_properties(Demo PROPERTIES
+        BUILD_RPATH "$ORIGIN"
+        INSTALL_RPATH "$ORIGIN"
+    )
 endif()
 
 # Add post-build command to run a Python script

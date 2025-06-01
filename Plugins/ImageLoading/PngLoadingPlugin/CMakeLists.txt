@@ -37,7 +37,7 @@ include(FetchContent)
 
 FetchContent_Declare(
     libpng
-    GIT_REPOSITORY git@github.com:pnggroup/libpng.git
+    GIT_REPOSITORY https://github.com/pnggroup/libpng.git
     GIT_TAG        v1.6.44
     GIT_SHALLOW    TRUE
 )

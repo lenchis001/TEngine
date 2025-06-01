@@ -1,0 +1,47 @@
+# Use Ubuntu 24.04 LTS as the base image
+FROM ubuntu:24.04
+
+# Set non-interactive mode for apt-get
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Update and install required packages
+RUN apt-get update && apt-get install -y \
+    cmake \
+    python3 \
+    python3-pip \
+    g++ \
+    libgl1-mesa-dev \
+    libglu1-mesa-dev \
+    git \
+    libxrandr-dev \
+    libxinerama-dev \
+    libxcursor-dev \
+    libxi-dev \
+    wayland-protocols \
+    libwayland-dev \
+    pkg-config \
+    libxkbcommon-dev \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Set default shell to bash
+SHELL ["/bin/bash", "-c"]
+
+# Verify installations
+RUN cmake --version && \
+    python3 --version && \
+    g++ --version && \
+    ldconfig -p | grep -i opengl
+
+# Set working directory
+WORKDIR /workspace
+
+# Default command
+CMD ["/bin/bash"]
+
+COPY . /workspace
+
+# Configure cmake project for Release build
+RUN cmake -S . -B build -DBUILD_ALICE=OFF -DCMAKE_BUILD_TYPE=Release
+
+# Build the project
+RUN cmake --build build --config Release -j$(nproc)

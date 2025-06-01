@@ -11,6 +11,7 @@ option(BUILD_WITH_GLFW "Build with GLFW window system" ON)
 
 set(CMAKE_COLOR_MAKEFILE   ON)
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 
 if(UNIX AND NOT APPLE)
     set(LINUX TRUE)
@@ -61,6 +62,9 @@ endif()
 
 # -----------------------------------------------------------------------
 
+# Find Python interpreter
+find_package(PythonInterp 3 REQUIRED)
+
 # Include sub-projects.
 add_subdirectory("TEngine")
 add_subdirectory("Plugins/ImageLoading/BmpLoadingPlugin")
@@ -68,8 +72,8 @@ add_subdirectory("Plugins/ImageLoading/PngLoadingPlugin")
 add_subdirectory("Plugins/MeshLoading/ObjLoadingPlugin")
 add_subdirectory("Plugins/MeshLoading/GltfLoadingPlugin")
 if(BUILD_DEMO)
-add_subdirectory("examples/Demo")
+  add_subdirectory("examples/Demo")
 endif()
 if(BUILD_ALICE)
-add_subdirectory("Editor/Alice")
+  add_subdirectory("Editor/Alice")
 endif()
