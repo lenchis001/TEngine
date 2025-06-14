@@ -6,6 +6,8 @@
 #include "AL/al.h"
 
 #include "Sources/AudioSource.h"
+#include "Sources/DummyAudioSource.hpp"
+
 #include "AlMacroses.h"
 
 using namespace TEngine::Components::Audio::Services;
@@ -17,14 +19,17 @@ AudioService::AudioService(std::shared_ptr<IReader> reader) : _reader(reader)
 
 AudioService::~AudioService()
 {
-    // Shut down context
-    alcMakeContextCurrent(NULL);
-    // Destroy context
-    alcDestroyContext(_context);
-    // Close sound device
-    alcCloseDevice(_device);
+    if (_device)
+    {
+        // Shut down context
+        alcMakeContextCurrent(NULL);
+        // Destroy context
+        alcDestroyContext(_context);
+        // Close sound device
+        alcCloseDevice(_device);
 
-    assert(_sources.empty() && "Not all sources were released");
+        assert(_sources.empty() && "Not all sources were released");
+    }
 }
 
 void AudioService::initialize()
@@ -45,7 +50,7 @@ void AudioService::initialize()
     // Check for errors
     if (!_device)
     {
-        throw std::exception();
+        return;
     }
     // Creating rendering context
     _context = alcCreateContext(_device, NULL);
@@ -60,6 +65,12 @@ void AudioService::initialize()
 
 std::shared_ptr<IAudioSource> AudioService::take(const std::string &path)
 {
+    if (!_device)
+    {
+        // If the device is not initialized, return a dummy audio source
+        return std::make_shared<DummyAudioSource>();
+    }
+
     ALuint sourceId;
 
     // Create source
@@ -97,22 +108,31 @@ void AudioService::release(const std::shared_ptr<IAudioSource> source)
         throw std::exception();
     }
 
-    alDeleteSources(1, &targetIterator->second.second);
-    _reader->release(targetIterator->second.first);
+    if (_device)
+    {
+        alDeleteSources(1, &targetIterator->second.second);
+        _reader->release(targetIterator->second.first);
+    }
 
     _sources.erase(targetIterator);
 }
 
 void AudioService::setListenerPosition(float x, float y, float z)
 {
-    ALfloat ListenerPos[] = {x, y, z};
+    if (_device)
+    {
+        ALfloat ListenerPos[] = {x, y, z};
 
-    alListenerfv(AL_POSITION, ListenerPos);
+        alListenerfv(AL_POSITION, ListenerPos);
+    }
 }
 
 void AudioService::setListenerRotation(float x, float y, float z)
 {
-    ALfloat ListenerOri[] = {x, y, z, 0.0, 1.0, 0.0};
+    if (_device)
+    {
+        ALfloat ListenerOri[] = {x, y, z, 0.0, 1.0, 0.0};
 
-    alListenerfv(AL_ORIENTATION, ListenerOri);
+        alListenerfv(AL_ORIENTATION, ListenerOri);
+    }
 }
